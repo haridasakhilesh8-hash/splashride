@@ -9,6 +9,7 @@ import OnThisPage from '../components/OnThisPage';
 import Diagram from '../components/Diagram';
 import { AlertTriangle, CheckCircle, Lightbulb, BookOpen, ArrowRight, Clock, Tag, ChevronRight } from 'lucide-react';
 import SEO from '../components/SEO';
+import { absoluteUrl } from '../lib/seo';
 
 function MarkdownText({ text }: { text: string }) {
   // Simple markdown-like rendering for **bold** and `code` and headings
@@ -232,7 +233,7 @@ export default function TopicPage() {
       headline: topic.title,
       description: topic.description,
       dateModified: topic.lastReviewed,
-      mainEntityOfPage: `https://splashride.com/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`,
+      mainEntityOfPage: absoluteUrl(`/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`),
       author: {
         '@type': 'Organization',
         name: 'SplashRide',
@@ -242,7 +243,7 @@ export default function TopicPage() {
         name: 'SplashRide',
         logo: {
           '@type': 'ImageObject',
-          url: 'https://splashride.com/splashride-logo.png',
+          url: absoluteUrl('/splashride-logo.png'),
         },
       },
       about: [pageTech?.label, category?.title].filter(Boolean),
@@ -255,19 +256,19 @@ export default function TopicPage() {
           '@type': 'ListItem',
           position: 1,
           name: 'SplashRide',
-          item: 'https://splashride.com/',
+          item: absoluteUrl('/'),
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: pageTech?.label ?? 'Technology',
-          item: `https://splashride.com/technology/${pageTech?.id ?? techId}`,
+          item: absoluteUrl(`/technology/${pageTech?.id ?? techId}`),
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: topic.title,
-          item: `https://splashride.com/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`,
+          item: absoluteUrl(`/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`),
         },
       ],
     },

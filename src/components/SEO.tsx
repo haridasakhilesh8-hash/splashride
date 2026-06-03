@@ -1,11 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
-const SITE_NAME = 'SplashRide';
-const DEFAULT_TITLE = 'SplashRide | Developer Learning Paths, Tutorials and Interview Prep';
-const DEFAULT_DESCRIPTION =
-  'Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker and Kubernetes with project-focused tutorials, examples and interview-ready explanations.';
-const DEFAULT_IMAGE = '/splashride-logo.png';
+import { absoluteUrl, DEFAULT_DESCRIPTION, DEFAULT_IMAGE, DEFAULT_TITLE, SITE_NAME } from '../lib/seo';
 
 interface SEOProps {
   title?: string;
@@ -13,12 +8,6 @@ interface SEOProps {
   type?: 'website' | 'article';
   image?: string;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
-}
-
-function absoluteUrl(path: string) {
-  if (/^https?:\/\//.test(path)) return path;
-  const origin = typeof window !== 'undefined' ? window.location.origin : '';
-  return `${origin}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
 function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {

@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getTechById } from '../lib/navigation';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import SEO from '../components/SEO';
+import { absoluteUrl } from '../lib/seo';
 
 export default function TechLandingPage() {
   const { techId } = useParams<{ techId: string }>();
@@ -34,12 +35,12 @@ export default function TechLandingPage() {
       '@type': 'CollectionPage',
       name: techTitle,
       description: techDescription,
-      url: `https://splashride.com/technology/${tech.id}`,
+      url: absoluteUrl(`/technology/${tech.id}`),
       about: tech.label,
       isPartOf: {
         '@type': 'WebSite',
         name: 'SplashRide',
-        url: 'https://splashride.com/',
+        url: absoluteUrl('/'),
       },
     },
     {
@@ -50,13 +51,13 @@ export default function TechLandingPage() {
           '@type': 'ListItem',
           position: 1,
           name: 'SplashRide',
-          item: 'https://splashride.com/',
+          item: absoluteUrl('/'),
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: tech.label,
-          item: `https://splashride.com/technology/${tech.id}`,
+          item: absoluteUrl(`/technology/${tech.id}`),
         },
       ],
     },
@@ -67,7 +68,7 @@ export default function TechLandingPage() {
       itemListElement: liveTopics.slice(0, 50).map((topic, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: `https://splashride.com/technology/${tech.id}/topic/${topic.slug}`,
+        url: absoluteUrl(`/technology/${tech.id}/topic/${topic.slug}`),
         name: topic.title,
       })),
     },

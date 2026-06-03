@@ -3,6 +3,7 @@ import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
 import { ArrowRight, Zap, BookOpen, Code, Globe, Target, BarChart3, Sparkles, TrendingUp } from 'lucide-react';
 import SEO from '../components/SEO';
+import { absoluteUrl } from '../lib/seo';
 
 export default function HomePage() {
   const { setActiveTechId } = useTech();
@@ -82,12 +83,12 @@ export default function HomePage() {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
       name: 'SplashRide',
-      url: 'https://splashride.com/',
+      url: absoluteUrl('/'),
       description: 'Project-focused developer learning for AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker and Kubernetes.',
       publisher: {
         '@type': 'Organization',
         name: 'SplashRide',
-        logo: 'https://splashride.com/splashride-logo.png',
+        logo: absoluteUrl('/splashride-logo.png'),
       },
     },
     {
@@ -97,7 +98,7 @@ export default function HomePage() {
       itemListElement: activeTechs.map((tech, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: `https://splashride.com/technology/${tech.id}`,
+        url: absoluteUrl(`/technology/${tech.id}`),
         name: `${tech.label} tutorials`,
         description: tech.description,
       })),

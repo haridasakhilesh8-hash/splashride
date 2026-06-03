@@ -1,0 +1,205 @@
+import type { TopicContent } from '../../types';
+
+export const springAutoConfiguration: TopicContent = {
+  slug: 'spring-auto-configuration',
+  title: 'Auto Configuration',
+  description: 'Understand how Spring Boot\'s auto-configuration works under the hood — how it detects your classpath, applies conditional configuration, and how to customize or disable it.',
+  applicableVersions: ['Spring Boot 2.7', 'Spring Boot 3.x'],
+  lastReviewed: 'January 2025',
+  quickUnderstanding: 'Auto-configuration is Spring Boot\'s superpower. When you add spring-boot-starter-data-jpa to your classpath, Spring Boot automatically configures a DataSource, EntityManagerFactory, and TransactionManager — without you writing a single @Bean. It does this by scanning for specific classes on the classpath and conditionally activating pre-written configuration classes.',
+  whatIsIt: `Auto-configuration is a set of \`@Configuration\` classes that Spring Boot activates **conditionally** based on what\'s on your classpath, what beans you\'ve already defined, and what properties you\'ve set.
+
+**How Spring Boot discovers auto-configurations:**
+- Spring Boot 2.x: \`META-INF/spring.factories\` file
+- Spring Boot 3.x: \`META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports\`
+
+**Key conditional annotations:**
+- \`@ConditionalOnClass\` — activate only if a class is on the classpath
+- \`@ConditionalOnMissingBean\` — activate only if you haven\'t defined your own bean
+- \`@ConditionalOnProperty\` — activate only if a property is set
+- \`@ConditionalOnWebApplication\` — activate only in web apps
+- \`@ConditionalOnExpression\` — activate based on SpEL expression
+
+This means auto-configuration is **never forced on you** — define your own bean and Spring backs off.`,
+  whyWeNeedIt: `Without auto-configuration, every Spring Boot project would require:
+\`\`\`java
+// You'd write this for EVERY project:
+@Bean
+public DataSource dataSource() {
+    HikariDataSource ds = new HikariDataSource();
+    ds.setJdbcUrl("jdbc:postgresql://localhost:5432/mydb");
+    ds.setUsername("postgres");
+    // ... 10 more lines
+    return ds;
+}
+
+@Bean
+public EntityManagerFactory entityManagerFactory(DataSource ds) {
+    // ... 20 more lines
+}
+
+@Bean
+public TransactionManager transactionManager(EntityManagerFactory emf) {
+    return new JpaTransactionManager(emf);
+}
+\`\`\`
+
+Auto-configuration does all this from \`spring.datasource.*\` properties. You write 3 lines of config instead of 50 lines of code.`,
+  realWorldUsage: `Every Spring Boot application uses auto-configuration constantly:
+- Add \`spring-boot-starter-web\` → DispatcherServlet, Jackson, Tomcat auto-configured
+- Add \`spring-boot-starter-data-jpa\` + DB driver → DataSource, JPA, Transactions auto-configured
+- Add \`spring-boot-starter-security\` → Security filter chain auto-configured
+- Add \`spring-boot-starter-cache\` + \`spring-boot-starter-data-redis\` → Redis cache auto-configured
+
+In enterprise projects, teams write **custom auto-configurations** for shared libraries (e.g., a company-wide audit logging library that auto-configures itself when added as a dependency).`,
+  howItWorks: `**Step-by-step auto-configuration process:**
+
+1. \`@EnableAutoConfiguration\` triggers \`AutoConfigurationImportSelector\`
+2. Selector reads \`AutoConfiguration.imports\` — a list of 150+ configuration classes
+3. Each config class is evaluated against its \`@Conditional\` annotations
+4. Passing configs are imported into the ApplicationContext
+5. \`@ConditionalOnMissingBean\` ensures your beans take priority over auto-configured ones
+
+**Debug auto-configuration:**
+\`\`\`properties
+# See which auto-configs were applied and which were not
+debug=true
+# Or via Actuator:
+# GET /actuator/conditions
+\`\`\``,
+  example: {
+    title: 'Understanding and Customizing Auto-Configuration',
+    description: 'How to inspect, override, and write your own auto-configuration.',
+    code: [
+      {
+        label: 'Override Auto-Configuration',
+        language: 'java',
+        code: `// Spring Boot auto-configures a DataSource from properties.
+// Define your own and Spring backs off (@ConditionalOnMissingBean).
+
+@Configuration
+public class DataSourceConfig {
+
+    // Your custom DataSource takes priority over auto-configuration
+    @Bean
+    @Primary
+    public DataSource primaryDataSource(
+            @Value("\${db.primary.url}") String url,
+            @Value("\${db.primary.username}") String username,
+            @Value("\${db.primary.password}") String password) {
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setMaximumPoolSize(20);
+        config.setMinimumIdle(5);
+        config.setConnectionTimeout(30000);
+        config.setIdleTimeout(600000);
+        config.setMaxLifetime(1800000);
+        return new HikariDataSource(config);
+    }
+}`,
+      },
+      {
+        label: 'Disable Specific Auto-Configurations',
+        language: 'java',
+        code: `// Option 1: Annotation
+@SpringBootApplication(exclude = {
+    DataSourceAutoConfiguration.class,
+    SecurityAutoConfiguration.class
+})
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+
+// Option 2: Properties (preferred — no recompile needed)
+// spring.autoconfigure.exclude=
+//   org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration`,
+      },
+      {
+        label: 'Write Your Own Auto-Configuration',
+        language: 'java',
+        code: `// Custom auto-configuration for a company-wide audit library
+@AutoConfiguration
+@ConditionalOnClass(AuditRepository.class)          // Only if our library is present
+@ConditionalOnProperty(
+    prefix = "company.audit",
+    name = "enabled",
+    havingValue = "true",
+    matchIfMissing = true                            // Enabled by default
+)
+@EnableConfigurationProperties(AuditProperties.class)
+public class AuditAutoConfiguration {
+
+    @Bean
+    @ConditionalOnMissingBean                        // Back off if user defines their own
+    public AuditService auditService(
+            AuditRepository repository,
+            AuditProperties properties) {
+        return new DefaultAuditService(repository, properties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AuditInterceptor auditInterceptor(AuditService auditService) {
+        return new AuditInterceptor(auditService);
+    }
+}
+
+// Register in: META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
+// com.company.audit.AuditAutoConfiguration`,
+      },
+    ],
+  },
+  commonConfusions: [
+    {
+      question: 'Does auto-configuration override my beans?',
+      answer: 'Never. Auto-configuration uses @ConditionalOnMissingBean — it only activates if you haven\'t defined that bean yourself. Your beans always win. This is the "opinionated but overridable" philosophy.',
+    },
+    {
+      question: 'How do I know which auto-configurations are active?',
+      answer: 'Run with --debug flag or set debug=true in application.properties. Spring prints a "CONDITIONS EVALUATION REPORT" showing every auto-config class and whether it was applied (POSITIVE MATCH) or skipped (NEGATIVE MATCH) and why.',
+    },
+    {
+      question: 'spring.factories vs AutoConfiguration.imports — what changed?',
+      answer: 'Spring Boot 3.x moved from META-INF/spring.factories to META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports for better performance (smaller file, faster parsing). Spring Boot 2.7 supports both. If you write custom starters, use the new format for Boot 3.x.',
+    },
+  ],
+  productionIssues: [
+    'Security auto-configuration activating on a non-web service — add SecurityAutoConfiguration to exclude list',
+    'Multiple DataSource auto-configurations conflicting — explicitly mark one @Primary or exclude auto-config',
+    'JPA auto-configuration failing because DB is not available at startup — use spring.jpa.open-in-view=false and handle lazy init',
+    'Auto-configured connection pool too small — always override HikariCP settings for production workloads',
+    'Jackson auto-configuration serializing nulls — configure ObjectMapper via spring.jackson.* properties',
+  ],
+  bestPractices: [
+    'Use debug=true during development to understand which auto-configs are active',
+    'Prefer property-based customization over overriding beans when possible',
+    'When writing shared libraries, use @ConditionalOnMissingBean so consumers can override',
+    'Exclude security auto-configuration explicitly in test slices that don\'t need it',
+    'Document which auto-configurations your custom starter provides',
+  ],
+  architectNote: `Auto-configuration is the foundation of Spring Boot\'s productivity. When building internal platform libraries (e.g., a company audit framework, a custom metrics library), write them as Spring Boot starters with auto-configuration. This means teams add your library as a dependency and it just works — zero configuration required. This is exactly how spring-boot-starter-* libraries work, and your internal libraries should follow the same pattern.`,
+  faqs: [
+    {
+      question: 'Can I create my own Spring Boot starter?',
+      answer: 'Yes. Create a library with an auto-configuration class annotated with @AutoConfiguration and @Conditional annotations. Register it in META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports. Package it as a JAR. Teams add it as a dependency and it auto-configures itself. Naming convention: xxx-spring-boot-starter (e.g., company-audit-spring-boot-starter).',
+    },
+    {
+      question: 'How does @ConditionalOnClass work without causing ClassNotFoundException?',
+      answer: 'Spring uses ASM (bytecode manipulation) to read @ConditionalOnClass without loading the class. It inspects the annotation metadata at the bytecode level, so if the class is absent, the condition fails gracefully without any exception.',
+    },
+  ],
+  keyTakeaways: [
+    'Auto-configuration is conditional — it only activates when specific classes/properties are present',
+    '@ConditionalOnMissingBean means your beans always override auto-configured ones',
+    'Use debug=true to see the full conditions evaluation report',
+    'Exclude unwanted auto-configurations via @SpringBootApplication(exclude=...) or properties',
+    'Write custom auto-configurations for shared enterprise libraries',
+    'Spring Boot 3.x uses AutoConfiguration.imports instead of spring.factories',
+  ],
+  relatedTopics: ['spring-introduction', 'spring-starters', 'spring-ioc', 'spring-properties'],
+};

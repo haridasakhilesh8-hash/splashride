@@ -1,0 +1,907 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// SplashRide — Multi-technology navigation registry
+// Adding a new technology: add a TechSection entry + NavCategory[] entries.
+// Adding a new topic: add a NavItem to the right category + a content file.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface NavItem {
+  slug: string;
+  title: string;
+  badge?: string;
+}
+
+export interface NavCategory {
+  id: string;
+  title: string;
+  icon: string;
+  items: NavItem[];
+}
+
+export interface TechSection {
+  id: string;           // unique key, used in URLs: /tech/:id/topic/:slug
+  label: string;        // display name
+  icon: string;         // emoji
+  color: string;        // brand color for cards/badges
+  description: string;  // short description shown on homepage card
+  topicCount: number;   // number of live topics
+  active: boolean;      // false = Coming Soon
+  categories: NavCategory[];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AEM — ACTIVE
+// ─────────────────────────────────────────────────────────────────────────────
+const aemCategories: NavCategory[] = [
+  {
+    id: 'aem-fundamentals',
+    title: 'Fundamentals',
+    icon: '🏗️',
+    items: [
+      { slug: 'architecture', title: 'Architecture' },
+      { slug: 'jcr', title: 'JCR' },
+      { slug: 'crxde', title: 'CRXDE' },
+    ],
+  },
+  {
+    id: 'aem-development',
+    title: 'Development',
+    icon: '⚙️',
+    items: [
+      { slug: 'components', title: 'Components' },
+      { slug: 'templates', title: 'Templates' },
+      { slug: 'editable-templates', title: 'Editable Templates' },
+      { slug: 'sling', title: 'Sling' },
+      { slug: 'sling-models', title: 'Sling Models' },
+      { slug: 'htl', title: 'HTL' },
+      { slug: 'client-libraries', title: 'Client Libraries' },
+      { slug: 'osgi', title: 'OSGi' },
+    ],
+  },
+  {
+    id: 'aem-content',
+    title: 'Content Management',
+    icon: '📄',
+    items: [
+      { slug: 'content-fragments', title: 'Content Fragments' },
+      { slug: 'experience-fragments', title: 'Experience Fragments' },
+    ],
+  },
+  {
+    id: 'aem-advanced',
+    title: 'Advanced',
+    icon: '🚀',
+    items: [
+      { slug: 'dispatcher', title: 'Dispatcher' },
+      { slug: 'msm', title: 'MSM' },
+      { slug: 'workflows', title: 'Workflows' },
+      { slug: 'graphql', title: 'GraphQL' },
+    ],
+  },
+  {
+    id: 'aem-cloud',
+    title: 'Cloud Service',
+    icon: '☁️',
+    items: [
+      { slug: 'aem-cloud-service', title: 'AEM Cloud Service' },
+    ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Future technologies — placeholder categories only, no content yet
+// ─────────────────────────────────────────────────────────────────────────────
+const reactCategories: NavCategory[] = [
+  {
+    id: 'react-fundamentals',
+    title: 'Fundamentals',
+    icon: '⚛️',
+    items: [
+      { slug: 'react-components', title: 'Components' },
+      { slug: 'react-jsx',        title: 'JSX' },
+      { slug: 'react-props',      title: 'Props' },
+      { slug: 'react-state',      title: 'State' },
+    ],
+  },
+  {
+    id: 'react-hooks',
+    title: 'Hooks',
+    icon: '🪝',
+    items: [
+      { slug: 'react-hooks-usestate',    title: 'useState' },
+      { slug: 'react-hooks-useeffect',   title: 'useEffect' },
+      { slug: 'react-hooks-usememo',     title: 'useMemo' },
+      { slug: 'react-hooks-usecallback', title: 'useCallback' },
+      { slug: 'react-hooks-useref',      title: 'useRef' },
+      { slug: 'react-custom-hooks',      title: 'Custom Hooks' },
+    ],
+  },
+  {
+    id: 'react-state-management',
+    title: 'State Management',
+    icon: '🗄️',
+    items: [
+      { slug: 'react-context',       title: 'Context API' },
+      { slug: 'react-redux-toolkit', title: 'Redux Toolkit' },
+      { slug: 'react-zustand',       title: 'Zustand' },
+    ],
+  },
+  {
+    id: 'react-routing',
+    title: 'Routing',
+    icon: '🗺️',
+    items: [
+      { slug: 'react-router',           title: 'React Router' },
+      { slug: 'react-nested-routes',    title: 'Nested Routes' },
+      { slug: 'react-protected-routes', title: 'Protected Routes' },
+    ],
+  },
+  {
+    id: 'react-performance',
+    title: 'Performance',
+    icon: '⚡',
+    items: [
+      { slug: 'react-memo',         title: 'React.memo' },
+      { slug: 'react-lazy-loading', title: 'Lazy Loading' },
+      { slug: 'react-performance',  title: 'Code Splitting' },
+    ],
+  },
+  {
+    id: 'react-forms',
+    title: 'Forms',
+    icon: '📝',
+    items: [
+      { slug: 'react-controlled-components', title: 'Controlled Components' },
+      { slug: 'react-hook-form',             title: 'React Hook Form' },
+    ],
+  },
+  {
+    id: 'react-api',
+    title: 'API Integration',
+    icon: '📡',
+    items: [
+      { slug: 'react-fetch-api',      title: 'Fetch API' },
+      { slug: 'react-axios',          title: 'Axios' },
+      { slug: 'react-error-handling', title: 'Error Handling' },
+    ],
+  },
+  {
+    id: 'react-advanced',
+    title: 'Advanced',
+    icon: '🚀',
+    items: [
+      { slug: 'react-hoc',                 title: 'Higher Order Components' },
+      { slug: 'react-render-props',        title: 'Render Props' },
+      { slug: 'react-compound-components', title: 'Compound Components' },
+    ],
+  },
+];
+
+const nextjsCategories: NavCategory[] = [
+  {
+    id: 'nextjs-fundamentals',
+    title: 'Fundamentals',
+    icon: '▲',
+    items: [
+      { slug: 'nextjs-introduction',      title: 'Introduction' },
+      { slug: 'nextjs-project-structure', title: 'Project Structure' },
+      { slug: 'nextjs-app-router',        title: 'App Router' },
+    ],
+  },
+  {
+    id: 'nextjs-rendering',
+    title: 'Rendering',
+    icon: '🖥️',
+    items: [
+      { slug: 'nextjs-server-components', title: 'Server Components' },
+      { slug: 'nextjs-client-components', title: 'Client Components' },
+      { slug: 'nextjs-ssr',               title: 'SSR' },
+      { slug: 'nextjs-ssg',               title: 'SSG' },
+      { slug: 'nextjs-isr',               title: 'ISR' },
+    ],
+  },
+  {
+    id: 'nextjs-data-fetching',
+    title: 'Data Fetching',
+    icon: '📡',
+    items: [
+      { slug: 'nextjs-fetch-api',            title: 'Fetch API & Caching' },
+      { slug: 'nextjs-server-data-fetching', title: 'Server Data Fetching' },
+      { slug: 'nextjs-client-data-fetching', title: 'Client Data Fetching' },
+      { slug: 'nextjs-revalidation',         title: 'Revalidation' },
+      { slug: 'nextjs-caching',              title: 'Caching Layers' },
+    ],
+  },
+  {
+    id: 'nextjs-routing',
+    title: 'Routing',
+    icon: '🗺️',
+    items: [
+      { slug: 'nextjs-dynamic-routes', title: 'Dynamic Routes' },
+      { slug: 'nextjs-nested-routes',  title: 'Nested Routes & Layouts' },
+      { slug: 'nextjs-route-groups',   title: 'Route Groups' },
+    ],
+  },
+  {
+    id: 'nextjs-api-layer',
+    title: 'API Layer',
+    icon: '⚙️',
+    items: [
+      { slug: 'nextjs-route-handlers', title: 'Route Handlers' },
+      { slug: 'nextjs-rest-apis',      title: 'REST APIs' },
+      { slug: 'nextjs-middleware',     title: 'Middleware' },
+      { slug: 'nextjs-authentication', title: 'Authentication' },
+    ],
+  },
+  {
+    id: 'nextjs-performance',
+    title: 'Performance',
+    icon: '⚡',
+    items: [
+      { slug: 'nextjs-image-optimization', title: 'Image Optimization' },
+      { slug: 'nextjs-lazy-loading',       title: 'Lazy Loading' },
+      { slug: 'nextjs-streaming',          title: 'Streaming & Suspense' },
+      { slug: 'nextjs-metadata-api',       title: 'Metadata API' },
+    ],
+  },
+  {
+    id: 'nextjs-deployment',
+    title: 'Deployment',
+    icon: '🚀',
+    items: [
+      { slug: 'nextjs-vercel-deployment',     title: 'Vercel' },
+      { slug: 'nextjs-environment-variables', title: 'Environment Variables' },
+      { slug: 'nextjs-cicd',                  title: 'CI/CD' },
+      { slug: 'nextjs-monitoring',            title: 'Monitoring' },
+    ],
+  },
+  {
+    id: 'nextjs-advanced',
+    title: 'Advanced',
+    icon: '🏗️',
+    items: [
+      { slug: 'nextjs-server-actions',          title: 'Server Actions' },
+      { slug: 'nextjs-edge-runtime',            title: 'Edge Runtime' },
+      { slug: 'nextjs-caching-strategies',      title: 'Caching Strategies' },
+      { slug: 'nextjs-enterprise-architecture', title: 'Enterprise Architecture' },
+    ],
+  },
+];
+
+const javaCategories: NavCategory[] = [
+  {
+    id: 'java-fundamentals',
+    title: 'Fundamentals',
+    icon: '☕',
+    items: [
+      { slug: 'java-architecture', title: 'Java Architecture' },
+      { slug: 'java-jvm',          title: 'JVM' },
+      { slug: 'java-jdk-jre',      title: 'JDK vs JRE' },
+      { slug: 'java-data-types',   title: 'Data Types' },
+      { slug: 'java-operators',    title: 'Operators' },
+    ],
+  },
+  {
+    id: 'java-oop',
+    title: 'OOP',
+    icon: '🏛️',
+    items: [
+      { slug: 'java-classes-objects', title: 'Classes & Objects' },
+      { slug: 'java-encapsulation',   title: 'Encapsulation' },
+      { slug: 'java-inheritance',     title: 'Inheritance' },
+      { slug: 'java-polymorphism',    title: 'Polymorphism' },
+      { slug: 'java-abstraction',     title: 'Abstraction' },
+    ],
+  },
+  {
+    id: 'java-collections',
+    title: 'Collections',
+    icon: '📦',
+    items: [
+      { slug: 'java-collections-list', title: 'List' },
+      { slug: 'java-collections-set',  title: 'Set' },
+      { slug: 'java-collections-map',  title: 'Map' },
+      { slug: 'java-arraylist',        title: 'ArrayList' },
+      { slug: 'java-linkedlist',       title: 'LinkedList' },
+      { slug: 'java-hashmap',          title: 'HashMap' },
+      { slug: 'java-hashset',          title: 'HashSet' },
+    ],
+  },
+  {
+    id: 'java-exceptions',
+    title: 'Exception Handling',
+    icon: '🚨',
+    items: [
+      { slug: 'java-exception-trycatch', title: 'Try Catch' },
+      { slug: 'java-exception-throws',   title: 'Throws' },
+      { slug: 'java-exception-custom',   title: 'Custom Exceptions' },
+    ],
+  },
+  {
+    id: 'java-java8',
+    title: 'Java 8+',
+    icon: '⚡',
+    items: [
+      { slug: 'java-lambda',                title: 'Lambda Expressions' },
+      { slug: 'java-functional-interfaces', title: 'Functional Interfaces' },
+      { slug: 'java-streams',               title: 'Streams API' },
+      { slug: 'java-optional',              title: 'Optional' },
+    ],
+  },
+  {
+    id: 'java-multithreading',
+    title: 'Multithreading',
+    icon: '🔄',
+    items: [
+      { slug: 'java-threads',            title: 'Threads' },
+      { slug: 'java-runnable',           title: 'Runnable' },
+      { slug: 'java-executor-framework', title: 'Executor Framework' },
+      { slug: 'java-synchronization',    title: 'Synchronization' },
+      { slug: 'java-completable-future', title: 'CompletableFuture' },
+    ],
+  },
+  {
+    id: 'java-memory',
+    title: 'Memory Management',
+    icon: '🧠',
+    items: [
+      { slug: 'java-heap-stack',         title: 'Heap & Stack' },
+      { slug: 'java-garbage-collection', title: 'Garbage Collection' },
+    ],
+  },
+  {
+    id: 'java-fileio',
+    title: 'File Handling',
+    icon: '📁',
+    items: [
+      { slug: 'java-file-api', title: 'File API' },
+      { slug: 'java-nio',      title: 'NIO' },
+    ],
+  },
+  {
+    id: 'java-advanced',
+    title: 'Advanced',
+    icon: '🚀',
+    items: [
+      { slug: 'java-generics',              title: 'Generics' },
+      { slug: 'java-comparable-comparator', title: 'Comparable vs Comparator' },
+      { slug: 'java-serialization',         title: 'Serialization' },
+      { slug: 'java-reflection',            title: 'Reflection' },
+    ],
+  },
+];
+
+const springCategories: NavCategory[] = [
+  {
+    id: 'spring-core',
+    title: 'Core',
+    icon: '🌱',
+    items: [
+      { slug: 'spring-introduction',      title: 'Spring Boot Introduction' },
+      { slug: 'spring-auto-configuration', title: 'Auto Configuration' },
+      { slug: 'spring-starters',          title: 'Starter Dependencies' },
+      { slug: 'spring-properties',        title: 'Application Properties' },
+    ],
+  },
+  {
+    id: 'spring-ioc',
+    title: 'IoC & DI',
+    icon: '🔗',
+    items: [
+      { slug: 'spring-ioc',            title: 'IoC Container' },
+      { slug: 'spring-di',             title: 'Dependency Injection' },
+      { slug: 'spring-bean-lifecycle', title: 'Bean Lifecycle' },
+      { slug: 'spring-bean-scopes',    title: 'Bean Scopes' },
+    ],
+  },
+  {
+    id: 'spring-rest',
+    title: 'REST APIs',
+    icon: '🌐',
+    items: [
+      { slug: 'spring-controllers',        title: 'Controllers' },
+      { slug: 'spring-request-mapping',    title: 'Request Mapping' },
+      { slug: 'spring-request-params',     title: 'Request Params' },
+      { slug: 'spring-path-variables',     title: 'Path Variables' },
+      { slug: 'spring-exception-handling', title: 'Exception Handling' },
+    ],
+  },
+  {
+    id: 'spring-data',
+    title: 'Data Layer',
+    icon: '🗄️',
+    items: [
+      { slug: 'spring-data-jpa',       title: 'Spring Data JPA' },
+      { slug: 'spring-entity-mapping', title: 'Entity Mapping' },
+      { slug: 'spring-repositories',   title: 'Repositories' },
+      { slug: 'spring-pagination',     title: 'Pagination' },
+      { slug: 'spring-auditing',       title: 'Auditing' },
+    ],
+  },
+  {
+    id: 'spring-database',
+    title: 'Database',
+    icon: '🐘',
+    items: [
+      { slug: 'spring-mysql',        title: 'MySQL Integration' },
+      { slug: 'spring-postgresql',   title: 'PostgreSQL Integration' },
+      { slug: 'spring-transactions', title: 'Transactions' },
+    ],
+  },
+  {
+    id: 'spring-security',
+    title: 'Security',
+    icon: '🔐',
+    items: [
+      { slug: 'spring-security',       title: 'Spring Security' },
+      { slug: 'spring-authentication', title: 'Authentication' },
+      { slug: 'spring-authorization',  title: 'Authorization' },
+      { slug: 'spring-jwt',            title: 'JWT' },
+    ],
+  },
+  {
+    id: 'spring-testing',
+    title: 'Testing',
+    icon: '🧪',
+    items: [
+      { slug: 'spring-unit-testing',        title: 'Unit Testing' },
+      { slug: 'spring-integration-testing', title: 'Integration Testing' },
+      { slug: 'spring-mockmvc',             title: 'MockMvc' },
+    ],
+  },
+  {
+    id: 'spring-microservices',
+    title: 'Microservices',
+    icon: '🔀',
+    items: [
+      { slug: 'spring-service-communication', title: 'Service Communication' },
+      { slug: 'spring-api-gateway',           title: 'API Gateway' },
+      { slug: 'spring-service-discovery',     title: 'Service Discovery' },
+      { slug: 'spring-config-server',         title: 'Config Server' },
+    ],
+  },
+  {
+    id: 'spring-production',
+    title: 'Production',
+    icon: '🚀',
+    items: [
+      { slug: 'spring-logging',            title: 'Logging' },
+      { slug: 'spring-profiles',           title: 'Profiles' },
+      { slug: 'spring-actuator',           title: 'Actuator' },
+      { slug: 'spring-monitoring',         title: 'Monitoring' },
+      { slug: 'spring-performance-tuning', title: 'Performance Tuning' },
+    ],
+  },
+];
+
+const awsCategories: NavCategory[] = [
+  {
+    id: 'aws-fundamentals',
+    title: 'AWS Fundamentals',
+    icon: 'AWS',
+    items: [
+      { slug: 'aws-overview', title: 'AWS Overview' },
+      { slug: 'aws-global-infrastructure', title: 'Global Infrastructure' },
+      { slug: 'aws-regions-availability-zones', title: 'Regions & Availability Zones' },
+      { slug: 'aws-shared-responsibility-model', title: 'Shared Responsibility Model' },
+    ],
+  },
+  {
+    id: 'aws-compute',
+    title: 'Compute',
+    icon: 'CPU',
+    items: [
+      { slug: 'aws-ec2', title: 'EC2' },
+      { slug: 'aws-auto-scaling', title: 'Auto Scaling' },
+      { slug: 'aws-load-balancer', title: 'Load Balancer' },
+    ],
+  },
+  {
+    id: 'aws-storage',
+    title: 'Storage',
+    icon: 'S3',
+    items: [
+      { slug: 'aws-s3', title: 'S3' },
+      { slug: 'aws-ebs', title: 'EBS' },
+      { slug: 'aws-efs', title: 'EFS' },
+    ],
+  },
+  {
+    id: 'aws-security',
+    title: 'Security',
+    icon: 'SEC',
+    items: [
+      { slug: 'aws-iam', title: 'IAM' },
+      { slug: 'aws-roles', title: 'Roles' },
+      { slug: 'aws-policies', title: 'Policies' },
+      { slug: 'aws-mfa', title: 'MFA' },
+    ],
+  },
+  {
+    id: 'aws-networking',
+    title: 'Networking',
+    icon: 'NET',
+    items: [
+      { slug: 'aws-vpc', title: 'VPC' },
+      { slug: 'aws-subnets', title: 'Subnets' },
+      { slug: 'aws-security-groups', title: 'Security Groups' },
+      { slug: 'aws-route-tables', title: 'Route Tables' },
+      { slug: 'aws-nat-gateway', title: 'NAT Gateway' },
+    ],
+  },
+  {
+    id: 'aws-serverless',
+    title: 'Serverless',
+    icon: 'Fn',
+    items: [
+      { slug: 'aws-lambda', title: 'Lambda' },
+      { slug: 'aws-api-gateway', title: 'API Gateway' },
+      { slug: 'aws-eventbridge', title: 'EventBridge' },
+    ],
+  },
+  {
+    id: 'aws-database',
+    title: 'Database',
+    icon: 'DB',
+    items: [
+      { slug: 'aws-rds', title: 'RDS' },
+      { slug: 'aws-dynamodb', title: 'DynamoDB' },
+    ],
+  },
+  {
+    id: 'aws-monitoring',
+    title: 'Monitoring',
+    icon: 'MON',
+    items: [
+      { slug: 'aws-cloudwatch', title: 'CloudWatch' },
+      { slug: 'aws-cloudtrail', title: 'CloudTrail' },
+    ],
+  },
+  {
+    id: 'aws-devops-iac',
+    title: 'DevOps & IaC',
+    icon: 'IaC',
+    items: [
+      { slug: 'aws-codepipeline', title: 'CodePipeline' },
+      { slug: 'aws-codebuild', title: 'CodeBuild' },
+      { slug: 'aws-codedeploy', title: 'CodeDeploy' },
+      { slug: 'aws-cloudformation', title: 'CloudFormation' },
+    ],
+  },
+  {
+    id: 'aws-architecture',
+    title: 'Architecture',
+    icon: 'ARC',
+    items: [
+      { slug: 'aws-high-availability', title: 'High Availability' },
+      { slug: 'aws-scalability', title: 'Scalability' },
+      { slug: 'aws-disaster-recovery', title: 'Disaster Recovery' },
+      { slug: 'aws-cost-optimization', title: 'Cost Optimization' },
+    ],
+  },
+];
+
+const dockerCategories: NavCategory[] = [
+  {
+    id: 'docker-fundamentals',
+    title: 'Fundamentals',
+    icon: '🐳',
+    items: [
+      { slug: 'docker-overview', title: 'Docker Overview' },
+      { slug: 'docker-containers-vs-virtual-machines', title: 'Containers vs Virtual Machines' },
+      { slug: 'docker-architecture', title: 'Docker Architecture' },
+    ],
+  },
+  {
+    id: 'docker-images-builds',
+    title: 'Images & Builds',
+    icon: '📦',
+    items: [
+      { slug: 'docker-images', title: 'Docker Images' },
+      { slug: 'docker-hub', title: 'Docker Hub' },
+      { slug: 'docker-dockerfile', title: 'Dockerfile' },
+      { slug: 'docker-multi-stage-builds', title: 'Multi-Stage Builds' },
+    ],
+  },
+  {
+    id: 'docker-runtime',
+    title: 'Runtime',
+    icon: '⚙️',
+    items: [
+      { slug: 'docker-container-lifecycle', title: 'Container Lifecycle' },
+      { slug: 'docker-volumes', title: 'Volumes' },
+      { slug: 'docker-networking', title: 'Networking' },
+    ],
+  },
+  {
+    id: 'docker-delivery',
+    title: 'Delivery & Operations',
+    icon: '🚀',
+    items: [
+      { slug: 'docker-compose', title: 'Docker Compose' },
+      { slug: 'docker-security', title: 'Security' },
+      { slug: 'docker-cicd-integration', title: 'CI/CD Integration' },
+      { slug: 'docker-enterprise-deployment-patterns', title: 'Enterprise Deployment Patterns' },
+    ],
+  },
+];
+
+const k8sCategories: NavCategory[] = [
+  {
+    id: 'k8s-fundamentals',
+    title: 'Kubernetes Fundamentals',
+    icon: 'K8s',
+    items: [
+      { slug: 'kubernetes-overview', title: 'Kubernetes Overview' },
+      { slug: 'kubernetes-cluster-architecture', title: 'Cluster Architecture' },
+      { slug: 'kubernetes-control-plane', title: 'Control Plane' },
+      { slug: 'kubernetes-worker-nodes', title: 'Worker Nodes' },
+    ],
+  },
+  {
+    id: 'k8s-core-objects',
+    title: 'Core Objects',
+    icon: 'OBJ',
+    items: [
+      { slug: 'kubernetes-pods', title: 'Pods' },
+      { slug: 'kubernetes-replicasets', title: 'ReplicaSets' },
+      { slug: 'kubernetes-deployments', title: 'Deployments' },
+      { slug: 'kubernetes-namespaces', title: 'Namespaces' },
+    ],
+  },
+  {
+    id: 'k8s-networking',
+    title: 'Networking',
+    icon: 'NET',
+    items: [
+      { slug: 'kubernetes-services', title: 'Services' },
+      { slug: 'kubernetes-ingress', title: 'Ingress' },
+      { slug: 'kubernetes-dns', title: 'DNS' },
+      { slug: 'kubernetes-network-policies', title: 'Network Policies' },
+    ],
+  },
+  {
+    id: 'k8s-configuration',
+    title: 'Configuration',
+    icon: 'CFG',
+    items: [
+      { slug: 'kubernetes-configmaps', title: 'ConfigMaps' },
+      { slug: 'kubernetes-secrets', title: 'Secrets' },
+    ],
+  },
+  {
+    id: 'k8s-storage',
+    title: 'Storage',
+    icon: 'PV',
+    items: [
+      { slug: 'kubernetes-persistent-volumes', title: 'Persistent Volumes' },
+      { slug: 'kubernetes-persistent-volume-claims', title: 'Persistent Volume Claims' },
+      { slug: 'kubernetes-storage-classes', title: 'Storage Classes' },
+    ],
+  },
+  {
+    id: 'k8s-scaling',
+    title: 'Scaling',
+    icon: 'SCL',
+    items: [
+      { slug: 'kubernetes-horizontal-pod-autoscaler', title: 'Horizontal Pod Autoscaler' },
+      { slug: 'kubernetes-cluster-autoscaler', title: 'Cluster Autoscaler' },
+    ],
+  },
+  {
+    id: 'k8s-workloads',
+    title: 'Workloads',
+    icon: 'WRK',
+    items: [
+      { slug: 'kubernetes-jobs', title: 'Jobs' },
+      { slug: 'kubernetes-cronjobs', title: 'CronJobs' },
+      { slug: 'kubernetes-statefulsets', title: 'StatefulSets' },
+      { slug: 'kubernetes-daemonsets', title: 'DaemonSets' },
+    ],
+  },
+  {
+    id: 'k8s-security',
+    title: 'Security',
+    icon: 'SEC',
+    items: [
+      { slug: 'kubernetes-rbac', title: 'RBAC' },
+      { slug: 'kubernetes-service-accounts', title: 'Service Accounts' },
+      { slug: 'kubernetes-pod-security', title: 'Pod Security' },
+    ],
+  },
+  {
+    id: 'k8s-monitoring-logging',
+    title: 'Monitoring & Logging',
+    icon: 'MON',
+    items: [
+      { slug: 'kubernetes-metrics-server', title: 'Metrics Server' },
+      { slug: 'kubernetes-monitoring-prometheus', title: 'Prometheus' },
+      { slug: 'kubernetes-grafana', title: 'Grafana' },
+    ],
+  },
+  {
+    id: 'k8s-production',
+    title: 'Production',
+    icon: 'PRD',
+    items: [
+      { slug: 'kubernetes-rolling-updates', title: 'Rolling Updates' },
+      { slug: 'kubernetes-rollbacks', title: 'Rollbacks' },
+      { slug: 'kubernetes-high-availability', title: 'High Availability' },
+      { slug: 'kubernetes-disaster-recovery', title: 'Disaster Recovery' },
+      { slug: 'kubernetes-best-practices', title: 'Kubernetes Best Practices' },
+    ],
+  },
+];
+
+const azureCategories: NavCategory[] = [
+  { id: 'azure-compute', title: 'Compute', icon: '🔷', items: [] },
+  { id: 'azure-storage', title: 'Storage', icon: '💾', items: [] },
+];
+
+const aiCategories: NavCategory[] = [
+  { id: 'ai-fundamentals', title: 'Fundamentals', icon: '🧠', items: [] },
+  { id: 'ai-prompting', title: 'Prompt Engineering', icon: '✍️', items: [] },
+  { id: 'ai-rag', title: 'RAG & Agents', icon: '🤖', items: [] },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Master technology registry
+// ─────────────────────────────────────────────────────────────────────────────
+export const technologies: TechSection[] = [
+  {
+    id: 'aem',
+    label: 'AEM',
+    icon: '🏗️',
+    color: '#e8520a',
+    description: 'Adobe Experience Manager — components, Sling Models, HTL, Dispatcher, Cloud Service, and more.',
+    topicCount: 18,
+    active: true,
+    categories: aemCategories,
+  },
+  {
+    id: 'react',
+    label: 'React',
+    icon: '⚛️',
+    color: '#61dafb',
+    description: 'Modern React from hooks to advanced patterns — useState, useEffect, Context, performance, forms, and architecture.',
+    topicCount: 27,
+    active: true,
+    categories: reactCategories,
+  },
+  {
+    id: 'nextjs',
+    label: 'Next.js',
+    icon: '▲',
+    color: '#ffffff',
+    description: 'Full-stack React with the App Router — Server Components, SSR, SSG, ISR, Route Handlers, middleware, and enterprise architecture.',
+    topicCount: 31,
+    active: true,
+    categories: nextjsCategories,
+  },
+  {
+    id: 'java',
+    label: 'Core Java',
+    icon: '☕',
+    color: '#f89820',
+    description: 'Java fundamentals, OOP, Collections, Streams, Concurrency, and JVM internals — taught like a senior backend engineer.',
+    topicCount: 35,
+    active: true,
+    categories: javaCategories,
+  },
+  {
+    id: 'springboot',
+    label: 'Spring Boot',
+    icon: '🌱',
+    color: '#6db33f',
+    description: 'Spring Boot from dependency injection to REST APIs, JPA, Security, microservices, and production — taught like a senior backend architect.',
+    topicCount: 38,
+    active: true,
+    categories: springCategories,
+  },
+  {
+    id: 'aws',
+    label: 'AWS',
+    icon: '☁️',
+    color: '#ff9900',
+    description: 'Amazon Web Services — EC2, S3, Lambda, RDS, IAM, VPC, and cloud architecture patterns.',
+    topicCount: 34,
+    active: true,
+    categories: awsCategories,
+  },
+  {
+    id: 'docker',
+    label: 'Docker',
+    icon: '🐳',
+    color: '#2496ed',
+    description: 'Containerisation from Dockerfiles to multi-container apps with Docker Compose.',
+    topicCount: 14,
+    active: true,
+    categories: dockerCategories,
+  },
+  {
+    id: 'kubernetes',
+    label: 'Kubernetes',
+    icon: '☸️',
+    color: '#326ce5',
+    description: 'Container orchestration at scale — Pods, Services, Deployments, Ingress, and Helm.',
+    topicCount: 34,
+    active: true,
+    categories: k8sCategories,
+  },
+  {
+    id: 'azure',
+    label: 'Azure',
+    icon: '🔷',
+    color: '#0078d4',
+    description: "Microsoft's cloud platform — VMs, Storage, App Service, Azure DevOps, and Identity.",
+    topicCount: 0,
+    active: false,
+    categories: azureCategories,
+  },
+  {
+    id: 'ai',
+    label: 'AI & LLMs',
+    icon: '🧠',
+    color: '#a855f7',
+    description: 'Prompt Engineering, RAG, MCP, AI Agents, Vector Databases, and LLM integration patterns.',
+    topicCount: 0,
+    active: false,
+    categories: aiCategories,
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper utilities
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Flat list of NavCategories for the currently active technology (AEM) */
+export const navigation: NavCategory[] = technologies
+  .filter((t) => t.active)
+  .flatMap((t) => t.categories);
+
+/** All categories across all technologies */
+export const allCategories: NavCategory[] = technologies.flatMap((t) => t.categories);
+
+export function getTechById(id: string): TechSection | undefined {
+  return technologies.find((t) => t.id === id);
+}
+
+/** Find which technology owns a given topic slug */
+export function getTechForSlug(slug: string): TechSection | undefined {
+  return technologies.find((t) =>
+    t.categories.some((cat) => cat.items.some((i) => i.slug === slug))
+  );
+}
+
+/** Find which category owns a given topic slug */
+export function getCategoryForSlug(slug: string): NavCategory | undefined {
+  return allCategories.find((cat) => cat.items.some((i) => i.slug === slug));
+}
+
+export function getTopicTitle(slug: string): string {
+  for (const cat of allCategories) {
+    const item = cat.items.find((i) => i.slug === slug);
+    if (item) return item.title;
+  }
+  return slug;
+}
+
+/** Sibling topics in the same category (for Related Topics) */
+export function getRelatedSlugs(slug: string): NavItem[] {
+  const cat = getCategoryForSlug(slug);
+  if (!cat) return [];
+  return cat.items.filter((i) => i.slug !== slug && !i.badge).slice(0, 5);
+}
+
+export function getAllSlugs(): string[] {
+  return allCategories.flatMap((cat) => cat.items.map((item) => item.slug));
+}
+
+/** Total topic count for a technology */
+export function getTechTopicCount(techId: string): number {
+  const tech = getTechById(techId);
+  if (!tech) return 0;
+  return tech.categories.reduce(
+    (sum, cat) => sum + cat.items.filter((i) => !i.badge).length,
+    0
+  );
+}

@@ -1,0 +1,83 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+const SITE_NAME = 'SplashRide';
+const DEFAULT_TITLE = 'SplashRide | Developer Learning Paths, Tutorials and Interview Prep';
+const DEFAULT_DESCRIPTION =
+  'Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker and Kubernetes with project-focused tutorials, examples and interview-ready explanations.';
+const DEFAULT_IMAGE = '/splashride-logo.png';
+
+interface SEOProps {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article';
+  image?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+function absoluteUrl(path: string) {
+  if (/^https?:\/\//.test(path)) return path;
+  const origin = typeof window !== 'undefined' ? window.location.origin : '';
+  return `${origin}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
+function setMeta(selector: string, attribute: 'name' | 'property', key: string, content: string) {
+  let element = document.head.querySelector<HTMLMetaElement>(selector);
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(attribute, key);
+    document.head.appendChild(element);
+  }
+  element.content = content;
+}
+
+function setLink(rel: string, href: string) {
+  let element = document.head.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+  if (!element) {
+    element = document.createElement('link');
+    element.rel = rel;
+    document.head.appendChild(element);
+  }
+  element.href = href;
+}
+
+export default function SEO({
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  type = 'website',
+  image = DEFAULT_IMAGE,
+  structuredData,
+}: SEOProps) {
+  const location = useLocation();
+
+  useEffect(() => {
+    const canonical = absoluteUrl(location.pathname);
+    const imageUrl = absoluteUrl(image);
+
+    document.title = title;
+    setMeta('meta[name="description"]', 'name', 'description', description);
+    setMeta('meta[name="robots"]', 'name', 'robots', 'index, follow');
+    setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', SITE_NAME);
+    setMeta('meta[property="og:title"]', 'property', 'og:title', title);
+    setMeta('meta[property="og:description"]', 'property', 'og:description', description);
+    setMeta('meta[property="og:type"]', 'property', 'og:type', type);
+    setMeta('meta[property="og:url"]', 'property', 'og:url', canonical);
+    setMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl);
+    setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
+    setLink('canonical', canonical);
+
+    document.querySelectorAll('script[data-splashride-seo="true"]').forEach((node) => node.remove());
+    if (structuredData) {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.dataset.splashrideSeo = 'true';
+      script.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(script);
+    }
+  }, [description, image, location.pathname, structuredData, title, type]);
+
+  return null;
+}

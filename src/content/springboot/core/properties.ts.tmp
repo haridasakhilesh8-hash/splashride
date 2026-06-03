@@ -1,0 +1,278 @@
+import type { TopicContent } from '../../types';
+
+export const springProperties: TopicContent = {
+  slug: 'spring-properties',
+  title: 'Application Properties',
+  description: 'Master Spring Boot configuration — application.properties, application.yml, profiles, @ConfigurationProperties, and externalized configuration for production deployments.',
+  applicableVersions: ['Spring Boot 2.7', 'Spring Boot 3.x'],
+  lastReviewed: 'January 2025',
+  quickUnderstanding: 'Spring Boot reads configuration from application.properties (or application.yml) in src/main/resources. Properties control everything — server port, database URL, logging levels, and your own custom settings. For production, you externalize sensitive values via environment variables or a config server — never hardcode secrets.',
+  whatIsIt: `Spring Boot\'s externalized configuration system lets you configure your application without changing code.
+
+**Configuration sources (in priority order, highest first):**
+1. Command-line arguments (\`--server.port=9090\`)
+2. \`SPRING_APPLICATION_JSON\` environment variable
+3. OS environment variables (\`SERVER_PORT=9090\`)
+4. \`application-{profile}.properties\` (profile-specific)
+5. \`application.properties\` / \`application.yml\`
+6. \`@PropertySource\` annotations
+7. Default values in code
+
+**Configuration formats:**
+- \`application.properties\` — key=value pairs (simpler)
+- \`application.yml\` — YAML (hierarchical, less repetition)
+
+**Binding approaches:**
+- \`@Value("\${property.name}")\` — inject single value
+- \`@ConfigurationProperties(prefix="app")\` — bind a group of properties to a class (preferred)`,
+  whyWeNeedIt: `Without externalized configuration:
+- Database URLs would be hardcoded in source code
+- The same JAR couldn\'t run in dev, staging, and production
+- Changing a port would require recompilation
+- Secrets would be committed to Git
+
+With Spring Boot\'s config system:
+- One JAR runs in all environments — only config changes
+- Secrets come from environment variables or Vault at runtime
+- Profiles activate environment-specific config automatically
+- Teams can change behavior without touching code`,
+  realWorldUsage: `In production microservices:
+- \`application.properties\` contains non-sensitive defaults
+- \`application-prod.properties\` overrides for production
+- Database passwords come from environment variables (Kubernetes Secrets)
+- Feature flags come from a Config Server (Spring Cloud Config)
+- Logging levels changed at runtime via Actuator without restart
+
+\`\`\`
+src/main/resources/
+  application.properties          ← defaults, safe to commit
+  application-dev.properties      ← dev overrides
+  application-staging.properties  ← staging overrides
+  application-prod.properties     ← prod overrides (no secrets)
+\`\`\``,
+  howItWorks: `**Property relaxed binding:**
+Spring Boot normalizes property names — these are all equivalent:
+- \`spring.datasource.url\` (properties)
+- \`spring.datasource.url\` (YAML)
+- \`SPRING_DATASOURCE_URL\` (env var)
+- \`spring.datasource.url\` (command line)
+
+**@ConfigurationProperties binding:**
+Spring reads all properties with the given prefix and binds them to the class fields using relaxed binding. Supports nested objects, lists, and maps. Much safer than @Value — validates at startup, not at runtime.`,
+  example: {
+    title: 'Configuration in Practice',
+    description: 'From simple properties to type-safe configuration classes.',
+    code: [
+      {
+        label: 'application.yml',
+        language: 'yaml',
+        code: `spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orders
+    username: postgres
+    password: \${DB_PASSWORD}  # from environment variable
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8080
+  shutdown: graceful
+  tomcat:
+    threads:
+      max: 200
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Custom application properties
+app:
+  jwt:
+    secret: \${JWT_SECRET}
+    expiration-ms: 86400000
+  cors:
+    allowed-origins:
+      - https://app.company.com
+      - https://admin.company.com
+  features:
+    new-checkout: false
+    beta-dashboard: true`,
+      },
+      {
+        label: '@ConfigurationProperties',
+        language: 'java',
+        code: `// Type-safe configuration class — preferred over @Value
+@ConfigurationProperties(prefix = "app")
+@Validated  // Validates at startup, not at runtime
+public class AppProperties {
+
+    private final Jwt jwt = new Jwt();
+    private final Cors cors = new Cors();
+    private final Features features = new Features();
+
+    // Getters required for binding
+    public Jwt getJwt() { return jwt; }
+    public Cors getCors() { return cors; }
+    public Features getFeatures() { return features; }
+
+    public static class Jwt {
+        @NotBlank
+        private String secret;
+
+        @Positive
+        private long expirationMs = 86400000L;
+
+        // getters and setters
+        public String getSecret() { return secret; }
+        public void setSecret(String secret) { this.secret = secret; }
+        public long getExpirationMs() { return expirationMs; }
+        public void setExpirationMs(long expirationMs) { this.expirationMs = expirationMs; }
+    }
+
+    public static class Cors {
+        private List<String> allowedOrigins = List.of();
+        public List<String> getAllowedOrigins() { return allowedOrigins; }
+        public void setAllowedOrigins(List<String> allowedOrigins) { this.allowedOrigins = allowedOrigins; }
+    }
+
+    public static class Features {
+        private boolean newCheckout = false;
+        private boolean betaDashboard = false;
+        // getters and setters
+        public boolean isNewCheckout() { return newCheckout; }
+        public void setNewCheckout(boolean newCheckout) { this.newCheckout = newCheckout; }
+        public boolean isBetaDashboard() { return betaDashboard; }
+        public void setBetaDashboard(boolean betaDashboard) { this.betaDashboard = betaDashboard; }
+    }
+}
+
+// Enable in @SpringBootApplication or @Configuration:
+@EnableConfigurationProperties(AppProperties.class)
+
+// Usage:
+@Service
+public class JwtService {
+    private final AppProperties.Jwt jwtConfig;
+
+    public JwtService(AppProperties appProperties) {
+        this.jwtConfig = appProperties.getJwt();
+    }
+
+    public String generateToken(UserDetails user) {
+        return Jwts.builder()
+            .setExpiration(new Date(System.currentTimeMillis() + jwtConfig.getExpirationMs()))
+            .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes()))
+            .compact();
+    }
+}`,
+      },
+      {
+        label: 'Profile-specific Configuration',
+        language: 'yaml',
+        code: `# application-dev.yml
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    com.company: DEBUG
+    org.hibernate.SQL: DEBUG
+
+---
+# application-prod.yml
+spring:
+  datasource:
+    url: jdbc:postgresql://\${DB_HOST}:5432/\${DB_NAME}
+    username: \${DB_USERNAME}
+    password: \${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    root: WARN
+    com.company: INFO`,
+      },
+    ],
+  },
+  commonConfusions: [
+    {
+      question: '@Value vs @ConfigurationProperties — which should I use?',
+      answer: '@ConfigurationProperties is strongly preferred for anything beyond a single property. It provides type safety, validation at startup, IDE autocompletion (with spring-boot-configuration-processor), and groups related config together. Use @Value only for simple one-off injections or SpEL expressions.',
+    },
+    {
+      question: 'How do environment variables override properties?',
+      answer: 'Spring Boot uses relaxed binding — SPRING_DATASOURCE_URL (env var) maps to spring.datasource.url (property). Environment variables take higher priority than application.properties. In Kubernetes, inject secrets as env vars and they override the defaults in your properties file.',
+    },
+    {
+      question: 'application.properties vs application.yml — which is better?',
+      answer: 'YAML is preferred for complex configurations — it\'s hierarchical and eliminates repetition (spring.datasource.url, spring.datasource.username becomes nested under spring.datasource). Properties files are simpler for flat configs. Pick one and be consistent. YAML requires careful indentation — use 2 spaces, never tabs.',
+    },
+  ],
+  productionIssues: [
+    'Secrets in application.properties committed to Git — use environment variables or Spring Cloud Vault',
+    'Wrong profile active in production — verify with /actuator/env endpoint',
+    '@ConfigurationProperties fields not binding — ensure setters exist (or use @ConstructorBinding for immutable config)',
+    'Property placeholder \${VAR} not resolved — missing environment variable causes startup failure',
+    'YAML indentation errors cause silent misconfiguration — validate YAML syntax in CI pipeline',
+  ],
+  bestPractices: [
+    'Use @ConfigurationProperties over @Value for groups of related properties',
+    'Add @Validated to @ConfigurationProperties classes to catch missing/invalid config at startup',
+    'Never put secrets in application.properties — use environment variables or a secrets manager',
+    'Use spring-boot-configuration-processor for IDE autocompletion of custom properties',
+    'Document all custom properties with spring-configuration-metadata.json',
+    'Use spring.config.import to pull config from external sources (Config Server, Vault)',
+  ],
+  architectNote: `For microservices at scale, use Spring Cloud Config Server — a centralized configuration service where all microservices pull their config at startup. This enables config changes without redeployment. Pair it with Spring Cloud Bus (backed by Kafka or RabbitMQ) to push config changes to running instances without restart. In Kubernetes environments, use ConfigMaps for non-sensitive config and Secrets (mounted as env vars) for sensitive values.`,
+  faqs: [
+    {
+      question: 'How do I activate a profile?',
+      answer: 'Several ways: (1) spring.profiles.active=prod in application.properties, (2) --spring.profiles.active=prod command-line arg, (3) SPRING_PROFILES_ACTIVE=prod environment variable, (4) @ActiveProfiles in tests. In production, use environment variables — never hardcode the active profile.',
+    },
+    {
+      question: 'Can I have multiple active profiles at once?',
+      answer: 'Yes. spring.profiles.active=prod,feature-x activates both profiles. Properties from both are merged, with later profiles taking precedence for conflicts. This is useful for feature flags or environment + feature combinations.',
+    },
+    {
+      question: 'What is spring.config.import?',
+      answer: 'Introduced in Spring Boot 2.4, it lets you import configuration from additional sources: spring.config.import=optional:configserver:http://config-server:8888, file:/etc/app/config.yml, or classpath:extra.properties. The optional: prefix means the app starts even if the source is unavailable.',
+    },
+  ],
+  keyTakeaways: [
+    'Configuration sources have a priority order — environment variables override application.properties',
+    '@ConfigurationProperties is preferred over @Value for type-safe, validated configuration',
+    'Profiles enable environment-specific config — activate with SPRING_PROFILES_ACTIVE env var',
+    'Never commit secrets to properties files — use environment variables or a secrets manager',
+    'YAML is hierarchical and reduces repetition compared to .properties format',
+    'spring-boot-configuration-processor enables IDE autocompletion for custom properties',
+  ],
+  relatedTopics: ['spring-introduction', 'spring-auto-configuration', 'spring-profiles', 'spring-ioc'],
+};

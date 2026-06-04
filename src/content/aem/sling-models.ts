@@ -219,6 +219,9 @@ public class NewsCardModelTest {
     'Model works in Author but fails in Publish — an OSGi service that exists on Author isn\'t configured on Publish (e.g., a service that calls an internal Author API).',
     'Sling Model not found — the resourceType in @Model doesn\'t match the component\'s sling:resourceType, or the package isn\'t in the bundle\'s scan path.',
     'Circular injection — Model A injects Model B which injects Model A. AEM will throw a StackOverflowError.',
+    'Slow page rendering — a Sling Model calls an external API, QueryBuilder, or deep JCR traversal during every request. Move expensive work to a service with caching or precomputed content.',
+    'Intermittent data leakage — request-specific values are stored in static fields or singleton OSGi services instead of request-scoped model state.',
+    'Exporter JSON changes break a front-end app — a getter was renamed or removed without versioning the contract.',
   ],
   bestPractices: [
     'Always use DefaultInjectionStrategy.OPTIONAL — it prevents the entire model from failing when one optional field is missing.',
@@ -228,6 +231,9 @@ public class NewsCardModelTest {
     'Use the resourceType attribute in @Model to bind the model to a specific component, enabling automatic adaptation.',
     'Prefer @OSGiService over manual service lookup — it\'s cleaner and testable.',
     'Return empty collections (Collections.emptyList()) instead of null from list getters.',
+    'Keep external calls out of @PostConstruct unless they are fast, cached, timeout-protected, and truly required for rendering.',
+    'Treat Sling Model Exporter output as an API contract; add tests around JSON shape for headless or SPA consumers.',
+    'Use constructor or @PostConstruct validation to fail gracefully with author-friendly fallback output instead of blank components.',
   ],
   architectNote: `Sling Models are the **single most important Java pattern** in AEM development. Get this right and everything else becomes easier.
 

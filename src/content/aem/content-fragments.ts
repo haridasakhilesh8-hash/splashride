@@ -227,6 +227,9 @@ query GetArticlesByCategory {
     'Fragment editor shows wrong fields — the model was updated but existing fragments weren\'t migrated. Fragments store data based on the model at creation time.',
     'Performance issues with large fragment lists — GraphQL queries without proper pagination can return thousands of results. Always use limit and offset in queries.',
     'Fragment references broken after DAM reorganization — moving fragments in the DAM breaks references. Use Find & Replace References before moving.',
+    'Published page shows incomplete fragment data — referenced fragments, referenced assets, or the Content Fragment Model itself were not published with the parent fragment.',
+    'Model change breaks a headless app — field names or data types changed without coordinating API consumers and persisted queries.',
+    'Authoring becomes confusing — models contain too many optional fields, unclear labels, or channel-specific fields that should have been variations or separate models.',
   ],
   bestPractices: [
     'Design your Content Fragment Models carefully upfront — changing models after content is created is painful.',
@@ -235,6 +238,9 @@ query GetArticlesByCategory {
     'Enable versioning for Content Fragments in production so you can roll back content changes.',
     'Use variations for channel-specific content (web, mobile, social) rather than creating separate fragments.',
     'For headless delivery, always use persisted queries instead of ad-hoc GraphQL queries — they\'re faster and cacheable.',
+    'Govern Content Fragment Models like API schemas: review field names, required fields, references, and backward compatibility before changes.',
+    'Use DAM folder permissions and clear naming conventions so authors do not mix fragments, media assets, and archived content.',
+    'Include fragments, models, persisted queries, and referenced media in release and publishing checklists.',
   ],
   architectNote: `Content Fragments are the **foundation of modern AEM architecture**. If you're building a new AEM project in 2024, your content model should be designed around fragments.
 

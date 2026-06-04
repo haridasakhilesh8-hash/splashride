@@ -167,6 +167,9 @@ public class HeroModel {
     'Authors cannot see the component in the Component Picker — componentGroup is wrong or the template\'s allowed components policy doesn\'t include your component.',
     'Edits in dialog don\'t save — the name attribute in dialog XML doesn\'t match what the Sling Model reads, or the property path is missing the "./" prefix.',
     'Component works in Author but breaks in Publish — often a missing ClientLib category or a Sling Model that calls an OSGi service not available on publish.',
+    'Component output is cached incorrectly — the component renders user-specific or time-sensitive data inside a cacheable page. Move dynamic data client-side or mark the containing response as non-cacheable.',
+    'Component breaks after Core Component upgrade — custom overlay copied too much from /libs instead of using resourceSuperType delegation.',
+    'Headless JSON output is missing fields — Sling Model Exporter getters or Content Fragment references were not designed as a stable API contract.',
   ],
   bestPractices: [
     'Always use Core Components as a base when possible — they handle accessibility, responsive images, and author experience out of the box.',
@@ -175,6 +178,9 @@ public class HeroModel {
     'Name your component clearly and use a meaningful componentGroup so authors can find it easily.',
     'Never put business logic in HTL — use Sling Models for any computation, formatting, or conditional logic.',
     'Write unit tests for Sling Models using AemContext from wcm.io testing.',
+    'Design dialogs with author validation, sensible defaults, and help text for fields that affect compliance, personalization, or analytics.',
+    'Review component cache behavior before go-live; most component bugs at scale are really caching or invalidation bugs.',
+    'Prefer delegation to Core Components over overlays so Adobe updates remain easier to adopt in AEM as a Cloud Service.',
   ],
   architectNote: `In large enterprise projects, components follow a strict hierarchy:
 

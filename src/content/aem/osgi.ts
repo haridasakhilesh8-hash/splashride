@@ -255,6 +255,9 @@ public class ContactFormModel {
     'Configuration not loading — OSGi config file name must exactly match the PID (class name). One character difference means it won\'t load.',
     'NullPointerException in @Activate — configuration value is null. Always provide defaults in the @ObjectClassDefinition.',
     'Service works on Author but not Publish — the bundle is deployed to Author but not Publish, or the config in config.publish/ is wrong.',
+    'Cloud Service config works in Dev but not Stage/Prod — a Cloud Manager variable or secret is missing, scoped to the wrong service, or named differently than the OSGi placeholder.',
+    'Thread-safety issue under load — an OSGi service stores request-specific mutable state in fields. Services are shared and must be treated as singleton components.',
+    'External integration causes slow pages — service has no timeout, retry limit, or fallback behavior for downstream API failures.',
   ],
   bestPractices: [
     'Always define a service interface separate from the implementation — it makes testing and swapping implementations easy.',
@@ -263,6 +266,9 @@ public class ContactFormModel {
     'Use SLF4J Logger (not System.out) for all logging in OSGi services.',
     'Keep services focused on one responsibility — don\'t create a "GodService" that does everything.',
     'Use @Reference(cardinality = ReferenceCardinality.OPTIONAL) for optional service dependencies.',
+    'Keep OSGi services stateless or protect shared state with clear concurrency rules.',
+    'In AEM as a Cloud Service, keep stable non-secret values in JSON configs and use Cloud Manager secrets only for sensitive values.',
+    'Add health-check style logging for critical integrations so support teams can quickly distinguish config issues from downstream outages.',
   ],
   architectNote: `OSGi is the **backbone of AEM's extensibility**. Understanding it deeply separates senior AEM developers from junior ones.
 
@@ -271,7 +277,7 @@ public class ContactFormModel {
 - Keep services **stateless** when possible — state in services causes threading issues
 - Use OSGi configuration for **environment-specific values** (API keys, endpoints, feature flags)
 
-**For AEM as a Cloud Service:** OSGi configuration is managed differently. Instead of JCR-based configs, you use environment variables in Cloud Manager. The configuration structure changes but the concepts remain the same.
+**For AEM as a Cloud Service:** OSGi configuration is deployed as code using JSON configs. Cloud Manager environment variables and secrets are used for values that cannot or should not be committed to Git, especially secrets and values that differ by environment.
 
 **Testing OSGi Services:** Use the AemContext from wcm.io testing to register mock services. This is critical — services that call external APIs must be testable without hitting real APIs.`,
   faqs: [

@@ -209,6 +209,9 @@ In the Template Editor, you configure each container's allowed components. This 
     'Template changes not reflecting on existing pages — existing pages inherit the template structure, but some changes may require the page to be "refreshed" or republished.',
     'Policy changes affecting too many templates — policies are shared across templates. Changing a shared policy affects all templates using it. Create template-specific policies to avoid this.',
     'Template locked components appearing editable — the lock configuration on the component in the Structure layer is not set correctly.',
+    'Authors lose access to expected components — a shared policy was tightened without checking every template and authoring group that depends on it.',
+    'Template works in lower environment but not production — /conf template, policy, template type, or page component content is missing from the deployment or publication path.',
+    'Unexpected design drift — too many editable style options were exposed in policies, letting authors create off-brand page variants.',
   ],
   bestPractices: [
     'Create a separate "Template Authors" user group with permissions only to /conf — don\'t give template authors access to /apps.',
@@ -217,6 +220,9 @@ In the Template Editor, you configure each container's allowed components. This 
     'Create a "Base" template type that all your templates extend, reducing code duplication.',
     'Document which templates are available and when to use each one — authors need guidance.',
     'Test templates with real content before go-live — template issues often surface when actual content is added.',
+    'Separate shared policies from page-type-specific policies so one authoring change does not accidentally affect the whole site.',
+    'Review policy changes like code changes: allowed components, styles, responsive behavior, and author permissions all affect production pages.',
+    'For AEM as a Cloud Service, keep template type code in the pipeline and manage /conf template content with clear promotion and publishing rules.',
   ],
   architectNote: `Editable Templates represent a **fundamental shift** in how AEM governance works. The key insight is the separation of roles:
 

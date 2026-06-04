@@ -66,8 +66,8 @@ This is the biggest conceptual shift from AEM 6.5:
 **Implications:**
 - You can't install packages directly to \`/apps\` in production
 - All code changes go through the pipeline
-- OSGi configurations go through the pipeline
-- Content (pages, assets, templates) still goes through replication
+- OSGi configurations are deployed as code, with secrets and environment-specific values supplied by Cloud Manager
+- Content changes are published through the managed AEM publication flow; cache invalidation is handled by AEM, Dispatcher, and CDN rules
 
 **Cloud Manager:**
 Cloud Manager is Adobe's CI/CD platform for AEMaaCS. It:
@@ -75,7 +75,8 @@ Cloud Manager is Adobe's CI/CD platform for AEMaaCS. It:
 - Runs build pipelines (Maven build + quality checks)
 - Deploys to AEMaaCS environments
 - Manages environment variables (for OSGi config)
-- Runs code quality, security, and performance checks`,
+- Runs code quality, security, and performance checks
+- Provides access to deployment history, build logs, and environment status for production support`,
   example: {
     title: 'AEMaaCS Development Setup',
     description: 'Key differences and configurations for developing on AEM as a Cloud Service.',
@@ -202,19 +203,21 @@ myproject/
   ],
   productionIssues: [
     'Pipeline fails at code quality step — check the code quality report in Cloud Manager. Common issues: low test coverage, critical SonarQube violations, deprecated API usage.',
-    'Content not replicating — check replication agents in AEMaaCS Author. The "Default Agent" and "Reverse Replication Agent" must be active.',
-    'OSGi config not loading — in AEMaaCS, config files use .cfg.json format, not .xml. Check the file format and naming convention.',
-    'Dispatcher cache not invalidating — check the flush agent configuration and ensure the Dispatcher is receiving invalidation requests from Publish.',
+    'Content published in Author not visible on Publish — check publication status, content distribution queues, referenced assets/fragments, and whether CDN or Dispatcher cache is still serving the old response.',
+    'OSGi config not loading — in AEMaaCS, custom OSGi configs should use .cfg.json naming and valid JSON types. Confirm the PID, run mode folder, and Cloud Manager environment variable names.',
+    'Dispatcher or CDN cache not refreshing — republish the affected content, verify the vhost catches invalidation requests for localhost and Adobe cloud host aliases, and confirm Cache-Control headers match the intended TTL.',
     'Build succeeds but deployment fails — check the deployment logs in Cloud Manager. Often caused by content package validation errors or missing dependencies.',
+    'External integration works locally but fails in cloud — check outbound allow lists, secret variables, service-specific environment variable scope, and timeout handling in the OSGi service.',
   ],
   bestPractices: [
     'Use the AEM Analyzer Maven plugin in your build to catch AEMaaCS compatibility issues early.',
     'Never write to /apps at runtime — all code changes must go through the pipeline.',
-    'Use Cloud Manager environment variables for all environment-specific configuration.',
+    'Store stable non-secret configuration in Git and use Cloud Manager variables only for secrets or values that genuinely vary by environment.',
     'Set up automated tests (unit, integration, UI) — Cloud Manager runs them on every pipeline execution.',
     'Use the Dispatcher SDK for local Dispatcher testing before pushing to Cloud Manager.',
     'Monitor pipeline execution times — slow builds indicate code quality or dependency issues.',
     'Use persisted GraphQL queries instead of ad-hoc queries — they\'re cacheable by the CDN.',
+    'Create support runbooks for pipeline failures, stuck content publication, cache issues, and integration outages before go-live.',
   ],
   architectNote: `AEM as a Cloud Service represents a **paradigm shift** in AEM architecture. The key principles to internalize:
 

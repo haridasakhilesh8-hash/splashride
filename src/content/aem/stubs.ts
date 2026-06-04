@@ -99,12 +99,16 @@ Both Author and Publish have their own Oak (JCR) repository. They're separate �
     'Content published on Author not appearing on the live site — replication agent is failing. Check the replication agent queue in AEM Author.',
     'Author and Publish showing different content — replication backlog. Check /etc/replication/agents.author for queue status.',
     'High load on Publish — Dispatcher cache is not working. Check cache hit ratio and flush configuration.',
+    'AEM Cloud Service page published successfully but users still see old content — check CDN TTL, Dispatcher invalidation, referenced Experience Fragments or Content Fragments, and whether all dependencies were published.',
+    'Only one environment is failing — compare Cloud Manager deployment version, OSGi run mode config, content package state, and CDN/Dispatcher rules between Dev, Stage, and Production.',
   ],
   bestPractices: [
     'Never expose Author directly to the internet — always put it behind a VPN or firewall.',
     'Run multiple Publish instances behind a load balancer for high availability.',
     'Monitor replication queue length — a growing queue means content isn\'t reaching Publish.',
     'Use a CDN in front of Dispatcher for global sites.',
+    'Define an operational runbook that separates content publication issues, Dispatcher/CDN cache issues, application errors, and Cloud Manager deployment failures.',
+    'For AEM as a Cloud Service, use Cloud Manager logs and Developer Console-style diagnostics instead of relying on direct server access.',
   ],
   architectNote: `The Author-Publish-Dispatcher architecture is AEM's greatest strength for enterprise use. It provides a clear governance model, high performance through caching, and security through separation.
 
@@ -242,12 +246,16 @@ Node node = session.getNode("/content/mysite/en/home");
     'Repository corruption — always use proper JCR transactions and never kill the AEM process mid-write.',
     'Large repository size — unmanaged binary assets or version history growing unbounded. Implement regular datastore garbage collection.',
     'Slow JCR queries — unindexed queries on large repositories. Always create Oak indexes for frequently-used query patterns.',
+    'ResourceResolver leaks — custom services open service resolvers and do not close them, eventually causing performance degradation or login failures.',
+    'Cloud Service deployment fails because of index or package validation — Oak indexes and repository structure changes must be packaged correctly and deployed through Cloud Manager.',
   ],
   bestPractices: [
     'Use ResourceResolver (Sling) instead of JCR Session directly — it\'s safer and more idiomatic.',
     'Always close ResourceResolver and Session in a finally block to prevent resource leaks.',
     'Create Oak indexes for any JCR query used in production — unindexed queries cause full repository traversal.',
     'Use nt:unstructured for component content nodes — it\'s flexible and doesn\'t require schema changes.',
+    'Use service users and mapped subservices for background writes; never use admin sessions in modern AEM code.',
+    'Keep application data with high write volume outside JCR unless it is truly content-managed data.',
   ],
   architectNote: `Understanding the JCR is non-negotiable for AEM architects. Every design decision — URL structure, content organization, template design — maps directly to JCR node structure.
 
@@ -346,18 +354,20 @@ AND s.[jcr:mimeType] = 'image/jpeg'`,
     },
     {
       question: 'Why is CRXDE disabled on AEM as a Cloud Service?',
-      answer: 'In AEMaaCS, /apps is immutable — you can\'t write to it at runtime. CRXDE is disabled by default for security and to enforce the proper deployment model (everything through Cloud Manager pipelines). You can enable it temporarily on dev environments for debugging.',
+      answer: 'CRXDE Lite is primarily a local SDK and development-environment tool in AEM as a Cloud Service. It is not a Stage/Production troubleshooting or hotfix mechanism, and immutable areas like /apps and /libs cannot be changed at runtime. Code changes must go through Cloud Manager pipelines.',
     },
   ],
   productionIssues: [
     'CRXDE accessible on production — a security risk. Ensure /crx/de is blocked by Dispatcher filter rules on production environments.',
     'Changes made in CRXDE lost after deployment — CRXDE changes aren\'t in source control. Always make changes in your IDE and deploy through the pipeline.',
+    'Developer cannot reproduce a cloud issue in CRXDE — remember that cloud runtime, CDN, Dispatcher, environment variables, and immutable repository behavior can differ from local SDK or development environments.',
   ],
   bestPractices: [
     'Block CRXDE access on production via Dispatcher filter rules.',
     'Use CRXDE for exploration and debugging, not for making permanent changes.',
     'Use the Query Console in CRXDE to test JCR queries before writing them in code.',
     'When exploring Core Components, use CRXDE to understand their node structure before extending them.',
+    'Capture findings from CRXDE as code or content packages so fixes are reviewed, repeatable, and deployable.',
   ],
   architectNote: `CRXDE is a powerful debugging tool but a governance risk. In enterprise projects, establish clear rules: CRXDE is for development environments only. Production changes must go through the deployment pipeline.
 
@@ -373,7 +383,7 @@ For AEM as a Cloud Service, embrace the immutability — it forces better engine
     'Use for debugging and exploration, not production changes',
     'Query Console lets you test JCR-SQL2 queries',
     'Block CRXDE on production via Dispatcher',
-    'Disabled by default in AEM as a Cloud Service',
+    'Use CRXDE for local SDK or permitted development debugging, not Stage/Production fixes in AEM as a Cloud Service',
   ],
   relatedTopics: ['jcr', 'architecture', 'sling'],
 };
@@ -473,12 +483,16 @@ Script Resolution for sling:resourceType "mysite/components/hero":
     '404 errors — Sling can\'t resolve the resource. Check if the content node exists and if the sling:resourceType is correct.',
     'Wrong script rendering — Multiple scripts match the request. Check script resolution order and selector specificity.',
     'Infinite loops — A component includes itself via data-sly-resource without a stopping condition.',
+    'Servlet exposes sensitive data — path-based servlets or broad selectors are allowed through Dispatcher without authentication checks.',
+    'ResourceResolver leak in servlet or filter — resolver is opened per request and not closed, causing gradual production instability.',
   ],
   bestPractices: [
     'Use sling:resourceSuperType for component inheritance rather than copying scripts.',
     'Use selectors for alternate renderings of the same resource (mobile, print, JSON).',
     'Register Sling Servlets by resource type, not by path — path-based registration is fragile.',
     'Use Sling URL Builder APIs to generate URLs — don\'t concatenate strings.',
+    'Validate selectors, extensions, and suffixes explicitly in servlets so unexpected URL shapes do not bypass business rules.',
+    'Use service users for repository access from servlets and filters; do not reuse the request user for privileged background work.',
   ],
   architectNote: `Sling's resource-centric model is elegant but requires a mental shift for developers coming from MVC frameworks. The key insight: **the URL is the content address, not a route to a controller**.
 
@@ -612,12 +626,16 @@ app.js`,
     'CSS/JS not loading on Publish — Dispatcher is blocking /etc.clientlibs/ path. Add allow rule for /etc.clientlibs/* in Dispatcher filters.',
     'ClientLib changes not reflecting — AEM ClientLib cache not invalidated. Rebuild via /libs/granite/ui/content/dumplibs.rebuild.html.',
     'JavaScript errors on production — minification broke the code. Use strict mode and avoid relying on minification behavior.',
+    'ClientLib URL returns 404 — allowProxy is missing or the library is stored under /apps without being exposed through /etc.clientlibs.',
+    'Styles differ between Author and Publish — author-only categories are leaking into page templates or publish-only categories are missing.',
   ],
   bestPractices: [
     'Use the /etc.clientlibs proxy path (not /apps) for ClientLib URLs — it works with Dispatcher caching.',
     'Organize ClientLibs by category: base (always loaded), component-specific (loaded on demand).',
     'Use Long Cache-Control headers for ClientLibs — the hash in the URL ensures cache-busting.',
     'Test with minification enabled (production mode) — some JS patterns break under minification.',
+    'Use project-specific category names to avoid collisions with Adobe, Core Component, or other vendor ClientLib categories.',
+    'Keep authoring ClientLibs separate from site delivery ClientLibs so author-only scripts never ship to public pages.',
   ],
   architectNote: `ClientLibs are AEM's front-end asset management system. In modern projects, you might integrate with npm-based build tools (webpack, vite) and use ClientLibs just as a delivery mechanism.
 
@@ -670,7 +688,7 @@ With MSM:
 
 A global retail brand has sites for 15 countries. The US site is the Blueprint. Each country gets a Live Copy. Product descriptions, brand content, and legal pages come from the Blueprint. Local teams add country-specific promotions and translate content.
 
-When the global marketing team updates the homepage hero, they update the Blueprint and roll out to all 15 countries. Local variations (different promotional banners) are preserved because they\'re set as "local" content.`,
+When the global marketing team updates the homepage hero, they update the Blueprint and roll out to all 15 countries. Local variations (different promotional banners) are preserved because they're set as "local" content.`,
   howItWorks: `**MSM Relationship:**
 \`\`\`
 /content/mysite/
@@ -688,7 +706,7 @@ When the global marketing team updates the homepage hero, they update the Bluepr
 \`\`\`
 
 **Inheritance States:**
-- **Inherited** — Content comes from Blueprint, can\'t be edited locally
+- **Inherited** — Content comes from Blueprint, can't be edited locally
 - **Cancelled** — Inheritance broken, content is now local
 - **Suspended** — Inheritance temporarily paused
 
@@ -738,12 +756,18 @@ Define what happens during rollout — which properties are synced, which are ex
     'Rollout overwrites local changes — rollout config is too aggressive. Review which properties are excluded from rollout.',
     'Live Copy out of sync — rollout hasn\'t been triggered. Check rollout trigger configuration and run a manual rollout.',
     'MSM inheritance broken — someone cancelled inheritance on a node. Check MSM status in the page properties.',
+    'Translations are overwritten after rollout — language-specific properties, translated components, or localized Experience Fragment references are not excluded correctly.',
+    'Large rollout times out or creates a backlog — too many pages or Live Copies are being rolled out synchronously. Split rollout scope and monitor rollout jobs.',
+    'Published country site shows mixed global and local content — referenced assets, Content Fragments, or Experience Fragments were not localized or published with the Live Copy.',
   ],
   bestPractices: [
     'Design your Blueprint structure carefully — it\'s hard to restructure after Live Copies are created.',
     'Document which content areas are inherited vs. local for content authors.',
     'Use rollout configs that exclude language-specific properties to avoid overwriting translations.',
     'Test rollout behavior thoroughly before creating many Live Copies.',
+    'Pilot rollout configs on one market before applying them to every country or brand.',
+    'Train authors on suspend vs cancel inheritance; accidental cancellation is one of the most common MSM support problems.',
+    'Keep a rollout checklist that includes pages, assets, fragments, XFs, redirects, and post-rollout publishing.',
   ],
   architectNote: `MSM is powerful but complex. The biggest architectural decision is: what content is global (Blueprint) vs. local (Live Copy)?
 
@@ -751,11 +775,15 @@ Define what happens during rollout — which properties are synced, which are ex
 - Brand content, legal content, product descriptions → Blueprint (global)
 - Promotions, local events, translated content → Live Copy (local)
 
-**Alternative to consider:** For pure translation use cases, AEM\'s Language Copy feature (without full MSM) is simpler. MSM is for structural inheritance; Language Copy is for translation workflows.`,
+**Alternative to consider:** For pure translation use cases, AEM's Language Copy feature (without full MSM) is simpler. MSM is for structural inheritance; Language Copy is for translation workflows.`,
   faqs: [
     {
       question: 'How many Live Copies can a Blueprint have?',
       answer: 'Technically unlimited, but performance degrades with very large numbers. Projects with 50+ Live Copies should carefully plan rollout strategies and consider asynchronous rollout to avoid timeouts.',
+    },
+    {
+      question: 'What should I check when a rollout changed more content than expected?',
+      answer: 'Check the rollout configuration, excluded properties, inheritance status on the affected components, custom rollout actions, and whether the author rolled out the whole tree instead of a selected page or branch.',
     },
   ],
   keyTakeaways: [
@@ -876,12 +904,18 @@ public class SendApprovalEmailProcess implements WorkflowProcess {
     'Workflow not triggering — launcher configuration is wrong or disabled. Check Tools → Workflow → Launchers.',
     'Participant step not assigning to the right user — user/group doesn\'t exist or dynamic participant step logic has a bug.',
     'Workflow fails silently — process step throws an exception that\'s caught and ignored. Always log errors in process steps.',
+    'Asset processing slows the whole environment — DAM Update Asset workflows are persisting too much state or custom steps are doing heavy synchronous work.',
+    'Custom process step hangs — external API call has no connection/read timeout, retry limit, or circuit-breaker behavior.',
+    'Workflow works on Author but not in Cloud Service — required OSGi config, service user mapping, or secret variable is missing in the target environment.',
   ],
   bestPractices: [
     'Purge completed workflow instances regularly — they accumulate and slow down the repository.',
     'Use Transient Workflows for DAM asset processing — they don\'t persist to the JCR and are much faster.',
     'Design workflows to be idempotent — if a step runs twice, the result should be the same.',
     'Use async workflow processing for heavy operations to avoid blocking the request thread.',
+    'Add timeouts, retries, and clear error logging around every external service call inside a workflow step.',
+    'Run workflow code with service users and least-privilege permissions, not administrative sessions.',
+    'Keep approval workflows short and auditable; complex branching should be justified by a real compliance requirement.',
   ],
   architectNote: `Workflows are powerful but often over-engineered. Keep workflow models simple — a 3-step approval workflow is better than a 10-step one with complex branching.
 
@@ -890,6 +924,10 @@ public class SendApprovalEmailProcess implements WorkflowProcess {
     {
       question: 'Can workflows run on a schedule?',
       answer: 'Not directly, but you can combine workflows with Sling Schedulers. Create a scheduled OSGi job that queries for content meeting certain criteria and programmatically starts a workflow on each result.',
+    },
+    {
+      question: 'What should I check first when workflows pile up in production?',
+      answer: 'Check the workflow instances console, launcher rules, error.log entries from custom process steps, queue size, purge configuration, and whether one external integration is timing out for every payload.',
     },
   ],
   keyTakeaways: [
@@ -1064,14 +1102,21 @@ function ArticleList() {
     'Query returns null for fragment references — the referenced fragment is not published. Publish all fragments in the reference chain.',
     'CORS errors in browser — configure CORS settings in AEM\'s OSGi configuration for the GraphQL endpoint.',
     'Slow queries — no pagination, fetching too many fragments. Add limit/offset and use persisted queries.',
+    'Persisted query works on Author but fails on Publish — the query, endpoint configuration, Content Fragment Models, or referenced fragments were not published.',
+    'GraphQL blocked by Dispatcher — filters do not allow the persisted query execution path or the endpoint-specific URL pattern.',
+    'CDN serves stale GraphQL data — persisted query cache headers or invalidation rules do not match the freshness requirement for that content type.',
+    'Nested fragment queries become slow — the model allows deep references and the query fetches more fields than the channel actually needs.',
   ],
   bestPractices: [
     'Always use persisted queries in production — they\'re cacheable and prevent arbitrary query execution.',
     'Design Content Fragment Models with GraphQL in mind — the model IS the API schema.',
     'Use fragment references to create relationships, but avoid deep nesting that causes N+1 query issues.',
     'Enable CORS correctly for your front-end domains — too permissive is a security risk.',
+    'Publish Content Fragment Models, endpoint configuration, persisted queries, fragments, and referenced assets as one release checklist.',
+    'Set explicit cache-control expectations per persisted query so product listings, legal notices, and news feeds do not share the same freshness policy.',
+    'Version or deprecate persisted queries carefully; front-end apps may depend on field names and response shape.',
   ],
-  architectNote: `GraphQL is the future of AEM content delivery. If you\'re designing a new AEM project, plan for headless from the start — even if you\'re not going headless today.
+  architectNote: `GraphQL is the future of AEM content delivery. If you're designing a new AEM project, plan for headless from the start — even if you're not going headless today.
 
 **Key decision:** REST vs GraphQL? For AEM, GraphQL is preferred for Content Fragment delivery because it matches the fragment model naturally. Use REST APIs for DAM operations (asset upload, metadata update).
 
@@ -1080,6 +1125,10 @@ function ArticleList() {
     {
       question: 'Can I use GraphQL subscriptions with AEM?',
       answer: 'No. AEM\'s GraphQL implementation supports queries only — no mutations or subscriptions. For real-time content updates, use webhooks or polling patterns on the client side.',
+    },
+    {
+      question: 'What is the fastest way to troubleshoot a broken headless page?',
+      answer: 'Call the persisted query URL directly, confirm the endpoint is published, verify every referenced fragment and asset is published, check Dispatcher filters, then inspect CORS and cache headers from the browser network tab.',
     },
   ],
   keyTakeaways: [

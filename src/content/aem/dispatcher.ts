@@ -203,6 +203,9 @@ Dispatcher stores cache as actual files on disk, mirroring the URL structure. \`
     '403 errors on valid URLs — Dispatcher filter rules are too strict. Check filters.any and ensure the URL pattern is allowed.',
     'Dispatcher serving stale content after deployment — old cached files remain. Run a full cache flush after every deployment.',
     'Session-based content cached — requests with Set-Cookie headers should not be cached. Configure /ignoreUrlParams and cookie handling.',
+    'AEM Cloud Service invalidation misses pages — vhost configuration does not match localhost or Adobe cloud host aliases used by invalidation requests.',
+    'Marketing campaign URLs create duplicate cache files — tracking query parameters are not ignored consistently in /ignoreUrlParams.',
+    'Persisted GraphQL queries return 403 — Dispatcher filters do not allow the /graphql/execute.json path for the intended site configuration.',
   ],
   bestPractices: [
     'Always deny everything by default in filters.any and explicitly allow only what\'s needed.',
@@ -212,6 +215,9 @@ Dispatcher stores cache as actual files on disk, mirroring the URL structure. \`
     'Test Dispatcher configuration locally using the Dispatcher SDK before deploying.',
     'Monitor cache hit ratio — a healthy Dispatcher should have 90%+ cache hit rate.',
     'Use URL fingerprinting for client libraries so they can be cached indefinitely.',
+    'Treat Dispatcher filters as application security controls and review them with every new servlet, GraphQL endpoint, or DAM delivery pattern.',
+    'Define query-parameter policy explicitly: deny by default, allow functional parameters, and ignore common marketing parameters for cache efficiency.',
+    'For AEM as a Cloud Service, test vhosts, filters, rewrites, and cache rules with the Dispatcher SDK before Cloud Manager deployment.',
   ],
   architectNote: `The Dispatcher is often the **most misunderstood** part of AEM architecture. Here are the things architects need to get right:
 

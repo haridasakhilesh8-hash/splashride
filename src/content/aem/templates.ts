@@ -151,12 +151,18 @@ When a page is rendered, AEM:
     'Template not appearing in page creation wizard — template is not enabled (for Editable Templates) or allowedPaths doesn\'t match the current location (for Static Templates).',
     'Page renders blank — page component has an error. Check error.log for HTL or Sling Model exceptions.',
     'Wrong template used for a page — check the page\'s sling:resourceType property in CRXDE.',
+    'Authors can create pages in the wrong site section — allowed templates or parent-page restrictions are too broad.',
+    'Template changes do not reach Publish — /conf template or policy content was changed but not published or packaged consistently across environments.',
+    'Header/footer missing after deployment — page component or Experience Fragment reference used by the template was not deployed, configured, or published.',
   ],
   bestPractices: [
     'Always use Editable Templates for new projects — they\'re more flexible and don\'t require code changes.',
     'Create a clear naming convention for templates (e.g., "Article Page", "Landing Page", "Product Page").',
     'Limit the number of templates — too many templates confuse authors. Aim for flexibility through component configuration, not more templates.',
     'Lock header and footer in the Structure layer so authors can\'t accidentally break the page structure.',
+    'Define allowed templates per site section so authors see only the templates that make sense for that content tree.',
+    'Treat /conf changes as governed content: review, package or publish, and test them before production rollout.',
+    'Document template ownership and approval flow because template changes can affect thousands of pages.',
   ],
   architectNote: `Templates are the **governance layer** of AEM. A well-designed template system gives authors freedom within boundaries — they can create diverse pages without breaking the design system.
 

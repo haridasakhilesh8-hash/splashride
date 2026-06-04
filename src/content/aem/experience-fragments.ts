@@ -175,6 +175,9 @@ In the XF editor, use the "Export to Adobe Target" action. AEM converts the XF t
     'Adobe Target export fails — check that the XF template is marked as "Experience Fragment" type, and that the Target cloud configuration is correctly set up.',
     'XF appears differently across pages — the XF\'s Client Libraries aren\'t loading correctly on some pages. Check that the XF\'s clientlib categories are included in the page\'s template.',
     'Performance issues — too many XFs on a single page causes multiple JCR reads. Consider consolidating or caching XF data.',
+    'Localized XF uses global content by accident — page references the Blueprint or master-language XF instead of the localized variation.',
+    'XF update creates inconsistent campaign pages — pages using the XF were not all republished or cache-invalidated after the XF change.',
+    'Target personalization differs from AEM preview — exported XF markup, clientlibs, or audience-specific data does not match the page where the offer is rendered.',
   ],
   bestPractices: [
     'Use XFs for content that appears on 3+ pages — the overhead of creating an XF isn\'t worth it for one-off sections.',
@@ -183,6 +186,9 @@ In the XF editor, use the "Export to Adobe Target" action. AEM converts the XF t
     'Keep XFs focused — one XF per distinct section (header, footer, promo banner). Don\'t create a single giant XF.',
     'Publish XFs before publishing pages that use them — otherwise the page will render with a broken XF.',
     'Use XF Building Blocks for sub-sections that are reused within multiple XFs.',
+    'Track where critical XFs are used so support teams know which pages need cache checks after a fragment update.',
+    'For global sites, create clear rules for when pages should reference global XFs, localized XFs, or MSM-managed XF copies.',
+    'Keep Target-ready XFs lean and self-contained so exported offers do not depend on page-specific styles or scripts.',
   ],
   architectNote: `Experience Fragments are powerful but often **over-used**. Here's the architect's perspective:
 

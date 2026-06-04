@@ -176,7 +176,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {group.techIds.map(techId => {
                     const tech = technologies.find(t => t.id === techId);
-                    if (!tech) return null;
+                    if (!tech || !tech.active) return null;
 
                     return (
                       <Link

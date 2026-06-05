@@ -56,6 +56,17 @@ Every exported question must also include:
 - An architect perspective covering enterprise trade-offs
 - A memorable key takeaway
 
+## Question-Specific Content
+
+Every answer section must be derived from the actual question concern, not only its topic:
+
+- Detailed explanations must teach the specific AEM mechanism, implementation choice, failure mode, and evidence.
+- Production scenarios must include a credible observable signal and a targeted diagnosis path.
+- Real project examples must connect the concern to a realistic enterprise journey and outcome.
+- Mistakes, follow-ups, interviewer expectations, and architect perspectives must test the decision raised by that question.
+
+Reject repeated section content, topic-level boilerplate, and templates that differ only by substituting the question title.
+
 ## Topic Preparation Sets
 
 Every topic must expose a coherent preparation path derived from the same ranked question bank:

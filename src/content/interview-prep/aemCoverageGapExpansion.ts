@@ -90,7 +90,7 @@ const developmentGaps: AemCoverageGapTopic[] = [
     topic: 'HTL',
     category: 'HTL',
     topicGroup: 'Development',
-    profileTopic: 'Sling Models',
+    profileTopic: 'HTL',
     relatedTopics: ['htl', 'sling-models', 'security'],
     gaps: [
       'selecting the correct display context for URLs, scripts, styles, and attributes',

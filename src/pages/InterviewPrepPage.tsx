@@ -41,6 +41,103 @@ type DetailAccordionId =
   | 'follow-up-questions'
   | 'architect-perspective';
 
+const answerLabelAliases: Record<string, string> = {
+  'direct answer': 'Direct Answer',
+  what: 'What',
+  why: 'Why',
+  how: 'How',
+  when: 'When',
+  'architecture decision': 'Architecture Decision',
+  'architect consideration': 'Architect Consideration',
+  baseline: 'Baseline',
+  'compatibility check': 'Compatibility Check',
+  context: 'Context',
+  'cutover decision': 'Cutover Decision',
+  decision: 'Decision',
+  'decision criteria': 'Decision Criteria',
+  'diagnostic evidence': 'Diagnostic Evidence',
+  'durable fix': 'Durable Fix',
+  'failure mode': 'Failure Mode',
+  'likely root cause': 'Likely Root Cause',
+  mechanics: 'Mechanics',
+  'migration method': 'Migration Method',
+  'observed symptom': 'Observed Symptom',
+  'operating model': 'Operating Model',
+  'implementation choices': 'Implementation Choices',
+  'performance method': 'Performance Approach',
+  'production and cloud service': 'Production & Cloud Service',
+  'production tip': 'Production Tip',
+  'governance and ownership': 'Governance & Ownership',
+  'security review': 'Security Review',
+  threat: 'Threat',
+  'trade-off': 'Trade-Off',
+  validation: 'Validation',
+  'what good looks like': 'What Good Looks Like',
+  'common risk': 'Common Risk',
+  'troubleshooting path': 'Troubleshooting Approach',
+  'troubleshooting approach': 'Troubleshooting Approach',
+};
+
+function parseAnswerLabel(text: string) {
+  const match = text.match(/^([^:]{1,40}):\s*(.+)$/s);
+  if (!match) return null;
+
+  const label = answerLabelAliases[match[1].trim().toLowerCase()];
+  return label ? { label, content: match[2].trim() } : null;
+}
+
+function splitSupportingParagraphs(text: string) {
+  if (text.length < 240) return [text];
+
+  const sentences = text.split(/(?<=[.!?])\s+(?=[A-Z/])/);
+  if (sentences.length < 2) return [text];
+
+  return sentences.reduce<string[]>((paragraphs, sentence) => {
+    const lastIndex = paragraphs.length - 1;
+    if (lastIndex >= 0 && paragraphs[lastIndex].length + sentence.length < 220) {
+      paragraphs[lastIndex] = `${paragraphs[lastIndex]} ${sentence}`;
+    } else {
+      paragraphs.push(sentence);
+    }
+    return paragraphs;
+  }, []);
+}
+
+function SupportingText({ text }: { text: string }) {
+  return (
+    <div style={supportingTextStyle}>
+      {splitSupportingParagraphs(text).map((paragraph, index) => (
+        <p key={`${paragraph}-${index}`} style={detailBodyStyle}>{paragraph}</p>
+      ))}
+    </div>
+  );
+}
+
+function AnswerBreakdown({ items }: { items: string[] }) {
+  return (
+    <div style={answerBreakdownStyle}>
+      {items.map((item, index) => {
+        const labeled = parseAnswerLabel(item);
+        if (!labeled) {
+          return (
+            <div key={`${item}-${index}`} style={answerBulletStyle}>
+              <span style={answerBulletMarkerStyle} />
+              <SupportingText text={item} />
+            </div>
+          );
+        }
+
+        return (
+          <section key={`${labeled.label}-${index}`} style={answerPointStyle}>
+            <h4 style={answerPointLabelStyle}>{labeled.label}</h4>
+            <SupportingText text={labeled.content} />
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 function TextList({ items }: { items: string[] }) {
   return (
     <ul style={{ margin: '5px 0 0', maxWidth: '72ch', paddingLeft: '16px', color: 'var(--color-text-secondary)', fontSize: '14px', lineHeight: 1.55 }}>
@@ -99,14 +196,14 @@ function QuestionListRow({
         width: '100%',
         display: 'grid',
         gridTemplateColumns: '24px minmax(0, 1fr) 16px',
-        gap: '7px',
+        gap: '6px',
         alignItems: 'center',
         minHeight: '36px',
         background: selected ? 'rgba(99,102,241,0.055)' : 'var(--color-bg-primary)',
         border: '1px solid var(--color-border)',
         borderRadius: '7px',
         cursor: 'pointer',
-        padding: '5px 9px',
+        padding: '4px 8px',
         textAlign: 'left',
         boxShadow: selected ? 'inset 3px 0 0 var(--color-accent)' : 'none',
         transition: 'background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease',
@@ -124,13 +221,10 @@ function QuestionListRow({
       <span style={{
         minWidth: 0,
         color: 'var(--color-text-primary)',
-        fontSize: '0.88rem',
+        fontSize: '14px',
         fontWeight: 600,
-        lineHeight: 1.36,
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        WebkitLineClamp: 2,
-        overflow: 'hidden',
+        lineHeight: 1.3,
+        overflowWrap: 'anywhere',
       }}>
         {question.question}
       </span>
@@ -397,10 +491,10 @@ export default function InterviewPrepPage() {
           </header>
 
           <div className="interview-topic-metrics" style={topicMetricGridStyle}>
-            <TopicMetric icon={<BookOpen size={15} />} value={topicQuestions.length} label="Questions" />
-            <TopicMetric icon={<Clock3 size={15} />} value={`${estimatedMinutes} mins`} label="Est. Time" />
-            <TopicMetric icon={<CheckSquare size={15} />} value={`${topicCompletedCount}/${topicQuestions.length}`} label="Completed" />
-            <TopicMetric icon={<Target size={15} />} value={topicLevelLabel} label="Level" />
+            <TopicMetric icon={<BookOpen size={13} />} value={topicQuestions.length} label="Questions" />
+            <TopicMetric icon={<Clock3 size={13} />} value={`${estimatedMinutes} mins`} label="Est. Time" />
+            <TopicMetric icon={<CheckSquare size={13} />} value={`${topicCompletedCount}/${topicQuestions.length}`} label="Completed" />
+            <TopicMetric icon={<Target size={13} />} value={topicLevelLabel} label="Level" />
           </div>
 
           <div className="interview-toolbar" style={toolbarStyle}>
@@ -492,7 +586,7 @@ export default function InterviewPrepPage() {
               </div>
 
               <DetailSection title="Short Answer" icon={<BookOpen size={13} />}>
-                <p style={detailBodyStyle}>{selectedQuestion.shortAnswer}</p>
+                <SupportingText text={selectedQuestion.shortAnswer} />
               </DetailSection>
 
               <AccordionDetailSection
@@ -502,7 +596,7 @@ export default function InterviewPrepPage() {
                 isOpen={openDetailSection === 'detailed-explanation'}
                 onToggle={() => setOpenDetailSection((current) => current === 'detailed-explanation' ? null : 'detailed-explanation')}
               >
-                <TextList items={selectedQuestion.detailedAnswer} />
+                <AnswerBreakdown items={selectedQuestion.detailedAnswer} />
               </AccordionDetailSection>
 
               <AccordionDetailSection
@@ -512,7 +606,7 @@ export default function InterviewPrepPage() {
                 isOpen={openDetailSection === 'production-scenario'}
                 onToggle={() => setOpenDetailSection((current) => current === 'production-scenario' ? null : 'production-scenario')}
               >
-                <p style={detailBodyStyle}>{selectedQuestion.productionScenario}</p>
+                <SupportingText text={selectedQuestion.productionScenario} />
               </AccordionDetailSection>
 
               <AccordionDetailSection
@@ -522,7 +616,7 @@ export default function InterviewPrepPage() {
                 isOpen={openDetailSection === 'real-project-example'}
                 onToggle={() => setOpenDetailSection((current) => current === 'real-project-example' ? null : 'real-project-example')}
               >
-                <p style={detailBodyStyle}>{selectedQuestion.realProjectExample}</p>
+                <SupportingText text={selectedQuestion.realProjectExample} />
               </AccordionDetailSection>
 
               <AccordionDetailSection
@@ -532,7 +626,7 @@ export default function InterviewPrepPage() {
                 isOpen={openDetailSection === 'interviewer-expectation'}
                 onToggle={() => setOpenDetailSection((current) => current === 'interviewer-expectation' ? null : 'interviewer-expectation')}
               >
-                <p style={detailBodyStyle}>{selectedQuestion.interviewerExpectation}</p>
+                <SupportingText text={selectedQuestion.interviewerExpectation} />
               </AccordionDetailSection>
 
               <AccordionDetailSection
@@ -562,7 +656,7 @@ export default function InterviewPrepPage() {
                 isOpen={openDetailSection === 'architect-perspective'}
                 onToggle={() => setOpenDetailSection((current) => current === 'architect-perspective' ? null : 'architect-perspective')}
               >
-                <p style={detailBodyStyle}>{selectedQuestion.architectPerspective}</p>
+                <SupportingText text={selectedQuestion.architectPerspective} />
               </AccordionDetailSection>
 
               <div style={answerFeedbackStyle}>
@@ -666,17 +760,15 @@ function TopicMetric({ icon, value, label }: { icon: React.ReactNode; value: str
       <span style={{ minWidth: 0 }}>
         <span style={{
           display: 'block',
-          overflow: 'hidden',
           color: 'var(--color-text-primary)',
-          fontSize: '0.8rem',
+          fontSize: '0.75rem',
           fontWeight: 750,
-          lineHeight: 1.2,
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
+          lineHeight: 1.12,
+          overflowWrap: 'anywhere',
         }}>
           {value}
         </span>
-        <span style={{ display: 'block', marginTop: '1px', color: 'var(--color-text-muted)', fontSize: '0.62rem', fontWeight: 700, lineHeight: 1.2 }}>{label}</span>
+        <span style={{ display: 'block', color: 'var(--color-text-muted)', fontSize: '0.58rem', fontWeight: 700, lineHeight: 1.1 }}>{label}</span>
       </span>
     </div>
   );
@@ -778,8 +870,8 @@ const crumbStyle: CSSProperties = {
 
 const workspaceStyle: CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: 'minmax(500px, 1.15fr) minmax(430px, 0.95fr)',
-  gap: '14px',
+  gridTemplateColumns: 'minmax(560px, 1.65fr) minmax(360px, 0.95fr)',
+  gap: '12px',
   width: '100%',
   maxWidth: '1440px',
   margin: '0 auto',
@@ -825,22 +917,22 @@ const topicMetricGridStyle: CSSProperties = {
 
 const topicMetricStyle: CSSProperties = {
   display: 'grid',
-  gridTemplateColumns: '18px minmax(0, 1fr)',
+  gridTemplateColumns: '15px minmax(0, 1fr)',
   alignItems: 'center',
-  gap: '6px',
-  minHeight: '30px',
+  gap: '5px',
+  minHeight: '24px',
   background: 'var(--color-bg-secondary)',
   border: '1px solid var(--color-border)',
   borderRadius: '6px',
-  padding: '3px 6px',
+  padding: '2px 5px',
 };
 
 const topicMetricIconStyle: CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '16px',
-  height: '16px',
+  width: '14px',
+  height: '14px',
   borderRadius: '5px',
   color: 'var(--color-accent)',
   background: 'transparent',
@@ -965,6 +1057,45 @@ const detailBodyStyle: CSSProperties = {
   color: 'var(--color-text-secondary)',
   fontSize: '14px',
   lineHeight: 1.6,
+};
+
+const supportingTextStyle: CSSProperties = {
+  display: 'grid',
+  gap: '6px',
+};
+
+const answerBreakdownStyle: CSSProperties = {
+  display: 'grid',
+  gap: '12px',
+  maxWidth: '72ch',
+};
+
+const answerPointStyle: CSSProperties = {
+  display: 'grid',
+  gap: '4px',
+};
+
+const answerPointLabelStyle: CSSProperties = {
+  margin: 0,
+  color: 'var(--color-text-primary)',
+  fontSize: '14px',
+  fontWeight: 700,
+  lineHeight: 1.3,
+};
+
+const answerBulletStyle: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: '7px minmax(0, 1fr)',
+  alignItems: 'start',
+  gap: '8px',
+};
+
+const answerBulletMarkerStyle: CSSProperties = {
+  width: '4px',
+  height: '4px',
+  marginTop: '8px',
+  borderRadius: '50%',
+  background: 'var(--color-accent)',
 };
 
 const detailIconStyle: CSSProperties = {

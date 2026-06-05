@@ -1540,9 +1540,9 @@ function detectQuestionIntent(question: string): QuestionIntent {
 
   if (/(migrat|moving from|move from|legacy)/.test(value)) return 'migration';
   if (/(debug|troubleshoot|missing|stale|not visible|fail|inactive|unavailable|production issue|wrong-component|404)/.test(value)) return 'troubleshooting';
+  if (/(design|architecture|multi-brand|multi-channel|govern|ownership|stakeholder|high traffic|release governance|trade-offs|operating model)/.test(value)) return 'architecture';
   if (/(secure|security|permission|acl|secret|credential|xss|csrf|cors|attack|risk|exposing)/.test(value)) return 'security';
   if (/(performance|slow|traffic|cache|scal|latency|query|rendition)/.test(value)) return 'performance';
-  if (/(design|architecture|multi-brand|multi-channel|govern|ownership|stakeholder|high traffic|release governance)/.test(value)) return 'architecture';
   if (/(difference|differ|instead|compare|versus| vs |author and publish)/.test(value)) return 'comparison';
   if (/(how do|how does|work|use|handle|manage|expose|include|promote|publish|register)/.test(value)) return 'implementation';
   return 'concept';
@@ -1581,6 +1581,26 @@ function getIntentQuestionType(intent: QuestionIntent): string {
 function formatEvidence(items: string[]): string {
   if (items.length <= 1) return items[0] ?? 'runtime evidence';
   return `${items.slice(0, -1).join(', ')} and ${items.at(-1)}`;
+}
+
+function getConcernDrivenGuidance(question: string, profile: TopicQualityProfile) {
+  const concern = extractQuestionConcern(question, '');
+  const rules: Array<[RegExp, string]> = [
+    [/govern|ownership|decision rights|standards|operating model/i, `Define the decision owner, permitted variation, measurable guardrail, exception path, and review cadence for ${concern}; governance is effective only when teams can prove compliance and resolve exceptions without bypassing the platform.`],
+    [/monitor|measur|observability|report|health/i, `Define a user-impact signal and target for ${concern}, correlate it with technical evidence and change events, alert before the business threshold is breached, and make each alert actionable for a named owner.`],
+    [/test|validat|acceptance|quality/i, `Turn ${concern} into explicit acceptance criteria, automate deterministic checks, exercise realistic content and failure paths, and retain human review where tooling cannot prove business or user behavior.`],
+    [/debug|diagnos|troubleshoot|failure|broken|missing/i, `Start with the exact symptom and affected scope for ${concern}, preserve evidence before remediation, compare a healthy path, isolate the owning layer, and verify the smallest durable fix against the original journey.`],
+    [/migrat|cutover|transform|reconcil|upgrade/i, `For ${concern}, inventory dependencies, define restartable transformation and validation rules, rehearse with production-scale data, reconcile exceptions, and make cutover or rollback criteria explicit.`],
+    [/prevent|protect|secure|permission|access/i, `Threat-model ${concern}, identify the trust boundary and allowed actor, apply least privilege and deny-by-default controls, then prove both allowed and denied behavior through repeatable tests.`],
+    [/design|select|choose|decid|approach/i, `Choose the design for ${concern} from explicit constraints: business ownership, authoring behavior, runtime scale, security boundary, failure isolation, Cloud Service supportability, and long-term operating cost.`],
+    [/retir|deprecat|consolidat|delete/i, `Before changing ${concern}, inventory consumers and dependencies, define the supported replacement, migrate in observable stages, and remove the old capability only after usage and recovery evidence are complete.`],
+    [/scale|high-volume|bulk|traffic|performance/i, `Establish a production-scale baseline for ${concern}, identify the limiting resource and back-pressure behavior, test peak and failure conditions, and define a measurable capacity and degradation policy.`],
+    [/integrat|external|consumer|contract|api/i, `Treat ${concern} as a versioned contract with explicit authentication, timeout, retry, idempotency, compatibility, reconciliation, and support ownership rather than a simple request from AEM.`],
+    [/publish|rollout|release|deploy|promot/i, `For ${concern}, define release preconditions, dependency and blast-radius checks, canary or smoke validation, observable success criteria, and a rehearsed recovery decision.`],
+  ];
+
+  return rules.find(([pattern]) => pattern.test(concern))?.[1]
+    ?? `${profile.core} For ${concern}, apply the supported implementation deliberately: ${profile.implementation}`;
 }
 
 function getQuestionSpecificGuidance(question: string, profile: TopicQualityProfile): string {
@@ -1655,63 +1675,778 @@ function getQuestionSpecificGuidance(question: string, profile: TopicQualityProf
     [/cache hit ratio/, 'Measure cache hit ratio separately at CDN and Dispatcher using response headers and request metrics. A low ratio usually points to URL variation, headers, personalization, invalidation, or cache-rule design.'],
   ];
 
-  return rules.find(([pattern]) => pattern.test(value))?.[1] ?? `${profile.core} ${profile.implementation}`;
+  return rules.find(([pattern]) => pattern.test(value))?.[1] ?? getConcernDrivenGuidance(question, profile);
 }
 
-function getIntentShortAnswer(question: string, intent: QuestionIntent, profile: TopicQualityProfile): string {
-  const directAnswer = getQuestionSpecificGuidance(question, profile);
+type QuestionKnowledge = {
+  pattern: RegExp;
+  mechanism: string;
+  implementation: string;
+  failure: string;
+  mistake: string;
+  architectDecision: string;
+};
 
-  if (intent === 'troubleshooting') {
-    return `${directAnswer} Start by proving which layer owns the failure using ${formatEvidence(profile.evidence.slice(0, 2))}; then implement the smallest durable fix and a regression check.`;
-  }
+const questionKnowledge: QuestionKnowledge[] = [
+  {
+    pattern: /osgi configuration per environment|environment-specific configuration|typed configuration/i,
+    mechanism: 'OSGi configurations bind typed settings to a component PID, while environment-specific values are supplied through supported deployment configuration rather than mutable runtime edits.',
+    implementation: 'Use typed metatype configuration, separate secrets from ordinary values, validate mandatory properties during activation, and promote reviewed environment-specific configuration through Cloud Manager.',
+    failure: 'a component activates with the wrong endpoint, timeout, or feature setting because configuration ownership and environment precedence were unclear',
+    mistake: 'using run-mode naming or console edits as an undocumented substitute for reviewed environment configuration',
+    architectDecision: 'which settings are code-owned defaults, environment configuration, secrets, or business-managed content and who approves each change',
+  },
+  {
+    pattern: /observability across content publication|observability for an enterprise|designing observability|global observability/i,
+    mechanism: 'AEM observability must connect content publication, CDN and Dispatcher behavior, Publish rendering, integrations, deployments, and user impact into one incident timeline.',
+    implementation: 'Define service-level indicators for publication latency, cache effectiveness, origin latency, error rate, and critical journeys; correlate them with release and content-change events.',
+    failure: 'teams can see individual logs and metrics but cannot identify whether a customer-visible failure began in publication, caching, rendering, or an integration',
+    mistake: 'collecting high-volume logs without defining user-impact signals, correlation identifiers, ownership, and actionable alert thresholds',
+    architectDecision: 'which cross-layer signals and service levels are mandatory so platform and product teams can share incident ownership',
+  },
+  {
+    pattern: /reading query plans|query plan|index cost/i,
+    mechanism: 'An Oak query plan shows the selected index, path restriction, estimated cost, ordering support, and whether the repository will traverse nodes.',
+    implementation: 'Capture the explain plan for production-like cardinality, verify path and property restrictions, compare candidate index cost, and test the query under representative permissions.',
+    failure: 'a query selects an expensive or incomplete index and latency rises sharply as repository volume grows',
+    mistake: 'judging a query only by a small lower-environment result set or adding an index without confirming the selected plan',
+    architectDecision: 'which queries are platform-approved, performance-budgeted, and owned as repository scale and content models evolve',
+  },
+  {
+    pattern: /preventing repository traversal|traversal prevention|traversal warning/i,
+    mechanism: 'Repository traversal occurs when Oak cannot satisfy a query from an appropriate index and must scan candidate nodes, making cost grow with repository size.',
+    implementation: 'Constrain paths and predicates, remove broad or unnecessary queries, confirm the plan, and add only the smallest justified index definition.',
+    failure: 'a formerly acceptable query begins scanning a large subtree and consumes Publish resources as content volume increases',
+    mistake: 'raising traversal limits or adding a broad catch-all index instead of correcting the query and validating index selection',
+    architectDecision: 'whether the use case belongs in JCR querying, precomputed content, or an external search capability',
+  },
+  {
+    pattern: /workflow launchers? from flooding|launcher.*flood|preventing workflow launchers/i,
+    mechanism: 'Workflow launchers react to repository events, so broad paths, event types, or missing conditions can create a workflow instance for every item in a bulk operation.',
+    implementation: 'Scope launcher paths and node types narrowly, exclude technical changes, prefer transient workflows where appropriate, and load-test bulk authoring and ingestion.',
+    failure: 'a bulk update creates thousands of workflow instances, saturating Author queues and delaying editorial work',
+    mistake: 'enabling a broad launcher in production without measuring event volume or defining queue and retry safeguards',
+    architectDecision: 'whether the trigger requires a workflow launcher, Sling Job, scheduled reconciliation, or external orchestration',
+  },
+  {
+    pattern: /custom process steps? idempotent|idempotent.*process step/i,
+    mechanism: 'A workflow process step may be retried or resumed, so idempotency ensures repeating it does not duplicate side effects or corrupt payload state.',
+    implementation: 'Use stable operation identifiers, check current state before writing, isolate external calls, persist completion evidence, and define retry and compensation behavior.',
+    failure: 'a retried workflow step sends duplicate notifications, creates duplicate records, or applies the same repository mutation twice',
+    mistake: 'assuming a process step executes exactly once and adding retries without duplicate protection',
+    architectDecision: 'where workflow state, external-system state, and reconciliation responsibility reside when a partial failure occurs',
+  },
+  {
+    pattern: /high-volume asset ingestion|asset ingestion/i,
+    mechanism: 'High-volume asset ingestion drives binary upload, metadata extraction, processing profiles, renditions, workflows, and downstream publication concurrently.',
+    implementation: 'Batch and throttle ingestion, define required renditions and metadata, monitor processing queues, isolate failures, and reconcile source files against completed assets.',
+    failure: 'processing queues grow faster than capacity and newly ingested assets remain unusable or deliver oversized originals',
+    mistake: 'treating ingestion as a file-copy operation without throughput limits, failure isolation, and completion reconciliation',
+    architectDecision: 'how ingestion rate, processing cost, required derivatives, and business deadlines determine the operating model',
+  },
+  {
+    pattern: /monitoring asset-processing failures|asset-processing failures/i,
+    mechanism: 'Asset-processing health is measured through queue age, failed jobs, missing required renditions, metadata completeness, and downstream delivery readiness.',
+    implementation: 'Alert on backlog age and failure rate, quarantine failed assets with actionable reason codes, and provide reconciliation dashboards for business operators.',
+    failure: 'processing failures remain hidden until authors or customers encounter missing renditions days after ingestion',
+    mistake: 'monitoring only whether an upload succeeded while ignoring derivative generation and delivery readiness',
+    architectDecision: 'which asset-processing service levels, failure ownership, and recovery paths are required for each ingestion channel',
+  },
+  {
+    pattern: /selecting blueprint boundaries|blueprint boundaries/i,
+    mechanism: 'MSM blueprint boundaries determine which source structures and relationships are inherited by live copies and therefore define the blast radius of rollout.',
+    implementation: 'Align blueprints to stable ownership boundaries, keep globally governed content separate from local content, and test rollout effects before onboarding markets.',
+    failure: 'one rollout affects unrelated local content because the blueprint spans multiple ownership and lifecycle boundaries',
+    mistake: 'creating a single broad blueprint for organizational convenience without modeling local autonomy and exception handling',
+    architectDecision: 'where global consistency justifies inheritance and where independent market ownership requires a separate blueprint',
+  },
+  {
+    pattern: /governing rollout ownership|rollout ownership/i,
+    mechanism: 'Rollout ownership defines who may trigger, approve, pause, validate, and recover an MSM rollout across source and market teams.',
+    implementation: 'Create approval rules by content risk, record local exceptions, provide pre-rollout impact reports, and require post-rollout validation by accountable markets.',
+    failure: 'a technically valid rollout overwrites approved local content because no team owned impact review or recovery',
+    mistake: 'granting rollout capability without an explicit decision process, exception registry, and accountable validator',
+    architectDecision: 'how decision rights are divided between global platform, central content, and market teams',
+  },
+  {
+    pattern: /content transformation and validation/i,
+    mechanism: 'Migration transformation converts source structures and values into the target content contract, while validation proves semantic correctness rather than only node counts.',
+    implementation: 'Version transformation rules, make them restartable, validate references and permissions, sample business journeys, and reconcile rejected or ambiguous content.',
+    failure: 'the migration reports complete but target pages render incorrectly because transformed properties no longer satisfy component contracts',
+    mistake: 'validating only item counts and ignoring semantic, rendering, permission, and relationship correctness',
+    architectDecision: 'which transformations are automated, manually adjudicated, or used as a trigger to retire poor-quality source content',
+  },
+  {
+    pattern: /migration completeness and reconciliation|measuring migration completeness/i,
+    mechanism: 'Migration reconciliation proves that every in-scope source item has an accepted target outcome: migrated, transformed, intentionally excluded, or failed with ownership.',
+    implementation: 'Use stable source identifiers, compare counts and checksums by cohort, verify relationships and critical journeys, and track exceptions to closure.',
+    failure: 'cutover succeeds technically while a small but business-critical content cohort is missing or stale',
+    mistake: 'declaring success from aggregate counts that hide failed references, excluded variants, or incomplete late changes',
+    architectDecision: 'what evidence and business acceptance thresholds are required before traffic moves to the target platform',
+  },
+  {
+    pattern: /designing acls for shared content|acls for shared content/i,
+    mechanism: 'Shared-content ACL design separates read, author, approve, and operational capabilities across paths without granting broad access to unrelated content.',
+    implementation: 'Model access by capability and ownership group, provision permissions through repoinit, test effective access, and avoid path structures that force excessive exceptions.',
+    failure: 'a team can modify shared content outside its responsibility or cannot access dependencies needed for an approved workflow',
+    mistake: 'granting broad parent-path permissions to solve one shared-content access issue',
+    architectDecision: 'how content boundaries and capability groups minimize privilege while keeping cross-team workflows practical',
+  },
+  {
+    pattern: /replacing administrative sessions|administrative sessions/i,
+    mechanism: 'Replacing administrative sessions means mapping each backend capability to a named service user with only the repository permissions it needs.',
+    implementation: 'Inventory privileged calls, create subservice mappings, provision least-privilege ACLs, test denied paths, and remove administrative fallback behavior.',
+    failure: 'a service either stops working after privileged access is removed or retains unnecessary access that expands incident blast radius',
+    mistake: 'creating one broad replacement service user shared by unrelated services',
+    architectDecision: 'how service identities align to capability ownership, auditability, and independent permission review',
+  },
+  {
+    pattern: /template type ownership|template type.*deployment/i,
+    mechanism: 'Template types are code-owned foundations for editable templates; changing them can affect every template and page derived from their structure and policies.',
+    implementation: 'Assign platform ownership, version and review changes in code, test derived templates and existing pages, and communicate compatibility impact before deployment.',
+    failure: 'a template-type deployment changes authoring or rendering behavior across multiple sites unexpectedly',
+    mistake: 'treating a template type as an isolated template-editor artifact rather than a shared platform contract',
+    architectDecision: 'which template capabilities remain centrally code-governed and which can be delegated safely to template authors',
+  },
+  {
+    pattern: /initial content lifecycle/i,
+    mechanism: 'Editable-template initial content is copied only when a page is created; later changes to initial content do not automatically update existing pages.',
+    implementation: 'Use initial content for sensible starting values, document ownership after page creation, and use explicit migration or rollout mechanisms for required changes to existing pages.',
+    failure: 'teams update initial content expecting existing pages to change, leaving inconsistent page estates',
+    mistake: 'placing centrally governed content in initial content when it must remain synchronized after page creation',
+    architectDecision: 'which content becomes locally owned at page creation and which must remain in locked structure or another governed source',
+  },
+  {
+    pattern: /namespaces and stable repository contracts|repository namespaces/i,
+    mechanism: 'JCR namespaces prevent naming collisions and make repository property and node-type contracts explicit across modules and integrations.',
+    implementation: 'Register stable organization-owned namespaces, use them consistently for durable contracts, and avoid renaming or repurposing properties after content is created.',
+    failure: 'packages or integrations conflict because teams use ambiguous property names or change a published repository contract',
+    mistake: 'introducing namespaces casually without ownership or using them for temporary implementation details',
+    architectDecision: 'which repository contracts are durable enough to justify namespace governance and compatibility commitments',
+  },
+  {
+    pattern: /building inventory, dependency maps, and migration waves|dependency maps.*migration waves/i,
+    mechanism: 'Migration inventory and dependency mapping identify content, code, integrations, identities, redirects, and business journeys that must move together.',
+    implementation: 'Classify dependencies and risk, group coherent migration waves, assign owners, and rehearse each wave with measurable entry and exit criteria.',
+    failure: 'a migration wave reaches cutover before a hidden integration or shared content dependency is ready',
+    mistake: 'sequencing waves only by content volume or business unit without modeling technical and operational dependencies',
+    architectDecision: 'how wave boundaries minimize blast radius while avoiding a costly long-lived dual-platform operating model',
+  },
+  {
+    pattern: /validating seo, redirects, analytics, and integrations at cutover|seo.*redirects.*analytics/i,
+    mechanism: 'Cutover validation must prove customer journeys and external contracts, including URLs, redirects, canonical signals, analytics events, and integration transactions.',
+    implementation: 'Build automated comparison suites from production traffic and critical journeys, validate before and after traffic switch, and assign owners for every failed contract.',
+    failure: 'the site is reachable after cutover but search visibility, analytics continuity, or downstream transactions degrade silently',
+    mistake: 'treating HTTP 200 smoke tests as sufficient cutover acceptance',
+    architectDecision: 'which business and external-contract failures block cutover, trigger rollback, or can be handled through forward fixes',
+  },
+  {
+    pattern: /custom adapterfactory|adapterfactory|adapter factory|service ranking.*adapter/i,
+    mechanism: 'A custom AdapterFactory registers a source-to-target conversion as an OSGi service; adaptable classes, adapter classes, service ranking, and activation state determine whether Sling can use it.',
+    implementation: 'Keep adapter contracts narrow, return null only for unsupported input, avoid hidden remote work, register metadata correctly, and test competing adapters and service ranking.',
+    failure: 'adaptation resolves to the wrong implementation or returns null after a bundle or service-ranking change',
+    mistake: 'using a custom adapter to hide business orchestration or relying on ranking without documenting why multiple adapters exist',
+    architectDecision: 'whether adaptation is the clearest stable API or an explicit service contract would make dependencies and failure behavior easier to own',
+  },
+  {
+    pattern: /repeated adaptation|hidden work|expensive business logic|adaptation from expensive/i,
+    mechanism: 'Adaptation may execute injectors, initialization, and adapter code each time it is requested, so repeated adaptation in rendering paths can hide significant repository or service work.',
+    implementation: 'Adapt once per request path where practical, keep adapter work deterministic, move expensive operations to observable services, and measure model or adapter execution.',
+    failure: 'component rendering time grows with component count because the same resource is repeatedly adapted and performs hidden work',
+    mistake: 'assuming adaptTo is a free cast and invoking it repeatedly inside loops or nested component rendering',
+    architectDecision: 'where adaptation remains a lightweight boundary and where caching, precomputation, or explicit services are required',
+  },
+  {
+    pattern: /null adaptation|null behavior|unsupported adaptation|adapter precondition/i,
+    mechanism: 'adaptTo returns null when no adapter supports the source and target combination or when the registered adapter cannot satisfy its preconditions.',
+    implementation: 'Document source and target types, validate required content and permissions, log actionable failure context, and test both successful and null adaptation.',
+    failure: 'a caller silently renders empty output because null adaptation is treated as optional data rather than a broken contract',
+    mistake: 'chaining methods after adaptTo or swallowing null without distinguishing unsupported adaptation from missing content or permissions',
+    architectDecision: 'how adapter preconditions and null behavior are documented so reusable APIs fail predictably instead of silently',
+  },
+  {
+    pattern: /coupling services to request|request-only assumption|request objects/i,
+    mechanism: 'Request-bound adaptation can access selectors, bindings, attributes, and request injectors, but it couples the model or service to an HTTP rendering lifecycle.',
+    implementation: 'Keep reusable domain and service logic request-independent, pass explicit inputs, and reserve request adaptation for presentation concerns that truly need request context.',
+    failure: 'logic works in an HTL request but cannot be reused by jobs, exporters, tests, or background processing',
+    mistake: 'passing SlingHttpServletRequest deep into services instead of extracting the small piece of context the capability actually needs',
+    architectDecision: 'how to preserve reusable service boundaries while still supporting legitimate request-specific presentation behavior',
+  },
+  {
+    pattern: /keyboard|screen.reader|focus management|interactive component/i,
+    mechanism: 'Accessible interactive components require semantic controls, predictable keyboard operation, visible focus, correct state announcements, and deliberate focus movement.',
+    implementation: 'Define the keyboard and screen-reader contract before implementation, use native semantics first, test focus order and state changes, and include assistive-technology review.',
+    failure: 'keyboard or screen-reader users cannot complete a critical interaction after a shared component release',
+    mistake: 'relying on click behavior and automated scans without manually testing keyboard flow, focus restoration, and announced state',
+    architectDecision: 'which interaction patterns are centrally governed so every brand does not solve accessibility behavior differently',
+  },
+  {
+    pattern: /alt text|decorative image|image metadata/i,
+    mechanism: 'Accessible image output depends on the content purpose: informative images need meaningful alternatives, decorative images need empty alternatives, and complex images may need adjacent explanation.',
+    implementation: 'Model image purpose in the dialog or DAM metadata, guide authors with validation, and render the appropriate alt behavior without duplicating filenames or captions.',
+    failure: 'a content release exposes missing or misleading alternative text across high-traffic pages',
+    mistake: 'forcing non-empty alt text for every image, which causes authors to describe decorative assets or repeat visible text',
+    architectDecision: 'how authoring guidance, DAM metadata, component behavior, and governance share responsibility for accessible media',
+  },
+  {
+    pattern: /heading hierarchy|landmark|semantic/i,
+    mechanism: 'Headings and landmarks create the navigable document structure used by assistive technology; editable page composition can break that structure when components choose semantics independently.',
+    implementation: 'Define page-level semantic ownership, give components controlled heading options, validate authored combinations, and test representative templates.',
+    failure: 'assembled pages contain skipped heading levels, duplicate main landmarks, or sections with no usable accessible name',
+    mistake: 'letting each component default to its own heading level without considering the page context',
+    architectDecision: 'how semantic structure is governed across flexible authoring without removing legitimate content variation',
+  },
+  {
+    pattern: /contrast|theme|design token/i,
+    mechanism: 'Color contrast depends on the resolved combination of text, background, states, overlays, and brand tokens rather than a single component color.',
+    implementation: 'Constrain approved token combinations, test interactive states and media overlays, and block author selections that cannot meet the required contrast.',
+    failure: 'a brand-theme or author configuration change makes shared component text unreadable in production',
+    mistake: 'testing only default colors and ignoring hover, focus, disabled, image-overlay, and author-configurable combinations',
+    architectDecision: 'how brand flexibility is expressed through governed tokens without allowing inaccessible combinations',
+  },
+  {
+    pattern: /deny-by-default|dispatcher filter|protecting publish|authoring and internal endpoints|exposing.*endpoint/i,
+    mechanism: 'Dispatcher filters are an allowlist security boundary in front of Publish; they evaluate method, URL, selectors, extension, suffix, and query patterns before a request reaches AEM.',
+    implementation: 'Start from deny-all rules, allow only documented public capabilities, test positive and negative requests, and pair filtering with application authorization.',
+    failure: 'a public request reaches an internal or authoring-oriented endpoint that should never be exposed through Publish',
+    mistake: 'adding a broad allow rule to fix one blocked request without testing the selectors, suffixes, methods, and adjacent endpoints it also exposes',
+    architectDecision: 'how to expose the minimum public surface while keeping endpoint ownership, authorization, and regression testing explicit',
+  },
+  {
+    pattern: /model exporter|exported contract|exporter contract/i,
+    mechanism: 'Sling Model Exporter serializes a deliberately exposed model adapter, commonly through Jackson, into a versioned JSON contract consumed by components or external clients.',
+    implementation: 'Define the exported interface, expose only approved fields, keep serialization deterministic, test backward compatibility, and separate integration data from presentation internals.',
+    failure: 'a consumer breaks or sensitive fields appear after an exporter change alters the JSON contract unexpectedly',
+    mistake: 'exporting an implementation class directly and allowing internal fields or unstable model behavior to become a public contract',
+    architectDecision: 'whether the exporter is an internal component contract or a governed API that requires versioning, compatibility, and consumer ownership',
+  },
+  {
+    pattern: /resource versus request adaptable|resource vs request adaptable|resource and request adaptable/i,
+    mechanism: 'A Resource-adaptable model depends on repository content and is reusable outside HTTP requests, while a request-adaptable model can use bindings, request attributes, selectors, and request-specific injectors.',
+    implementation: 'Choose Resource by default for content-driven models; use request adaptation only when the contract genuinely needs request context, and test both adaptation paths explicitly.',
+    failure: 'a model adapts in HTL but returns null in background processing, exporter usage, or unit tests because it unnecessarily requires a request',
+    mistake: 'using SlingHttpServletRequest as the default adaptable and silently coupling reusable model logic to an HTTP rendering context',
+    architectDecision: 'how to keep presentation models reusable and testable without hiding legitimate request-context dependencies',
+  },
+  {
+    pattern: /injector|optional injection|injection strategy/i,
+    mechanism: 'Sling Model injectors resolve values from distinct sources such as ValueMap properties, child resources, OSGi services, requests, and script bindings; required and optional behavior defines the model contract.',
+    implementation: 'Use explicit injectors, make business-required values mandatory, reserve optional injection for genuinely optional content, and test missing-source behavior.',
+    failure: 'a model returns partial or empty output because optional injection hides a broken content, service, or adaptable contract',
+    mistake: 'making every field optional to prevent adaptation errors, which converts visible defects into silent production data loss',
+    architectDecision: 'how strict model contracts should be so authors receive useful flexibility without hiding content and integration failures',
+  },
+  {
+    pattern: /@postconstruct|postconstruct/i,
+    mechanism: '@PostConstruct runs after Sling Model injection and before the adapted model is returned, making it appropriate for lightweight validation and derived-value preparation.',
+    implementation: 'Keep PostConstruct deterministic and inexpensive, move queries and remote calls into observable services, and fail clearly when required initialization cannot complete.',
+    failure: 'page rendering latency rises because every component adaptation performs hidden queries or remote calls during PostConstruct',
+    mistake: 'treating PostConstruct as a general service orchestration hook instead of a short model-initialization step',
+    architectDecision: 'where model preparation ends and reusable cached or resilient business services should take responsibility',
+  },
+  {
+    pattern: /java use api|javascript use api|use api.*sling models/i,
+    mechanism: 'HTL Use APIs expose backing objects to templates: Sling Models are the preferred typed and testable Java pattern, Java Use API supports simple backing classes, and JavaScript Use API carries maintainability and runtime limitations.',
+    implementation: 'Prefer Sling Models for durable component contracts, keep use objects presentation-focused, and migrate legacy JavaScript Use API when the logic needs testing, services, or long-term ownership.',
+    failure: 'template behavior becomes difficult to test or support because business logic is split across HTL and legacy use objects',
+    mistake: 'choosing a Use API only because it is quick to add, without considering dependency injection, testing, service access, and future maintenance',
+    architectDecision: 'which backing-object patterns are supported across the platform and how legacy use objects will be retired',
+  },
+  {
+    pattern: /node type|primary type|mixin|namespace|same-name sibling/i,
+    mechanism: 'JCR node types define structural contracts, while mixins add optional behavior such as versioning or referenceability without changing the primary content model.',
+    implementation: 'Inspect the effective node type, required and protected properties, mixins, and importer behavior before changing repository structures.',
+    failure: 'content import or authoring starts failing because existing nodes no longer satisfy the repository contract',
+    mistake: 'introducing a restrictive custom node type before proving that nt:unstructured plus governed properties is insufficient',
+    architectDecision: 'whether stronger repository contracts justify the migration, compatibility, and upgrade cost',
+  },
+  {
+    pattern: /version|restore|checkout|checkin/i,
+    mechanism: 'JCR versioning creates version histories and frozen snapshots; restore behavior affects both the selected node and versionable descendants.',
+    implementation: 'Define which content is versionable, test restore semantics and references, and monitor version-storage growth before enabling broad usage.',
+    failure: 'a restore returns incomplete or unexpected content and version storage grows faster than planned',
+    mistake: 'treating versioning as a substitute for release governance, backup, or content reconciliation',
+    architectDecision: 'where version history provides business value versus repository growth and operational complexity',
+  },
+  {
+    pattern: /observation|event listener|event handling/i,
+    mechanism: 'Repository observation emits changes after persistence, but listeners must tolerate duplicate, reordered, and high-volume events in clustered or dynamic topology.',
+    implementation: 'Filter narrowly, keep listeners lightweight, delegate durable work to Sling Jobs, and make processing idempotent.',
+    failure: 'a burst of content changes creates duplicate downstream work and degrades Author responsiveness',
+    mistake: 'performing slow integration or repository work directly inside an observation callback',
+    architectDecision: 'whether the use case needs observation, a Sling Job, workflow, scheduled reconciliation, or an external event integration',
+  },
+  {
+    pattern: /query|index|traversal|oak/i,
+    mechanism: 'Oak selects indexes from the query shape, path restriction, property predicates, ordering, and index cost; unsupported queries fall back to traversal.',
+    implementation: 'Capture the query plan, scope the path, constrain results, test realistic cardinality, and deploy the smallest supported index change.',
+    failure: 'Publish p95 latency jumps from under one second to several seconds while logs report traversal warnings',
+    mistake: 'adding a broad index or raising traversal limits without fixing the query and validating index cost',
+    architectDecision: 'whether the requirement belongs in JCR search, a precomputed model, an external search service, or a different content design',
+  },
+  {
+    pattern: /resource resolver|service user|subservice|acl|permission|least.?privilege/i,
+    mechanism: 'Repository access is evaluated through the authenticated resolver and effective ACLs; service-user mappings bind backend capabilities to reviewable least-privilege identities.',
+    implementation: 'Use a narrowly named subservice, provision ACLs through repoinit, close resolvers, and test both allowed and denied paths.',
+    failure: 'a backend process works in one environment but returns empty results or access-denied errors in another',
+    mistake: 'using an administrative resolver or broad ACL to hide an incorrect service-user mapping',
+    architectDecision: 'how to separate capability ownership and permissions so one compromised service cannot access unrelated content',
+  },
+  {
+    pattern: /dialog|component|resource supertype|delegation|data layer/i,
+    mechanism: 'An AEM component is an authoring and rendering contract spanning dialog storage, policies, Sling Models, HTL, client-side behavior, analytics, and backward compatibility.',
+    implementation: 'Define the content contract first, delegate to Core Components where possible, keep variants policy-driven, and test existing authored content.',
+    failure: 'a component release causes blank or inconsistent rendering only on pages authored with an older property shape',
+    mistake: 'copying a Core Component or changing persisted properties without a compatibility and migration plan',
+    architectDecision: 'how much configurability improves reuse before author complexity, test surface, and release coupling become unacceptable',
+  },
+  {
+    pattern: /editable template|template type|policy|allowed component|responsive grid|locked structure|initial content/i,
+    mechanism: 'Editable templates combine template types, locked structure, initial content, allowed components, and policies under /conf to govern page creation and component behavior.',
+    implementation: 'Separate centrally controlled structure from author-editable content, version policy changes, and test against existing pages before rollout.',
+    failure: 'authors lose components from the side panel or Publish renders differently after a policy or template change',
+    mistake: 'changing shared template structure or policies without auditing every site and page type that consumes them',
+    architectDecision: 'how to balance local author freedom with shared page governance and backward compatibility',
+  },
+  {
+    pattern: /htl|display context|data-sly|use api|escaping|markup/i,
+    mechanism: 'HTL compiles templates into server-side rendering code and applies context-aware escaping based on whether output appears as text, an attribute, URI, script, style, or HTML.',
+    implementation: 'Prepare data in Sling Models, use explicit display contexts only when required, keep templates declarative, and inspect rendered markup during testing.',
+    failure: 'a release produces broken markup or an exploitable output path because dynamic data is rendered in the wrong context',
+    mistake: 'using an unsafe context or moving repository and business logic into the template to solve a rendering problem quickly',
+    architectDecision: 'which presentation contracts should be standardized so security, accessibility, and rendering performance remain consistent',
+  },
+  {
+    pattern: /sling model|adaptable|injector|@via|@postconstruct|model exporter|adaptto|adapter/i,
+    mechanism: 'Sling Models and adapters convert a Resource or request into a typed contract; adaptation succeeds only when the registered adapter, adaptable, injectors, permissions, and required data align.',
+    implementation: 'Choose the narrowest adaptable, make required dependencies explicit, keep initialization lightweight, and test null and failure behavior on Publish.',
+    failure: 'a measurable percentage of components render blank on Publish because adaptation returns null or required injection fails',
+    mistake: 'making every injection optional or calling remote services in @PostConstruct, which hides broken contracts and slows rendering',
+    architectDecision: 'where presentation adaptation ends and a stable, observable OSGi business service should begin',
+  },
+  {
+    pattern: /dispatcher|cache|statfileslevel|invalidat|cdn|ttl|vhost|ignoreurlparams/i,
+    mechanism: 'Dispatcher and CDN cache behavior is determined by URL design, filters, response headers, cache variation, vhost selection, and invalidation boundaries.',
+    implementation: 'Prove the response at Publish, Dispatcher, and CDN separately; inspect cache headers and files; then correct the narrow rule or invalidation path.',
+    failure: 'cache-hit ratio drops from above 90% to near 40% or published content remains stale for one domain after a release',
+    mistake: 'clearing the entire cache before identifying whether URL variation, vhost matching, invalidation, or CDN TTL owns the issue',
+    architectDecision: 'which experiences can be edge-cached safely and how freshness, personalization, security, and origin protection should trade off',
+  },
+  {
+    pattern: /osgi|bundle|configuration|scheduler|job|service reference|package import/i,
+    mechanism: 'OSGi manages modular service lifecycle, package wiring, references, and typed configuration; a component activates only when its dependencies and configuration are satisfied.',
+    implementation: 'Inspect bundle wiring and component state, define narrow service contracts, make failure behavior explicit, and keep scheduled or asynchronous work topology-safe.',
+    failure: 'a successful deployment leaves a service unsatisfied or creates duplicate scheduled processing after scaling',
+    mistake: 'restarting bundles repeatedly instead of fixing the missing package, reference, configuration, or topology assumption',
+    architectDecision: 'how to define service boundaries, resilience, configuration ownership, and observability without creating excessive module complexity',
+  },
+  {
+    pattern: /content fragment|graphql|persisted query|headless|schema/i,
+    mechanism: 'Content Fragment Models define the structured content and GraphQL schema contract; persisted queries turn approved selections into cacheable, governable delivery endpoints.',
+    implementation: 'Model durable business entities, control references, publish models and content, version consumer contracts, and measure query cost and cache behavior.',
+    failure: 'a consumer loses fields or receives stale data after a model, persisted-query, reference, or publication change',
+    mistake: 'changing a shared model as if it were an internal authoring detail rather than a versioned API contract',
+    architectDecision: 'how to balance normalized reusable content against authoring usability, query cost, cacheability, and consumer independence',
+  },
+  {
+    pattern: /msm|live copy|blueprint|rollout|translation|locale/i,
+    mechanism: 'MSM and translation coordinate shared source content with local ownership through blueprints, live copies, rollout actions, inheritance, and translation workflows.',
+    implementation: 'Define ownership and inheritance boundaries, test rollout and localization dependencies, and audit local exceptions before broad changes.',
+    failure: 'a rollout overwrites a market-specific change or publishes source-language references into localized pages',
+    mistake: 'using inheritance as a substitute for explicit content ownership and rollout governance',
+    architectDecision: 'which content must remain globally controlled and where local markets require deliberate autonomy',
+  },
+  {
+    pattern: /workflow|launcher|launch|approval|process step/i,
+    mechanism: 'AEM workflows coordinate persisted or transient steps, participants, launchers, retries, and payload state; every custom step must be idempotent and observable.',
+    implementation: 'Keep payloads bounded, isolate integrations, define retry and compensation behavior, and monitor queue depth and long-running instances.',
+    failure: 'workflow backlog grows from hundreds to thousands after a bulk upload or an external dependency slows down',
+    mistake: 'adding retries without idempotency or running expensive synchronous work in a launcher-triggered process',
+    architectDecision: 'whether the business process needs an AEM workflow, asynchronous job, external orchestration, or simpler governance',
+  },
+  {
+    pattern: /dam|asset|rendition|image|dynamic media|metadata/i,
+    mechanism: 'AEM Assets combines binary lifecycle, metadata, renditions, references, processing workflows, permissions, and delivery optimization.',
+    implementation: 'Define metadata and folder governance, choose the delivery and rendition strategy, monitor processing, and preserve references during changes.',
+    failure: 'new assets remain unprocessed or pages deliver oversized originals after an ingestion or workflow change',
+    mistake: 'treating DAM as file storage without lifecycle, rights, metadata, processing, and delivery ownership',
+    architectDecision: 'which asset capabilities belong in AEM, Dynamic Media, an external DAM, or an edge delivery service',
+  },
+  {
+    pattern: /security|xss|csrf|cors|servlet|endpoint|secret|credential/i,
+    mechanism: 'AEM security is layered across authentication, effective repository permissions, input validation, safe rendering, Dispatcher filters, secrets, and operational access.',
+    implementation: 'Threat-model the endpoint or capability, deny by default, validate inputs and outputs, test effective permissions, and monitor misuse.',
+    failure: 'a penetration test exposes content or an endpoint through an allowed selector, method, path, or overly broad service identity',
+    mistake: 'relying on a single control such as Dispatcher while leaving application authorization or output handling unsafe',
+    architectDecision: 'how controls prevent exposure while preserving required authoring, integration, and delivery capabilities',
+  },
+  {
+    pattern: /monitor|logging|observability|incident|troubleshoot|production support/i,
+    mechanism: 'Production diagnosis requires a timeline and correlated evidence across user impact, deployments, content changes, logs, metrics, cache layers, and dependencies.',
+    implementation: 'Preserve evidence, state hypotheses, isolate the owning layer, apply the smallest reversible mitigation, and verify recovery with user-impact signals.',
+    failure: 'an intermittent issue recurs because mitigation removed the symptom but no evidence, owner, or prevention action was captured',
+    mistake: 'jumping to restarts, cache clears, or rollback without proving the failing layer and preserving evidence',
+    architectDecision: 'which service levels, telemetry, ownership, and recovery controls make the platform supportable at enterprise scale',
+  },
+  {
+    pattern: /migrat|upgrade|legacy|cutover|content transfer/i,
+    mechanism: 'AEM migration combines code compatibility, content transformation, permissions, indexes, integrations, operating-model change, reconciliation, and cutover control.',
+    implementation: 'Inventory dependencies, define transformation and validation rules, rehearse at production scale, and make rollback or forward-fix criteria explicit.',
+    failure: 'cutover completes technically but content, permissions, redirects, or integrations fail validation for a critical business journey',
+    mistake: 'treating migration as a one-time content copy instead of a rehearsed business and operating-model transition',
+    architectDecision: 'how to sequence waves, contain risk, preserve business change, and retire legacy capability without creating parallel platforms indefinitely',
+  },
+  {
+    pattern: /test|accessibility|seo|canonical|wcag/i,
+    mechanism: 'Quality requirements must be encoded in component contracts, authoring guidance, automated checks, and release evidence while retaining expert review for behavior automation cannot prove.',
+    implementation: 'Define acceptance criteria, automate stable checks, test representative content and assistive or crawler behavior, and track regressions to ownership.',
+    failure: 'a shared release creates a cross-site accessibility, SEO, or functional regression that automated unit tests did not cover',
+    mistake: 'treating a passing automated scanner as proof of complete user or crawler behavior',
+    architectDecision: 'which quality gates are mandatory, where expert review is required, and how evidence scales across brands and releases',
+  },
+];
 
-  if (intent === 'architecture') {
-    return `${directAnswer} The design should be justified against enterprise scale, ownership, operability, and failure isolation. ${profile.tradeOff}`;
-  }
+const enterpriseCases = [
+  { industry: 'retail', journey: 'a Black Friday catalog and campaign estate', scale: 'forty regional sites', outcome: 'kept peak-origin load within the agreed capacity budget' },
+  { industry: 'banking', journey: 'public product pages and regulated application journeys', scale: 'twelve million monthly visits', outcome: 'preserved auditability and prevented customer-data exposure' },
+  { industry: 'healthcare', journey: 'patient education and provider-location experiences', scale: 'multiple regulated markets', outcome: 'maintained accessibility, approval, and localization controls' },
+  { industry: 'media', journey: 'breaking-news and live-event publishing', scale: 'highly variable global traffic', outcome: 'reduced publication-to-edge time while protecting Publish' },
+  { industry: 'telecom', journey: 'device, plan, and support experiences', scale: 'hundreds of campaign and product pages', outcome: 'reduced repeated incidents and market-specific content drift' },
+  { industry: 'e-commerce', journey: 'product discovery and promotion experiences', scale: 'a large reusable content and component estate', outcome: 'improved conversion-path stability without coupling releases' },
+];
 
-  if (intent === 'security') {
-    return `${directAnswer} Apply least privilege and deny-by-default controls, then verify effective behavior through ${formatEvidence(profile.evidence.slice(0, 2))}.`;
-  }
-
-  if (intent === 'performance') {
-    return `${directAnswer} Measure before changing the design, isolate the slow or uncacheable layer, and validate the result with production-like traffic and ${formatEvidence(profile.evidence.slice(0, 2))}.`;
-  }
-
-  if (intent === 'migration') {
-    return `${directAnswer} A safe migration inventories unsupported behavior, redesigns the operating model, rehearses data and code movement, and validates rollback or forward-fix criteria.`;
-  }
-
-  if (intent === 'comparison') {
-    return `${directAnswer} Compare the options by authoring experience, runtime behavior, security, cacheability, delivery ownership, and long-term governance.`;
-  }
-
-  if (intent === 'implementation') {
-    return `${directAnswer} The implementation is complete only when production behavior, failure handling, and ownership are validated.`;
-  }
-
-  return `${directAnswer} ${profile.whyAndWhen}`;
+function hashQuestion(value: string) {
+  return Array.from(value).reduce((hash, character) => ((hash * 31) + character.charCodeAt(0)) >>> 0, 2166136261);
 }
 
-function getIntentDetailedAnswer(question: string, intent: QuestionIntent, profile: TopicQualityProfile): string[] {
-  const intentSpecific: Record<QuestionIntent, string> = {
-    concept: `When: ${profile.whyAndWhen}`,
-    implementation: `How: ${profile.implementation}`,
-    comparison: `Decision criteria: ${profile.tradeOff}`,
-    troubleshooting: `Troubleshooting path: inspect ${profile.evidence.join(', ')}, isolate the owning layer, reproduce safely, and validate the smallest durable fix.`,
-    architecture: `Architecture decision: ${profile.tradeOff}`,
-    security: `Security review: verify least privilege and inspect ${profile.evidence.join(', ')} before approving the design.`,
-    performance: `Performance method: establish a baseline, inspect ${profile.evidence.join(', ')}, change one bottleneck, then compare results.`,
-    migration: `Migration method: ${profile.cloudService}`,
+function pickQuestionVariant<T>(hash: number, variants: T[], offset = 0) {
+  return variants[(hash + offset) % variants.length];
+}
+
+function withoutTrailingPunctuation(value: string) {
+  return value.replace(/[.!?]+$/, '');
+}
+
+function extractQuestionConcern(question: string, topic: string) {
+  const patterns = [
+    /^How would you approach (.+?) in .+?\? Include operational constraints/i,
+    /^How would you handle (.+?) in an enterprise/i,
+    /^A production incident exposes a weakness in (.+?)\./i,
+    /^During production support, how would you diagnose and resolve a failure involving (.+?) in /i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = question.match(pattern);
+    if (match?.[1]) return match[1].trim();
+  }
+
+  return question
+    .replace(/\?$/, '')
+    .replace(/^(What is|What are|Explain|How would you|How do you|How does|Why should you|When should you)\s+/i, '')
+    .replace(new RegExp(`\\s+in ${topic}$`, 'i'), '')
+    .trim();
+}
+
+function getQuestionKnowledge(category: string, question: string, profile: TopicQualityProfile): Omit<QuestionKnowledge, 'pattern'> {
+  const matched = questionKnowledge.find((knowledge) => knowledge.pattern.test(question))
+    ?? questionKnowledge.find((knowledge) => knowledge.pattern.test(category));
+  return matched ?? {
+    mechanism: profile.core,
+    implementation: profile.implementation,
+    failure: profile.productionFailure.charAt(0).toLowerCase() + profile.productionFailure.slice(1),
+    mistake: `treating the decision as a ${profile.core.toLowerCase()} definition instead of validating its runtime behavior`,
+    architectDecision: profile.tradeOff,
+  };
+}
+
+function getIncidentSignal(category: string, question: string, knowledge: Omit<QuestionKnowledge, 'pattern'>) {
+  const value = `${category} ${question}`.toLowerCase();
+  const signals: Array<[RegExp, string]> = [
+    [/reading query plans|query plan|index cost/, 'the query plan switches to an expensive index after content growth and the affected endpoint exceeds its two-second latency budget'],
+    [/preventing repository traversal|traversal prevention/, 'Oak traversal warnings increase from zero to thousands per hour and Publish CPU remains elevated after traffic returns to normal'],
+    [/workflow launchers? from flooding|launcher.*flood/, 'a bulk metadata change creates 14,000 workflow instances in eleven minutes and blocks time-sensitive editorial workflows'],
+    [/custom process steps? idempotent|idempotent.*process step/, 'a retried process step creates duplicate downstream records and sends the same customer notification three times'],
+    [/high-volume asset ingestion|asset ingestion/, 'an ingestion wave adds 60,000 assets, processing backlog exceeds 8,000 jobs, and new product imagery misses the launch window'],
+    [/monitoring asset-processing failures/, 'uploads report success while 7% of assets lack required web renditions and no alert fires until authors open the affected pages'],
+    [/selecting blueprint boundaries|blueprint boundaries/, 'a rollout from one broad blueprint modifies unrelated local sections across six markets'],
+    [/governing rollout ownership|rollout ownership/, 'a rollout overwrites approved local legal content because no market owner reviewed or accepted the impact report'],
+    [/content transformation and validation/, 'migrated page counts reconcile but 12% of legacy components render empty because transformed properties do not satisfy the target contract'],
+    [/migration completeness and reconciliation|measuring migration completeness/, 'aggregate migration counts match while a business-critical cohort of 4,300 localized pages and references is absent from the target'],
+    [/designing acls for shared content|acls for shared content/, 'a regional author can modify shared global content after a parent-path ACL change intended for one workflow'],
+    [/replacing administrative sessions|administrative sessions/, 'removing an administrative resolver breaks one service while the replacement shared service user still retains unrelated repository access'],
+    [/template type ownership|template type.*deployment/, 'a template-type release changes authoring behavior across 18 derived templates and several existing page types'],
+    [/initial content lifecycle/, 'new pages contain the revised starting content while thousands of existing pages remain unchanged and business owners expected synchronization'],
+    [/namespaces and stable repository contracts|repository namespaces/, 'a package deployment conflicts with an existing property contract and downstream importers reject the renamed fields'],
+    [/building inventory, dependency maps, and migration waves|dependency maps.*migration waves/, 'a migration wave reaches cutover before a shared identity or integration dependency is ready, blocking critical journeys'],
+    [/validating seo, redirects, analytics, and integrations at cutover|seo.*redirects.*analytics/, 'the new site returns HTTP 200 while redirect coverage, canonical signals, analytics events, and a payment integration fail post-cutover checks'],
+    [/deny-by-default|dispatcher filter|protecting publish|internal endpoint/, 'a negative security test returns HTTP 200 for an internal endpoint that should be blocked before reaching Publish'],
+    [/model exporter|exporter contract|exported contract/, 'the React consumer starts failing contract tests because the JSON response loses a required field and exposes an unapproved internal property'],
+    [/java use api|javascript use api|use api.*sling models/, 'a component works on Author but fails on Publish because a legacy use object cannot resolve its dependency and has no useful automated coverage'],
+    [/display context|escaping|unsafe output|dynamic attribute|rendering urls/, 'the security scan reports a new reflected-output finding and browser tests show malformed markup on pages using the changed HTL template'],
+    [/dispatcher|cache|cdn/, 'Dispatcher cache-hit ratio falls from 94% to 41% for one live domain and Publish request volume triples within ten minutes'],
+    [/query|index|jcr|repository/, 'Publish p95 response time rises from 650 ms to 5.2 seconds while traversal warnings appear for the affected content path'],
+    [/sling model|adaptable|injector|adaptto/, '18% of product-card components render empty on Publish while the same content works on Author'],
+    [/htl|markup/, 'the security scan reports a new reflected-output finding and browser tests show malformed markup on pages using the changed template'],
+    [/workflow|launcher|launch/, 'the workflow queue grows from 300 to 14,000 instances after a bulk content operation and Author response time degrades'],
+    [/replication|publish/, 'the publication queue remains blocked for 37 minutes and referenced fragments are missing from the live response'],
+    [/asset|dam|rendition|image/, 'asset-processing backlog exceeds 8,000 jobs and newly uploaded hero images are delivered as oversized originals'],
+    [/osgi|bundle|service|configuration|scheduler|job/, 'the deployment completes but a required component remains unsatisfied and the affected integration error rate reaches 28%'],
+    [/security|servlet|endpoint|permission|service user|resource resolver/, 'a penetration or access review proves that an unauthorized request can read content outside the intended service boundary'],
+    [/graphql|content fragment|headless|schema/, 'a mobile consumer begins receiving missing fields and stale references immediately after a model or persisted-query release'],
+    [/msm|translation|live copy|rollout/, 'a rollout updates 240 localized pages but overwrites market-specific legal content in three regions'],
+    [/accessibility|wcag/, 'keyboard navigation fails on the shared component across 18 sites and the release blocks the regulated accessibility gate'],
+    [/seo|canonical|redirect/, 'crawl monitoring reports a sharp rise in duplicate URLs and canonical mismatches after the release'],
+    [/migrat|upgrade|cutover/, 'cutover validation finds that 6% of migrated pages have broken references, permissions, or redirects'],
+    [/monitor|logging|incident|troubleshoot|production support/, 'customer error rate rises from 0.4% to 7% but the first alert arrives only after support tickets increase'],
+  ];
+
+  return signals.find(([pattern]) => pattern.test(value))?.[1] ?? knowledge.failure;
+}
+
+function getDetailedAnswerByIntent(
+  intent: QuestionIntent,
+  concern: string,
+  knowledge: Omit<QuestionKnowledge, 'pattern'>,
+  directAnswer: string,
+  evidence: string[],
+  profile: TopicQualityProfile,
+  hash: number,
+) {
+  const evidenceText = formatEvidence(evidence);
+  const answers: Record<QuestionIntent, string[]> = {
+    concept: [
+      `Direct answer: ${directAnswer}`,
+      `What: ${knowledge.mechanism}`,
+      `Why: ${concern} matters because it changes runtime behavior, supportability, and the reliability of the content or delivery contract.`,
+      `How: ${knowledge.implementation}`,
+      `Common risk: ${knowledge.mistake}.`,
+      `Production tip: Validate the concept through ${evidenceText} rather than relying only on configuration or code inspection.`,
+    ],
+    implementation: [
+      `Direct answer: ${directAnswer}`,
+      `How: For ${concern}, ${knowledge.implementation.charAt(0).toLowerCase()}${knowledge.implementation.slice(1)}`,
+      `Validation: Prove ${concern} using ${evidenceText}, including its behavior on Publish and under realistic content conditions.`,
+      `Failure mode: The design is incomplete if ${withoutTrailingPunctuation(knowledge.failure)}.`,
+      `Production tip: Add a regression check and an operational signal specifically for ${concern} before promoting the change.`,
+      `Architect consideration: For ${concern}, decide ${withoutTrailingPunctuation(knowledge.architectDecision)}.`,
+    ],
+    comparison: [
+      `Direct answer: ${directAnswer}`,
+      `Decision criteria: Compare the options by their effect on ${concern}, runtime coupling, authoring experience, security, cacheability, and support ownership.`,
+      `Trade-off: ${knowledge.architectDecision}.`,
+      `Validation: Prototype the highest-risk difference and compare ${evidenceText}.`,
+      `Common risk: Choosing the familiar option without measuring its operational consequences.`,
+      `Architect consideration: Record when each option is allowed so teams do not make the decision inconsistently.`,
+    ],
+    troubleshooting: [
+      `Direct answer: ${directAnswer}`,
+      `Observed symptom: ${getIncidentSignal('', concern, knowledge)}.`,
+      `Likely root cause: The failure usually sits in the implementation or operating assumptions around ${concern}; verify rather than infer the owner.`,
+      `Troubleshooting approach: Preserve ${evidence[0]}, compare ${evidence[1]} with a healthy request or pre-release baseline, then use ${evidence[2]} to isolate the failing layer.`,
+      `Durable fix: Correct the narrow cause, add a regression test or monitor, and confirm the original user journey recovers.`,
+      `Common risk: Applying a broad restart, cache clear, ACL expansion, or rollback before preserving evidence.`,
+    ],
+    architecture: [
+      `Direct answer: ${directAnswer}`,
+      `Architecture decision: ${knowledge.architectDecision}.`,
+      `Operating model: Define the owner, supported implementation, release control, observability, and recovery path for ${concern}.`,
+      `Trade-off: ${profile.tradeOff}`,
+      `Validation: Use ${evidenceText} plus a failure rehearsal to prove the design under realistic scale.`,
+      `Governance and ownership: Document the decision, measurable guardrails, exception process, and retirement trigger.`,
+    ],
+    security: [
+      `Direct answer: ${directAnswer}`,
+      `Threat: For ${concern}, identify the protected resource, trust boundary, allowed actor, and misuse path.`,
+      `Security review: Apply least privilege and deny-by-default controls, then validate effective behavior using ${evidenceText}.`,
+      `Failure mode: ${withoutTrailingPunctuation(knowledge.failure)}.`,
+      `Common risk: ${knowledge.mistake}.`,
+      `Architect consideration: ${knowledge.architectDecision}.`,
+    ],
+    performance: [
+      `Direct answer: ${directAnswer}`,
+      `Baseline: Measure ${concern} before changing code or configuration and separate cache-hit from origin behavior.`,
+      `Performance method: Correlate ${evidenceText}, identify the dominant bottleneck, change one variable, and compare production-like results.`,
+      `Failure mode: ${withoutTrailingPunctuation(knowledge.failure)}.`,
+      `Common risk: Optimizing a secondary symptom while URL design, query shape, rendering work, or integration latency remains unchanged.`,
+      `Architect consideration: Define a performance budget, load assumption, and release regression threshold.`,
+    ],
+    migration: [
+      `Direct answer: ${directAnswer}`,
+      `Migration method: Inventory every dependency affected by ${concern}, define transformation and validation rules, and rehearse with production-scale content.`,
+      `Compatibility check: Use ${evidenceText} to compare source and target behavior before cutover.`,
+      `Failure mode: ${withoutTrailingPunctuation(knowledge.failure)}.`,
+      `Cutover decision: Define reconciliation, rollback or forward-fix criteria, ownership, and the business acceptance gate.`,
+      `Architect consideration: ${knowledge.architectDecision}.`,
+    ],
   };
 
-  return [
-    `Direct answer: ${getQuestionSpecificGuidance(question, profile)}`,
-    `What: ${profile.core}`,
-    `Why: ${profile.whyAndWhen}`,
-    intentSpecific[intent],
-    `Production and Cloud Service: ${profile.cloudService}`,
-    `Governance and ownership: ${profile.governance}`,
+  const contextualVariants = [
+    answers[intent],
+    [
+      `Direct answer: ${directAnswer}`,
+      `Mechanics: ${knowledge.mechanism}`,
+      `Implementation choices: For ${concern}, ${knowledge.implementation.charAt(0).toLowerCase()}${knowledge.implementation.slice(1)}`,
+      `Diagnostic evidence: Use ${evidenceText} to prove the behavior and distinguish the owning layer.`,
+      `Failure mode: ${withoutTrailingPunctuation(knowledge.failure)}.`,
+      `Architect consideration: ${withoutTrailingPunctuation(knowledge.architectDecision)}.`,
+    ],
+    [
+      `Direct answer: ${directAnswer}`,
+      `Context: ${concern} must be understood as a runtime and operating contract, not only a code or configuration detail.`,
+      `What good looks like: ${knowledge.implementation}`,
+      `Troubleshooting approach: When ${withoutTrailingPunctuation(knowledge.failure)}, preserve ${evidence[0]}, compare ${evidence[1]} with a healthy baseline, and confirm the cause through ${evidence[2]}.`,
+      `Production tip: Add an observable guardrail and regression test tied specifically to ${concern}.`,
+      `Decision: ${withoutTrailingPunctuation(knowledge.architectDecision)}.`,
+    ],
   ];
+
+  return pickQuestionVariant(hash, contextualVariants, 1);
+}
+
+function getIntentSpecificMistakes(
+  intent: QuestionIntent,
+  concern: string,
+  knowledge: Omit<QuestionKnowledge, 'pattern'>,
+  evidence: string[],
+  hash: number,
+) {
+  const secondMistake: Record<QuestionIntent, string> = {
+    concept: `Explaining ${concern} accurately but never connecting it to the implementation decision or production behavior.`,
+    implementation: `Implementing ${concern} without testing its failure path, backward compatibility, and Publish behavior.`,
+    comparison: `Comparing ${concern} only by developer convenience and ignoring ownership, runtime coupling, security, and recovery.`,
+    troubleshooting: `Changing ${concern} before preserving ${evidence[0]} and establishing a healthy comparison baseline.`,
+    architecture: `Approving ${concern} without named ownership, measurable guardrails, or a credible recovery path.`,
+    security: `Assuming one control protects ${concern} without verifying effective authorization and exposure end to end.`,
+    performance: `Tuning ${concern} without a baseline or without separating cache, origin, repository, integration, and browser cost.`,
+    migration: `Moving ${concern} without reconciliation rules, realistic rehearsal, and an explicit cutover decision.`,
+  };
+
+  const evidenceMistake = pickQuestionVariant(hash, [
+    `Using ${evidence[1]} as the only signal and missing contradictory evidence in ${evidence[2]}.`,
+    `Reading ${evidence[0]} without correlating it to ${evidence[2]} and the actual user-visible symptom.`,
+    `Treating a healthy ${evidence[1]} as proof that every downstream dependency for ${concern} is healthy.`,
+    `Collecting ${evidence[0]} only after remediation has destroyed the original failure state.`,
+  ]);
+  const ownershipMistake = pickQuestionVariant(hash, [
+    `Closing the work after the immediate fix without adding a regression check, monitor, owner, and support note for ${concern}.`,
+    `Shipping the correction for ${concern} without defining who validates it after the next content or code release.`,
+    `Leaving ${concern} dependent on undocumented manual knowledge instead of a testable runbook and measurable guardrail.`,
+    `Accepting a temporary workaround for ${concern} without tracking the durable engineering and governance change.`,
+  ], 2);
+
+  return [
+    `A common mistake for ${concern} is ${knowledge.mistake}.`,
+    secondMistake[intent],
+    evidenceMistake,
+    ownershipMistake,
+  ];
+}
+
+function getIntentSpecificFollowUps(
+  intent: QuestionIntent,
+  concern: string,
+  evidence: string[],
+  architectDecision: string,
+  hash: number,
+) {
+  const leadQuestion: Record<QuestionIntent, string> = {
+    concept: `Where does ${concern} appear in a real AEM request, content, or delivery flow?`,
+    implementation: `What would your implementation of ${concern} look like in code, configuration, and tests?`,
+    comparison: `Which constraint would make you choose the other option for ${concern}?`,
+    troubleshooting: `What is the first piece of evidence you preserve when ${concern} fails in production?`,
+    architecture: `Which non-functional requirement most strongly changes the architecture for ${concern}?`,
+    security: `How would you prove that an unauthorized actor cannot misuse ${concern}?`,
+    performance: `What baseline and production-like test would prove your optimization of ${concern}?`,
+    migration: `How would you reconcile and validate ${concern} after a migration rehearsal?`,
+  };
+
+  const cloudFollowUp = pickQuestionVariant(hash, [
+    `What changes for ${concern} in AEM as a Cloud Service, and what remains the implementation team's responsibility?`,
+    `Which Cloud Service constraint changes your implementation or support plan for ${concern}?`,
+    `How would continuous updates, managed scaling, or restricted runtime access affect ${concern}?`,
+    `What would you validate with the Cloud Service SDK or Cloud Manager before releasing a change to ${concern}?`,
+  ]);
+  const architectureFollowUp = pickQuestionVariant(hash, [
+    `How would you defend this architecture decision: ${architectDecision}?`,
+    `Which scale, security, or ownership constraint would force you to revisit this decision: ${architectDecision}?`,
+    `What measurable guardrail would prove the architecture decision for ${concern} remains valid?`,
+    `How would you document an exception to this decision: ${architectDecision}?`,
+  ], 2);
+
+  return [
+    leadQuestion[intent],
+    `How would ${evidence[0]} and ${evidence[1]} confirm or disprove your explanation of ${concern}?`,
+    cloudFollowUp,
+    architectureFollowUp,
+  ];
+}
+
+function buildContextualQuestionContent(
+  coverage: TopicCoverage,
+  question: string,
+  intent: QuestionIntent,
+  profile: TopicQualityProfile,
+) {
+  const concern = extractQuestionConcern(question, coverage.topic);
+  const knowledge = getQuestionKnowledge(coverage.category, `${question} ${concern}`, profile);
+  const hash = hashQuestion(`${coverage.category}:${question}`);
+  const enterpriseCase = enterpriseCases[hash % enterpriseCases.length];
+  const evidence = [
+    profile.evidence[hash % profile.evidence.length],
+    profile.evidence[(hash + 1) % profile.evidence.length],
+    profile.evidence[(hash + 2) % profile.evidence.length],
+  ];
+  const directAnswer = getQuestionSpecificGuidance(question, profile);
+  const incidentSignal = getIncidentSignal(coverage.category, question, knowledge);
+  const article = /^[aeiou]/i.test(enterpriseCase.industry) ? 'an' : 'a';
+  const projectExample = pickQuestionVariant(hash, [
+    `In ${article} ${enterpriseCase.industry} program supporting ${enterpriseCase.journey}, ${concern} became a release requirement rather than an isolated technical task. The team used this implementation approach: ${knowledge.implementation} Validation through ${formatEvidence(evidence.slice(0, 2))} demonstrated that the change ${enterpriseCase.outcome}.`,
+    `A ${enterpriseCase.industry} client operating ${enterpriseCase.scale} found that ${concern} was creating repeated delivery and support risk. Engineers followed this implementation approach: ${knowledge.implementation} They used ${formatEvidence(evidence.slice(0, 2))} as release evidence, and the program ${enterpriseCase.outcome}.`,
+    `During modernization of ${enterpriseCase.journey}, the architecture team made ${concern} an explicit design decision. For ${enterpriseCase.scale}, they applied this pattern: ${knowledge.implementation} The resulting controls were verified through ${formatEvidence(evidence.slice(0, 2))}, which ${enterpriseCase.outcome}.`,
+    `For ${enterpriseCase.journey}, ${article} ${enterpriseCase.industry} delivery team addressed ${concern} before the next major release. Instead of relying on manual support actions, they followed this implementation approach: ${knowledge.implementation} Evidence from ${formatEvidence(evidence.slice(0, 2))} showed the solution ${enterpriseCase.outcome}.`,
+  ]);
+  const productionScenario = pickQuestionVariant(hash, [
+    `Ten minutes after a release touching ${concern}, monitoring reports that ${incidentSignal}. The incident lead preserves ${evidence[0]}, compares ${evidence[1]} with the pre-release baseline, and uses ${evidence[2]} to confirm the failing layer before approving a targeted fix.`,
+    `During peak traffic, support escalates ${concern} because ${incidentSignal}. Author appears healthy, so the engineer follows the live request or processing path through ${evidence[0]}, ${evidence[1]}, and ${evidence[2]}; recovery is accepted only after the signal returns to its target range.`,
+    `A canary validation for ${concern} fails when ${incidentSignal}. Rather than applying a broad rollback immediately, the team captures ${evidence[0]}, reproduces the issue against a healthy comparison, isolates the cause with ${evidence[2]}, and adds a regression control with the fix.`,
+    `The morning after a content and code release, the operations dashboard shows that ${incidentSignal}. The on-call engineer treats ${concern} as the leading hypothesis, correlates ${evidence[0]} with ${evidence[1]}, and validates both remediation and rollback criteria using ${evidence[2]}.`,
+  ], 1);
+  const expectation = pickQuestionVariant(hash, [
+    `For this ${intent} question, the interviewer expects a precise explanation of ${concern}, not a broad ${coverage.topic} overview. They are listening for the mechanism, a credible implementation or diagnostic sequence, evidence such as ${formatEvidence(evidence.slice(0, 2))}, and ownership of the failure mode: ${incidentSignal}.`,
+    `A strong candidate answers ${concern} by moving from mechanism to implementation and then to operations. The interviewer will probe whether you can interpret ${formatEvidence(evidence.slice(0, 2))}, explain the trade-off, and respond credibly when ${incidentSignal}.`,
+    `The evaluation focus is practical judgment around ${concern}. The interviewer wants to hear the supported pattern, the evidence you would inspect, the mistake you would avoid, and the decision you would make if ${incidentSignal}.`,
+    `This question separates textbook familiarity from delivery experience. To score well, connect ${concern} to concrete AEM behavior, use ${formatEvidence(evidence.slice(0, 2))} to justify the answer, and state who owns validation and recovery.`,
+  ], 2);
+  const architectPerspective = pickQuestionVariant(hash, [
+    `The architecture decision for ${concern} is ${knowledge.architectDecision}. Evaluate that choice against ${enterpriseCase.scale}, the incident signal "${incidentSignal}", Cloud Service supportability, security boundaries, and the team that will operate it. Approve the design only with a measurable guardrail, named owner, and tested recovery path.`,
+    `At architecture level, ${concern} is an operating-model decision as much as a technical one. For ${enterpriseCase.scale}, decide ${knowledge.architectDecision}; then define the security boundary, performance budget, support owner, exception process, and evidence that proves the design remains healthy.`,
+    `An architect should challenge whether ${concern} reduces or increases blast radius across ${enterpriseCase.scale}. The governing decision is ${knowledge.architectDecision}. Use the failure signal "${incidentSignal}" to define an observable guardrail and rehearse recovery before approving broad adoption.`,
+    `For ${concern}, avoid standardizing a pattern without its operational contract. The architect must decide ${knowledge.architectDecision}, document Cloud Service constraints and ownership, and require ${formatEvidence(evidence.slice(0, 2))} as ongoing proof that the decision still works.`,
+  ], 3);
+
+  return {
+    shortAnswer: pickQuestionVariant(hash, [
+      `${directAnswer} For ${concern}, validate the answer through ${formatEvidence(evidence.slice(0, 2))}.`,
+      `${knowledge.mechanism} In this case, ${concern} should be implemented through this supported pattern: ${knowledge.implementation}`,
+      `The key decision in ${concern} is ${knowledge.architectDecision}. Start with ${directAnswer} Then prove the behavior using ${formatEvidence(evidence.slice(0, 2))}.`,
+      `${directAnswer} A production-ready answer also explains how ${concern} is validated, monitored, and recovered when ${withoutTrailingPunctuation(knowledge.failure)}.`,
+    ], 4),
+    detailedAnswer: getDetailedAnswerByIntent(intent, concern, knowledge, directAnswer, evidence, profile, hash),
+    realProjectExample: projectExample,
+    productionScenario,
+    commonMistakes: getIntentSpecificMistakes(intent, concern, knowledge, evidence, hash),
+    followUpQuestions: getIntentSpecificFollowUps(intent, concern, evidence, knowledge.architectDecision, hash),
+    interviewerExpectation: expectation,
+    commonWrongAnswer: `A weak answer gives a general ${coverage.topic} definition but never explains how ${concern} works, what evidence validates it, or how the team would recover when ${knowledge.failure}.`,
+    architectPerspective,
+    keyTakeaway: `Treat ${concern} as a concrete implementation and operating decision: explain the mechanism, validate with evidence, and own the failure mode.`,
+    roleAnswers: {
+      junior: `I explain what ${concern} does and show the supported implementation pattern: ${knowledge.implementation}`,
+      mid: `I implement ${concern}, test it across Author and Publish, and validate it using ${formatEvidence(evidence.slice(0, 2))}.`,
+      senior: `I connect ${concern} to its production failure mode, isolate the cause with ${formatEvidence(evidence)}, and deliver a durable fix plus regression protection.`,
+      architect: `I decide ${knowledge.architectDecision}, then govern ${concern} through ownership, measurable guardrails, Cloud Service supportability, and blast-radius control.`,
+    },
+  };
 }
 
 function buildCoverageQuestion(coverage: TopicCoverage, question: string, index: number, rankSeed: number): InterviewPrepQuestion {
@@ -1721,6 +2456,7 @@ function buildCoverageQuestion(coverage: TopicCoverage, question: string, index:
   const profile = topicQualityProfiles[coverage.profileTopic ?? coverage.topic] ?? topicQualityProfiles.Architecture;
   const intent = detectQuestionIntent(question);
   const elevatedQuestion = elevateCoverageQuestion(question, intent);
+  const contextualContent = buildContextualQuestionContent(coverage, question, intent, profile);
 
   return {
     id: toQuestionId(coverage.topic, index),
@@ -1731,39 +2467,24 @@ function buildCoverageQuestion(coverage: TopicCoverage, question: string, index:
       ? 'Real Incident Questions'
       : getIntentQuestionType(intent),
     question: elevatedQuestion,
-    shortAnswer: getIntentShortAnswer(question, intent, profile),
-    detailedAnswer: getIntentDetailedAnswer(question, intent, profile),
-    realProjectExample: profile.enterpriseExample,
-    productionScenario: `${profile.productionFailure} A senior response starts with ${profile.evidence[0]}, correlates it with ${profile.evidence[1]}, and validates a targeted fix plus rollback or forward-fix criteria.`,
-    commonMistakes: [
-      `Answering the ${coverage.topic} question as a definition without stating the decision, evidence, or failure mode.`,
-      `Ignoring the central trade-off: ${profile.tradeOff}`,
-      'Proposing a broad production action before proving which layer owns the issue.',
-      `Skipping Cloud Service implications: ${profile.cloudService}`,
-    ],
-    followUpQuestions: [
-      `Which production evidence would prove your ${coverage.topic} diagnosis before you change anything?`,
-      `What would you implement differently for ${coverage.topic} in AEM as a Cloud Service?`,
-      `What trade-off would make you reject the proposed ${coverage.topic} design?`,
-      `How would you govern and support this ${coverage.topic} decision after go-live?`,
-    ],
-    interviewerExpectation: `The interviewer is testing whether you can turn ${coverage.topic} knowledge into a defensible enterprise decision. A strong answer explains what, why, when, and how, then names evidence, failure modes, trade-offs, Cloud Service impact, and operational ownership.`,
+    shortAnswer: contextualContent.shortAnswer,
+    detailedAnswer: contextualContent.detailedAnswer,
+    realProjectExample: contextualContent.realProjectExample,
+    productionScenario: contextualContent.productionScenario,
+    commonMistakes: contextualContent.commonMistakes,
+    followUpQuestions: contextualContent.followUpQuestions,
+    interviewerExpectation: contextualContent.interviewerExpectation,
     frequencyScore: 0,
-    commonWrongAnswer: `A weak answer describes ${coverage.topic} in isolation, recommends a broad fix, and does not name the evidence, trade-off, Cloud Service constraint, or production owner.`,
-    architectPerspective: `Treat ${coverage.topic} as an enterprise capability across scalability, security, performance, governance, cost, Cloud Service readiness, and blast radius. ${profile.governance}`,
-    keyTakeaway: `Connect ${coverage.topic} decisions to evidence, trade-offs, Cloud Service behavior, and accountable production ownership.`,
+    commonWrongAnswer: contextualContent.commonWrongAnswer,
+    architectPerspective: contextualContent.architectPerspective,
+    keyTakeaway: contextualContent.keyTakeaway,
     difficultyLevel,
     experienceLevel,
     relatedTopics: coverage.relatedTopics,
     isMostAsked: index < 4,
     mostAskedRank: rankSeed + index,
     isRapidRevision: index < 2,
-    roleAnswers: {
-      junior: `I explain the purpose of ${coverage.topic}, where it is used, and the supported implementation pattern: ${profile.implementation}`,
-      mid: `I describe the implementation, test Author and Publish behavior, and validate the result using ${formatEvidence(profile.evidence.slice(0, 2))}.`,
-      senior: `I start from the failure mode or business requirement, isolate risk with production evidence, explain ${profile.tradeOff}, and define a durable fix with operational ownership.`,
-      architect: `I treat ${coverage.topic} as an enterprise decision across scalability, security, performance, governance, cost, Cloud Service readiness, and blast radius. ${profile.governance}`,
-    },
+    roleAnswers: contextualContent.roleAnswers,
   };
 }
 

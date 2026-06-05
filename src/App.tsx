@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation, useParams } from 'react-rout
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
+import InterviewPrepPage from './pages/InterviewPrepPage';
 import TechLandingPage from './pages/TechLandingPage';
 import TopicPage from './pages/TopicPage';
 import { getInitialTheme, applyTheme } from './lib/theme';
@@ -14,8 +15,10 @@ function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
-  // Show sidebar on both tech landing pages and topic pages
+  // Show sidebar on both tech learning pages and technology-specific interview prep pages
   const isTechPage = location.pathname.startsWith('/technology/');
+  const isInterviewPrepTechPage = /^\/interview-prep\/[^/]+/.test(location.pathname);
+  const showSidebar = isTechPage || isInterviewPrepTechPage;
 
   useEffect(() => {
     const initial = getInitialTheme();
@@ -24,8 +27,8 @@ function AppShell() {
   }, []);
 
   useEffect(() => {
-    if (!isTechPage) setSidebarOpen(false);
-  }, [isTechPage]);
+    if (!showSidebar) setSidebarOpen(false);
+  }, [showSidebar]);
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -40,26 +43,28 @@ function AppShell() {
         onThemeToggle={toggleTheme}
         sidebarOpen={sidebarOpen}
         onSidebarToggle={() => setSidebarOpen(p => !p)}
-        showMenuButton={isTechPage}
+        showMenuButton={showSidebar}
       />
 
       <div style={{ display: 'flex', marginTop: '56px', minHeight: 'calc(100vh - 56px)' }}>
-        {isTechPage && (
+        {showSidebar && (
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         )}
 
         <main
-          className={isTechPage ? 'main-content-topic' : ''}
+          className={showSidebar ? 'main-content-topic' : ''}
           style={{
             flex: 1,
             minWidth: 0,
-            padding: isTechPage ? '0 2rem' : '0',
+            padding: showSidebar ? '0 2rem' : '0',
             maxWidth: '100%',
             overflowX: 'hidden',
           }}
         >
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/interview-prep" element={<InterviewPrepPage />} />
+            <Route path="/interview-prep/:techId" element={<InterviewPrepPage />} />
             {/* Tech landing page */}
             <Route path="/technology/:techId" element={<TechLandingPage />} />
             {/* Topic page — nested under technology */}

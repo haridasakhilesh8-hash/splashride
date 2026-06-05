@@ -4,6 +4,7 @@ import { technologies } from '../lib/navigation';
 import { ArrowRight, Zap, BookOpen, Code, Globe, Target, BarChart3, Sparkles, TrendingUp } from 'lucide-react';
 import SEO from '../components/SEO';
 import { absoluteUrl } from '../lib/seo';
+import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
 
 export default function HomePage() {
   const { setActiveTechId } = useTech();
@@ -16,6 +17,8 @@ export default function HomePage() {
 
   const activeTechs = technologies.filter(t => t.active);
   const comingSoonTechs = technologies.filter(t => !t.active);
+  const interviewPrepSections = getActiveInterviewPrepSections();
+  const interviewPrepStats = getInterviewPrepStats();
   const totalTopics = activeTechs.reduce(
     (sum, tech) => sum + tech.categories.flatMap(c => c.items).filter(i => !i.badge).length,
     0
@@ -300,7 +303,7 @@ export default function HomePage() {
       </div>
 
       {/* Platform Statistics */}
-      <div id="interview-prep" style={{
+      <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
         gap: '10px',
@@ -311,7 +314,7 @@ export default function HomePage() {
           { icon: <BookOpen size={15} />, value: `${totalTopics}+`, label: 'Topics' },
           { icon: <Globe size={15} />, value: activeTechs.length, label: 'Technologies' },
           { icon: <Code size={15} />, value: `${totalTopics}+`, label: 'Examples' },
-          { icon: <BarChart3 size={15} />, value: `${totalTopics * 2}+`, label: 'Interview Questions' },
+          { icon: <BarChart3 size={15} />, value: `${interviewPrepStats.totalQuestions}+`, label: 'Interview Questions' },
         ].map(stat => (
           <div
             key={stat.label}
@@ -332,6 +335,87 @@ export default function HomePage() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Interview Prep */}
+      <div id="interview-prep" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+        <h2 style={{
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          color: 'var(--color-text-muted)',
+          marginBottom: '1rem',
+        }}>
+          Interview Prep
+        </h2>
+
+        <Link
+          to="/interview-prep/aem"
+          onClick={() => {
+            setActiveTechId('aem');
+            window.scrollTo(0, 0);
+          }}
+          style={{
+            display: 'block',
+            textDecoration: 'none',
+            color: 'inherit',
+            background: 'var(--color-bg-secondary)',
+            border: '1px solid var(--color-border)',
+            borderRadius: '12px',
+            padding: '20px',
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', marginBottom: '16px' }}>
+            <div>
+              <p style={{ margin: '0 0 6px', color: 'var(--color-accent)', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                First path available now
+              </p>
+              <h3 style={{ margin: '0 0 8px', color: 'var(--color-text-primary)', fontSize: '1.15rem', fontWeight: 800 }}>
+                AEM Interview Prep
+              </h3>
+              <p style={{ margin: 0, maxWidth: '650px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
+                Practice real AEM interview answers across beginner, mid-level, senior, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
+              </p>
+            </div>
+            <ArrowRight size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '10px' }}>
+            {[
+              { label: 'Technologies Covered', value: interviewPrepStats.technologiesCovered },
+              { label: 'Total Questions', value: interviewPrepStats.totalQuestions },
+              { label: 'Experience Levels', value: interviewPrepStats.experienceLevels },
+              { label: 'Categories', value: interviewPrepStats.categories },
+            ].map(item => (
+              <div key={item.label} style={{
+                background: 'var(--color-bg-primary)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '8px',
+                padding: '12px',
+              }}>
+                <p style={{ margin: 0, color: 'var(--color-text-primary)', fontWeight: 800, fontSize: '1.05rem' }}>{item.value}</p>
+                <p style={{ margin: '3px 0 0', color: 'var(--color-text-muted)', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '14px' }}>
+            {interviewPrepSections.map(section => (
+              <span key={section.technologyId} style={{
+                color: 'var(--color-accent)',
+                background: 'var(--color-accent-light)',
+                border: '1px solid rgba(99,102,241,0.22)',
+                borderRadius: '999px',
+                padding: '5px 9px',
+                fontSize: '0.72rem',
+                fontWeight: 800,
+              }}>
+                {section.technologyLabel}
+              </span>
+            ))}
+          </div>
+        </Link>
       </div>
 
       {/* Active Technologies */}

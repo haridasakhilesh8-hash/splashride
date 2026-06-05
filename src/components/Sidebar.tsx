@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ChevronDown, ChevronRight, Layers } from 'lucide-react';
+import { getInterviewPrepSection } from '../content/interview-prep';
+import {
+  aemInterviewPrepTopicGroups,
+  getAemInterviewPrepCategoryForSlug,
+} from '../content/interview-prep/topicNavigation';
+import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
 
 interface SidebarProps {
@@ -13,18 +19,80 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const { techId, slug: currentSlug } = useParams<{ techId: string; slug: string }>();
   const { activeTech } = useTech();
+  const isInterviewPrep = location.pathname.startsWith('/interview-prep/');
+  const interviewTopicSlug = new URLSearchParams(location.search).get('topic');
+  const activeSidebarSlug = isInterviewPrep ? (interviewTopicSlug ?? 'architecture') : currentSlug;
+  const interviewPrepSection = isInterviewPrep && activeTech?.id ? getInterviewPrepSection(activeTech.id) : null;
+  const [interviewCompletedCount, setInterviewCompletedCount] = useState(0);
 
   // Only show categories belonging to the active technology
-  const categories = activeTech?.categories ?? [];
+  const interviewCategories = useMemo<NavCategory[]>(() => (
+    activeTech?.id === 'aem'
+      ? aemInterviewPrepTopicGroups.map((group) => ({
+          id: `interview-${group.id}`,
+          title: group.title,
+          icon: '',
+          items: group.topics.map((topic) => ({ slug: topic.slug, title: topic.title })),
+        }))
+      : []
+  ), [activeTech?.id]);
+  const categories = useMemo(() => (
+    isInterviewPrep && interviewCategories.length > 0
+      ? interviewCategories
+      : activeTech?.categories ?? []
+  ), [activeTech?.categories, interviewCategories, isInterviewPrep]);
+  const interviewQuestionCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    if (!interviewPrepSection) return counts;
+
+    for (const group of aemInterviewPrepTopicGroups) {
+      for (const topic of group.topics) {
+        counts.set(
+          topic.slug,
+          interviewPrepSection.questions.filter((question) => question.category === topic.category).length
+        );
+      }
+    }
+
+    return counts;
+  }, [interviewPrepSection]);
+  const totalInterviewQuestions = interviewPrepSection?.questions.length ?? 0;
+  const interviewProgress = totalInterviewQuestions > 0
+    ? Math.round((interviewCompletedCount / totalInterviewQuestions) * 100)
+    : 0;
   const liveTopicCount = categories
     .flatMap(c => c.items)
     .filter(i => !i.badge).length;
+
+  useEffect(() => {
+    if (!isInterviewPrep || !activeTech?.id) return;
+
+    const readCompletedCount = () => {
+      try {
+        const stored = window.localStorage.getItem(`splashride-interview-prep-${activeTech.id}-completed`);
+        return stored ? (JSON.parse(stored) as string[]).length : 0;
+      } catch {
+        return 0;
+      }
+    };
+
+    const updateProgress = () => setInterviewCompletedCount(readCompletedCount());
+    const timeout = window.setTimeout(updateProgress, 0);
+    window.addEventListener('storage', updateProgress);
+    window.addEventListener('splashride-interview-prep-progress', updateProgress);
+
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener('storage', updateProgress);
+      window.removeEventListener('splashride-interview-prep-progress', updateProgress);
+    };
+  }, [activeTech?.id, isInterviewPrep]);
 
   // Auto-expand the category that contains the current topic
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     for (const cat of categories) {
-      if (cat.items.some(item => item.slug === currentSlug)) {
+      if (cat.items.some(item => item.slug === activeSidebarSlug)) {
         initial.add(cat.id);
       }
     }
@@ -34,37 +102,52 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   // Re-expand when route changes
   useEffect(() => {
-    if (!currentSlug) return;
-    for (const cat of categories) {
-      if (cat.items.some(item => item.slug === currentSlug)) {
-        setExpandedCategories(prev => new Set([...prev, cat.id]));
-      }
-    }
-  }, [currentSlug, categories]);
+    if (!activeSidebarSlug) return;
+    const activeCategory = categories.find(cat => cat.items.some(item => item.slug === activeSidebarSlug));
+    if (!activeCategory) return;
+
+    const timeout = window.setTimeout(() => {
+      setExpandedCategories(prev => {
+        if (prev.has(activeCategory.id)) return prev;
+        return new Set([...prev, activeCategory.id]);
+      });
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, [activeSidebarSlug, categories]);
 
   // Expand first category when tech changes and nothing is active
   useEffect(() => {
     if (categories.length > 0) {
-      setExpandedCategories(prev => {
+      const timeout = window.setTimeout(() => setExpandedCategories(prev => {
         const hasActive = categories.some(cat =>
-          cat.items.some(item => item.slug === currentSlug)
+          cat.items.some(item => item.slug === activeSidebarSlug)
         );
         if (!hasActive) return new Set([categories[0].id]);
         return prev;
-      });
+      }), 0);
+
+      return () => window.clearTimeout(timeout);
     }
-  }, [activeTech?.id]);
+  }, [activeSidebarSlug, activeTech?.id, categories]);
 
   const toggleCategory = (id: string) => {
     setExpandedCategories(prev => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
 
   const handleTopicClick = (slug: string) => {
-    navigate(`/technology/${techId ?? activeTech?.id}/topic/${slug}`);
+    const targetTechId = techId ?? activeTech?.id;
+    if (!targetTechId) return;
+
+    navigate(isInterviewPrep
+      ? `/interview-prep/${targetTechId}?topic=${slug}`
+      : `/technology/${targetTechId}/topic/${slug}`
+    );
     onClose();
     window.scrollTo(0, 0);
   };
@@ -82,33 +165,33 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           position: 'sticky',
           top: '56px',
           overflowY: 'auto',
-          padding: '1rem 0',
+          padding: isInterviewPrep ? '0.65rem 0' : '1rem 0',
           flexShrink: 0,
         }}
       >
         {/* Technology header */}
         {activeTech && (
           <div style={{
-            padding: '0 0.75rem 0.75rem',
+            padding: isInterviewPrep ? '0 0.65rem 0.55rem' : '0 0.75rem 0.75rem',
             borderBottom: '1px solid var(--color-border)',
-            marginBottom: '0.75rem',
+            marginBottom: isInterviewPrep ? '0.5rem' : '0.75rem',
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '8px 10px',
+              padding: isInterviewPrep ? '7px 9px' : '8px 10px',
               background: 'var(--color-bg-primary)',
-              borderRadius: '8px',
+              borderRadius: '7px',
               border: '1px solid var(--color-border)',
             }}>
-              <span style={{ fontSize: '1.25rem' }}>{activeTech.icon}</span>
+              <span style={{ fontSize: isInterviewPrep ? '1.05rem' : '1.25rem' }}>{activeTech.icon}</span>
               <div>
-                <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                <p style={{ margin: 0, fontSize: isInterviewPrep ? '0.84rem' : '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
                   {activeTech.label}
                 </p>
                 <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
-                  {liveTopicCount} topic{liveTopicCount !== 1 ? 's' : ''}
+                  {isInterviewPrep ? 'Interview Preparation' : `${liveTopicCount} topic${liveTopicCount !== 1 ? 's' : ''}`}
                 </p>
               </div>
               <button
@@ -129,6 +212,39 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <Layers size={13} />
               </button>
             </div>
+            <button
+              onClick={() => {
+                navigate(`/interview-prep/${activeTech.id}`);
+                onClose();
+                window.scrollTo(0, 0);
+              }}
+              style={{
+                width: '100%',
+                marginTop: '8px',
+                background: isInterviewPrep ? 'var(--color-accent-light)' : 'var(--color-bg-primary)',
+                border: `1px solid ${isInterviewPrep ? 'var(--color-accent)' : 'var(--color-border)'}`,
+                color: isInterviewPrep ? 'var(--color-accent)' : 'var(--color-text-primary)',
+                borderRadius: '7px',
+                padding: isInterviewPrep ? '7px 9px' : '8px 10px',
+                cursor: 'pointer',
+                textAlign: 'left',
+                fontSize: isInterviewPrep ? '0.74rem' : '0.78rem',
+                fontWeight: 700,
+              }}
+            >
+              Interview Prep
+            </button>
+            {isInterviewPrep && (
+              <div style={{ marginTop: '9px' }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '10px', color: 'var(--color-text-secondary)', fontSize: '0.7rem', fontWeight: 700, lineHeight: 1.2 }}>
+                  <span>Overall Progress</span>
+                  <span style={{ fontVariantNumeric: 'tabular-nums' }}>{interviewProgress}%</span>
+                </div>
+                <div style={{ height: '3px', marginTop: '6px', background: 'var(--color-border)', borderRadius: '999px', overflow: 'hidden' }}>
+                  <div style={{ width: `${interviewProgress}%`, height: '100%', background: '#22c55e', borderRadius: '999px' }} />
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -145,19 +261,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '6px 12px',
+                  padding: isInterviewPrep ? '5px 11px' : '6px 12px',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
                   color: 'var(--color-text-secondary)',
-                  fontSize: '0.72rem',
+                  fontSize: isInterviewPrep ? '0.68rem' : '0.72rem',
                   fontWeight: 700,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.07em',
+                  letterSpacing: isInterviewPrep ? '0.055em' : '0.07em',
+                  lineHeight: 1.25,
                   textAlign: 'left',
                 }}
               >
-                <span style={{ fontSize: '0.9rem' }}>{cat.icon}</span>
+                {cat.icon && <span style={{ fontSize: '0.9rem' }}>{cat.icon}</span>}
                 <span style={{ flex: 1 }}>{cat.title}</span>
                 {isExpanded
                   ? <ChevronDown size={12} style={{ opacity: 0.5 }} />
@@ -169,32 +286,40 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               {isExpanded && (
                 <div style={{ paddingBottom: '4px' }}>
                   {cat.items.map(item => {
-                    const isActive = item.slug === currentSlug;
+                    const isActive = item.slug === activeSidebarSlug;
+                    const topicQuestionCount = isInterviewPrep
+                      ? (interviewQuestionCounts.get(item.slug)
+                        ?? interviewPrepSection?.questions.filter((question) => question.category === getAemInterviewPrepCategoryForSlug(item.slug)).length
+                        ?? 0)
+                      : null;
+                    const isDisabled = !isInterviewPrep && !!item.badge;
                     return (
                       <button
                         key={item.slug}
-                        onClick={() => !item.badge && handleTopicClick(item.slug)}
-                        disabled={!!item.badge}
+                        onClick={() => !isDisabled && handleTopicClick(item.slug)}
+                        disabled={isDisabled}
                         style={{
                           width: '100%',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '6px',
-                          padding: '6px 12px 6px 28px',
+                          padding: isInterviewPrep ? '5px 10px 5px 24px' : '6px 12px 6px 28px',
+                          minHeight: isInterviewPrep ? '27px' : undefined,
                           background: isActive ? 'var(--color-accent-light)' : 'none',
                           border: 'none',
                           borderLeft: isActive ? '2px solid var(--color-accent)' : '2px solid transparent',
-                          cursor: item.badge ? 'default' : 'pointer',
+                          cursor: isDisabled ? 'default' : 'pointer',
                           color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)',
-                          fontSize: '0.875rem',
-                          fontWeight: isActive ? 500 : 400,
+                          fontSize: isInterviewPrep ? '0.78rem' : '0.875rem',
+                          fontWeight: isActive ? 700 : 500,
+                          lineHeight: 1.3,
                           textAlign: 'left',
-                          opacity: item.badge ? 0.55 : 1,
+                          opacity: isDisabled ? 0.55 : 1,
                           transition: 'all 0.15s',
                         }}
                         onMouseEnter={e => {
-                          if (!isActive && !item.badge) {
+                          if (!isActive && !isDisabled) {
                             (e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)';
                             (e.currentTarget as HTMLButtonElement).style.background = 'var(--color-bg-primary)';
                           }
@@ -207,7 +332,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         }}
                       >
                         <span>{item.title}</span>
-                        {item.badge && (
+                        {isInterviewPrep && topicQuestionCount !== null && (
+                          <span style={{
+                            color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                            background: isActive ? 'rgba(99,102,241,0.1)' : 'var(--color-bg-primary)',
+                            border: '1px solid var(--color-border)',
+                            borderRadius: '999px',
+                            padding: '1px 5px',
+                            fontSize: '0.62rem',
+                            fontWeight: 700,
+                            fontVariantNumeric: 'tabular-nums',
+                            minWidth: '26px',
+                            lineHeight: 1.25,
+                            textAlign: 'center',
+                            flexShrink: 0,
+                          }}>
+                            {topicQuestionCount}
+                          </span>
+                        )}
+                        {!isInterviewPrep && item.badge && (
                           <span style={{
                             fontSize: '0.6rem',
                             background: 'var(--color-tag-bg)',
@@ -230,7 +373,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         })}
 
         {/* Footer */}
-        <div style={{
+        {!isInterviewPrep && <div style={{
           margin: '1rem 0.75rem 0',
           padding: '0.75rem',
           background: 'var(--color-bg-primary)',
@@ -241,7 +384,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           lineHeight: 1.5,
         }}>
           📚 Learn {activeTech?.label ?? 'tech'} the way senior developers explain it.
-        </div>
+        </div>}
       </aside>
 
       <style>{`

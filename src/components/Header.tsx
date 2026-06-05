@@ -4,6 +4,7 @@ import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
+import { getActiveInterviewPrepSections } from '../content/interview-prep';
 
 interface HeaderProps {
   theme: 'dark' | 'light';
@@ -25,6 +26,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     { label: 'Enterprise', techIds: ['aem'] },
     { label: 'AI', techIds: ['ai'] },
   ];
+  const interviewPrepSections = getActiveInterviewPrepSections();
+  const futureInterviewPrep = ['React', 'Next.js', 'Core Java', 'Spring Boot', 'AWS', 'Docker', 'Kubernetes'];
 
   const scrollToHomeSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -212,9 +215,122 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           </div>
         </div>
 
+        <div className="nav-dropdown" style={{ position: 'relative' }}>
+          <button
+            type="button"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              background: 'none',
+              border: 'none',
+              color: location.pathname.startsWith('/interview-prep') ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+              cursor: 'pointer',
+              borderRadius: '8px',
+              padding: '7px 9px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Interview Prep
+            <ChevronDown size={13} />
+          </button>
+
+          <div
+            className="nav-dropdown-menu"
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 8px)',
+              left: 0,
+              width: '260px',
+              background: 'var(--color-bg-primary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '10px',
+              boxShadow: 'var(--shadow-popup)',
+              padding: '10px',
+              opacity: 0,
+              pointerEvents: 'none',
+              transform: 'translateY(-4px)',
+              transition: 'opacity 0.15s, transform 0.15s',
+              zIndex: 100,
+            }}
+          >
+            <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
+              <p style={{
+                margin: '0 0 6px',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                Available Now
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {interviewPrepSections.map(section => (
+                  <Link
+                    key={section.technologyId}
+                    to={`/interview-prep/${section.technologyId}`}
+                    onClick={() => {
+                      setActiveTechId(section.technologyId);
+                      window.scrollTo(0, 0);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      textDecoration: 'none',
+                      background: 'var(--color-bg-secondary)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-primary)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      padding: '7px 9px',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {section.technologyLabel}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div style={{ padding: '8px 0 0' }}>
+              <p style={{
+                margin: '0 0 6px',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                Future Ready
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {futureInterviewPrep.map(label => (
+                  <span key={label} style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    background: 'var(--color-bg-secondary)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text-muted)',
+                    borderRadius: '8px',
+                    padding: '7px 9px',
+                    fontSize: '0.78rem',
+                    fontWeight: 600,
+                    opacity: 0.72,
+                  }}>
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {[
           { label: 'Learning Paths', target: 'choose-goal' },
-          { label: 'Interview Prep', target: 'interview-prep' },
           { label: 'Projects', target: 'projects' },
         ].map(item => (
           <button

@@ -19,6 +19,7 @@ const rootDir = path.resolve(__dirname, '..');
 const { technologies } = require(path.join(rootDir, 'src/lib/navigation.ts'));
 const { SITE_URL } = require(path.join(rootDir, 'src/lib/seo.ts'));
 const { getTopicContent } = require(path.join(rootDir, 'src/content/index.ts'));
+const { getActiveInterviewPrepSections } = require(path.join(rootDir, 'src/content/interview-prep/index.ts'));
 
 const sitemapPath = path.join(rootDir, 'public/sitemap.xml');
 const existingSitemap = fs.existsSync(sitemapPath) ? fs.readFileSync(sitemapPath, 'utf8') : '';
@@ -30,6 +31,12 @@ function absoluteUrl(route) {
 
 function routeExists(route) {
   if (route === '/') return true;
+  if (route === '/interview-prep') return true;
+
+  const prepMatch = route.match(/^\/interview-prep\/([^/]+)$/);
+  if (prepMatch) {
+    return getActiveInterviewPrepSections().some((section) => section.technologyId === prepMatch[1]);
+  }
 
   const techMatch = route.match(/^\/technology\/([^/]+)$/);
   if (techMatch) {
@@ -50,7 +57,12 @@ function routeExists(route) {
 
 const entries = [
   { route: '/', priority: '1.0' },
+  { route: '/interview-prep', priority: '0.9' },
 ];
+
+for (const section of getActiveInterviewPrepSections()) {
+  entries.push({ route: `/interview-prep/${section.technologyId}`, priority: '0.8' });
+}
 
 for (const tech of technologies.filter((item) => item.active)) {
   entries.push({ route: `/technology/${tech.id}`, priority: '0.8' });

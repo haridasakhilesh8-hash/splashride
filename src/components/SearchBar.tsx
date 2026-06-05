@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useMemo, useState, useRef } from 'react';
 import { Search, X, Hash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
+import { getActiveInterviewPrepSections, getAllInterviewQuestions } from '../content/interview-prep';
 
 interface SearchResult {
   slug: string;
@@ -10,23 +11,21 @@ interface SearchResult {
   category: string;
   techId: string;
   techLabel: string;
+  kind: 'topic' | 'interview' | 'scenario';
 }
 
 export default function SearchBar() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const { activeTech } = useTech();
 
-  useEffect(() => {
-    if (!query.trim()) { setResults([]); return; }
+  const results = useMemo(() => {
+    if (!query.trim()) return [];
     const q = query.toLowerCase();
     const found: SearchResult[] = [];
-
-    // Search only the active technology's categories (or all if no active tech)
     const techsToSearch = activeTech ? [activeTech] : technologies;
 
     for (const tech of techsToSearch) {
@@ -39,16 +38,76 @@ export default function SearchBar() {
               category: cat.title,
               techId: tech.id,
               techLabel: tech.label,
+              kind: 'topic',
             });
           }
         }
       }
     }
-    setResults(found.slice(0, 8));
+
+    for (const item of getAllInterviewQuestions()) {
+      if (activeTech && item.technologyId !== activeTech.id) continue;
+      const searchable = [
+        item.question,
+        item.shortAnswer,
+        item.category,
+        item.topicGroup,
+        item.questionType,
+        item.difficultyLevel,
+        item.experienceLevel,
+        item.relatedTopics.join(' '),
+        Object.values(item.roleAnswers).join(' '),
+        item.isMostAsked ? 'most asked top questions important' : '',
+      ].join(' ').toLowerCase();
+      if (searchable.includes(q)) {
+        const tech = technologies.find(t => t.id === item.technologyId);
+        found.push({
+          slug: item.id,
+          title: item.question,
+          category: `Interview Prep - ${item.category}`,
+          techId: item.technologyId,
+          techLabel: tech?.label ?? item.technologyId.toUpperCase(),
+          kind: 'interview',
+        });
+      }
+    }
+
+    for (const section of getActiveInterviewPrepSections()) {
+      if (activeTech && section.technologyId !== activeTech.id) continue;
+      for (const scenario of section.productionScenarios) {
+        const searchable = [
+          scenario.title,
+          scenario.topic,
+          scenario.problem,
+          scenario.rootCauseAnalysis.join(' '),
+          scenario.troubleshootingSteps.join(' '),
+          scenario.expectedInterviewAnswer,
+          scenario.seniorApproach,
+          scenario.architectApproach,
+          'production scenario troubleshooting support incident',
+        ].join(' ').toLowerCase();
+        if (searchable.includes(q)) {
+          const tech = technologies.find(t => t.id === section.technologyId);
+          found.push({
+            slug: scenario.id,
+            title: scenario.title,
+            category: `Production Scenario - ${scenario.topic}`,
+            techId: section.technologyId,
+            techLabel: tech?.label ?? section.technologyLabel,
+            kind: 'scenario',
+          });
+        }
+      }
+    }
+
+    return found.slice(0, 8);
   }, [query, activeTech]);
 
   const handleSelect = (result: SearchResult) => {
-    navigate(`/technology/${result.techId}/topic/${result.slug}`);
+    navigate(result.kind === 'interview' || result.kind === 'scenario'
+      ? `/interview-prep/${result.techId}#${result.slug}`
+      : `/technology/${result.techId}/topic/${result.slug}`
+    );
     setQuery('');
     setIsOpen(false);
     window.scrollTo(0, 0);
@@ -79,7 +138,7 @@ export default function SearchBar() {
           onChange={e => { setQuery(e.target.value); setIsOpen(true); }}
           onFocus={() => { setIsOpen(true); setFocused(true); }}
           onBlur={() => { setTimeout(() => setIsOpen(false), 200); setFocused(false); }}
-          placeholder={activeTech ? `Search ${activeTech.label}…` : 'Search topics…'}
+          placeholder={activeTech ? `Search ${activeTech.label}...` : 'Search topics...'}
           style={{
             background: 'none',
             border: 'none',
@@ -91,7 +150,7 @@ export default function SearchBar() {
         />
         {query && (
           <button
-            onClick={e => { e.stopPropagation(); setQuery(''); setResults([]); }}
+            onClick={e => { e.stopPropagation(); setQuery(''); }}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', padding: 0, display: 'flex' }}
           >
             <X size={12} />
@@ -99,7 +158,6 @@ export default function SearchBar() {
         )}
       </div>
 
-      {/* Results dropdown */}
       {isOpen && results.length > 0 && (
         <div style={{
           position: 'absolute',
@@ -137,7 +195,7 @@ export default function SearchBar() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p style={{ margin: 0, fontSize: '0.825rem', fontWeight: 500, color: 'var(--color-text-primary)' }}>{r.title}</p>
                 <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
-                  {r.techLabel} · {r.category}
+                  {r.techLabel} - {r.category}
                 </p>
               </div>
             </button>

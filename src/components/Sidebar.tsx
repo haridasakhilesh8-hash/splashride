@@ -3,8 +3,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ChevronDown, ChevronRight, Layers } from 'lucide-react';
 import { getInterviewPrepSection } from '../content/interview-prep';
 import {
-  aemInterviewPrepTopicGroups,
-  getAemInterviewPrepCategoryForSlug,
+  getInterviewPrepCategoryForSlug,
+  getInterviewPrepDefaultTopicSlug,
+  getInterviewPrepTopicGroups,
 } from '../content/interview-prep/topicNavigation';
 import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
@@ -21,21 +22,27 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { activeTech } = useTech();
   const isInterviewPrep = location.pathname.startsWith('/interview-prep/');
   const interviewTopicSlug = new URLSearchParams(location.search).get('topic');
-  const activeSidebarSlug = isInterviewPrep ? (interviewTopicSlug ?? 'architecture') : currentSlug;
+  const interviewTopicGroups = useMemo(
+    () => getInterviewPrepTopicGroups(activeTech?.id ?? ''),
+    [activeTech?.id],
+  );
+  const activeSidebarSlug = isInterviewPrep
+    ? (interviewTopicSlug ?? getInterviewPrepDefaultTopicSlug(activeTech?.id ?? ''))
+    : currentSlug;
   const interviewPrepSection = isInterviewPrep && activeTech?.id ? getInterviewPrepSection(activeTech.id) : null;
   const [interviewCompletedCount, setInterviewCompletedCount] = useState(0);
 
   // Only show categories belonging to the active technology
   const interviewCategories = useMemo<NavCategory[]>(() => (
-    activeTech?.id === 'aem'
-      ? aemInterviewPrepTopicGroups.map((group) => ({
+    interviewTopicGroups.length > 0
+      ? interviewTopicGroups.map((group) => ({
           id: `interview-${group.id}`,
           title: group.title,
           icon: '',
           items: group.topics.map((topic) => ({ slug: topic.slug, title: topic.title })),
         }))
       : []
-  ), [activeTech?.id]);
+  ), [interviewTopicGroups]);
   const categories = useMemo(() => (
     isInterviewPrep && interviewCategories.length > 0
       ? interviewCategories
@@ -45,7 +52,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const counts = new Map<string, number>();
     if (!interviewPrepSection) return counts;
 
-    for (const group of aemInterviewPrepTopicGroups) {
+    for (const group of interviewTopicGroups) {
       for (const topic of group.topics) {
         counts.set(
           topic.slug,
@@ -55,7 +62,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     }
 
     return counts;
-  }, [interviewPrepSection]);
+  }, [interviewPrepSection, interviewTopicGroups]);
   const totalInterviewQuestions = interviewPrepSection?.questions.length ?? 0;
   const interviewProgress = totalInterviewQuestions > 0
     ? Math.round((interviewCompletedCount / totalInterviewQuestions) * 100)
@@ -289,7 +296,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     const isActive = item.slug === activeSidebarSlug;
                     const topicQuestionCount = isInterviewPrep
                       ? (interviewQuestionCounts.get(item.slug)
-                        ?? interviewPrepSection?.questions.filter((question) => question.category === getAemInterviewPrepCategoryForSlug(item.slug)).length
+                        ?? interviewPrepSection?.questions.filter((question) => question.category === getInterviewPrepCategoryForSlug(activeTech?.id ?? '', item.slug)).length
                         ?? 0)
                       : null;
                     const isDisabled = !isInterviewPrep && !!item.badge;

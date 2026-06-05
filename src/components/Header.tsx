@@ -27,7 +27,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     { label: 'AI', techIds: ['ai'] },
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
-  const futureInterviewPrep = ['React', 'Next.js', 'Core Java', 'Spring Boot', 'AWS', 'Docker', 'Kubernetes'];
+  const futureInterviewPrep = ['Core Java', 'Spring Boot', 'AWS', 'Docker', 'Kubernetes'];
 
   const scrollToHomeSection = (sectionId: string) => {
     if (location.pathname !== '/') {

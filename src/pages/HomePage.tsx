@@ -351,9 +351,8 @@ export default function HomePage() {
         </h2>
 
         <Link
-          to="/interview-prep/aem"
+          to="/interview-prep"
           onClick={() => {
-            setActiveTechId('aem');
             window.scrollTo(0, 0);
           }}
           style={{
@@ -369,13 +368,13 @@ export default function HomePage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '16px', alignItems: 'flex-start', marginBottom: '16px' }}>
             <div>
               <p style={{ margin: '0 0 6px', color: 'var(--color-accent)', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                First path available now
+                Available now
               </p>
               <h3 style={{ margin: '0 0 8px', color: 'var(--color-text-primary)', fontSize: '1.15rem', fontWeight: 800 }}>
-                AEM Interview Prep
+                Interview Prep
               </h3>
               <p style={{ margin: 0, maxWidth: '650px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
-                Practice real AEM interview answers across beginner, mid-level, senior, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
+                Practice real AEM, React, and Next.js interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
               </p>
             </div>
             <ArrowRight size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />

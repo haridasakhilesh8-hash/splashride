@@ -1,8 +1,12 @@
 import { aemInterviewPrep } from './aem';
+import { nextjsInterviewPrep } from './nextjs';
+import { reactInterviewPrep } from './react';
 import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
 
 export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
+  reactInterviewPrep,
+  nextjsInterviewPrep,
 ];
 
 export function getInterviewPrepSection(technologyId: string): InterviewPrepSection | null {

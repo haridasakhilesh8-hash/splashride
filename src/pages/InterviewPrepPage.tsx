@@ -24,9 +24,10 @@ import {
   type InterviewPrepQuestion,
 } from '../content/interview-prep';
 import {
-  getAemInterviewPrepCategoryForSlug,
-  getAemInterviewPrepGroupTitle,
-  getAemInterviewPrepTopicTitle,
+  getInterviewPrepCategoryForSlug,
+  getInterviewPrepDefaultTopicSlug,
+  getInterviewPrepGroupTitle,
+  getInterviewPrepTopicTitle,
 } from '../content/interview-prep/topicNavigation';
 import { getTechById } from '../lib/navigation';
 import { absoluteUrl } from '../lib/seo';
@@ -250,10 +251,11 @@ export default function InterviewPrepPage() {
   const [openDetailSection, setOpenDetailSection] = useState<DetailAccordionId | null>(null);
   const questionListRef = useRef<HTMLDivElement>(null);
 
-  const topicSlug = new URLSearchParams(location.search).get('topic') ?? 'architecture';
-  const activeCategory = getAemInterviewPrepCategoryForSlug(topicSlug);
-  const topicLabel = getAemInterviewPrepTopicTitle(topicSlug);
-  const topicGroupLabel = getAemInterviewPrepGroupTitle(topicSlug);
+  const activeTechnologyId = selectedSection?.technologyId ?? techId ?? '';
+  const topicSlug = new URLSearchParams(location.search).get('topic') ?? getInterviewPrepDefaultTopicSlug(activeTechnologyId);
+  const activeCategory = getInterviewPrepCategoryForSlug(activeTechnologyId, topicSlug);
+  const topicLabel = getInterviewPrepTopicTitle(activeTechnologyId, topicSlug);
+  const topicGroupLabel = getInterviewPrepGroupTitle(activeTechnologyId, topicSlug);
   const questions = useMemo(() => selectedSection?.questions ?? [], [selectedSection]);
 
   const topicQuestions = useMemo(() => (
@@ -441,7 +443,7 @@ export default function InterviewPrepPage() {
     );
   }
 
-  const pageTitle = `${topicLabel} AEM Interview Questions | SplashRide`;
+  const pageTitle = `${topicLabel} ${selectedSection.technologyLabel} Interview Questions | SplashRide`;
   const pageDescription = `${topicQuestions.length} real-world ${topicLabel} interview questions with answers, production scenarios, and architect-level guidance.`;
   const pageStructuredData = [
     {

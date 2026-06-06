@@ -729,6 +729,261 @@ export const awsInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   },
 ];
 
+export const dockerInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'fundamentals',
+    title: 'Fundamentals',
+    topics: [
+      { slug: 'docker-basics', title: 'Docker Basics', category: 'Docker Basics' },
+      { slug: 'containerization', title: 'Containerization', category: 'Containerization' },
+      { slug: 'virtual-machines-vs-containers', title: 'Virtual Machines vs Containers', category: 'Virtual Machines vs Containers' },
+      { slug: 'docker-architecture', title: 'Docker Architecture', category: 'Docker Architecture' },
+      { slug: 'docker-engine', title: 'Docker Engine', category: 'Docker Engine' },
+    ],
+  },
+  {
+    id: 'images',
+    title: 'Images',
+    topics: [
+      { slug: 'docker-images', title: 'Docker Images', category: 'Docker Images' },
+      { slug: 'layers', title: 'Layers', category: 'Layers' },
+      { slug: 'image-optimization', title: 'Image Optimization', category: 'Image Optimization' },
+      { slug: 'multi-stage-builds', title: 'Multi-Stage Builds', category: 'Multi-Stage Builds' },
+      { slug: 'image-security', title: 'Image Security', category: 'Image Security' },
+    ],
+  },
+  {
+    id: 'containers',
+    title: 'Containers',
+    topics: [
+      { slug: 'container-lifecycle', title: 'Container Lifecycle', category: 'Container Lifecycle' },
+      { slug: 'container-networking', title: 'Container Networking', category: 'Container Networking' },
+      { slug: 'container-storage', title: 'Container Storage', category: 'Container Storage' },
+      { slug: 'container-volumes', title: 'Volumes', category: 'Container Volumes' },
+      { slug: 'bind-mounts', title: 'Bind Mounts', category: 'Bind Mounts' },
+    ],
+  },
+  {
+    id: 'dockerfile',
+    title: 'Dockerfile',
+    topics: [
+      { slug: 'dockerfile-instructions', title: 'Dockerfile Instructions', category: 'Dockerfile Instructions' },
+      { slug: 'entrypoint', title: 'ENTRYPOINT', category: 'ENTRYPOINT' },
+      { slug: 'cmd', title: 'CMD', category: 'CMD' },
+      { slug: 'env', title: 'ENV', category: 'ENV' },
+      { slug: 'arg', title: 'ARG', category: 'ARG' },
+      { slug: 'copy', title: 'COPY', category: 'COPY' },
+      { slug: 'add', title: 'ADD', category: 'ADD' },
+    ],
+  },
+  {
+    id: 'networking',
+    title: 'Networking',
+    topics: [
+      { slug: 'bridge-network', title: 'Bridge Network', category: 'Bridge Network' },
+      { slug: 'host-network', title: 'Host Network', category: 'Host Network' },
+      { slug: 'overlay-network', title: 'Overlay Network', category: 'Overlay Network' },
+      { slug: 'dns-resolution', title: 'DNS Resolution', category: 'DNS Resolution' },
+    ],
+  },
+  {
+    id: 'storage',
+    title: 'Storage',
+    topics: [
+      { slug: 'docker-volumes', title: 'Volumes', category: 'Docker Volumes' },
+      { slug: 'persistent-data', title: 'Persistent Data', category: 'Persistent Data' },
+      { slug: 'storage-drivers', title: 'Storage Drivers', category: 'Storage Drivers' },
+    ],
+  },
+  {
+    id: 'docker-compose',
+    title: 'Docker Compose',
+    topics: [
+      { slug: 'compose-files', title: 'Compose Files', category: 'Compose Files' },
+      { slug: 'multi-container-applications', title: 'Multi-Container Applications', category: 'Multi-Container Applications' },
+      { slug: 'service-dependencies', title: 'Service Dependencies', category: 'Service Dependencies' },
+    ],
+  },
+  {
+    id: 'security',
+    title: 'Security',
+    topics: [
+      { slug: 'container-security', title: 'Container Security', category: 'Container Security' },
+      { slug: 'secrets-management', title: 'Secrets Management', category: 'Secrets Management' },
+      { slug: 'image-scanning', title: 'Image Scanning', category: 'Image Scanning' },
+      { slug: 'least-privilege', title: 'Least Privilege', category: 'Least Privilege' },
+    ],
+  },
+  {
+    id: 'ci-cd',
+    title: 'CI/CD',
+    topics: [
+      { slug: 'docker-in-ci-cd', title: 'Docker in CI/CD', category: 'Docker in CI/CD' },
+      { slug: 'image-versioning', title: 'Image Versioning', category: 'Image Versioning' },
+      { slug: 'registry-management', title: 'Registry Management', category: 'Registry Management' },
+    ],
+  },
+  {
+    id: 'production-support',
+    title: 'Production Support',
+    topics: [
+      { slug: 'container-crashes', title: 'Container Crashes', category: 'Container Crashes' },
+      { slug: 'memory-issues', title: 'Memory Issues', category: 'Memory Issues' },
+      { slug: 'cpu-issues', title: 'CPU Issues', category: 'CPU Issues' },
+      { slug: 'debugging-containers', title: 'Debugging Containers', category: 'Debugging Containers' },
+      { slug: 'log-analysis', title: 'Log Analysis', category: 'Log Analysis' },
+    ],
+  },
+  {
+    id: 'architecture',
+    title: 'Architecture',
+    topics: [
+      { slug: 'container-platform-design', title: 'Container Platform Design', category: 'Container Platform Design' },
+      { slug: 'scalability', title: 'Scalability', category: 'Scalability' },
+      { slug: 'high-availability', title: 'High Availability', category: 'High Availability' },
+      { slug: 'enterprise-container-strategy', title: 'Enterprise Container Strategy', category: 'Enterprise Container Strategy' },
+    ],
+  },
+];
+
+export const kubernetesInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'fundamentals',
+    title: 'Fundamentals',
+    topics: [
+      { slug: 'kubernetes-basics', title: 'Kubernetes Basics', category: 'Kubernetes Basics' },
+      { slug: 'cluster-architecture', title: 'Cluster Architecture', category: 'Cluster Architecture' },
+      { slug: 'control-plane', title: 'Control Plane', category: 'Control Plane' },
+      { slug: 'worker-nodes', title: 'Worker Nodes', category: 'Worker Nodes' },
+    ],
+  },
+  {
+    id: 'workloads',
+    title: 'Workloads',
+    topics: [
+      { slug: 'pods', title: 'Pods', category: 'Pods' },
+      { slug: 'replicasets', title: 'ReplicaSets', category: 'ReplicaSets' },
+      { slug: 'deployments', title: 'Deployments', category: 'Deployments' },
+      { slug: 'statefulsets', title: 'StatefulSets', category: 'StatefulSets' },
+      { slug: 'daemonsets', title: 'DaemonSets', category: 'DaemonSets' },
+      { slug: 'jobs', title: 'Jobs', category: 'Jobs' },
+      { slug: 'cronjobs', title: 'CronJobs', category: 'CronJobs' },
+    ],
+  },
+  {
+    id: 'networking',
+    title: 'Networking',
+    topics: [
+      { slug: 'services', title: 'Services', category: 'Services' },
+      { slug: 'ingress', title: 'Ingress', category: 'Ingress' },
+      { slug: 'dns', title: 'DNS', category: 'DNS' },
+      { slug: 'network-policies', title: 'Network Policies', category: 'Network Policies' },
+      { slug: 'service-discovery', title: 'Service Discovery', category: 'Service Discovery' },
+    ],
+  },
+  {
+    id: 'storage',
+    title: 'Storage',
+    topics: [
+      { slug: 'persistent-volumes', title: 'Persistent Volumes', category: 'Persistent Volumes' },
+      { slug: 'pvc', title: 'PVC', category: 'PVC' },
+      { slug: 'storage-classes', title: 'Storage Classes', category: 'Storage Classes' },
+      { slug: 'csi-drivers', title: 'CSI Drivers', category: 'CSI Drivers' },
+    ],
+  },
+  {
+    id: 'configuration',
+    title: 'Configuration',
+    topics: [
+      { slug: 'configmaps', title: 'ConfigMaps', category: 'ConfigMaps' },
+      { slug: 'secrets', title: 'Secrets', category: 'Secrets' },
+      { slug: 'environment-variables', title: 'Environment Variables', category: 'Environment Variables' },
+    ],
+  },
+  {
+    id: 'scaling',
+    title: 'Scaling',
+    topics: [
+      { slug: 'hpa', title: 'HPA', category: 'HPA' },
+      { slug: 'vpa', title: 'VPA', category: 'VPA' },
+      { slug: 'cluster-autoscaler', title: 'Cluster Autoscaler', category: 'Cluster Autoscaler' },
+    ],
+  },
+  {
+    id: 'security',
+    title: 'Security',
+    topics: [
+      { slug: 'rbac', title: 'RBAC', category: 'RBAC' },
+      { slug: 'service-accounts', title: 'Service Accounts', category: 'Service Accounts' },
+      { slug: 'pod-security', title: 'Pod Security', category: 'Pod Security' },
+      { slug: 'network-security', title: 'Network Security', category: 'Network Security' },
+      { slug: 'secrets-management', title: 'Secrets Management', category: 'Secrets Management' },
+    ],
+  },
+  {
+    id: 'observability',
+    title: 'Observability',
+    topics: [
+      { slug: 'logging', title: 'Logging', category: 'Logging' },
+      { slug: 'monitoring', title: 'Monitoring', category: 'Monitoring' },
+      { slug: 'prometheus', title: 'Prometheus', category: 'Prometheus' },
+      { slug: 'grafana', title: 'Grafana', category: 'Grafana' },
+      { slug: 'metrics-server', title: 'Metrics Server', category: 'Metrics Server' },
+    ],
+  },
+  {
+    id: 'helm',
+    title: 'Helm',
+    topics: [
+      { slug: 'helm-basics', title: 'Helm Basics', category: 'Helm Basics' },
+      { slug: 'charts', title: 'Charts', category: 'Charts' },
+      { slug: 'releases', title: 'Releases', category: 'Releases' },
+      { slug: 'rollbacks', title: 'Rollbacks', category: 'Rollbacks' },
+    ],
+  },
+  {
+    id: 'ci-cd',
+    title: 'CI/CD',
+    topics: [
+      { slug: 'gitops', title: 'GitOps', category: 'GitOps' },
+      { slug: 'argocd', title: 'ArgoCD', category: 'ArgoCD' },
+      { slug: 'flux', title: 'Flux', category: 'Flux' },
+      { slug: 'deployment-strategies', title: 'Deployment Strategies', category: 'Deployment Strategies' },
+    ],
+  },
+  {
+    id: 'troubleshooting',
+    title: 'Troubleshooting',
+    topics: [
+      { slug: 'crashloopbackoff', title: 'CrashLoopBackOff', category: 'CrashLoopBackOff' },
+      { slug: 'pending-pods', title: 'Pending Pods', category: 'Pending Pods' },
+      { slug: 'imagepullbackoff', title: 'ImagePullBackOff', category: 'ImagePullBackOff' },
+      { slug: 'node-failures', title: 'Node Failures', category: 'Node Failures' },
+      { slug: 'networking-issues', title: 'Networking Issues', category: 'Networking Issues' },
+    ],
+  },
+  {
+    id: 'production-support',
+    title: 'Production Support',
+    topics: [
+      { slug: 'incident-response', title: 'Incident Response', category: 'Incident Response' },
+      { slug: 'performance-analysis', title: 'Performance Analysis', category: 'Performance Analysis' },
+      { slug: 'resource-optimization', title: 'Resource Optimization', category: 'Resource Optimization' },
+      { slug: 'capacity-planning', title: 'Capacity Planning', category: 'Capacity Planning' },
+    ],
+  },
+  {
+    id: 'architecture',
+    title: 'Architecture',
+    topics: [
+      { slug: 'multi-cluster-design', title: 'Multi-Cluster Design', category: 'Multi-Cluster Design' },
+      { slug: 'high-availability', title: 'High Availability', category: 'High Availability' },
+      { slug: 'disaster-recovery', title: 'Disaster Recovery', category: 'Disaster Recovery' },
+      { slug: 'platform-engineering', title: 'Platform Engineering', category: 'Platform Engineering' },
+    ],
+  },
+];
+
 const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup[]> = {
   aem: aemInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
@@ -736,6 +991,8 @@ const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup
   'core-java': coreJavaInterviewPrepTopicGroups,
   'spring-boot': springBootInterviewPrepTopicGroups,
   aws: awsInterviewPrepTopicGroups,
+  docker: dockerInterviewPrepTopicGroups,
+  kubernetes: kubernetesInterviewPrepTopicGroups,
 };
 
 export function getInterviewPrepTopicGroups(technologyId: string): InterviewPrepNavGroup[] {

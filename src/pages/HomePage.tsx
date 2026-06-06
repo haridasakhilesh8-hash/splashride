@@ -374,7 +374,7 @@ export default function HomePage() {
                 Interview Prep
               </h3>
               <p style={{ margin: 0, maxWidth: '650px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
-                Practice real AEM, React, Next.js, Core Java, Spring Boot, and AWS interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
+                Practice real AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker, and Kubernetes interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
               </p>
             </div>
             <ArrowRight size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />

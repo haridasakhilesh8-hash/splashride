@@ -32,6 +32,8 @@ const technologyPresentation: Record<string, { icon: string; learningTechnologyI
   'core-java': { icon: 'J', learningTechnologyId: 'java' },
   'spring-boot': { icon: 'SB', learningTechnologyId: 'springboot' },
   aws: { icon: 'AWS', learningTechnologyId: 'aws' },
+  docker: { icon: 'D', learningTechnologyId: 'docker' },
+  kubernetes: { icon: 'K8s', learningTechnologyId: 'kubernetes' },
 };
 
 export function getInterviewPrepTechnologyConfig(technologyId: string): InterviewPrepTechnologyConfig | null {

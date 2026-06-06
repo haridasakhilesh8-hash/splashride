@@ -27,7 +27,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     { label: 'AI', techIds: ['ai'] },
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
-  const futureInterviewPrep = ['Docker', 'Kubernetes'];
+  const futureInterviewPrep: string[] = [];
 
   const scrollToHomeSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -296,36 +296,38 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                 ))}
               </div>
             </div>
-            <div style={{ padding: '8px 0 0' }}>
-              <p style={{
-                margin: '0 0 6px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                color: 'var(--color-text-muted)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                Future Ready
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {futureInterviewPrep.map(label => (
-                  <span key={label} style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    background: 'var(--color-bg-secondary)',
-                    border: '1px solid var(--color-border)',
-                    color: 'var(--color-text-muted)',
-                    borderRadius: '8px',
-                    padding: '7px 9px',
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
-                    opacity: 0.72,
-                  }}>
-                    {label}
-                  </span>
-                ))}
+            {futureInterviewPrep.length > 0 && (
+              <div style={{ padding: '8px 0 0' }}>
+                <p style={{
+                  margin: '0 0 6px',
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  color: 'var(--color-text-muted)',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}>
+                  Future Ready
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {futureInterviewPrep.map(label => (
+                    <span key={label} style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      background: 'var(--color-bg-secondary)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-muted)',
+                      borderRadius: '8px',
+                      padding: '7px 9px',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                      opacity: 0.72,
+                    }}>
+                      {label}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 

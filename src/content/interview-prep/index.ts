@@ -1,12 +1,18 @@
 import { aemInterviewPrep } from './aem';
+import { awsInterviewPrep } from './aws';
+import { coreJavaInterviewPrep } from './core-java';
 import { nextjsInterviewPrep } from './nextjs';
 import { reactInterviewPrep } from './react';
+import { springBootInterviewPrep } from './spring-boot';
 import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
 
 export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
   reactInterviewPrep,
   nextjsInterviewPrep,
+  coreJavaInterviewPrep,
+  springBootInterviewPrep,
+  awsInterviewPrep,
 ];
 
 export function getInterviewPrepSection(technologyId: string): InterviewPrepSection | null {

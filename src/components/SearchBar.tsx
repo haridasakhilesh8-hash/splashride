@@ -1,9 +1,10 @@
 import { useMemo, useState, useRef } from 'react';
 import { Search, X, Hash } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
-import { getActiveInterviewPrepSections, getAllInterviewQuestions } from '../content/interview-prep';
+import { getActiveInterviewPrepSections, getAllInterviewQuestions, getInterviewPrepSection } from '../content/interview-prep';
+import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
 
 interface SearchResult {
   slug: string;
@@ -20,13 +21,26 @@ export default function SearchBar() {
   const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { activeTech } = useTech();
+  const activeInterviewTechnologyId = location.pathname.match(/^\/interview-prep\/([^/]+)/)?.[1];
+  const activeInterviewSection = activeInterviewTechnologyId
+    ? getInterviewPrepSection(activeInterviewTechnologyId)
+    : null;
+  const activeInterviewConfig = activeInterviewTechnologyId
+    ? getInterviewPrepTechnologyConfig(activeInterviewTechnologyId)
+    : null;
+  const activeLearningTech = activeInterviewConfig?.learningTechnologyId
+    ? technologies.find((tech) => tech.id === activeInterviewConfig.learningTechnologyId)
+    : activeTech;
+  const activeInterviewFilterId = activeInterviewSection?.technologyId ?? activeTech?.id;
+  const activeSearchLabel = activeInterviewSection?.technologyLabel ?? activeTech?.label;
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
     const found: SearchResult[] = [];
-    const techsToSearch = activeTech ? [activeTech] : technologies;
+    const techsToSearch = activeLearningTech ? [activeLearningTech] : technologies;
 
     for (const tech of techsToSearch) {
       for (const cat of tech.categories) {
@@ -46,7 +60,7 @@ export default function SearchBar() {
     }
 
     for (const item of getAllInterviewQuestions()) {
-      if (activeTech && item.technologyId !== activeTech.id) continue;
+      if (activeInterviewFilterId && item.technologyId !== activeInterviewFilterId) continue;
       const searchable = [
         item.question,
         item.shortAnswer,
@@ -60,20 +74,21 @@ export default function SearchBar() {
         item.isMostAsked ? 'most asked top questions important' : '',
       ].join(' ').toLowerCase();
       if (searchable.includes(q)) {
+        const section = getInterviewPrepSection(item.technologyId);
         const tech = technologies.find(t => t.id === item.technologyId);
         found.push({
           slug: item.id,
           title: item.question,
           category: `Interview Prep - ${item.category}`,
           techId: item.technologyId,
-          techLabel: tech?.label ?? item.technologyId.toUpperCase(),
+          techLabel: tech?.label ?? section?.technologyLabel ?? item.technologyId.toUpperCase(),
           kind: 'interview',
         });
       }
     }
 
     for (const section of getActiveInterviewPrepSections()) {
-      if (activeTech && section.technologyId !== activeTech.id) continue;
+      if (activeInterviewFilterId && section.technologyId !== activeInterviewFilterId) continue;
       for (const scenario of section.productionScenarios) {
         const searchable = [
           scenario.title,
@@ -101,7 +116,7 @@ export default function SearchBar() {
     }
 
     return found.slice(0, 8);
-  }, [query, activeTech]);
+  }, [query, activeLearningTech, activeInterviewFilterId]);
 
   const handleSelect = (result: SearchResult) => {
     navigate(result.kind === 'interview' || result.kind === 'scenario'
@@ -138,7 +153,7 @@ export default function SearchBar() {
           onChange={e => { setQuery(e.target.value); setIsOpen(true); }}
           onFocus={() => { setIsOpen(true); setFocused(true); }}
           onBlur={() => { setTimeout(() => setIsOpen(false), 200); setFocused(false); }}
-          placeholder={activeTech ? `Search ${activeTech.label}...` : 'Search topics...'}
+          placeholder={activeSearchLabel ? `Search ${activeSearchLabel}...` : 'Search topics...'}
           style={{
             background: 'none',
             border: 'none',

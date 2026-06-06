@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ChevronDown, ChevronRight, Layers } from 'lucide-react';
-import { getInterviewPrepSection } from '../content/interview-prep';
+import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
 import {
-  getInterviewPrepCategoryForSlug,
   getInterviewPrepDefaultTopicSlug,
-  getInterviewPrepTopicGroups,
 } from '../content/interview-prep/topicNavigation';
 import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
@@ -21,49 +19,56 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { techId, slug: currentSlug } = useParams<{ techId: string; slug: string }>();
   const { activeTech } = useTech();
   const isInterviewPrep = location.pathname.startsWith('/interview-prep/');
+  const routeInterviewTechnologyId = isInterviewPrep
+    ? location.pathname.match(/^\/interview-prep\/([^/]+)/)?.[1]
+    : undefined;
   const interviewTopicSlug = new URLSearchParams(location.search).get('topic');
-  const interviewTopicGroups = useMemo(
-    () => getInterviewPrepTopicGroups(activeTech?.id ?? ''),
-    [activeTech?.id],
+  const interviewConfig = useMemo(
+    () => (routeInterviewTechnologyId ? getInterviewPrepTechnologyConfig(routeInterviewTechnologyId) : null),
+    [routeInterviewTechnologyId],
   );
   const activeSidebarSlug = isInterviewPrep
-    ? (interviewTopicSlug ?? getInterviewPrepDefaultTopicSlug(activeTech?.id ?? ''))
+    ? (interviewTopicSlug
+      ?? interviewConfig?.topics[0]?.slug
+      ?? getInterviewPrepDefaultTopicSlug(routeInterviewTechnologyId ?? ''))
     : currentSlug;
-  const interviewPrepSection = isInterviewPrep && activeTech?.id ? getInterviewPrepSection(activeTech.id) : null;
   const [interviewCompletedCount, setInterviewCompletedCount] = useState(0);
+  const sidebarTechnology = isInterviewPrep && interviewConfig
+    ? {
+        id: interviewConfig.technologyId,
+        label: interviewConfig.displayName,
+        icon: interviewConfig.icon,
+        learningTechnologyId: interviewConfig.learningTechnologyId,
+      }
+    : activeTech
+      ? {
+          id: activeTech.id,
+          label: activeTech.label,
+          icon: activeTech.icon,
+          learningTechnologyId: activeTech.id,
+        }
+      : null;
 
   // Only show categories belonging to the active technology
   const interviewCategories = useMemo<NavCategory[]>(() => (
-    interviewTopicGroups.length > 0
-      ? interviewTopicGroups.map((group) => ({
-          id: `interview-${group.id}`,
-          title: group.title,
+    interviewConfig
+      ? interviewConfig.categories.map((category) => ({
+          id: category.id,
+          title: category.title,
           icon: '',
-          items: group.topics.map((topic) => ({ slug: topic.slug, title: topic.title })),
+          items: category.topics.map((topic) => ({ slug: topic.slug, title: topic.title })),
         }))
       : []
-  ), [interviewTopicGroups]);
+  ), [interviewConfig]);
   const categories = useMemo(() => (
     isInterviewPrep && interviewCategories.length > 0
       ? interviewCategories
       : activeTech?.categories ?? []
   ), [activeTech?.categories, interviewCategories, isInterviewPrep]);
   const interviewQuestionCounts = useMemo(() => {
-    const counts = new Map<string, number>();
-    if (!interviewPrepSection) return counts;
-
-    for (const group of interviewTopicGroups) {
-      for (const topic of group.topics) {
-        counts.set(
-          topic.slug,
-          interviewPrepSection.questions.filter((question) => question.category === topic.category).length
-        );
-      }
-    }
-
-    return counts;
-  }, [interviewPrepSection, interviewTopicGroups]);
-  const totalInterviewQuestions = interviewPrepSection?.questions.length ?? 0;
+    return new Map(Object.entries(interviewConfig?.questionCounts ?? {}));
+  }, [interviewConfig]);
+  const totalInterviewQuestions = interviewConfig?.totalQuestions ?? 0;
   const interviewProgress = totalInterviewQuestions > 0
     ? Math.round((interviewCompletedCount / totalInterviewQuestions) * 100)
     : 0;
@@ -72,11 +77,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     .filter(i => !i.badge).length;
 
   useEffect(() => {
-    if (!isInterviewPrep || !activeTech?.id) return;
+    if (!isInterviewPrep || !interviewConfig) return;
 
     const readCompletedCount = () => {
       try {
-        const stored = window.localStorage.getItem(`splashride-interview-prep-${activeTech.id}-completed`);
+        const stored = window.localStorage.getItem(`splashride-interview-prep-${interviewConfig.technologyId}-completed`);
         return stored ? (JSON.parse(stored) as string[]).length : 0;
       } catch {
         return 0;
@@ -93,7 +98,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       window.removeEventListener('storage', updateProgress);
       window.removeEventListener('splashride-interview-prep-progress', updateProgress);
     };
-  }, [activeTech?.id, isInterviewPrep]);
+  }, [interviewConfig, isInterviewPrep]);
 
   // Auto-expand the category that contains the current topic
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => {
@@ -136,7 +141,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       return () => window.clearTimeout(timeout);
     }
-  }, [activeSidebarSlug, activeTech?.id, categories]);
+  }, [activeSidebarSlug, sidebarTechnology?.id, categories]);
 
   const toggleCategory = (id: string) => {
     setExpandedCategories(prev => {
@@ -148,7 +153,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   };
 
   const handleTopicClick = (slug: string) => {
-    const targetTechId = techId ?? activeTech?.id;
+    const targetTechId = isInterviewPrep
+      ? interviewConfig?.technologyId
+      : techId ?? activeTech?.id;
     if (!targetTechId) return;
 
     navigate(isInterviewPrep
@@ -177,7 +184,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         }}
       >
         {/* Technology header */}
-        {activeTech && (
+        {sidebarTechnology && (
           <div style={{
             padding: isInterviewPrep ? '0 0.65rem 0.55rem' : '0 0.75rem 0.75rem',
             borderBottom: '1px solid var(--color-border)',
@@ -192,17 +199,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               borderRadius: '7px',
               border: '1px solid var(--color-border)',
             }}>
-              <span style={{ fontSize: isInterviewPrep ? '1.05rem' : '1.25rem' }}>{activeTech.icon}</span>
+              <span style={{ fontSize: isInterviewPrep ? '1.05rem' : '1.25rem' }}>{sidebarTechnology.icon}</span>
               <div>
                 <p style={{ margin: 0, fontSize: isInterviewPrep ? '0.84rem' : '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
-                  {activeTech.label}
+                  {sidebarTechnology.label}
                 </p>
                 <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
                   {isInterviewPrep ? 'Interview Preparation' : `${liveTopicCount} topic${liveTopicCount !== 1 ? 's' : ''}`}
                 </p>
               </div>
               <button
-                onClick={() => navigate(`/technology/${activeTech.id}`)}
+                onClick={() => navigate(`/technology/${sidebarTechnology.learningTechnologyId ?? sidebarTechnology.id}`)}
                 style={{
                   marginLeft: 'auto',
                   background: 'none',
@@ -221,7 +228,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
             <button
               onClick={() => {
-                navigate(`/interview-prep/${activeTech.id}`);
+                navigate(`/interview-prep/${sidebarTechnology.id}`);
                 onClose();
                 window.scrollTo(0, 0);
               }}
@@ -295,9 +302,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   {cat.items.map(item => {
                     const isActive = item.slug === activeSidebarSlug;
                     const topicQuestionCount = isInterviewPrep
-                      ? (interviewQuestionCounts.get(item.slug)
-                        ?? interviewPrepSection?.questions.filter((question) => question.category === getInterviewPrepCategoryForSlug(activeTech?.id ?? '', item.slug)).length
-                        ?? 0)
+                      ? (interviewQuestionCounts.get(item.slug) ?? 0)
                       : null;
                     const isDisabled = !isInterviewPrep && !!item.badge;
                     return (

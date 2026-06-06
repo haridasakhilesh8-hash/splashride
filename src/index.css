@@ -203,4 +203,21 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
+
+  .hero-grid,
+  .hero-value-grid,
+  .split-section,
+  .founder-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .mission-line {
+    display: none !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-grid {
+    gap: 1.25rem !important;
+  }
 }

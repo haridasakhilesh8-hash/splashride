@@ -1,8 +1,28 @@
 import { Link } from 'react-router-dom';
+import {
+  ArrowRight,
+  BarChart3,
+  BookOpen,
+  Briefcase,
+  Building2,
+  CheckCircle2,
+  Cloud,
+  Code,
+  Globe,
+  GraduationCap,
+  Layers,
+  Rocket,
+  Server,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  TrendingUp,
+  UserRound,
+  Zap,
+} from 'lucide-react';
+import SEO from '../components/SEO';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
-import { ArrowRight, Zap, BookOpen, Code, Globe, Target, BarChart3, Sparkles, TrendingUp } from 'lucide-react';
-import SEO from '../components/SEO';
 import { absoluteUrl } from '../lib/seo';
 import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
 
@@ -46,6 +66,98 @@ export default function HomePage() {
     kubernetes: { label: 'Advanced', level: 3 },
   };
 
+  const platformPillars = [
+    {
+      icon: <GraduationCap size={18} />,
+      title: 'Learning Paths',
+      desc: 'Structured paths that help you move from fundamentals to project-ready confidence.',
+      accent: '#2563eb',
+    },
+    {
+      icon: <Target size={18} />,
+      title: 'Interview Preparation',
+      desc: 'Real questions, senior-level answers, production scenarios, and interviewer expectations.',
+      accent: '#7c3aed',
+    },
+    {
+      icon: <Layers size={18} />,
+      title: 'Architecture Knowledge',
+      desc: 'System design, trade-offs, governance, scalability, and enterprise implementation patterns.',
+      accent: '#0891b2',
+    },
+    {
+      icon: <ShieldCheck size={18} />,
+      title: 'Production Experience',
+      desc: 'Troubleshooting, performance, security, incident support, and real project examples.',
+      accent: '#16a34a',
+    },
+  ];
+
+  const whySplashRide = [
+    {
+      icon: <Briefcase size={18} />,
+      title: 'Built around real work',
+      desc: 'SplashRide explains how technologies are used in client projects, production systems, releases, incidents, and interviews.',
+      accent: '#6366f1',
+    },
+    {
+      icon: <Code size={18} />,
+      title: 'Not memorization-first',
+      desc: 'Topics connect concepts to decisions: when to use something, why it matters, what breaks, and how seniors explain it.',
+      accent: '#0ea5e9',
+    },
+    {
+      icon: <Target size={18} />,
+      title: 'Career-focused preparation',
+      desc: 'The same platform supports learning, interview readiness, architecture thinking, and technical leadership growth.',
+      accent: '#8b5cf6',
+    },
+    {
+      icon: <BarChart3 size={18} />,
+      title: 'Practical depth across stacks',
+      desc: 'AEM, frontend, backend, cloud, DevOps, and platform topics live in one consistent learning experience.',
+      accent: '#f97316',
+    },
+  ];
+
+  const missionSteps = [
+    { icon: <BookOpen size={18} />, title: 'From confused', desc: 'Clear fundamentals' },
+    { icon: <Code size={18} />, title: 'To building', desc: 'Project-based practice' },
+    { icon: <Target size={18} />, title: 'To interview ready', desc: 'Real answer patterns' },
+    { icon: <Rocket size={18} />, title: 'To career growth', desc: 'Senior-level thinking' },
+  ];
+
+  const ecosystemDomains = [
+    {
+      title: 'Frontend',
+      desc: 'Modern UI engineering, rendering, routing, state, performance, and testing.',
+      icon: <Code size={20} />,
+      techIds: ['react', 'nextjs'],
+      accent: '#2563eb',
+    },
+    {
+      title: 'Backend',
+      desc: 'Core language depth, APIs, persistence, security, transactions, and production systems.',
+      icon: <Server size={20} />,
+      techIds: ['java', 'springboot'],
+      accent: '#16a34a',
+    },
+    {
+      title: 'Cloud & DevOps',
+      desc: 'Cloud platforms, containers, orchestration, CI/CD, observability, and operations.',
+      icon: <Cloud size={20} />,
+      techIds: ['aws', 'docker', 'kubernetes'],
+      accent: '#7c3aed',
+    },
+    {
+      title: 'Enterprise CMS',
+      desc: 'Enterprise content management, AEM architecture, components, workflows, and delivery.',
+      icon: <Building2 size={20} />,
+      techIds: ['aem'],
+      accent: '#f97316',
+    },
+  ];
+
   const careerGoals = [
     {
       title: 'Frontend Engineer',
@@ -87,7 +199,8 @@ export default function HomePage() {
       '@type': 'WebSite',
       name: 'SplashRide',
       url: absoluteUrl('/'),
-      description: 'Project-focused developer learning for AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker and Kubernetes.',
+      slogan: 'Ride Your Tech Journey',
+      description: 'SplashRide is a premium developer learning platform for learning paths, interview preparation, architecture knowledge, production experience, and career growth.',
       publisher: {
         '@type': 'Organization',
         name: 'SplashRide',
@@ -113,115 +226,575 @@ export default function HomePage() {
     window.scrollTo(0, 0);
   };
 
+  const sectionEyebrowStyle = {
+    fontSize: '0.72rem',
+    fontWeight: 800,
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.1em',
+    color: 'var(--color-accent)',
+    margin: '0 0 0.6rem',
+  };
+
   return (
-    <div style={{ padding: '3rem 2rem 5rem', maxWidth: '1000px', margin: '0 auto' }} className="fade-in">
+    <div style={{ padding: '2.5rem 2rem 5rem', maxWidth: '1120px', margin: '0 auto' }} className="fade-in">
       <SEO
-        title="SplashRide | Developer Learning Paths, Tutorials and Interview Prep"
-        description="Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker and Kubernetes with project-focused tutorials, examples and interview-ready explanations."
+        title="SplashRide | Ride Your Tech Journey"
+        description="SplashRide helps developers grow through learning paths, interview preparation, architecture knowledge, production experience, and career-focused technology learning."
         structuredData={homeStructuredData}
       />
 
       {/* Hero */}
-      <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+      <section style={{
+        width: '100vw',
+        marginLeft: 'calc(50% - 50vw)',
+        marginTop: '-2.5rem',
+        marginBottom: '2rem',
+        background: 'radial-gradient(circle at 82% 18%, rgba(56,189,248,0.22), transparent 26%), radial-gradient(circle at 72% 70%, rgba(124,58,237,0.28), transparent 34%), linear-gradient(120deg, #020a2a 0%, #061142 46%, #16072f 100%)',
+        color: '#ffffff',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
         <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(139,92,246,0.12))',
-          border: '1px solid rgba(99,102,241,0.25)',
-          borderRadius: '20px',
-          padding: '5px 14px',
-          marginBottom: '1.5rem',
-        }}>
-          <Zap size={13} style={{ color: '#6366f1' }} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6366f1', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Multi-Technology Learning Platform
-          </span>
-        </div>
-
-        <h1 style={{
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontWeight: 900,
-          color: 'var(--color-text-primary)',
-          letterSpacing: '-0.04em',
-          lineHeight: 1.1,
-          marginBottom: '1.25rem',
-        }}>
-          Build real project confidence the way a{' '}
-          <span style={{
-            background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            senior developer
-          </span>
-          {' '}would teach it.
-        </h1>
-
-        <p style={{
-          fontSize: '1.05rem',
-          color: 'var(--color-text-secondary)',
-          lineHeight: 1.75,
-          maxWidth: '560px',
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(145deg, transparent 0 54%, rgba(37,99,235,0.18) 55%, rgba(124,58,237,0.24) 68%, transparent 76%)',
+          opacity: 0.9,
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          position: 'absolute',
+          right: '5%',
+          top: '12%',
+          width: '160px',
+          height: '160px',
+          backgroundImage: 'radial-gradient(rgba(59,130,246,0.45) 1px, transparent 1px)',
+          backgroundSize: '14px 14px',
+          opacity: 0.35,
+          pointerEvents: 'none',
+        }} />
+        <div style={{
+          maxWidth: '1120px',
           margin: '0 auto',
-        }}>
-          Learn AEM, React, Next.js, Java, Spring Boot, AWS, Docker, and Kubernetes through
-          architecture-minded explanations, production issues, examples, and interview-ready clarity.
-        </p>
+          padding: '3.2rem 2rem 4rem',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1.02fr) minmax(300px, 0.98fr)',
+          gap: '2rem',
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 1,
+        }} className="hero-grid">
+        <div>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            background: 'rgba(124,58,237,0.24)',
+            border: '1px solid rgba(255,255,255,0.16)',
+            borderRadius: '20px',
+            padding: '5px 13px',
+            marginBottom: '1.2rem',
+            boxShadow: '0 8px 26px rgba(59,130,246,0.18)',
+          }}>
+            <Zap size={13} style={{ color: '#bfdbfe' }} />
+            <span style={{ fontSize: '0.68rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              Multi-Technology Learning Platform
+            </span>
+          </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '10px', marginTop: '1.5rem' }}>
-          <Link
-            to="/technology/react"
-            onClick={() => {
-              setActiveTechId('react');
-              window.scrollTo(0, 0);
-            }}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              background: 'var(--color-accent)',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 700,
-            }}
-          >
-            <BookOpen size={15} />
-            Start Learning
-          </Link>
-          <button
-            onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'var(--color-bg-secondary)',
-              color: 'var(--color-text-primary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '8px',
-              padding: '10px 16px',
-              cursor: 'pointer',
-              fontSize: '0.875rem',
-              fontWeight: 700,
-            }}
-          >
-            <Target size={15} />
-            Choose a Technology
-          </button>
+          <h1 style={{
+            fontSize: 'clamp(2.6rem, 5.6vw, 4.15rem)',
+            fontWeight: 900,
+            color: '#ffffff',
+            letterSpacing: '-0.045em',
+            lineHeight: 1.03,
+            margin: '0 0 1.1rem',
+          }}>
+            Ride Your
+            <br />
+            Tech Journey
+            <br />
+            With{' '}
+            <span style={{
+              background: 'linear-gradient(135deg, #0ea5ff, #a855f7)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}>
+              Confidence
+            </span>
+          </h1>
+
+          <p style={{
+            fontSize: '0.98rem',
+            color: 'rgba(255,255,255,0.84)',
+            lineHeight: 1.75,
+            maxWidth: '560px',
+            margin: 0,
+          }}>
+            SplashRide helps developers master technologies through{' '}
+            <strong style={{ color: '#38bdf8' }}>real-world</strong> explanations,{' '}
+            <strong style={{ color: '#60a5fa' }}>interview preparation</strong>, production scenarios, architecture insights, and project-based learning.
+          </p>
+
+          <p style={{
+            fontSize: '0.92rem',
+            color: 'rgba(255,255,255,0.82)',
+            lineHeight: 1.65,
+            maxWidth: '560px',
+            margin: '1rem 0 0',
+          }}>
+            Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker, Kubernetes, and Azure through efficient learning paths, interview-ready answers, production examples, and architecture-first guidance.
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.45rem' }}>
+            <Link
+              to="/technology/react"
+              onClick={() => {
+                setActiveTechId('react');
+                window.scrollTo(0, 0);
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                textDecoration: 'none',
+                background: 'linear-gradient(135deg, #0ea5ff, #7c3aed)',
+                color: '#fff',
+                border: '1px solid rgba(255,255,255,0.12)',
+                borderRadius: '8px',
+                padding: '11px 17px',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: 900,
+                boxShadow: '0 16px 30px rgba(37,99,235,0.26)',
+              }}
+            >
+              <Rocket size={15} />
+              Start Learning Now
+            </Link>
+            <button
+              onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: 'rgba(255,255,255,0.04)',
+                color: '#ffffff',
+                border: '1px solid rgba(255,255,255,0.28)',
+                borderRadius: '8px',
+                padding: '11px 17px',
+                cursor: 'pointer',
+                fontSize: '0.875rem',
+                fontWeight: 900,
+              }}
+            >
+              Explore Technologies
+              <ArrowRight size={15} />
+            </button>
+          </div>
         </div>
-      </div>
+
+        <div style={{
+          minHeight: '360px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          position: 'relative',
+          overflow: 'visible',
+        }}>
+          <div style={{
+            position: 'absolute',
+            inset: '8% -4% 6% 0',
+            background: 'radial-gradient(ellipse at center, rgba(14,165,233,0.18), rgba(124,58,237,0.16) 42%, transparent 72%)',
+            filter: 'blur(24px)',
+            opacity: 0.9,
+            pointerEvents: 'none',
+          }} />
+
+          <div style={{
+            position: 'relative',
+            zIndex: 1,
+            width: '100%',
+            maxWidth: '520px',
+            display: 'grid',
+            gap: '12px',
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              gap: '12px',
+            }} className="hero-value-grid">
+              {[
+                {
+                  icon: <BookOpen size={18} />,
+                  title: 'Efficient Learning Paths',
+                  desc: 'Move from fundamentals to project confidence without wasting time on scattered tutorials.',
+                },
+                {
+                  icon: <GraduationCap size={18} />,
+                  title: 'Interview-Ready Answers',
+                  desc: 'Practice senior-style explanations with follow-ups, mistakes, and interviewer expectations.',
+                },
+                {
+                  icon: <ShieldCheck size={18} />,
+                  title: 'Production Scenarios',
+                  desc: 'Learn from realistic incidents, troubleshooting steps, and support decisions engineers face.',
+                },
+                {
+                  icon: <Building2 size={18} />,
+                  title: 'Architecture First',
+                  desc: 'Understand scalability, governance, trade-offs, and how technical leads communicate choices.',
+                },
+              ].map(item => (
+                <div
+                  key={item.title}
+                  style={{
+                    minHeight: '138px',
+                    padding: '16px',
+                    borderRadius: '14px',
+                    border: '1px solid rgba(255,255,255,0.13)',
+                    background: 'linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04))',
+                    boxShadow: '0 20px 45px rgba(2,6,23,0.22)',
+                    backdropFilter: 'blur(12px)',
+                  }}
+                >
+                  <div style={{
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#bae6fd',
+                    background: 'linear-gradient(135deg, rgba(14,165,233,0.28), rgba(124,58,237,0.26))',
+                    border: '1px solid rgba(255,255,255,0.14)',
+                    marginBottom: '13px',
+                  }}>
+                    {item.icon}
+                  </div>
+                  <h3 style={{
+                    margin: '0 0 7px',
+                    color: '#ffffff',
+                    fontSize: '0.98rem',
+                    lineHeight: 1.25,
+                    fontWeight: 900,
+                    letterSpacing: '-0.01em',
+                  }}>
+                    {item.title}
+                  </h3>
+                  <p style={{
+                    margin: 0,
+                    color: 'rgba(255,255,255,0.76)',
+                    fontSize: '0.8rem',
+                    lineHeight: 1.55,
+                  }}>
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '8px',
+              padding: '12px 14px',
+              borderRadius: '14px',
+              background: 'rgba(2,6,23,0.3)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              color: 'rgba(255,255,255,0.82)',
+              fontSize: '0.78rem',
+              fontWeight: 800,
+              backdropFilter: 'blur(10px)',
+            }}>
+              {['Real Projects', 'Production Focus', 'Career Growth', 'Lead-Level Thinking'].map(label => (
+                <span
+                  key={label}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <CheckCircle2 size={13} style={{ color: '#38bdf8' }} />
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+      {/* Platform Statistics */}
+      <section style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+        gap: '10px',
+        marginBottom: '3rem',
+        scrollMarginTop: '80px',
+      }}>
+        {[
+          { icon: <BookOpen size={15} />, value: `${totalTopics}+`, label: 'Topics' },
+          { icon: <Globe size={15} />, value: activeTechs.length, label: 'Technologies' },
+          { icon: <BarChart3 size={15} />, value: `${interviewPrepStats.totalQuestions}+`, label: 'Interview Questions' },
+          { icon: <Target size={15} />, value: interviewPrepStats.experienceLevels, label: 'Experience Levels' },
+          { icon: <Layers size={15} />, value: interviewPrepStats.categories, label: 'Categories' },
+        ].map(stat => (
+          <div
+            key={stat.label}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'var(--color-bg-secondary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '10px',
+              padding: '14px 16px',
+            }}
+          >
+            <div style={{ color: '#6366f1', flexShrink: 0 }}>{stat.icon}</div>
+            <div>
+              <p style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{stat.value}</p>
+              <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>{stat.label}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      {/* What is SplashRide? */}
+      <section style={{ marginBottom: '3rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 0.85fr) 1.15fr', gap: '1.5rem', alignItems: 'start' }} className="split-section">
+          <div>
+            <p style={sectionEyebrowStyle}>What is SplashRide?</p>
+            <h2 style={{
+              margin: '0 0 0.8rem',
+              fontSize: 'clamp(1.6rem, 3vw, 2.25rem)',
+              fontWeight: 900,
+              lineHeight: 1.1,
+              color: 'var(--color-text-primary)',
+              letterSpacing: '-0.03em',
+            }}>
+              The smarter way to learn technology.
+            </h2>
+            <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.75 }}>
+              SplashRide is a developer learning platform built to bridge the gap between tutorials and real-world work. It shows what technologies are, how they are used in projects, what breaks in production, and how experienced engineers explain decisions.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px' }}>
+            {platformPillars.map(item => (
+              <div key={item.title} style={{
+                display: 'flex',
+                gap: '12px',
+                background: 'var(--color-bg-secondary)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '12px',
+                padding: '16px',
+              }}>
+                <div style={{
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '10px',
+                  background: `${item.accent}14`,
+                  color: item.accent,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  {item.icon}
+                </div>
+                <div>
+                  <h3 style={{ margin: '0 0 5px', color: 'var(--color-text-primary)', fontSize: '0.92rem', fontWeight: 800 }}>
+                    {item.title}
+                  </h3>
+                  <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.78rem', lineHeight: 1.6 }}>
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why SplashRide? */}
+      <section style={{ marginBottom: '3rem' }}>
+        <p style={{ ...sectionEyebrowStyle, textAlign: 'center' }}>Why SplashRide?</p>
+        <h2 style={{
+          margin: '0 auto 1.3rem',
+          textAlign: 'center',
+          maxWidth: '640px',
+          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+          fontWeight: 900,
+          lineHeight: 1.15,
+          color: 'var(--color-text-primary)',
+          letterSpacing: '-0.03em',
+        }}>
+          Built for developers who want practical depth, not just surface-level notes.
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+          {whySplashRide.map(item => (
+            <div key={item.title} style={{
+              background: 'var(--color-bg-secondary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '12px',
+              padding: '16px',
+              minHeight: '150px',
+            }}>
+              <div style={{
+                width: '38px',
+                height: '38px',
+                borderRadius: '10px',
+                background: `${item.accent}14`,
+                color: item.accent,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '12px',
+              }}>
+                {item.icon}
+              </div>
+              <h3 style={{ margin: '0 0 6px', color: 'var(--color-text-primary)', fontSize: '0.95rem', fontWeight: 800 }}>
+                {item.title}
+              </h3>
+              <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.8rem', lineHeight: 1.62 }}>
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Built by a Developer */}
+      <section style={{
+        background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(14,165,233,0.06))',
+        border: '1px solid rgba(99,102,241,0.2)',
+        borderRadius: '16px',
+        padding: '1.5rem',
+        marginBottom: '3rem',
+        overflow: 'hidden',
+        position: 'relative',
+      }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '1.6rem', alignItems: 'center' }} className="founder-grid">
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              width: '116px',
+              height: '116px',
+              borderRadius: '50%',
+              margin: '0 auto 0.9rem',
+              background: 'linear-gradient(135deg, #2563eb, #7c3aed)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              border: '4px solid var(--color-bg-primary)',
+              boxShadow: '0 14px 30px rgba(37,99,235,0.2)',
+            }}>
+              <UserRound size={46} />
+            </div>
+            <h3 style={{ margin: '0 0 3px', color: 'var(--color-text-primary)', fontSize: '1.05rem', fontWeight: 900 }}>
+              Akki
+            </h3>
+            <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.78rem', lineHeight: 1.5 }}>
+              Founder & Creator
+              <br />
+              Technical Lead | Architect | Developer
+            </p>
+          </div>
+
+          <div>
+            <p style={sectionEyebrowStyle}>Built by a Developer, For Developers</p>
+            <h2 style={{ margin: '0 0 0.75rem', color: 'var(--color-text-primary)', fontSize: 'clamp(1.45rem, 3vw, 2rem)', lineHeight: 1.15, fontWeight: 900, letterSpacing: '-0.03em' }}>
+              Hi, I am Akki.
+            </h2>
+            <p style={{ margin: '0 0 0.8rem', color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.72 }}>
+              I work as a technical lead with experience across AEM, CMS platforms, enterprise applications, content systems, and large-scale digital experiences.
+            </p>
+            <p style={{ margin: '0 0 1rem', color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.72 }}>
+              I created SplashRide to make technical learning more practical, interview-focused, and production-ready. Every topic is designed to explain not just what a technology is, but how it is actually used in real projects.
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {['Enterprise projects', 'Interview clarity', 'Architecture thinking', 'Production support'].map(label => (
+                <span key={label} style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  color: 'var(--color-accent)',
+                  background: 'var(--color-accent-light)',
+                  border: '1px solid rgba(99,102,241,0.22)',
+                  borderRadius: '999px',
+                  padding: '6px 10px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                }}>
+                  <CheckCircle2 size={12} />
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Mission */}
+      <section style={{ marginBottom: '3rem', textAlign: 'center' }}>
+        <p style={sectionEyebrowStyle}>Our Mission</p>
+        <h2 style={{ margin: '0 0 1.4rem', color: 'var(--color-text-primary)', fontSize: 'clamp(1.45rem, 3vw, 2rem)', fontWeight: 900, letterSpacing: '-0.03em' }}>
+          Ride Your <span style={{ color: 'var(--color-accent)' }}>Tech Journey</span>
+        </h2>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '14px',
+          marginBottom: '1rem',
+        }}>
+          {missionSteps.map((step, index) => (
+            <div key={step.title} style={{ position: 'relative' }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                margin: '0 auto 10px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#6366f1',
+                background: 'rgba(99,102,241,0.12)',
+                border: '1px solid rgba(99,102,241,0.2)',
+              }}>
+                {step.icon}
+              </div>
+              <p style={{ margin: '0 0 3px', color: 'var(--color-text-primary)', fontSize: '0.82rem', fontWeight: 900 }}>
+                {step.title}
+              </p>
+              <p style={{ margin: 0, color: 'var(--color-text-muted)', fontSize: '0.72rem', fontWeight: 700 }}>
+                {step.desc}
+              </p>
+              {index < missionSteps.length - 1 && (
+                <span className="mission-line" style={{
+                  position: 'absolute',
+                  top: '24px',
+                  left: 'calc(50% + 34px)',
+                  width: 'calc(100% - 68px)',
+                  height: '1px',
+                  background: 'var(--color-border)',
+                }} />
+              )}
+            </div>
+          ))}
+        </div>
+        <p style={{ margin: '1rem auto 0', maxWidth: '620px', color: 'var(--color-text-secondary)', fontSize: '0.88rem', lineHeight: 1.7 }}>
+          Our mission is to help developers grow from confused to confident by learning the practical side of technology: how to build, explain, troubleshoot, and make better engineering decisions.
+        </p>
+      </section>
 
       {/* Choose Your Goal */}
-      <div id="choose-goal" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      <section id="choose-goal" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
         <h2 style={{
           fontSize: '0.75rem',
-          fontWeight: 700,
+          fontWeight: 800,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
           color: 'var(--color-text-muted)',
@@ -252,7 +825,7 @@ export default function HomePage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                <h3 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>
                   {goal.title}
                 </h3>
                 <Target size={14} style={{ color: 'var(--color-text-muted)' }} />
@@ -288,7 +861,7 @@ export default function HomePage() {
                         cursor: 'pointer',
                         padding: '5px 9px',
                         fontSize: '0.72rem',
-                        fontWeight: 700,
+                        fontWeight: 800,
                       }}
                     >
                       {tech.label}
@@ -300,48 +873,13 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Platform Statistics */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-        gap: '10px',
-        marginBottom: '3rem',
-        scrollMarginTop: '80px',
-      }}>
-        {[
-          { icon: <BookOpen size={15} />, value: `${totalTopics}+`, label: 'Topics' },
-          { icon: <Globe size={15} />, value: activeTechs.length, label: 'Technologies' },
-          { icon: <Code size={15} />, value: `${totalTopics}+`, label: 'Examples' },
-          { icon: <BarChart3 size={15} />, value: `${interviewPrepStats.totalQuestions}+`, label: 'Interview Questions' },
-        ].map(stat => (
-          <div
-            key={stat.label}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              background: 'var(--color-bg-secondary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '10px',
-              padding: '14px 16px',
-            }}
-          >
-            <div style={{ color: '#6366f1', flexShrink: 0 }}>{stat.icon}</div>
-            <div>
-              <p style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{stat.value}</p>
-              <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 700 }}>{stat.label}</p>
-            </div>
-          </div>
-        ))}
-      </div>
+      </section>
 
       {/* Interview Prep */}
-      <div id="interview-prep" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      <section id="interview-prep" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
         <h2 style={{
           fontSize: '0.75rem',
-          fontWeight: 700,
+          fontWeight: 800,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
           color: 'var(--color-text-muted)',
@@ -370,10 +908,10 @@ export default function HomePage() {
               <p style={{ margin: '0 0 6px', color: 'var(--color-accent)', fontSize: '0.72rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Available now
               </p>
-              <h3 style={{ margin: '0 0 8px', color: 'var(--color-text-primary)', fontSize: '1.15rem', fontWeight: 800 }}>
+              <h3 style={{ margin: '0 0 8px', color: 'var(--color-text-primary)', fontSize: '1.15rem', fontWeight: 900 }}>
                 Interview Prep
               </h3>
-              <p style={{ margin: 0, maxWidth: '650px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
+              <p style={{ margin: 0, maxWidth: '700px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
                 Practice real AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker, and Kubernetes interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
               </p>
             </div>
@@ -394,7 +932,7 @@ export default function HomePage() {
                 padding: '12px',
               }}>
                 <p style={{ margin: 0, color: 'var(--color-text-primary)', fontWeight: 800, fontSize: '1.05rem' }}>{item.value}</p>
-                <p style={{ margin: '3px 0 0', color: 'var(--color-text-muted)', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</p>
+                <p style={{ margin: '3px 0 0', color: 'var(--color-text-muted)', fontSize: '0.68rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{item.label}</p>
               </div>
             ))}
           </div>
@@ -415,20 +953,72 @@ export default function HomePage() {
             ))}
           </div>
         </Link>
-      </div>
+      </section>
 
-      {/* Active Technologies */}
-      <div id="technology-cards" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      {/* Choose Your Ride */}
+      <section id="technology-cards" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+        <p style={{ ...sectionEyebrowStyle, textAlign: 'center' }}>Choose Your Ride</p>
         <h2 style={{
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          color: 'var(--color-text-muted)',
-          marginBottom: '1rem',
+          margin: '0 0 1.3rem',
+          textAlign: 'center',
+          color: 'var(--color-text-primary)',
+          fontSize: 'clamp(1.45rem, 3vw, 2rem)',
+          fontWeight: 900,
+          letterSpacing: '-0.03em',
         }}>
-          Available Now
+          Technology Ecosystem
         </h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
+          {ecosystemDomains.map(domain => (
+            <div key={domain.title} style={{
+              background: 'var(--color-bg-secondary)',
+              border: `1px solid ${domain.accent}30`,
+              borderRadius: '12px',
+              padding: '16px',
+            }}>
+              <div style={{ color: domain.accent, marginBottom: '10px' }}>{domain.icon}</div>
+              <h3 style={{ margin: '0 0 5px', color: 'var(--color-text-primary)', fontSize: '0.95rem', fontWeight: 900 }}>
+                {domain.title}
+              </h3>
+              <p style={{ margin: '0 0 12px', color: 'var(--color-text-secondary)', fontSize: '0.76rem', lineHeight: 1.55 }}>
+                {domain.desc}
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {domain.techIds.map(techId => {
+                  const tech = technologies.find(t => t.id === techId);
+                  if (!tech) return null;
+                  return (
+                    <Link
+                      key={`${domain.title}-${tech.id}`}
+                      to={`/technology/${tech.id}`}
+                      onClick={() => handleTechClick(tech.id, tech.active)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        textDecoration: 'none',
+                        color: tech.active ? domain.accent : 'var(--color-text-muted)',
+                        background: tech.active ? `${domain.accent}12` : 'var(--color-bg-primary)',
+                        border: `1px solid ${tech.active ? `${domain.accent}28` : 'var(--color-border)'}`,
+                        borderRadius: '999px',
+                        padding: '5px 8px',
+                        fontSize: '0.68rem',
+                        fontWeight: 800,
+                      }}
+                    >
+                      {tech.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 style={{ margin: '0 0 1rem', color: 'var(--color-text-muted)', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          Available Now
+        </h3>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
           {activeTechs.map(tech => {
@@ -468,7 +1058,6 @@ export default function HomePage() {
                   el.style.boxShadow = 'none';
                 }}
               >
-                {/* Color accent bar */}
                 <div style={{
                   position: 'absolute',
                   top: 0, left: 0, right: 0,
@@ -483,7 +1072,7 @@ export default function HomePage() {
                     {techBadges[tech.id] && (
                       <span style={{
                         fontSize: '0.62rem',
-                        fontWeight: 700,
+                        fontWeight: 800,
                         color: tech.color,
                         background: `${tech.color}14`,
                         border: `1px solid ${tech.color}30`,
@@ -500,7 +1089,7 @@ export default function HomePage() {
                 </div>
 
                 <div>
-                  <h3 style={{ margin: '0 0 4px', fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                  <h3 style={{ margin: '0 0 4px', fontSize: '1rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>
                     {tech.label}
                   </h3>
                   <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.55 }}>
@@ -511,7 +1100,7 @@ export default function HomePage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                   <span style={{
                     fontSize: '0.7rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     background: `${tech.color}18`,
                     color: tech.color,
                     padding: '3px 8px',
@@ -525,7 +1114,7 @@ export default function HomePage() {
                     alignItems: 'center',
                     gap: '5px',
                     fontSize: '0.7rem',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: 'var(--color-text-muted)',
                   }}>
                     {(techDifficulty[tech.id] ?? { label: 'Intermediate', level: 2 }).label}
@@ -548,13 +1137,13 @@ export default function HomePage() {
             );
           })}
         </div>
-      </div>
+      </section>
 
       {/* Recently Added */}
-      <div style={{ marginBottom: '3rem' }}>
+      <section style={{ marginBottom: '3rem' }}>
         <h2 style={{
           fontSize: '0.75rem',
-          fontWeight: 700,
+          fontWeight: 800,
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
           color: 'var(--color-text-muted)',
@@ -595,7 +1184,7 @@ export default function HomePage() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
                 <Sparkles size={14} style={{ color: '#6366f1', flexShrink: 0 }} />
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>{item.title}</p>
+                  <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{item.title}</p>
                   <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>{item.tech}</p>
                 </div>
               </div>
@@ -603,78 +1192,64 @@ export default function HomePage() {
             </Link>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Coming Soon */}
-      <div style={{ marginBottom: '3rem' }}>
-        <h2 style={{
-          fontSize: '0.75rem',
-          fontWeight: 700,
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          color: 'var(--color-text-muted)',
-          marginBottom: '1rem',
-        }}>
-          Coming Soon
-        </h2>
+      {comingSoonTechs.length > 0 && (
+        <section style={{ marginBottom: '3rem' }}>
+          <h2 style={{
+            fontSize: '0.75rem',
+            fontWeight: 800,
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            color: 'var(--color-text-muted)',
+            marginBottom: '1rem',
+          }}>
+            Coming Soon
+          </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
-          {comingSoonTechs.map(tech => (
-            <div
-              key={tech.id}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                background: 'var(--color-bg-secondary)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '10px',
-                padding: '14px 16px',
-                opacity: 0.6,
-              }}
-            >
-              <span style={{ fontSize: '1.4rem' }}>{tech.icon}</span>
-              <div>
-                <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
-                  {tech.label}
-                </p>
-                <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>
-                  Coming soon
-                </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+            {comingSoonTechs.map(tech => (
+              <div
+                key={tech.id}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  background: 'var(--color-bg-secondary)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: '10px',
+                  padding: '14px 16px',
+                  opacity: 0.6,
+                }}
+              >
+                <span style={{ fontSize: '1.4rem' }}>{tech.icon}</span>
+                <div>
+                  <p style={{ margin: 0, fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
+                    {tech.label}
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>
+                    Coming soon
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+        </section>
+      )}
 
-      {/* Why SplashRide */}
-      <div id="projects" style={{
-        background: 'var(--color-bg-secondary)',
-        border: '1px solid var(--color-border)',
-        borderRadius: '12px',
-        padding: '1.75rem',
+      <section id="projects" style={{
+        background: 'linear-gradient(135deg, #2563eb, #6d28d9)',
+        color: '#fff',
+        borderRadius: '14px',
+        padding: '18px 20px',
+        textAlign: 'center',
         scrollMarginTop: '80px',
       }}>
-        <h2 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: '1.25rem' }}>
-          Why SplashRide?
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-          {[
-            { icon: <Zap size={15} />, title: 'Project-focused', desc: 'Every explanation includes what actually happens in enterprise projects' },
-            { icon: <BookOpen size={15} />, title: 'Beginner-friendly', desc: 'Complex concepts in plain language — no prerequisites assumed' },
-            { icon: <Code size={15} />, title: 'Real code examples', desc: 'Working code from real implementations, not toy examples' },
-            { icon: <Globe size={15} />, title: 'Multi-technology', desc: 'One platform for AEM, React, Java, AWS, Docker, and more' },
-          ].map((item, i) => (
-            <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
-              <div style={{ color: '#6366f1', flexShrink: 0, marginTop: '2px' }}>{item.icon}</div>
-              <div>
-                <p style={{ margin: '0 0 3px', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>{item.title}</p>
-                <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+        <p style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800 }}>
+          Made with focus for developers who want to grow, build, troubleshoot, and explain technology with confidence.
+        </p>
+      </section>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
@@ -26,40 +27,59 @@ import { technologies } from '../lib/navigation';
 import { absoluteUrl } from '../lib/seo';
 import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
 
-const journeyMilestones = [
+type JourneyMilestone = {
+  label: string;
+  iconLeft: string;
+  iconTop: string;
+  labelLeft: string;
+  labelTop: string;
+  bubble: string;
+  icon: ReactNode;
+};
+
+const journeyMilestones: JourneyMilestone[] = [
   {
     label: 'Learn',
-    left: '12%',
-    top: '79%',
+    iconLeft: '12%',
+    iconTop: '86%',
+    labelLeft: '15%',
+    labelTop: '95%',
     bubble: '0 0 0 6px rgba(37,99,235,0.12)',
     icon: <BookOpen size={14} />,
-    labelPosition: 'right',
   },
   {
     label: 'Practice',
-    left: '17%',
-    top: '63%',
+    iconLeft: '26%',
+    iconTop: '64%',
+    labelLeft: '27%',
+    labelTop: '74%',
     bubble: '0 0 0 6px rgba(99,102,241,0.13)',
     icon: <Target size={14} />,
   },
   {
     label: 'Build',
-    left: '33%',
-    top: '47%',
+    iconLeft: '36%',
+    iconTop: '47%',
+    labelLeft: '37%',
+    labelTop: '58%',
     bubble: '0 0 0 6px rgba(14,165,233,0.13)',
     icon: <Code size={14} />,
   },
   {
     label: 'Master',
-    left: '53%',
-    top: '24%',
+    iconLeft: '60%',
+    iconTop: '24%',
+    labelLeft: '59%',
+    labelTop: '35%',
     bubble: '0 0 0 6px rgba(168,85,247,0.13)',
     icon: <ShieldCheck size={14} />,
   },
   {
     label: 'Achieve',
-    left: '76%',
-    top: '7%',
+    iconLeft: '84%',
+    iconTop: '7%',
+    labelLeft: '83%',
+    labelTop: '17%',
     bubble: '0 0 0 6px rgba(249,115,22,0.16)',
     icon: <Rocket size={14} />,
   },
@@ -228,53 +248,56 @@ function TechJourneyVisual() {
         pointerEvents: 'none',
       }}>
         {journeyMilestones.map((milestone, index) => (
-          <div
-            key={milestone.label}
-            className="tech-journey-milestone"
-            style={{
-              position: 'absolute',
-              left: milestone.left,
-              top: milestone.top,
-              transform: 'translate(-50%, -50%)',
-              display: 'grid',
-              justifyItems: 'center',
-              gap: '8px',
-              animationDelay: `${index * 0.6}s`,
-            }}
-          >
-            <div className="tech-journey-pulse" style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '999px',
-              display: 'grid',
-              placeItems: 'center',
-              background: 'linear-gradient(135deg, rgba(14,165,233,0.9), rgba(124,58,237,0.92))',
-              border: '1px solid rgba(255,255,255,0.42)',
-              color: '#ffffff',
-              boxShadow: `${milestone.bubble}, 0 12px 26px rgba(2,6,23,0.35)`,
-            }}>
-              {milestone.icon}
+          <div key={milestone.label}>
+            <div
+              className="tech-journey-milestone"
+              style={{
+                position: 'absolute',
+                left: milestone.iconLeft,
+                top: milestone.iconTop,
+                transform: 'translate(-50%, -50%)',
+                animationDelay: `${index * 0.6}s`,
+              }}
+            >
+              <div className="tech-journey-pulse" style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '999px',
+                display: 'grid',
+                placeItems: 'center',
+                background: 'linear-gradient(135deg, rgba(14,165,233,0.9), rgba(124,58,237,0.92))',
+                border: '1px solid rgba(255,255,255,0.42)',
+                color: '#ffffff',
+                boxShadow: `${milestone.bubble}, 0 12px 26px rgba(2,6,23,0.35)`,
+              }}>
+                {milestone.icon}
+              </div>
             </div>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '86px',
-              padding: '6px 10px',
-              borderRadius: '999px',
-              background: 'rgba(2,6,23,0.48)',
-              border: '1px solid rgba(255,255,255,0.13)',
-              color: '#ffffff',
-              fontSize: '0.72rem',
-              fontWeight: 900,
-              letterSpacing: '0.03em',
-              backdropFilter: 'blur(8px)',
-              textAlign: 'center',
-              position: milestone.labelPosition === 'right' ? 'absolute' : 'static',
-              left: milestone.labelPosition === 'right' ? 'calc(100% + 10px)' : undefined,
-              top: milestone.labelPosition === 'right' ? '50%' : undefined,
-              transform: milestone.labelPosition === 'right' ? 'translateY(-50%)' : undefined,
-            }}>
+
+            <div
+              className="tech-journey-milestone-label"
+              style={{
+                position: 'absolute',
+                left: milestone.labelLeft,
+                top: milestone.labelTop,
+                transform: 'translate(-50%, -50%)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: '86px',
+                padding: '6px 10px',
+                borderRadius: '999px',
+                background: 'rgba(2,6,23,0.48)',
+                border: '1px solid rgba(255,255,255,0.13)',
+                color: '#ffffff',
+                fontSize: '0.72rem',
+                fontWeight: 900,
+                letterSpacing: '0.03em',
+                backdropFilter: 'blur(8px)',
+                textAlign: 'center',
+                animationDelay: `${index * 0.6}s`,
+              }}
+            >
               {milestone.label}
             </div>
           </div>
@@ -755,36 +778,39 @@ export default function HomePage() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px' }}>
             {platformPillars.map(item => (
-              <div key={item.title} style={{
-                display: 'flex',
-                gap: '12px',
-                background: 'var(--color-bg-secondary)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '12px',
-                padding: '16px',
-              }}>
-                <div style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '10px',
-                  background: `${item.accent}14`,
-                  color: item.accent,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  {item.icon}
+                <div
+                  key={item.title}
+                  style={{
+                    display: 'flex',
+                    gap: '12px',
+                    background: 'var(--color-bg-secondary)',
+                    border: '1px solid var(--color-border)',
+                    borderRadius: '12px',
+                    padding: '16px',
+                  }}
+                >
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '10px',
+                    background: `${item.accent}14`,
+                    color: item.accent,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h3 style={{ margin: '0 0 5px', color: 'var(--color-text-primary)', fontSize: '0.92rem', fontWeight: 800 }}>
+                      {item.title}
+                    </h3>
+                    <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.78rem', lineHeight: 1.6 }}>
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 style={{ margin: '0 0 5px', color: 'var(--color-text-primary)', fontSize: '0.92rem', fontWeight: 800 }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.78rem', lineHeight: 1.6 }}>
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
             ))}
           </div>
         </div>

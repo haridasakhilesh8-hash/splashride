@@ -4,6 +4,8 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import InterviewPrepPage from './pages/InterviewPrepPage';
+import CareerPathsPage from './pages/CareerPathsPage';
+import RoadmapPage from './pages/RoadmapPage';
 import TechLandingPage from './pages/TechLandingPage';
 import TopicPage from './pages/TopicPage';
 import { getInitialTheme, applyTheme } from './lib/theme';
@@ -11,7 +13,7 @@ import { TechProvider } from './lib/TechContext';
 import { getTechForSlug } from './lib/navigation';
 
 function AppShell() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('light');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => getInitialTheme());
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
 
@@ -21,14 +23,8 @@ function AppShell() {
   const showSidebar = isTechPage || isInterviewPrepTechPage;
 
   useEffect(() => {
-    const initial = getInitialTheme();
-    setTheme(initial);
-    applyTheme(initial);
-  }, []);
-
-  useEffect(() => {
-    if (!showSidebar) setSidebarOpen(false);
-  }, [showSidebar]);
+    applyTheme(theme);
+  }, [theme]);
 
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
@@ -48,7 +44,7 @@ function AppShell() {
 
       <div style={{ display: 'flex', marginTop: '56px', minHeight: 'calc(100vh - 56px)' }}>
         {showSidebar && (
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <Sidebar isOpen={showSidebar && sidebarOpen} onClose={() => setSidebarOpen(false)} />
         )}
 
         <main
@@ -63,6 +59,9 @@ function AppShell() {
         >
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/career-paths" element={<CareerPathsPage />} />
+            <Route path="/career-paths/:careerSlug" element={<RoadmapPage />} />
+            <Route path="/roadmaps/:roadmapSlug" element={<LegacyRoadmapRedirect />} />
             <Route path="/interview-prep" element={<InterviewPrepPage />} />
             <Route path="/interview-prep/:techId" element={<InterviewPrepPage />} />
             {/* Tech landing page */}
@@ -92,6 +91,21 @@ function LegacyTopicRedirect() {
   return (
     <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
       Redirecting…
+    </div>
+  );
+}
+
+function LegacyRoadmapRedirect() {
+  const { roadmapSlug } = useParams<{ roadmapSlug: string }>();
+
+  useEffect(() => {
+    if (!roadmapSlug) return;
+    window.location.replace(`/career-paths/${roadmapSlug}`);
+  }, [roadmapSlug]);
+
+  return (
+    <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+      Redirecting...
     </div>
   );
 }

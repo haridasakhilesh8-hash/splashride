@@ -5,6 +5,7 @@ import SearchBar from './SearchBar';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
 import { getActiveInterviewPrepSections } from '../content/interview-prep';
+import { careerRoadmaps } from '../content/careerPaths';
 
 interface HeaderProps {
   theme: 'dark' | 'light';
@@ -30,6 +31,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
   const futureInterviewPrep: string[] = [];
+  const isCareerPathsActive = location.pathname.startsWith('/career-paths') || location.pathname.startsWith('/roadmaps');
 
   const scrollToHomeSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -346,10 +348,123 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           </div>
         </div>
 
-        {[
-          { label: 'Learning Paths', target: 'choose-goal' },
-          { label: 'Projects', target: 'projects' },
-        ].map(item => (
+        <div className="nav-dropdown" style={{ position: 'relative' }}>
+          <button
+            type="button"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              background: 'none',
+              border: 'none',
+              color: isCareerPathsActive ? headerActiveColor : headerTextColor,
+              cursor: 'pointer',
+              borderRadius: '8px',
+              padding: '7px 9px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Career Paths
+            <ChevronDown size={13} />
+          </button>
+
+          <div
+            className="nav-dropdown-menu"
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 8px)',
+              left: 0,
+              width: '320px',
+              background: 'var(--color-bg-primary)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '10px',
+              boxShadow: 'var(--shadow-popup)',
+              padding: '10px',
+              opacity: 0,
+              pointerEvents: 'none',
+              transform: 'translateY(-4px)',
+              transition: 'opacity 0.15s, transform 0.15s',
+              zIndex: 100,
+            }}
+          >
+            <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
+              <p style={{
+                margin: '0 0 6px',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                Explore Career Paths
+              </p>
+              <Link
+                to="/career-paths"
+                onClick={() => {
+                  window.scrollTo(0, 0);
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                  background: 'var(--color-bg-secondary)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-primary)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  padding: '7px 9px',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                }}
+              >
+                View All Career Paths
+              </Link>
+            </div>
+
+            <div style={{ padding: '8px 0 0' }}>
+              <p style={{
+                margin: '0 0 6px',
+                fontSize: '0.65rem',
+                fontWeight: 700,
+                color: 'var(--color-text-muted)',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                Available Roles
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {careerRoadmaps.map((roadmap) => (
+                  <Link
+                    key={roadmap.slug}
+                    to={`/career-paths/${roadmap.slug}`}
+                    onClick={() => {
+                      window.scrollTo(0, 0);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      textDecoration: 'none',
+                      background: 'var(--color-bg-secondary)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-primary)',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      padding: '7px 9px',
+                      fontSize: '0.78rem',
+                      fontWeight: 600,
+                    }}
+                  >
+                    {roadmap.shortTitle}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {[{ label: 'Learning Paths', target: 'choose-goal' }].map(item => (
           <button
             key={item.label}
             type="button"

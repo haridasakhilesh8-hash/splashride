@@ -178,6 +178,33 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes roadGlowPulse {
+  0%, 100% { opacity: 0.78; }
+  50% { opacity: 1; }
+}
+@keyframes roadShimmer {
+  from { stroke-dashoffset: 0; opacity: 0.2; }
+  50% { opacity: 0.9; }
+  to { stroke-dashoffset: -92; opacity: 0.2; }
+}
+@keyframes journeyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes journeyParticleDrift {
+  0% { transform: translate3d(0, 0, 0) scale(0.9); opacity: 0.28; }
+  25% { opacity: 0.72; }
+  50% { transform: translate3d(10px, -14px, 0) scale(1.08); opacity: 0.95; }
+  100% { transform: translate3d(-6px, -28px, 0) scale(0.88); opacity: 0.12; }
+}
+@keyframes milestonePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(56,189,248,0.35); }
+  70% { box-shadow: 0 0 0 14px rgba(56,189,248,0); }
+}
+@keyframes flagWave {
+  0%, 100% { transform: rotate(-1deg); transform-origin: left center; }
+  50% { transform: rotate(2deg); transform-origin: left center; }
+}
 .fade-in  { animation: fadeIn  0.3s ease forwards; }
 .fade-up  { animation: fadeUp  0.4s ease forwards; }
 
@@ -197,6 +224,36 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
   border-radius: 4px;
 }
 
+.tech-journey-shell {
+  animation: journeyFloat 8s ease-in-out infinite;
+}
+
+.tech-journey-road-glow {
+  animation: roadGlowPulse 3.4s ease-in-out infinite;
+}
+
+.tech-journey-road-shimmer {
+  animation: roadShimmer 4.8s linear infinite;
+}
+
+.tech-journey-particle {
+  animation-name: journeyParticleDrift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.tech-journey-milestone {
+  animation: journeyFloat 6.8s ease-in-out infinite;
+}
+
+.tech-journey-pulse {
+  animation: milestonePulse 2.8s ease-out infinite;
+}
+
+.tech-journey-flag {
+  animation: flagWave 2.6s ease-in-out infinite;
+}
+
 /* Responsive main content padding */
 @media (max-width: 768px) {
   .main-content-topic {
@@ -206,6 +263,9 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
 
   .hero-grid,
   .hero-value-grid,
+  .career-hero-grid,
+  .roadmap-top-grid,
+  .roadmap-body-grid,
   .split-section,
   .founder-grid {
     grid-template-columns: 1fr !important;
@@ -219,5 +279,16 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
 @media (max-width: 520px) {
   .hero-grid {
     gap: 1.25rem !important;
+  }
+
+  .tech-journey-shell {
+    max-width: 100% !important;
+    border-radius: 20px !important;
+  }
+
+  .tech-journey-milestone > div:last-child {
+    min-width: 72px !important;
+    font-size: 0.66rem !important;
+    padding: 5px 8px !important;
   }
 }

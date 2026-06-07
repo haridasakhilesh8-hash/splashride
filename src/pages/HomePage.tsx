@@ -26,6 +26,289 @@ import { technologies } from '../lib/navigation';
 import { absoluteUrl } from '../lib/seo';
 import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
 
+const journeyMilestones = [
+  {
+    label: 'Learn',
+    left: '12%',
+    top: '79%',
+    bubble: '0 0 0 6px rgba(37,99,235,0.12)',
+    icon: <BookOpen size={14} />,
+    labelPosition: 'right',
+  },
+  {
+    label: 'Practice',
+    left: '17%',
+    top: '63%',
+    bubble: '0 0 0 6px rgba(99,102,241,0.13)',
+    icon: <Target size={14} />,
+  },
+  {
+    label: 'Build',
+    left: '33%',
+    top: '47%',
+    bubble: '0 0 0 6px rgba(14,165,233,0.13)',
+    icon: <Code size={14} />,
+  },
+  {
+    label: 'Master',
+    left: '53%',
+    top: '24%',
+    bubble: '0 0 0 6px rgba(168,85,247,0.13)',
+    icon: <ShieldCheck size={14} />,
+  },
+  {
+    label: 'Achieve',
+    left: '76%',
+    top: '7%',
+    bubble: '0 0 0 6px rgba(249,115,22,0.16)',
+    icon: <Rocket size={14} />,
+  },
+];
+
+const journeyParticles = [
+  { left: '12%', top: '16%', size: '7px', delay: '0s', duration: '7s' },
+  { left: '26%', top: '74%', size: '5px', delay: '1.4s', duration: '8s' },
+  { left: '34%', top: '22%', size: '6px', delay: '0.7s', duration: '6.8s' },
+  { left: '48%', top: '57%', size: '4px', delay: '2.2s', duration: '7.6s' },
+  { left: '62%', top: '14%', size: '6px', delay: '1.1s', duration: '6.4s' },
+  { left: '72%', top: '62%', size: '7px', delay: '2.7s', duration: '8.4s' },
+  { left: '85%', top: '28%', size: '5px', delay: '1.9s', duration: '7.2s' },
+];
+
+function TechJourneyVisual() {
+  return (
+    <div className="tech-journey-shell" style={{
+      position: 'relative',
+      width: '100%',
+      maxWidth: '540px',
+      aspectRatio: '1 / 0.96',
+      borderRadius: '24px',
+      overflow: 'hidden',
+      border: '1px solid rgba(255,255,255,0.12)',
+      background: 'radial-gradient(circle at 22% 18%, rgba(14,165,233,0.2), transparent 28%), radial-gradient(circle at 78% 14%, rgba(168,85,247,0.24), transparent 26%), linear-gradient(180deg, rgba(2,6,23,0.28), rgba(2,6,23,0.1))',
+      boxShadow: '0 35px 70px rgba(2,6,23,0.34)',
+      backdropFilter: 'blur(12px)',
+    }}>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'linear-gradient(180deg, rgba(255,255,255,0.04), transparent 24%, transparent 78%, rgba(255,255,255,0.04))',
+        pointerEvents: 'none',
+      }} />
+
+      {journeyParticles.map((particle, index) => (
+        <span
+          key={`${particle.left}-${particle.top}-${index}`}
+          className="tech-journey-particle"
+          style={{
+            position: 'absolute',
+            left: particle.left,
+            top: particle.top,
+            width: particle.size,
+            height: particle.size,
+            borderRadius: '999px',
+            background: 'radial-gradient(circle, rgba(191,219,254,0.95) 0%, rgba(14,165,233,0.68) 45%, transparent 72%)',
+            boxShadow: '0 0 18px rgba(59,130,246,0.75)',
+            animationDelay: particle.delay,
+            animationDuration: particle.duration,
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
+
+      <svg
+        viewBox="0 0 520 500"
+        preserveAspectRatio="xMidYMid meet"
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="roadStrokeGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#38bdf8" />
+            <stop offset="52%" stopColor="#2563eb" />
+            <stop offset="100%" stopColor="#a855f7" />
+          </linearGradient>
+          <linearGradient id="roadCenterGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#bfdbfe" />
+          </linearGradient>
+          <linearGradient id="mountainGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(10,15,35,0.88)" />
+            <stop offset="100%" stopColor="rgba(76,29,149,0.76)" />
+          </linearGradient>
+          <linearGradient id="mistGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(56,189,248,0.22)" />
+            <stop offset="100%" stopColor="rgba(168,85,247,0)" />
+          </linearGradient>
+          <filter id="roadGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="10" result="blurred" />
+            <feColorMatrix
+              in="blurred"
+              type="matrix"
+              values="1 0 0 0 0
+                      0 0.75 0 0 0
+                      0 0 1 0 0
+                      0 0 0 1 0"
+            />
+          </filter>
+          <filter id="summitGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="6" />
+          </filter>
+        </defs>
+
+        <path
+          d="M0 455 L118 396 L176 360 L260 286 L312 238 L392 160 L448 78 L520 38 L520 500 L0 500 Z"
+          fill="url(#mountainGradient)"
+          opacity="0.92"
+        />
+        <path
+          d="M166 500 L250 338 L338 246 L430 118 L520 26 L520 500 Z"
+          fill="url(#mistGradient)"
+          opacity="0.85"
+        />
+
+        <path
+          className="tech-journey-road-glow"
+          d="M38 430 C88 412 116 406 156 388 C200 368 210 350 198 318 C186 284 202 260 248 246 C300 230 306 204 274 174 C242 144 258 116 306 112 C352 108 378 90 394 62 C404 42 424 28 452 22"
+          fill="none"
+          stroke="url(#roadStrokeGradient)"
+          strokeWidth="26"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter="url(#roadGlow)"
+          opacity="0.95"
+        />
+        <path
+          className="tech-journey-road-main"
+          d="M38 430 C88 412 116 406 156 388 C200 368 210 350 198 318 C186 284 202 260 248 246 C300 230 306 204 274 174 C242 144 258 116 306 112 C352 108 378 90 394 62 C404 42 424 28 452 22"
+          fill="none"
+          stroke="url(#roadStrokeGradient)"
+          strokeWidth="18"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          className="tech-journey-road-center"
+          d="M38 430 C88 412 116 406 156 388 C200 368 210 350 198 318 C186 284 202 260 248 246 C300 230 306 204 274 174 C242 144 258 116 306 112 C352 108 378 90 394 62 C404 42 424 28 452 22"
+          fill="none"
+          stroke="url(#roadCenterGradient)"
+          strokeWidth="6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.9"
+        />
+        <path
+          className="tech-journey-road-shimmer"
+          d="M38 430 C88 412 116 406 156 388 C200 368 210 350 198 318 C186 284 202 260 248 246 C300 230 306 204 274 174 C242 144 258 116 306 112 C352 108 378 90 394 62 C404 42 424 28 452 22"
+          fill="none"
+          stroke="rgba(255,255,255,0.95)"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeDasharray="12 34"
+        />
+
+        <g className="tech-journey-flag">
+          <path d="M451 21 L451 69" stroke="rgba(255,255,255,0.85)" strokeWidth="4" strokeLinecap="round" />
+          <path
+            d="M453 24 C468 12 486 17 494 26 C486 36 468 40 453 33 Z"
+            fill="rgba(168,85,247,0.95)"
+          />
+          <path
+            d="M463 28 C468 24 476 24 480 29 C476 34 468 34 463 31 Z"
+            fill="rgba(255,255,255,0.9)"
+          />
+          <circle cx="451" cy="22" r="8" fill="rgba(255,255,255,0.48)" filter="url(#summitGlow)" />
+        </g>
+      </svg>
+
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+      }}>
+        {journeyMilestones.map((milestone, index) => (
+          <div
+            key={milestone.label}
+            className="tech-journey-milestone"
+            style={{
+              position: 'absolute',
+              left: milestone.left,
+              top: milestone.top,
+              transform: 'translate(-50%, -50%)',
+              display: 'grid',
+              justifyItems: 'center',
+              gap: '8px',
+              animationDelay: `${index * 0.6}s`,
+            }}
+          >
+            <div className="tech-journey-pulse" style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '999px',
+              display: 'grid',
+              placeItems: 'center',
+              background: 'linear-gradient(135deg, rgba(14,165,233,0.9), rgba(124,58,237,0.92))',
+              border: '1px solid rgba(255,255,255,0.42)',
+              color: '#ffffff',
+              boxShadow: `${milestone.bubble}, 0 12px 26px rgba(2,6,23,0.35)`,
+            }}>
+              {milestone.icon}
+            </div>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: '86px',
+              padding: '6px 10px',
+              borderRadius: '999px',
+              background: 'rgba(2,6,23,0.48)',
+              border: '1px solid rgba(255,255,255,0.13)',
+              color: '#ffffff',
+              fontSize: '0.72rem',
+              fontWeight: 900,
+              letterSpacing: '0.03em',
+              backdropFilter: 'blur(8px)',
+              textAlign: 'center',
+              position: milestone.labelPosition === 'right' ? 'absolute' : 'static',
+              left: milestone.labelPosition === 'right' ? 'calc(100% + 10px)' : undefined,
+              top: milestone.labelPosition === 'right' ? '50%' : undefined,
+              transform: milestone.labelPosition === 'right' ? 'translateY(-50%)' : undefined,
+            }}>
+              {milestone.label}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        position: 'absolute',
+        left: '18px',
+        top: '18px',
+        pointerEvents: 'none',
+      }}>
+        <div style={{
+          maxWidth: '250px',
+          borderRadius: '16px',
+          background: 'rgba(2,6,23,0.38)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          padding: '10px 12px',
+          color: 'rgba(255,255,255,0.9)',
+          fontSize: '0.74rem',
+          fontWeight: 800,
+          letterSpacing: '0.02em',
+          lineHeight: 1.45,
+          textAlign: 'left',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 14px 28px rgba(2,6,23,0.2)',
+        }}>
+          Ride your technology journey from beginner to expert.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const { setActiveTechId } = useTech();
 
@@ -404,125 +687,13 @@ export default function HomePage() {
         }}>
           <div style={{
             position: 'absolute',
-            inset: '8% -4% 6% 0',
-            background: 'radial-gradient(ellipse at center, rgba(14,165,233,0.18), rgba(124,58,237,0.16) 42%, transparent 72%)',
-            filter: 'blur(24px)',
+            inset: '10% -6% 8% 4%',
+            background: 'radial-gradient(ellipse at center, rgba(14,165,233,0.16), rgba(124,58,237,0.14) 45%, transparent 75%)',
+            filter: 'blur(28px)',
             opacity: 0.9,
             pointerEvents: 'none',
           }} />
-
-          <div style={{
-            position: 'relative',
-            zIndex: 1,
-            width: '100%',
-            maxWidth: '520px',
-            display: 'grid',
-            gap: '12px',
-          }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-              gap: '12px',
-            }} className="hero-value-grid">
-              {[
-                {
-                  icon: <BookOpen size={18} />,
-                  title: 'Efficient Learning Paths',
-                  desc: 'Move from fundamentals to project confidence without wasting time on scattered tutorials.',
-                },
-                {
-                  icon: <GraduationCap size={18} />,
-                  title: 'Interview-Ready Answers',
-                  desc: 'Practice senior-style explanations with follow-ups, mistakes, and interviewer expectations.',
-                },
-                {
-                  icon: <ShieldCheck size={18} />,
-                  title: 'Production Scenarios',
-                  desc: 'Learn from realistic incidents, troubleshooting steps, and support decisions engineers face.',
-                },
-                {
-                  icon: <Building2 size={18} />,
-                  title: 'Architecture First',
-                  desc: 'Understand scalability, governance, trade-offs, and how technical leads communicate choices.',
-                },
-              ].map(item => (
-                <div
-                  key={item.title}
-                  style={{
-                    minHeight: '138px',
-                    padding: '16px',
-                    borderRadius: '14px',
-                    border: '1px solid rgba(255,255,255,0.13)',
-                    background: 'linear-gradient(145deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04))',
-                    boxShadow: '0 20px 45px rgba(2,6,23,0.22)',
-                    backdropFilter: 'blur(12px)',
-                  }}
-                >
-                  <div style={{
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#bae6fd',
-                    background: 'linear-gradient(135deg, rgba(14,165,233,0.28), rgba(124,58,237,0.26))',
-                    border: '1px solid rgba(255,255,255,0.14)',
-                    marginBottom: '13px',
-                  }}>
-                    {item.icon}
-                  </div>
-                  <h3 style={{
-                    margin: '0 0 7px',
-                    color: '#ffffff',
-                    fontSize: '0.98rem',
-                    lineHeight: 1.25,
-                    fontWeight: 900,
-                    letterSpacing: '-0.01em',
-                  }}>
-                    {item.title}
-                  </h3>
-                  <p style={{
-                    margin: 0,
-                    color: 'rgba(255,255,255,0.76)',
-                    fontSize: '0.8rem',
-                    lineHeight: 1.55,
-                  }}>
-                    {item.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <div style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '8px',
-              padding: '12px 14px',
-              borderRadius: '14px',
-              background: 'rgba(2,6,23,0.3)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: 'rgba(255,255,255,0.82)',
-              fontSize: '0.78rem',
-              fontWeight: 800,
-              backdropFilter: 'blur(10px)',
-            }}>
-              {['Real Projects', 'Production Focus', 'Career Growth', 'Lead-Level Thinking'].map(label => (
-                <span
-                  key={label}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  <CheckCircle2 size={13} style={{ color: '#38bdf8' }} />
-                  {label}
-                </span>
-              ))}
-            </div>
-          </div>
+          <TechJourneyVisual />
         </div>
         </div>
       </section>
@@ -872,6 +1043,27 @@ export default function HomePage() {
               </div>
             </div>
           ))}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+          <Link
+            to="/career-paths"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              textDecoration: 'none',
+              color: 'var(--color-accent)',
+              border: '1px solid var(--color-border)',
+              borderRadius: '9px',
+              background: 'var(--color-bg-secondary)',
+              padding: '10px 16px',
+              fontSize: '0.82rem',
+              fontWeight: 900,
+            }}
+          >
+            View All Career Paths
+            <ArrowRight size={15} />
+          </Link>
         </div>
       </section>
 

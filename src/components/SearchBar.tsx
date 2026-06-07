@@ -5,6 +5,7 @@ import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
 import { getActiveInterviewPrepSections, getAllInterviewQuestions, getInterviewPrepSection } from '../content/interview-prep';
 import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
+import { careerRoadmaps } from '../content/careerPaths';
 
 interface SearchResult {
   slug: string;
@@ -12,7 +13,7 @@ interface SearchResult {
   category: string;
   techId: string;
   techLabel: string;
-  kind: 'topic' | 'interview' | 'scenario';
+  kind: 'topic' | 'interview' | 'scenario' | 'career-path';
 }
 
 export default function SearchBar() {
@@ -115,13 +116,41 @@ export default function SearchBar() {
       }
     }
 
+    for (const roadmap of careerRoadmaps) {
+      const searchable = [
+        roadmap.title,
+        roadmap.shortTitle,
+        roadmap.role,
+        roadmap.description,
+        roadmap.summary,
+        roadmap.difficulty,
+        roadmap.demand,
+        roadmap.salaryRange,
+        roadmap.technologies.map((technology) => technology.label).join(' '),
+      ].join(' ').toLowerCase();
+
+      if (searchable.includes(q)) {
+        found.push({
+          slug: roadmap.slug,
+          title: roadmap.role,
+          category: 'Career Path',
+          techId: 'career-paths',
+          techLabel: 'SplashRide',
+          kind: 'career-path',
+        });
+      }
+    }
+
     return found.slice(0, 8);
   }, [query, activeLearningTech, activeInterviewFilterId]);
 
   const handleSelect = (result: SearchResult) => {
-    navigate(result.kind === 'interview' || result.kind === 'scenario'
-      ? `/interview-prep/${result.techId}#${result.slug}`
-      : `/technology/${result.techId}/topic/${result.slug}`
+    navigate(
+      result.kind === 'interview' || result.kind === 'scenario'
+        ? `/interview-prep/${result.techId}#${result.slug}`
+        : result.kind === 'career-path'
+          ? `/career-paths/${result.slug}`
+          : `/technology/${result.techId}/topic/${result.slug}`
     );
     setQuery('');
     setIsOpen(false);

@@ -20,6 +20,7 @@ const { technologies } = require(path.join(rootDir, 'src/lib/navigation.ts'));
 const { SITE_URL } = require(path.join(rootDir, 'src/lib/seo.ts'));
 const { getTopicContent } = require(path.join(rootDir, 'src/content/index.ts'));
 const { getActiveInterviewPrepSections } = require(path.join(rootDir, 'src/content/interview-prep/index.ts'));
+const { careerRoadmaps } = require(path.join(rootDir, 'src/content/careerPaths.ts'));
 
 const sitemapPath = path.join(rootDir, 'public/sitemap.xml');
 const existingSitemap = fs.existsSync(sitemapPath) ? fs.readFileSync(sitemapPath, 'utf8') : '';
@@ -31,7 +32,13 @@ function absoluteUrl(route) {
 
 function routeExists(route) {
   if (route === '/') return true;
+  if (route === '/career-paths') return true;
   if (route === '/interview-prep') return true;
+
+  const roadmapMatch = route.match(/^\/career-paths\/([^/]+)$/);
+  if (roadmapMatch) {
+    return careerRoadmaps.some((roadmap) => roadmap.slug === roadmapMatch[1]);
+  }
 
   const prepMatch = route.match(/^\/interview-prep\/([^/]+)$/);
   if (prepMatch) {
@@ -57,8 +64,13 @@ function routeExists(route) {
 
 const entries = [
   { route: '/', priority: '1.0' },
+  { route: '/career-paths', priority: '0.9' },
   { route: '/interview-prep', priority: '0.9' },
 ];
+
+for (const roadmap of careerRoadmaps) {
+  entries.push({ route: `/career-paths/${roadmap.slug}`, priority: '0.8' });
+}
 
 for (const section of getActiveInterviewPrepSections()) {
   entries.push({ route: `/interview-prep/${section.technologyId}`, priority: '0.8' });

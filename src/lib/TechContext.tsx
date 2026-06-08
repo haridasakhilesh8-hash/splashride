@@ -29,7 +29,7 @@ export function TechProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
   // Derive initial tech from URL on first render
   const initialId = (() => {
-    const m = location.pathname.match(/\/(?:technology|interview-prep)\/([^/]+)/);
+    const m = location.pathname.match(/\/(?:technologies|technology|interview-prep)\/([^/]+)/);
     return m ? m[1] : 'aem';
   })();
 
@@ -37,9 +37,9 @@ export function TechProvider({ children }: { children: ReactNode }) {
 
   // Also keep in sync whenever the pathname changes (e.g. back/forward)
   useEffect(() => {
-    const m = location.pathname.match(/\/(?:technology|interview-prep)\/([^/]+)/);
+    const m = location.pathname.match(/\/(?:technologies|technology|interview-prep)\/([^/]+)/);
     if (m && m[1] !== activeTechId) setActiveTechId(m[1]);
-  }, [location.pathname]);
+  }, [activeTechId, location.pathname]);
 
   const activeTech = getTechById(activeTechId) ?? technologies[0];
 

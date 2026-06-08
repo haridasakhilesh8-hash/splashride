@@ -1,4 +1,5 @@
 import { aemInterviewPrep } from './aem';
+import { aiLlmInterviewPrep } from './ai-llm';
 import { awsInterviewPrep } from './aws';
 import { coreJavaInterviewPrep } from './core-java';
 import { dockerInterviewPrep } from './docker';
@@ -6,6 +7,7 @@ import { kubernetesInterviewPrep } from './kubernetes';
 import { nextjsInterviewPrep } from './nextjs';
 import { reactInterviewPrep } from './react';
 import { springBootInterviewPrep } from './spring-boot';
+import { azureInterviewPrep } from './azure';
 import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
 
 export const interviewPrepSections: InterviewPrepSection[] = [
@@ -17,6 +19,8 @@ export const interviewPrepSections: InterviewPrepSection[] = [
   awsInterviewPrep,
   dockerInterviewPrep,
   kubernetesInterviewPrep,
+  azureInterviewPrep,
+  aiLlmInterviewPrep,
 ];
 
 export function getInterviewPrepSection(technologyId: string): InterviewPrepSection | null {

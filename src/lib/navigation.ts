@@ -733,14 +733,235 @@ const k8sCategories: NavCategory[] = [
 ];
 
 const azureCategories: NavCategory[] = [
-  { id: 'azure-compute', title: 'Compute', icon: '🔷', items: [] },
-  { id: 'azure-storage', title: 'Storage', icon: '💾', items: [] },
+  {
+    id: 'azure-fundamentals',
+    title: 'Fundamentals',
+    icon: 'AZ',
+    items: [
+      { slug: 'azure-basics', title: 'Azure Basics' },
+      { slug: 'azure-architecture', title: 'Azure Architecture' },
+      { slug: 'azure-resource-groups', title: 'Resource Groups' },
+      { slug: 'azure-subscription-management', title: 'Subscription Management' },
+    ],
+  },
+  {
+    id: 'azure-compute',
+    title: 'Compute',
+    icon: 'VM',
+    items: [
+      { slug: 'azure-virtual-machines', title: 'Virtual Machines' },
+      { slug: 'azure-app-service', title: 'App Service' },
+      { slug: 'azure-functions', title: 'Functions' },
+      { slug: 'azure-container-apps', title: 'Container Apps' },
+    ],
+  },
+  {
+    id: 'azure-storage',
+    title: 'Storage',
+    icon: 'ST',
+    items: [
+      { slug: 'azure-blob-storage', title: 'Blob Storage' },
+      { slug: 'azure-files', title: 'Files' },
+      { slug: 'azure-queues', title: 'Queues' },
+      { slug: 'azure-tables', title: 'Tables' },
+    ],
+  },
+  {
+    id: 'azure-networking',
+    title: 'Networking',
+    icon: 'NET',
+    items: [
+      { slug: 'azure-vnet', title: 'VNet' },
+      { slug: 'azure-network-security-groups', title: 'NSG' },
+      { slug: 'azure-load-balancer', title: 'Load Balancer' },
+      { slug: 'azure-application-gateway', title: 'Application Gateway' },
+    ],
+  },
+  {
+    id: 'azure-identity',
+    title: 'Identity',
+    icon: 'ID',
+    items: [
+      { slug: 'azure-active-directory', title: 'Azure AD' },
+      { slug: 'azure-rbac', title: 'RBAC' },
+      { slug: 'azure-managed-identity', title: 'Managed Identity' },
+    ],
+  },
+  {
+    id: 'azure-containers',
+    title: 'Containers',
+    icon: 'AKS',
+    items: [
+      { slug: 'azure-kubernetes-service', title: 'AKS' },
+      { slug: 'azure-container-registry', title: 'ACR' },
+    ],
+  },
+  {
+    id: 'azure-devops',
+    title: 'DevOps',
+    icon: 'CI',
+    items: [
+      { slug: 'azure-devops', title: 'Azure DevOps' },
+      { slug: 'azure-cicd', title: 'CI/CD' },
+      { slug: 'azure-infrastructure-as-code', title: 'Infrastructure as Code' },
+    ],
+  },
+  {
+    id: 'azure-security',
+    title: 'Security',
+    icon: 'SEC',
+    items: [
+      { slug: 'azure-key-vault', title: 'Key Vault' },
+      { slug: 'azure-defender-for-cloud', title: 'Defender for Cloud' },
+    ],
+  },
+  {
+    id: 'azure-architecture',
+    title: 'Architecture',
+    icon: 'ARC',
+    items: [
+      { slug: 'azure-high-availability', title: 'High Availability' },
+      { slug: 'azure-disaster-recovery', title: 'Disaster Recovery' },
+      { slug: 'azure-cost-optimization', title: 'Cost Optimization' },
+      { slug: 'azure-enterprise-architecture', title: 'Enterprise Architecture' },
+    ],
+  },
+  {
+    id: 'azure-interview-prep',
+    title: 'Interview Prep',
+    icon: 'Q&A',
+    items: [
+      { slug: 'azure-scenario-questions', title: 'Scenario Questions' },
+      { slug: 'azure-production-issues', title: 'Production Issues' },
+      { slug: 'azure-architecture-questions', title: 'Architecture Questions' },
+      { slug: 'azure-troubleshooting', title: 'Troubleshooting' },
+    ],
+  },
 ];
 
 const aiCategories: NavCategory[] = [
-  { id: 'ai-fundamentals', title: 'Fundamentals', icon: '🧠', items: [] },
-  { id: 'ai-prompting', title: 'Prompt Engineering', icon: '✍️', items: [] },
-  { id: 'ai-rag', title: 'RAG & Agents', icon: '🤖', items: [] },
+  {
+    id: 'ai-fundamentals',
+    title: 'AI Fundamentals',
+    icon: 'AI',
+    items: [
+      { slug: 'ai-basics', title: 'AI Basics' },
+      { slug: 'ml-vs-dl-vs-llm', title: 'ML vs DL vs LLM' },
+      { slug: 'generative-ai', title: 'Generative AI' },
+    ],
+  },
+  {
+    id: 'ai-python-foundations',
+    title: 'Python Foundations',
+    icon: 'PY',
+    items: [
+      { slug: 'python-for-ai', title: 'Python for AI' },
+      { slug: 'data-processing-for-ai', title: 'Data Processing' },
+    ],
+  },
+  {
+    id: 'ai-machine-learning',
+    title: 'Machine Learning',
+    icon: 'ML',
+    items: [
+      { slug: 'supervised-learning', title: 'Supervised Learning' },
+      { slug: 'unsupervised-learning', title: 'Unsupervised Learning' },
+    ],
+  },
+  {
+    id: 'ai-deep-learning',
+    title: 'Deep Learning',
+    icon: 'DL',
+    items: [
+      { slug: 'neural-networks', title: 'Neural Networks' },
+      { slug: 'transformers', title: 'Transformers' },
+    ],
+  },
+  {
+    id: 'ai-llm-foundations',
+    title: 'LLM Foundations',
+    icon: 'LLM',
+    items: [
+      { slug: 'gpt-models', title: 'GPT Models' },
+      { slug: 'tokens', title: 'Tokens' },
+      { slug: 'embeddings', title: 'Embeddings' },
+      { slug: 'context-windows', title: 'Context Windows' },
+    ],
+  },
+  {
+    id: 'ai-prompt-engineering',
+    title: 'Prompt Engineering',
+    icon: 'PM',
+    items: [
+      { slug: 'zero-shot-prompting', title: 'Zero Shot' },
+      { slug: 'few-shot-prompting', title: 'Few Shot' },
+      { slug: 'chain-of-thought-prompting', title: 'Chain of Thought' },
+    ],
+  },
+  {
+    id: 'ai-rag',
+    title: 'RAG',
+    icon: 'RAG',
+    items: [
+      { slug: 'retrieval-augmented-generation', title: 'Retrieval Augmented Generation' },
+      { slug: 'vector-databases-overview', title: 'Vector Databases' },
+      { slug: 'chunking-strategies', title: 'Chunking' },
+      { slug: 'embedding-pipelines', title: 'Embeddings Pipeline' },
+    ],
+  },
+  {
+    id: 'ai-vector-databases',
+    title: 'Vector Databases',
+    icon: 'VDB',
+    items: [
+      { slug: 'pinecone', title: 'Pinecone' },
+      { slug: 'chroma', title: 'Chroma' },
+      { slug: 'faiss', title: 'FAISS' },
+    ],
+  },
+  {
+    id: 'ai-applications',
+    title: 'AI Applications',
+    icon: 'APP',
+    items: [
+      { slug: 'ai-chatbots', title: 'Chatbots' },
+      { slug: 'ai-agents', title: 'Agents' },
+      { slug: 'knowledge-systems', title: 'Knowledge Systems' },
+    ],
+  },
+  {
+    id: 'ai-architecture',
+    title: 'AI Architecture',
+    icon: 'ARC',
+    items: [
+      { slug: 'ai-system-design', title: 'AI System Design' },
+      { slug: 'multi-agent-systems', title: 'Multi-Agent Systems' },
+      { slug: 'enterprise-ai', title: 'Enterprise AI' },
+    ],
+  },
+  {
+    id: 'ai-production',
+    title: 'Production AI',
+    icon: 'OPS',
+    items: [
+      { slug: 'ai-evaluation', title: 'Evaluation' },
+      { slug: 'ai-monitoring', title: 'Monitoring' },
+      { slug: 'hallucination-management', title: 'Hallucinations' },
+      { slug: 'ai-cost-optimization', title: 'Cost Optimization' },
+      { slug: 'ai-security', title: 'Security' },
+    ],
+  },
+  {
+    id: 'ai-interview-prep',
+    title: 'Interview Prep',
+    icon: 'Q&A',
+    items: [
+      { slug: 'llm-scenarios', title: 'LLM Scenarios' },
+      { slug: 'ai-architecture-interviews', title: 'AI Architecture' },
+      { slug: 'ai-production-issues', title: 'Production Issues' },
+      { slug: 'ai-design-questions', title: 'Design Questions' },
+    ],
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -832,19 +1053,19 @@ export const technologies: TechSection[] = [
     label: 'Azure',
     icon: '🔷',
     color: '#0078d4',
-    description: "Microsoft's cloud platform — VMs, Storage, App Service, Azure DevOps, and Identity.",
-    topicCount: 0,
-    active: false,
+    description: 'Microsoft Azure — compute, storage, networking, identity, containers, DevOps, security, and architecture patterns.',
+    topicCount: 34,
+    active: true,
     categories: azureCategories,
   },
   {
-    id: 'ai',
-    label: 'AI & LLMs',
+    id: 'ai-llm',
+    label: 'AI / LLM Engineering',
     icon: '🧠',
     color: '#a855f7',
-    description: 'Prompt Engineering, RAG, MCP, AI Agents, Vector Databases, and LLM integration patterns.',
-    topicCount: 0,
-    active: false,
+    description: 'Applied AI, prompt engineering, RAG, vector databases, agents, evaluation, and production LLM system design.',
+    topicCount: 38,
+    active: true,
     categories: aiCategories,
   },
 ];
@@ -862,7 +1083,13 @@ export const navigation: NavCategory[] = technologies
 export const allCategories: NavCategory[] = technologies.flatMap((t) => t.categories);
 
 export function getTechById(id: string): TechSection | undefined {
-  return technologies.find((t) => t.id === id);
+  const aliases: Record<string, string> = {
+    ai: 'ai-llm',
+    'core-java': 'java',
+    'spring-boot': 'springboot',
+  };
+  const resolvedId = aliases[id] ?? id;
+  return technologies.find((t) => t.id === resolvedId);
 }
 
 /** Find which technology owns a given topic slug */
@@ -905,3 +1132,5 @@ export function getTechTopicCount(techId: string): number {
     0
   );
 }
+
+

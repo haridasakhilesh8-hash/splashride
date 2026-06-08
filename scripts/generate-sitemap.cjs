@@ -45,12 +45,12 @@ function routeExists(route) {
     return getActiveInterviewPrepSections().some((section) => section.technologyId === prepMatch[1]);
   }
 
-  const techMatch = route.match(/^\/technology\/([^/]+)$/);
+  const techMatch = route.match(/^\/technologies\/([^/]+)$/);
   if (techMatch) {
     return technologies.some((tech) => tech.active && tech.id === techMatch[1]);
   }
 
-  const topicMatch = route.match(/^\/technology\/([^/]+)\/topic\/([^/]+)$/);
+  const topicMatch = route.match(/^\/technologies\/([^/]+)\/topic\/([^/]+)$/);
   if (!topicMatch) return false;
 
   const [, techId, slug] = topicMatch;
@@ -77,13 +77,13 @@ for (const section of getActiveInterviewPrepSections()) {
 }
 
 for (const tech of technologies.filter((item) => item.active)) {
-  entries.push({ route: `/technology/${tech.id}`, priority: '0.8' });
+  entries.push({ route: `/technologies/${tech.id}`, priority: '0.8' });
 
   for (const category of tech.categories) {
     for (const item of category.items) {
       if (item.badge || !getTopicContent(item.slug)) continue;
       entries.push({
-        route: `/technology/${tech.id}/topic/${item.slug}`,
+        route: `/technologies/${tech.id}/topic/${item.slug}`,
         priority: '0.7',
       });
     }

@@ -34,6 +34,8 @@ const technologyPresentation: Record<string, { icon: string; learningTechnologyI
   aws: { icon: 'AWS', learningTechnologyId: 'aws' },
   docker: { icon: 'D', learningTechnologyId: 'docker' },
   kubernetes: { icon: 'K8s', learningTechnologyId: 'kubernetes' },
+  azure: { icon: 'AZ', learningTechnologyId: 'azure' },
+  'ai-llm': { icon: 'AI', learningTechnologyId: 'ai-llm' },
 };
 
 export function getInterviewPrepTechnologyConfig(technologyId: string): InterviewPrepTechnologyConfig | null {

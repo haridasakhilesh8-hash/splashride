@@ -20,8 +20,8 @@ import { springContentMap } from './springboot/index';
 import { awsContentMap }    from './aws/index';
 import { dockerContentMap } from './docker/index';
 import { k8sContentMap }    from './kubernetes/index';
-// import { azureContentMap }  from './azure/index';
-// import { aiContentMap }     from './ai/index';
+import { azureContentMap }  from './azure/index';
+import { aiContentMap }     from './ai/index';
 
 const contentMap: Record<string, TopicContent> = {
   ...aemContentMap,
@@ -32,8 +32,8 @@ const contentMap: Record<string, TopicContent> = {
   ...awsContentMap,
   ...dockerContentMap,
   ...k8sContentMap,
-  // ...azureContentMap,
-  // ...aiContentMap,
+  ...azureContentMap,
+  ...aiContentMap,
 };
 
 export function getTopicContent(slug: string): TopicContent | null {

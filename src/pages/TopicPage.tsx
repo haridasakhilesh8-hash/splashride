@@ -10,6 +10,7 @@ import Diagram from '../components/Diagram';
 import { AlertTriangle, CheckCircle, Lightbulb, BookOpen, ArrowRight, Clock, Tag, ChevronRight } from 'lucide-react';
 import SEO from '../components/SEO';
 import { absoluteUrl } from '../lib/seo';
+import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 
 function MarkdownText({ text }: { text: string }) {
   // Simple markdown-like rendering for **bold** and `code` and headings
@@ -203,7 +204,7 @@ export default function TopicPage() {
           This topic is coming soon or the URL is incorrect.
         </p>
         <button
-          onClick={() => navigate(techId ? `/technology/${techId}` : '/')}
+          onClick={() => navigate(techId ? getTechnologyPath(techId) : '/')}
           style={{
             background: 'var(--color-accent)',
             color: 'white',
@@ -233,7 +234,7 @@ export default function TopicPage() {
       headline: topic.title,
       description: topic.description,
       dateModified: topic.lastReviewed,
-      mainEntityOfPage: absoluteUrl(`/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`),
+      mainEntityOfPage: absoluteUrl(getTechnologyTopicPath(pageTech?.id ?? techId ?? 'aem', topic.slug)),
       author: {
         '@type': 'Organization',
         name: 'SplashRide',
@@ -262,13 +263,13 @@ export default function TopicPage() {
           '@type': 'ListItem',
           position: 2,
           name: pageTech?.label ?? 'Technology',
-          item: absoluteUrl(`/technology/${pageTech?.id ?? techId}`),
+          item: absoluteUrl(getTechnologyPath(pageTech?.id ?? techId ?? 'aem')),
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: topic.title,
-          item: absoluteUrl(`/technology/${pageTech?.id ?? techId}/topic/${topic.slug}`),
+          item: absoluteUrl(getTechnologyTopicPath(pageTech?.id ?? techId ?? 'aem', topic.slug)),
         },
       ],
     },
@@ -301,7 +302,7 @@ export default function TopicPage() {
         className="fade-in"
       >
         {/* Breadcrumb */}
-        {activeTech && (
+        {pageTech && (
           <nav style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '1.25rem', flexWrap: 'wrap' }}>
             <Link
               to="/"
@@ -311,10 +312,10 @@ export default function TopicPage() {
             </Link>
             <ChevronRight size={11} style={{ color: 'var(--color-text-muted)' }} />
             <Link
-              to={`/technology/${activeTech.id}`}
+              to={getTechnologyPath(pageTech.id)}
               style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-text-muted)', fontSize: '0.78rem', padding: 0, textDecoration: 'none' }}
             >
-              {activeTech.label}
+              {pageTech.label}
             </Link>
             {category && (
               <>
@@ -576,7 +577,7 @@ export default function TopicPage() {
               {relatedTopics.map((item) => (
                 <Link
                   key={item.slug}
-                  to={`/technology/${techId ?? activeTech?.id}/topic/${item.slug}`}
+                  to={getTechnologyTopicPath(pageTech?.id ?? techId ?? 'aem', item.slug)}
                   onClick={() => {
                     window.scrollTo(0, 0);
                   }}

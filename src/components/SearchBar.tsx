@@ -3,6 +3,7 @@ import { Search, X, Hash } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
+import { getTechnologyTopicPath } from '../lib/routes';
 import { getActiveInterviewPrepSections, getAllInterviewQuestions, getInterviewPrepSection } from '../content/interview-prep';
 import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
 import { careerRoadmaps } from '../content/careerPaths';
@@ -150,7 +151,7 @@ export default function SearchBar() {
         ? `/interview-prep/${result.techId}#${result.slug}`
         : result.kind === 'career-path'
           ? `/career-paths/${result.slug}`
-          : `/technology/${result.techId}/topic/${result.slug}`
+          : getTechnologyTopicPath(result.techId, result.slug)
     );
     setQuery('');
     setIsOpen(false);

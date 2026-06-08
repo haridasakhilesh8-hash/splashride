@@ -10,7 +10,8 @@ import TechLandingPage from './pages/TechLandingPage';
 import TopicPage from './pages/TopicPage';
 import { getInitialTheme, applyTheme } from './lib/theme';
 import { TechProvider } from './lib/TechContext';
-import { getTechForSlug } from './lib/navigation';
+import { getTechById, getTechForSlug } from './lib/navigation';
+import { getTechnologyPath, getTechnologyTopicPath } from './lib/routes';
 
 function AppShell() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => getInitialTheme());
@@ -18,7 +19,7 @@ function AppShell() {
   const location = useLocation();
 
   // Show sidebar on both tech learning pages and technology-specific interview prep pages
-  const isTechPage = location.pathname.startsWith('/technology/');
+  const isTechPage = location.pathname.startsWith('/technologies/') || location.pathname.startsWith('/technology/');
   const isInterviewPrepTechPage = /^\/interview-prep\/[^/]+/.test(location.pathname);
   const showSidebar = isTechPage || isInterviewPrepTechPage;
 
@@ -64,11 +65,10 @@ function AppShell() {
             <Route path="/roadmaps/:roadmapSlug" element={<LegacyRoadmapRedirect />} />
             <Route path="/interview-prep" element={<InterviewPrepPage />} />
             <Route path="/interview-prep/:techId" element={<InterviewPrepPage />} />
-            {/* Tech landing page */}
-            <Route path="/technology/:techId" element={<TechLandingPage />} />
-            {/* Topic page — nested under technology */}
-            <Route path="/technology/:techId/topic/:slug" element={<TopicPage />} />
-            {/* Legacy redirect shim: old /topic/:slug links still work */}
+            <Route path="/technologies/:techId" element={<TechLandingPage />} />
+            <Route path="/technologies/:techId/topic/:slug" element={<TopicPage />} />
+            <Route path="/technology/:techId" element={<LegacyTechnologyRedirect />} />
+            <Route path="/technology/:techId/topic/:slug" element={<LegacyTechnologyTopicRedirect />} />
             <Route path="/topic/:slug" element={<LegacyTopicRedirect />} />
             <Route path="*" element={<HomePage />} />
           </Routes>
@@ -78,19 +78,50 @@ function AppShell() {
   );
 }
 
-/** Redirects old /topic/:slug URLs to the new /technology/:techId/topic/:slug */
+/** Redirects old /topic/:slug URLs to the new /technologies/:techId/topic/:slug */
 function LegacyTopicRedirect() {
   const { slug } = useParams<{ slug: string }>();
 
   useEffect(() => {
     const tech = slug ? getTechForSlug(slug) : null;
     const techId = tech?.id ?? 'aem';
-    window.location.replace(`/technology/${techId}/topic/${slug}`);
+    if (!slug) return;
+    window.location.replace(getTechnologyTopicPath(techId, slug));
   }, [slug]);
 
   return (
     <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
       Redirecting…
+    </div>
+  );
+}
+
+function LegacyTechnologyRedirect() {
+  const { techId } = useParams<{ techId: string }>();
+
+  useEffect(() => {
+    if (!techId) return;
+    window.location.replace(getTechnologyPath(getTechById(techId)?.id ?? techId));
+  }, [techId]);
+
+  return (
+    <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+      Redirecting...
+    </div>
+  );
+}
+
+function LegacyTechnologyTopicRedirect() {
+  const { techId, slug } = useParams<{ techId: string; slug: string }>();
+
+  useEffect(() => {
+    if (!techId || !slug) return;
+    window.location.replace(getTechnologyTopicPath(getTechById(techId)?.id ?? techId, slug));
+  }, [slug, techId]);
+
+  return (
+    <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+      Redirecting...
     </div>
   );
 }
@@ -119,3 +150,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

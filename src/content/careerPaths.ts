@@ -116,7 +116,7 @@ const frontendPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#7c3aed',
     topics: [
-      { title: 'Components and composition', description: 'Break interfaces into reusable units and reason about ownership boundaries.', links: [{ label: 'React Learning Path', to: '/technology/react' }] },
+      { title: 'Components and composition', description: 'Break interfaces into reusable units and reason about ownership boundaries.', links: [{ label: 'React Learning Path', to: '/technologies/react' }] },
       { title: 'State and hooks', description: 'Manage local state, side effects, forms, and reusable logic without creating fragile code.' },
       { title: 'Routing and data flow', description: 'Understand route design, nested layouts, URL state, and API-driven UI workflows.' },
       { title: 'Testing and maintainability', description: 'Write tests that protect business behavior instead of implementation detail.' },
@@ -129,7 +129,7 @@ const frontendPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#0891b2',
     topics: [
-      { title: 'Next.js App Router', description: 'Learn layouts, loading boundaries, route handlers, and server components.', links: [{ label: 'Next.js Learning Path', to: '/technology/nextjs' }] },
+      { title: 'Next.js App Router', description: 'Learn layouts, loading boundaries, route handlers, and server components.', links: [{ label: 'Next.js Learning Path', to: '/technologies/nextjs' }] },
       { title: 'Rendering choices', description: 'Decide between SSR, SSG, ISR, CSR, and streaming based on real constraints.' },
       { title: 'Performance engineering', description: 'Tune bundle size, caching, lazy loading, and Core Web Vitals behavior.' },
       { title: 'Deployment and monitoring', description: 'Handle environment setup, production failures, and post-release verification.' },
@@ -157,7 +157,7 @@ const backendPhases: CareerPathPhase[] = [
     duration: '3-4 Weeks',
     color: '#16a34a',
     topics: [
-      { title: 'OOP and core syntax', description: 'Master classes, objects, abstraction, exceptions, and clean Java code.', links: [{ label: 'Core Java Learning Path', to: '/technology/java' }] },
+      { title: 'OOP and core syntax', description: 'Master classes, objects, abstraction, exceptions, and clean Java code.', links: [{ label: 'Core Java Learning Path', to: '/technologies/java' }] },
       { title: 'Collections and generics', description: 'Understand common data structures, iteration patterns, and API design trade-offs.' },
       { title: 'Concurrency and JVM basics', description: 'Learn how threads, executors, memory, and garbage collection affect production systems.' },
       { title: 'Testing and code quality', description: 'Write maintainable backend code with strong debugging habits.' },
@@ -173,7 +173,7 @@ const backendPhases: CareerPathPhase[] = [
       { title: 'Spring core concepts', description: 'Use dependency injection, configuration, and lifecycle management effectively.' },
       { title: 'REST APIs and validation', description: 'Design controllers, DTOs, error handling, and versioned contracts.' },
       { title: 'Persistence and transactions', description: 'Model data, use JPA responsibly, and protect consistency under load.' },
-      { title: 'Security and observability', description: 'Apply authentication, authorization, metrics, logs, and health checks.', links: [{ label: 'Spring Boot Learning Path', to: '/technology/springboot' }] },
+      { title: 'Security and observability', description: 'Apply authentication, authorization, metrics, logs, and health checks.', links: [{ label: 'Spring Boot Learning Path', to: '/technologies/springboot' }] },
     ],
   },
   {
@@ -184,7 +184,7 @@ const backendPhases: CareerPathPhase[] = [
     color: '#7c3aed',
     topics: [
       { title: 'Microservices and integration', description: 'Model service boundaries, communication patterns, and distributed failure modes.' },
-      { title: 'Cloud deployment', description: 'Containerize services, configure environments, and support releases safely.', links: [{ label: 'AWS Learning Path', to: '/technology/aws' }, { label: 'Docker Learning Path', to: '/technology/docker' }] },
+      { title: 'Cloud deployment', description: 'Containerize services, configure environments, and support releases safely.', links: [{ label: 'AWS Learning Path', to: '/technologies/aws' }, { label: 'Docker Learning Path', to: '/technologies/docker' }] },
       { title: 'Monitoring and troubleshooting', description: 'Read logs, metrics, traces, and failure signals like a production engineer.' },
       { title: 'Interview preparation', description: 'Practice API, concurrency, microservices, reliability, and system design questions.', links: [{ label: 'Spring Boot Interview Prep', to: '/interview-prep/springboot' }, { label: 'Core Java Interview Prep', to: '/interview-prep/core-java' }] },
     ],
@@ -232,7 +232,7 @@ const aemPhases: CareerPathPhase[] = [
     duration: '3-4 Weeks',
     color: '#f97316',
     topics: [
-      { title: 'JCR and repository modeling', description: 'Learn nodes, properties, versioning, and content structure thinking.', links: [{ label: 'AEM Learning Path', to: '/technology/aem' }] },
+      { title: 'JCR and repository modeling', description: 'Learn nodes, properties, versioning, and content structure thinking.', links: [{ label: 'AEM Learning Path', to: '/technologies/aem' }] },
       { title: 'Sling and request resolution', description: 'Trace how requests resolve to resources, models, scripts, and output.' },
       { title: 'HTL and secure rendering', description: 'Build templated rendering with context-aware safety and maintainability.' },
       { title: 'OSGi services and configuration', description: 'Create reusable services and understand runtime configuration behavior.' },
@@ -245,7 +245,7 @@ const aemPhases: CareerPathPhase[] = [
     duration: '3-4 Weeks',
     color: '#7c3aed',
     topics: [
-      { title: 'Components and dialogs', description: 'Create author-friendly components with reliable rendering behavior.', links: [{ label: 'AEM Components Topic', to: '/technology/aem/topic/components' }] },
+      { title: 'Components and dialogs', description: 'Create author-friendly components with reliable rendering behavior.', links: [{ label: 'AEM Components Topic', to: '/technologies/aem/topic/components' }] },
       { title: 'Templates and policies', description: 'Model editable templates, governance, and reusable authoring rules.' },
       { title: 'Content and experience fragments', description: 'Support structured content, reuse, and headless delivery patterns.' },
       { title: 'Testing and debugging', description: 'Troubleshoot rendering issues, repository problems, and local environment drift.' },
@@ -258,7 +258,7 @@ const aemPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#2563eb',
     topics: [
-      { title: 'Dispatcher and caching', description: 'Control cache behavior, invalidation, filters, and headers.', links: [{ label: 'Dispatcher Topic', to: '/technology/aem/topic/dispatcher' }] },
+      { title: 'Dispatcher and caching', description: 'Control cache behavior, invalidation, filters, and headers.', links: [{ label: 'Dispatcher Topic', to: '/technologies/aem/topic/dispatcher' }] },
       { title: 'Cloud Service and pipelines', description: 'Learn Cloud Manager, immutable deployments, environments, and release guardrails.' },
       { title: 'GraphQL and headless delivery', description: 'Use content APIs responsibly with caching and modeling discipline.' },
       { title: 'Performance and security', description: 'Think about query efficiency, permissions, client libraries, and production safety.' },
@@ -311,7 +311,7 @@ const cloudPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#7c3aed',
     topics: [
-      { title: 'Compute and networking', description: 'Work with EC2, load balancers, VPCs, subnets, route tables, and security groups.', links: [{ label: 'AWS Learning Path', to: '/technology/aws' }] },
+      { title: 'Compute and networking', description: 'Work with EC2, load balancers, VPCs, subnets, route tables, and security groups.', links: [{ label: 'AWS Learning Path', to: '/technologies/aws' }] },
       { title: 'Storage and databases', description: 'Use S3, EBS, RDS, and DynamoDB with durability and performance in mind.' },
       { title: 'IAM and security', description: 'Apply least privilege, secrets management, and audit-focused access patterns.' },
       { title: 'Monitoring and incident response', description: 'Use metrics, logs, alarms, and dashboards to detect and fix problems quickly.' },
@@ -324,8 +324,8 @@ const cloudPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#0891b2',
     topics: [
-      { title: 'Docker delivery', description: 'Build images, configure runtimes, and debug container behavior.', links: [{ label: 'Docker Learning Path', to: '/technology/docker' }] },
-      { title: 'Kubernetes operations', description: 'Deploy workloads, expose traffic, store state, and troubleshoot failures.', links: [{ label: 'Kubernetes Learning Path', to: '/technology/kubernetes' }] },
+      { title: 'Docker delivery', description: 'Build images, configure runtimes, and debug container behavior.', links: [{ label: 'Docker Learning Path', to: '/technologies/docker' }] },
+      { title: 'Kubernetes operations', description: 'Deploy workloads, expose traffic, store state, and troubleshoot failures.', links: [{ label: 'Kubernetes Learning Path', to: '/technologies/kubernetes' }] },
       { title: 'CI/CD and IaC', description: 'Automate environments, release safely, and reduce manual drift.' },
       { title: 'Observability', description: 'Correlate logs, metrics, alerts, and release context in live systems.' },
     ],
@@ -357,7 +357,7 @@ const devopsPhases: CareerPathPhase[] = [
       { title: 'Git workflows', description: 'Use branching, reviews, release management, and rollback discipline effectively.' },
       { title: 'CI/CD pipelines', description: 'Run build, test, security, and deployment stages with meaningful gates.' },
       { title: 'Infrastructure as code', description: 'Manage environments through reviewable definitions and controlled change.' },
-      { title: 'Container delivery', description: 'Package, scan, tag, and publish workloads for repeatable releases.', links: [{ label: 'Docker Learning Path', to: '/technology/docker' }] },
+      { title: 'Container delivery', description: 'Package, scan, tag, and publish workloads for repeatable releases.', links: [{ label: 'Docker Learning Path', to: '/technologies/docker' }] },
     ],
   },
   {
@@ -367,7 +367,7 @@ const devopsPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#2563eb',
     topics: [
-      { title: 'Kubernetes operations', description: 'Handle rollout strategy, service exposure, storage, security, and debugging.', links: [{ label: 'Kubernetes Learning Path', to: '/technology/kubernetes' }] },
+      { title: 'Kubernetes operations', description: 'Handle rollout strategy, service exposure, storage, security, and debugging.', links: [{ label: 'Kubernetes Learning Path', to: '/technologies/kubernetes' }] },
       { title: 'Cloud integration', description: 'Understand IAM, networking, compute, and managed services in support of delivery.' },
       { title: 'Monitoring and SLOs', description: 'Measure service health, release quality, and incident impact clearly.' },
       { title: 'Release safety', description: 'Use canary, rollback, approvals, and change windows in a calm, repeatable way.' },
@@ -408,9 +408,9 @@ const aiPhases: CareerPathPhase[] = [
     duration: '4-6 Weeks',
     color: '#2563eb',
     topics: [
-      { title: 'LLM product design', description: 'Reason about model selection, latency, cost, guardrails, and user experience.', links: [{ label: 'AI and LLMs Learning Path', to: '/technology/ai' }] },
+      { title: 'LLM product design', description: 'Reason about model selection, latency, cost, guardrails, and user experience.', links: [{ label: 'AI and LLMs Learning Path', to: '/technologies/ai-llm' }] },
       { title: 'RAG and retrieval systems', description: 'Design chunking, retrieval, ranking, and grounding workflows that hold up in production.' },
-      { title: 'Frontend and backend integration', description: 'Connect streaming UI, API orchestration, and backend services around AI features.', links: [{ label: 'React Learning Path', to: '/technology/react' }, { label: 'Spring Boot Learning Path', to: '/technology/springboot' }] },
+      { title: 'Frontend and backend integration', description: 'Connect streaming UI, API orchestration, and backend services around AI features.', links: [{ label: 'React Learning Path', to: '/technologies/react' }, { label: 'Spring Boot Learning Path', to: '/technologies/springboot' }] },
       { title: 'Evaluation and observability', description: 'Measure quality, failure modes, cost, and user trust.' },
     ],
   },
@@ -452,8 +452,8 @@ const awsEngineerPhases: CareerPathPhase[] = [
     duration: '3-4 Weeks',
     color: '#0891b2',
     topics: [
-      { title: 'Docker on AWS', description: 'Package workloads and deploy through repeatable release pipelines.', links: [{ label: 'Docker Learning Path', to: '/technology/docker' }] },
-      { title: 'Kubernetes on cloud', description: 'Understand cluster operations, ingress, scaling, and platform reliability.', links: [{ label: 'Kubernetes Learning Path', to: '/technology/kubernetes' }] },
+      { title: 'Docker on AWS', description: 'Package workloads and deploy through repeatable release pipelines.', links: [{ label: 'Docker Learning Path', to: '/technologies/docker' }] },
+      { title: 'Kubernetes on cloud', description: 'Understand cluster operations, ingress, scaling, and platform reliability.', links: [{ label: 'Kubernetes Learning Path', to: '/technologies/kubernetes' }] },
       { title: 'Monitoring and incidents', description: 'Use metrics, logs, and failure evidence to support production systems.' },
     ],
   },
@@ -479,7 +479,7 @@ const azureEngineerPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#0078d4',
     topics: [
-      { title: 'Compute and storage', description: 'Learn VM, app service, storage, and deployment patterns through a platform lens.', links: [{ label: 'Azure Learning Path', to: '/technology/azure' }] },
+      { title: 'Compute and storage', description: 'Learn VM, app service, storage, and deployment patterns through a platform lens.', links: [{ label: 'Azure Learning Path', to: '/technologies/azure' }] },
       { title: 'Identity and access', description: 'Understand roles, tenancy, secrets, and environment separation.' },
       { title: 'Networking and monitoring', description: 'Design reliable connectivity, visibility, and incident response paths.' },
       { title: 'Delivery workflows', description: 'Automate builds, releases, and environment promotion safely.' },
@@ -492,21 +492,21 @@ const azureEngineerPhases: CareerPathPhase[] = [
     duration: '4-5 Weeks',
     color: '#7c3aed',
     topics: [
-      { title: 'Docker workflows', description: 'Package applications and control runtime behavior consistently.', links: [{ label: 'Docker Learning Path', to: '/technology/docker' }] },
-      { title: 'Kubernetes operations', description: 'Deploy and troubleshoot workloads in orchestrated environments.', links: [{ label: 'Kubernetes Learning Path', to: '/technology/kubernetes' }] },
+      { title: 'Docker workflows', description: 'Package applications and control runtime behavior consistently.', links: [{ label: 'Docker Learning Path', to: '/technologies/docker' }] },
+      { title: 'Kubernetes operations', description: 'Deploy and troubleshoot workloads in orchestrated environments.', links: [{ label: 'Kubernetes Learning Path', to: '/technologies/kubernetes' }] },
       { title: 'Production support', description: 'Handle performance issues, rollout regressions, and environment failures.' },
     ],
   },
   {
     id: 'azure-career',
     title: 'Career Growth and Interview Prep',
-    subtitle: 'Use the closest live SplashRide interview tracks while Azure content grows.',
+    subtitle: 'Translate Azure platform depth into interview-ready architecture and incident answers.',
     duration: '2-3 Weeks',
     color: '#f97316',
     topics: [
       { title: 'Cloud architecture communication', description: 'Practice how to explain network, identity, environment, and scaling decisions.' },
       { title: 'Operations scenarios', description: 'Rehearse incident response, delivery, rollback, and troubleshooting stories.' },
-      { title: 'Closest live interview tracks', description: 'Strengthen AWS, Docker, and Kubernetes answers while Azure coverage expands.', links: [{ label: 'AWS Interview Prep', to: '/interview-prep/aws' }, { label: 'Docker Interview Prep', to: '/interview-prep/docker' }, { label: 'Kubernetes Interview Prep', to: '/interview-prep/kubernetes' }] },
+      { title: 'Azure interview preparation', description: 'Practice Azure architecture, troubleshooting, production support, and service-selection questions.', links: [{ label: 'Azure Interview Prep', to: '/interview-prep/azure' }, { label: 'Docker Interview Prep', to: '/interview-prep/docker' }, { label: 'Kubernetes Interview Prep', to: '/interview-prep/kubernetes' }] },
     ],
   },
 ];
@@ -529,8 +529,8 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a frontend engineer who can build polished interfaces, reason about rendering and performance, and communicate architecture choices with confidence.',
     summary: 'A beginner-friendly journey through web foundations, React, production frontend engineering, and interview preparation.',
     technologies: [
-      tech('React', '/technology/react', 'Component architecture, hooks, routing, forms, performance, and production patterns.'),
-      tech('Next.js', '/technology/nextjs', 'Rendering strategy, App Router, server components, deployment, and performance.'),
+      tech('React', '/technologies/react', 'Component architecture, hooks, routing, forms, performance, and production patterns.'),
+      tech('Next.js', '/technologies/nextjs', 'Rendering strategy, App Router, server components, deployment, and performance.'),
     ],
     hours: '120+',
     duration: '4-6 Months',
@@ -584,8 +584,8 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'React topic library', description: 'Use the full React learning path for deeper practice.', to: '/technology/react' },
-          { label: 'Next.js topic library', description: 'Use the Next.js learning path for rendering and deployment depth.', to: '/technology/nextjs' },
+          { label: 'React topic library', description: 'Use the full React learning path for deeper practice.', to: '/technologies/react' },
+          { label: 'Next.js topic library', description: 'Use the Next.js learning path for rendering and deployment depth.', to: '/technologies/nextjs' },
           { label: 'Interview preparation', description: 'Practice scenario-driven answers across React and Next.js.', to: '/interview-prep/react' },
         ],
       },
@@ -601,10 +601,10 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a backend engineer who can build APIs, model data carefully, support production systems, and reason about reliability and scale.',
     summary: 'A structured journey through Core Java, Spring Boot, production backend engineering, and interview preparation.',
     technologies: [
-      tech('Core Java', '/technology/java', 'Language fundamentals, collections, concurrency, JVM behavior, and senior-level Java thinking.'),
-      tech('Spring Boot', '/technology/springboot', 'Dependency injection, APIs, security, data, observability, and microservices.'),
-      tech('AWS', '/technology/aws', 'Cloud deployment, networking, storage, and operational infrastructure.'),
-      tech('Docker', '/technology/docker', 'Container packaging and runtime behavior for backend delivery.'),
+      tech('Core Java', '/technologies/java', 'Language fundamentals, collections, concurrency, JVM behavior, and senior-level Java thinking.'),
+      tech('Spring Boot', '/technologies/springboot', 'Dependency injection, APIs, security, data, observability, and microservices.'),
+      tech('AWS', '/technologies/aws', 'Cloud deployment, networking, storage, and operational infrastructure.'),
+      tech('Docker', '/technologies/docker', 'Container packaging and runtime behavior for backend delivery.'),
     ],
     hours: '145+',
     duration: '5-7 Months',
@@ -658,8 +658,8 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'Core Java topic library', description: 'Use the Java learning path for language depth.', to: '/technology/java' },
-          { label: 'Spring Boot topic library', description: 'Use the Spring Boot path for API, security, and production depth.', to: '/technology/springboot' },
+          { label: 'Core Java topic library', description: 'Use the Java learning path for language depth.', to: '/technologies/java' },
+          { label: 'Spring Boot topic library', description: 'Use the Spring Boot path for API, security, and production depth.', to: '/technologies/springboot' },
           { label: 'Interview preparation', description: 'Practice backend and Java interview answers.', to: '/interview-prep/springboot' },
         ],
       },
@@ -675,12 +675,12 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a full stack Java developer who can build UI, APIs, databases, and deployments as one connected product system.',
     summary: 'A guided route through frontend foundations, Java backend engineering, delivery workflows, and interview readiness.',
     technologies: [
-      tech('React', '/technology/react', 'Frontend UI architecture and interactive application development.'),
-      tech('Next.js', '/technology/nextjs', 'Rendering strategy, routing, and deployment behavior for frontend delivery.'),
-      tech('Core Java', '/technology/java', 'Language depth, concurrency, and debugging confidence.'),
-      tech('Spring Boot', '/technology/springboot', 'API design, security, data, and production backend delivery.'),
-      tech('AWS', '/technology/aws', 'Cloud deployment and operational foundations.'),
-      tech('Docker', '/technology/docker', 'Containerized local development and release packaging.'),
+      tech('React', '/technologies/react', 'Frontend UI architecture and interactive application development.'),
+      tech('Next.js', '/technologies/nextjs', 'Rendering strategy, routing, and deployment behavior for frontend delivery.'),
+      tech('Core Java', '/technologies/java', 'Language depth, concurrency, and debugging confidence.'),
+      tech('Spring Boot', '/technologies/springboot', 'API design, security, data, and production backend delivery.'),
+      tech('AWS', '/technologies/aws', 'Cloud deployment and operational foundations.'),
+      tech('Docker', '/technologies/docker', 'Containerized local development and release packaging.'),
     ],
     hours: '170+',
     duration: '6-8 Months',
@@ -735,8 +735,8 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'React learning path', description: 'Use for UI architecture and routing depth.', to: '/technology/react' },
-          { label: 'Spring Boot learning path', description: 'Use for API, security, and data depth.', to: '/technology/springboot' },
+          { label: 'React learning path', description: 'Use for UI architecture and routing depth.', to: '/technologies/react' },
+          { label: 'Spring Boot learning path', description: 'Use for API, security, and data depth.', to: '/technologies/springboot' },
           { label: 'Interview preparation', description: 'Use multiple live interview tracks to cover full-stack breadth.', to: '/interview-prep' },
         ],
       },
@@ -752,8 +752,8 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a production-ready Adobe Experience Manager developer through structured learning, architecture thinking, troubleshooting, and interview preparation.',
     summary: 'A guided route from AEM fundamentals to real project implementation, Cloud Service delivery, and senior-level production thinking.',
     technologies: [
-      tech('AEM', '/technology/aem', 'Components, HTL, Sling Models, dispatcher, Cloud Service, and enterprise delivery patterns.'),
-      tech('Core Java', '/technology/java', 'The Java base used for services, APIs, and AEM backend reasoning.'),
+      tech('AEM', '/technologies/aem', 'Components, HTL, Sling Models, dispatcher, Cloud Service, and enterprise delivery patterns.'),
+      tech('Core Java', '/technologies/java', 'The Java base used for services, APIs, and AEM backend reasoning.'),
     ],
     hours: '135+',
     duration: '5-6 Months',
@@ -806,9 +806,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'AEM learning path', description: 'Use the full AEM topic library for implementation depth.', to: '/technology/aem' },
+          { label: 'AEM learning path', description: 'Use the full AEM topic library for implementation depth.', to: '/technologies/aem' },
           { label: 'AEM interview prep', description: 'Practice enterprise interview questions and production scenarios.', to: '/interview-prep/aem' },
-          { label: 'Core Java support path', description: 'Strengthen the Java base underneath AEM services and debugging.', to: '/technology/java' },
+          { label: 'Core Java support path', description: 'Strengthen the Java base underneath AEM services and debugging.', to: '/technologies/java' },
         ],
       },
     ]),
@@ -823,9 +823,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a cloud engineer who can design, deploy, observe, and improve real platform infrastructure with confidence.',
     summary: 'A practical route through cloud fundamentals, AWS services, containers, delivery, and architecture-focused interview preparation.',
     technologies: [
-      tech('AWS', '/technology/aws', 'Cloud services, networking, IAM, storage, databases, and architecture patterns.'),
-      tech('Docker', '/technology/docker', 'Container build and runtime workflows used in cloud delivery.'),
-      tech('Kubernetes', '/technology/kubernetes', 'Orchestration, rollout, networking, storage, and platform operations.'),
+      tech('AWS', '/technologies/aws', 'Cloud services, networking, IAM, storage, databases, and architecture patterns.'),
+      tech('Docker', '/technologies/docker', 'Container build and runtime workflows used in cloud delivery.'),
+      tech('Kubernetes', '/technologies/kubernetes', 'Orchestration, rollout, networking, storage, and platform operations.'),
     ],
     hours: '150+',
     duration: '5-7 Months',
@@ -880,9 +880,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'AWS learning path', description: 'Use for cloud service depth and architecture patterns.', to: '/technology/aws' },
-          { label: 'Docker learning path', description: 'Use for image, runtime, and delivery confidence.', to: '/technology/docker' },
-          { label: 'Kubernetes learning path', description: 'Use for orchestration and operations depth.', to: '/technology/kubernetes' },
+          { label: 'AWS learning path', description: 'Use for cloud service depth and architecture patterns.', to: '/technologies/aws' },
+          { label: 'Docker learning path', description: 'Use for image, runtime, and delivery confidence.', to: '/technologies/docker' },
+          { label: 'Kubernetes learning path', description: 'Use for orchestration and operations depth.', to: '/technologies/kubernetes' },
         ],
       },
     ]),
@@ -897,10 +897,10 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become a DevOps engineer who can automate delivery, operate production systems, and improve release confidence across teams.',
     summary: 'A structured route through automation, container delivery, platform operations, production support, and interview preparation.',
     technologies: [
-      tech('AWS', '/technology/aws', 'Infrastructure, networking, identity, and cloud delivery foundations.'),
-      tech('Docker', '/technology/docker', 'Container packaging, runtime debugging, and delivery workflows.'),
-      tech('Kubernetes', '/technology/kubernetes', 'Operational orchestration, rollout strategy, and production troubleshooting.'),
-      tech('Azure', '/technology/azure', 'An upcoming cloud track relevant to multi-cloud DevOps growth.', false),
+      tech('AWS', '/technologies/aws', 'Infrastructure, networking, identity, and cloud delivery foundations.'),
+      tech('Docker', '/technologies/docker', 'Container packaging, runtime debugging, and delivery workflows.'),
+      tech('Kubernetes', '/technologies/kubernetes', 'Operational orchestration, rollout strategy, and production troubleshooting.'),
+      tech('Azure', '/technologies/azure', 'Azure compute, storage, networking, identity, DevOps, security, and enterprise architecture patterns.'),
     ],
     hours: '155+',
     duration: '5-7 Months',
@@ -956,9 +956,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'Docker learning path', description: 'Use for container fundamentals and runtime debugging.', to: '/technology/docker' },
-          { label: 'Kubernetes learning path', description: 'Use for orchestration and operational depth.', to: '/technology/kubernetes' },
-          { label: 'AWS learning path', description: 'Use for cloud infrastructure patterns and observability.', to: '/technology/aws' },
+          { label: 'Docker learning path', description: 'Use for container fundamentals and runtime debugging.', to: '/technologies/docker' },
+          { label: 'Kubernetes learning path', description: 'Use for orchestration and operational depth.', to: '/technologies/kubernetes' },
+          { label: 'AWS learning path', description: 'Use for cloud infrastructure patterns and observability.', to: '/technologies/aws' },
         ],
       },
     ]),
@@ -973,10 +973,10 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become an AI engineer who can design useful LLM features, connect them to product systems, and operate them responsibly in production.',
     summary: 'A practical journey through AI foundations, LLM application engineering, integration, governance, and interview preparation.',
     technologies: [
-      tech('AI & LLMs', '/technology/ai', 'An emerging SplashRide track for prompt engineering, RAG, agents, and LLM integration patterns.', false),
-      tech('React', '/technology/react', 'UI delivery for AI experiences and streaming product behavior.'),
-      tech('Spring Boot', '/technology/springboot', 'Backend orchestration and service integration around AI products.'),
-      tech('AWS', '/technology/aws', 'Cloud deployment, observability, and supporting platform capabilities.'),
+      tech('AI / LLM Engineering', '/technologies/ai-llm', 'Prompt engineering, RAG, vector databases, evaluation, agents, production AI, and enterprise AI system design.'),
+      tech('React', '/technologies/react', 'UI delivery for AI experiences and streaming product behavior.'),
+      tech('Spring Boot', '/technologies/springboot', 'Backend orchestration and service integration around AI products.'),
+      tech('AWS', '/technologies/aws', 'Cloud deployment, observability, and supporting platform capabilities.'),
     ],
     hours: '165+',
     duration: '6-8 Months',
@@ -995,19 +995,18 @@ export const careerRoadmaps: CareerRoadmap[] = [
       expectedOutcomes: ['Build AI-enabled products', 'Understand architecture decisions', 'Handle production issues', 'Crack technical interviews', 'Become job ready'],
     },
     interviewPrep: {
-      primaryTrackLabel: 'Start AI-Oriented Interview Preparation',
-      primaryTrackTo: '/interview-prep/aws',
-      topicsCovered: ['LLM and RAG system design', 'Prompt reliability and observability', 'Frontend and backend integration', 'Cloud deployment trade-offs', 'Production debugging'],
+      primaryTrackLabel: 'Start AI / LLM Interview Preparation',
+      primaryTrackTo: '/interview-prep/ai-llm',
+      topicsCovered: ['LLM and RAG system design', 'Prompt reliability and observability', 'Evaluation and hallucination control', 'Vector database and retrieval trade-offs', 'Production debugging'],
       questionCount: 1700,
       scenarioCount: 160,
       architectureQuestionCount: 290,
       systemDesignQuestionCount: 180,
       linkedTracks: [
-        { label: 'AWS Interview Prep', to: '/interview-prep/aws' },
+        { label: 'AI / LLM Interview Prep', to: '/interview-prep/ai-llm' },
         { label: 'React Interview Prep', to: '/interview-prep/react' },
         { label: 'Spring Boot Interview Prep', to: '/interview-prep/springboot' },
       ],
-      note: 'AI-specific interview content is still growing, so the current best tracks focus on the cloud, frontend, and backend systems AI products rely on.',
     },
     careerInsights: {
       demand: 'AI engineer demand is rising quickly, especially for teams that need applied LLM products rather than research-only profiles.',
@@ -1032,9 +1031,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'AI and LLMs track', description: 'Use the emerging AI path as SplashRide coverage grows.', to: '/technology/ai' },
-          { label: 'React learning path', description: 'Use for product interface and streaming UX depth.', to: '/technology/react' },
-          { label: 'Spring Boot learning path', description: 'Use for backend orchestration and API reliability.', to: '/technology/springboot' },
+          { label: 'AI and LLMs track', description: 'Use for LLM foundations, RAG, prompt engineering, agents, and production AI system design.', to: '/technologies/ai-llm' },
+          { label: 'React learning path', description: 'Use for product interface and streaming UX depth.', to: '/technologies/react' },
+          { label: 'Spring Boot learning path', description: 'Use for backend orchestration and API reliability.', to: '/technologies/springboot' },
         ],
       },
     ]),
@@ -1049,9 +1048,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
     description: 'Become an AWS engineer who can design practical cloud architectures, support production workloads, and explain service trade-offs clearly.',
     summary: 'A focused route through AWS services, operational delivery, architecture patterns, and interview preparation.',
     technologies: [
-      tech('AWS', '/technology/aws', 'Core cloud services, networking, storage, serverless, monitoring, and architecture.'),
-      tech('Docker', '/technology/docker', 'Container packaging and deployment patterns often used on AWS.'),
-      tech('Kubernetes', '/technology/kubernetes', 'Cluster operations relevant to containerized AWS workloads.'),
+      tech('AWS', '/technologies/aws', 'Core cloud services, networking, storage, serverless, monitoring, and architecture.'),
+      tech('Docker', '/technologies/docker', 'Container packaging and deployment patterns often used on AWS.'),
+      tech('Kubernetes', '/technologies/kubernetes', 'Cluster operations relevant to containerized AWS workloads.'),
     ],
     hours: '140+',
     duration: '5-6 Months',
@@ -1104,9 +1103,9 @@ export const careerRoadmaps: CareerRoadmap[] = [
       {
         title: 'Reference Materials',
         items: [
-          { label: 'AWS learning path', description: 'Use the full AWS topic library for service depth.', to: '/technology/aws' },
+          { label: 'AWS learning path', description: 'Use the full AWS topic library for service depth.', to: '/technologies/aws' },
           { label: 'AWS interview prep', description: 'Practice cloud architecture and troubleshooting questions.', to: '/interview-prep/aws' },
-          { label: 'Docker and Kubernetes tracks', description: 'Strengthen the delivery layer around AWS workloads.', to: '/technology/docker' },
+          { label: 'Docker and Kubernetes tracks', description: 'Strengthen the delivery layer around AWS workloads.', to: '/technologies/docker' },
         ],
       },
     ]),
@@ -1118,12 +1117,12 @@ export const careerRoadmaps: CareerRoadmap[] = [
     shortTitle: 'Azure Engineer',
     role: 'Azure Engineer',
     icon: '🔷',
-    description: 'Become an Azure-focused engineer through cloud foundations, platform thinking, container delivery, and role-specific career guidance.',
-    summary: 'A dedicated Azure-flavored path with honest current coverage and a clear route into cloud engineering work.',
+    description: 'Become an Azure-focused engineer who can design reliable cloud workloads, support production systems, and explain platform trade-offs clearly.',
+    summary: 'A practical route through Azure foundations, platform services, containers, architecture, and interview preparation.',
     technologies: [
-      tech('Azure', '/technology/azure', 'An upcoming SplashRide cloud track covering Azure platform services and delivery concepts.', false),
-      tech('Docker', '/technology/docker', 'Container skills that carry directly into Azure delivery workflows.'),
-      tech('Kubernetes', '/technology/kubernetes', 'Operational cluster skills relevant to Azure-based platform work.'),
+      tech('Azure', '/technologies/azure', 'Azure fundamentals, compute, storage, networking, identity, AKS, DevOps, security, and architecture.'),
+      tech('Docker', '/technologies/docker', 'Container skills that carry directly into Azure delivery workflows.'),
+      tech('Kubernetes', '/technologies/kubernetes', 'Operational cluster skills relevant to Azure-based platform work.'),
     ],
     hours: '125+',
     duration: '4-6 Months',
@@ -1136,25 +1135,24 @@ export const careerRoadmaps: CareerRoadmap[] = [
     seoTitle: 'Azure Engineer Career Path | SplashRide',
     seoDescription: 'Explore the Azure engineer career path with cloud foundations, Azure platform direction, delivery skills, career insights, and interview preparation guidance.',
     profile: {
-      whatYouWillLearn: ['How Azure-oriented cloud engineering work is structured', 'How containers, delivery, and operations support Azure platforms', 'How to build the adjacent skills needed while Azure content grows', 'How to position yourself for Azure-focused roles and interviews'],
-      skillsYouWillGain: ['Cloud fundamentals', 'Platform awareness', 'Container delivery', 'Operational thinking', 'Career positioning'],
+      whatYouWillLearn: ['How Azure-oriented cloud engineering work is structured', 'How Azure platform services, containers, delivery, and operations fit together', 'How to reason about reliability, governance, and supportability on Azure', 'How to position yourself for Azure-focused roles and interviews'],
+      skillsYouWillGain: ['Cloud fundamentals', 'Azure platform awareness', 'Container delivery', 'Operational thinking', 'Career positioning'],
       whoThisPathIsFor: ['Developers targeting Azure-heavy organizations', 'Cloud engineers expanding into multi-cloud roles', 'DevOps engineers who want stronger Azure-aligned growth direction'],
       expectedOutcomes: ['Choose a target role', 'Understand learning order', 'Handle production issues', 'Prepare for interviews', 'Become job ready'],
     },
     interviewPrep: {
-      primaryTrackLabel: 'Start Closest Cloud Interview Preparation',
-      primaryTrackTo: '/interview-prep/aws',
-      topicsCovered: ['Cloud foundations', 'Networking and identity', 'Delivery and operations', 'Containers and orchestration', 'Architecture communication'],
+      primaryTrackLabel: 'Start Azure Interview Preparation',
+      primaryTrackTo: '/interview-prep/azure',
+      topicsCovered: ['Cloud foundations', 'Networking and identity', 'Azure delivery and operations', 'Containers and orchestration', 'Architecture communication'],
       questionCount: 1500,
       scenarioCount: 140,
       architectureQuestionCount: 240,
       systemDesignQuestionCount: 110,
       linkedTracks: [
-        { label: 'AWS Interview Prep', to: '/interview-prep/aws' },
+        { label: 'Azure Interview Prep', to: '/interview-prep/azure' },
         { label: 'Docker Interview Prep', to: '/interview-prep/docker' },
         { label: 'Kubernetes Interview Prep', to: '/interview-prep/kubernetes' },
       ],
-      note: 'Azure-specific interview prep is not live yet, so this path uses the closest current cloud and platform interview tracks.',
     },
     careerInsights: {
       demand: 'Azure demand is strongest in enterprises, internal platforms, Microsoft-centered ecosystems, and teams with multi-cloud or identity-heavy environments.',
@@ -1173,15 +1171,15 @@ export const careerRoadmaps: CareerRoadmap[] = [
         items: [
           { label: 'Cloud first, vendor second', description: 'Strong platform fundamentals make Azure-specific concepts easier to absorb.' },
           { label: 'Build delivery skill in parallel', description: 'Container and release knowledge transfers directly into Azure platform work.' },
-          { label: 'Use the closest live cloud prep today', description: 'Existing cloud interview tracks help build thinking while Azure coverage expands.' },
+          { label: 'Pair platform and delivery skills', description: 'Azure, Docker, and Kubernetes together make the interview stories much stronger.' },
         ],
       },
       {
         title: 'Reference Materials',
         items: [
-          { label: 'Azure track', description: 'Use the Azure landing area to watch coverage as it grows.', to: '/technology/azure' },
-          { label: 'Docker learning path', description: 'Build container confidence for platform delivery.', to: '/technology/docker' },
-          { label: 'Kubernetes learning path', description: 'Strengthen orchestration and runtime operations skills.', to: '/technology/kubernetes' },
+          { label: 'Azure track', description: 'Use for Azure platform depth across architecture, identity, storage, networking, and operations.', to: '/technologies/azure' },
+          { label: 'Docker learning path', description: 'Build container confidence for platform delivery.', to: '/technologies/docker' },
+          { label: 'Kubernetes learning path', description: 'Strengthen orchestration and runtime operations skills.', to: '/technologies/kubernetes' },
         ],
       },
     ]),
@@ -1209,3 +1207,4 @@ export function getCareerPathStats() {
 export function getCareerPathRoutes() {
   return careerRoadmaps.map((roadmap) => `/career-paths/${roadmap.slug}`);
 }
+

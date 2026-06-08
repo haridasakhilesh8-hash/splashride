@@ -20,7 +20,7 @@ const urls = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]
 const routePaths = new Set(urls.map((url) => new URL(url).pathname));
 
 for (const pathname of [...routePaths]) {
-  const topicMatch = pathname.match(/^\/technology\/[^/]+\/topic\/([^/]+)$/);
+  const topicMatch = pathname.match(/^\/technologies\/[^/]+\/topic\/([^/]+)$/);
   if (topicMatch) {
     routePaths.add(`/topic/${topicMatch[1]}`);
   }

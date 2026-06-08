@@ -984,6 +984,216 @@ export const kubernetesInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   },
 ];
 
+export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'fundamentals',
+    title: 'Fundamentals',
+    topics: [
+      { slug: 'azure-basics', title: 'Azure Basics', category: 'Azure Basics' },
+      { slug: 'azure-architecture', title: 'Azure Architecture', category: 'Azure Architecture' },
+      { slug: 'resource-groups', title: 'Resource Groups', category: 'Resource Groups' },
+      { slug: 'subscription-management', title: 'Subscription Management', category: 'Subscription Management' },
+    ],
+  },
+  {
+    id: 'compute',
+    title: 'Compute',
+    topics: [
+      { slug: 'virtual-machines', title: 'Virtual Machines', category: 'Virtual Machines' },
+      { slug: 'app-service', title: 'App Service', category: 'App Service' },
+      { slug: 'functions', title: 'Functions', category: 'Functions' },
+      { slug: 'container-apps', title: 'Container Apps', category: 'Container Apps' },
+    ],
+  },
+  {
+    id: 'storage',
+    title: 'Storage',
+    topics: [
+      { slug: 'blob-storage', title: 'Blob Storage', category: 'Blob Storage' },
+      { slug: 'azure-files', title: 'Files', category: 'Azure Files' },
+      { slug: 'queues', title: 'Queues', category: 'Queues' },
+      { slug: 'tables', title: 'Tables', category: 'Tables' },
+    ],
+  },
+  {
+    id: 'networking',
+    title: 'Networking',
+    topics: [
+      { slug: 'vnet', title: 'VNet', category: 'VNet' },
+      { slug: 'nsg', title: 'NSG', category: 'NSG' },
+      { slug: 'load-balancer', title: 'Load Balancer', category: 'Load Balancer' },
+      { slug: 'application-gateway', title: 'Application Gateway', category: 'Application Gateway' },
+    ],
+  },
+  {
+    id: 'identity',
+    title: 'Identity',
+    topics: [
+      { slug: 'azure-ad', title: 'Azure AD', category: 'Azure AD' },
+      { slug: 'rbac', title: 'RBAC', category: 'RBAC' },
+      { slug: 'managed-identity', title: 'Managed Identity', category: 'Managed Identity' },
+    ],
+  },
+  {
+    id: 'containers',
+    title: 'Containers',
+    topics: [
+      { slug: 'aks', title: 'AKS', category: 'AKS' },
+      { slug: 'acr', title: 'ACR', category: 'ACR' },
+    ],
+  },
+  {
+    id: 'devops',
+    title: 'DevOps',
+    topics: [
+      { slug: 'azure-devops', title: 'Azure DevOps', category: 'Azure DevOps' },
+      { slug: 'ci-cd', title: 'CI/CD', category: 'CI/CD' },
+      { slug: 'infrastructure-as-code', title: 'Infrastructure as Code', category: 'Infrastructure as Code' },
+    ],
+  },
+  {
+    id: 'security',
+    title: 'Security',
+    topics: [
+      { slug: 'key-vault', title: 'Key Vault', category: 'Key Vault' },
+      { slug: 'defender-for-cloud', title: 'Defender for Cloud', category: 'Defender for Cloud' },
+    ],
+  },
+  {
+    id: 'architecture',
+    title: 'Architecture',
+    topics: [
+      { slug: 'high-availability', title: 'High Availability', category: 'High Availability' },
+      { slug: 'disaster-recovery', title: 'Disaster Recovery', category: 'Disaster Recovery' },
+      { slug: 'cost-optimization', title: 'Cost Optimization', category: 'Cost Optimization' },
+      { slug: 'enterprise-architecture', title: 'Enterprise Architecture', category: 'Enterprise Architecture' },
+    ],
+  },
+  {
+    id: 'production-support',
+    title: 'Production Support',
+    topics: [
+      { slug: 'scenario-questions', title: 'Scenario Questions', category: 'Scenario Questions' },
+      { slug: 'production-issues', title: 'Production Issues', category: 'Production Issues' },
+      { slug: 'architecture-questions', title: 'Architecture Questions', category: 'Architecture Questions' },
+      { slug: 'troubleshooting', title: 'Troubleshooting', category: 'Troubleshooting' },
+    ],
+  },
+];
+
+export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'ai-fundamentals',
+    title: 'AI Fundamentals',
+    topics: [
+      { slug: 'ai-basics', title: 'AI Basics', category: 'AI Basics' },
+      { slug: 'ml-vs-dl-vs-llm', title: 'ML vs DL vs LLM', category: 'ML vs DL vs LLM' },
+      { slug: 'generative-ai', title: 'Generative AI', category: 'Generative AI' },
+    ],
+  },
+  {
+    id: 'python-foundations',
+    title: 'Python Foundations',
+    topics: [
+      { slug: 'python-for-ai', title: 'Python for AI', category: 'Python for AI' },
+      { slug: 'data-processing', title: 'Data Processing', category: 'Data Processing' },
+    ],
+  },
+  {
+    id: 'machine-learning',
+    title: 'Machine Learning',
+    topics: [
+      { slug: 'supervised-learning', title: 'Supervised Learning', category: 'Supervised Learning' },
+      { slug: 'unsupervised-learning', title: 'Unsupervised Learning', category: 'Unsupervised Learning' },
+    ],
+  },
+  {
+    id: 'deep-learning',
+    title: 'Deep Learning',
+    topics: [
+      { slug: 'neural-networks', title: 'Neural Networks', category: 'Neural Networks' },
+      { slug: 'transformers', title: 'Transformers', category: 'Transformers' },
+    ],
+  },
+  {
+    id: 'llm-foundations',
+    title: 'LLM Foundations',
+    topics: [
+      { slug: 'gpt-models', title: 'GPT Models', category: 'GPT Models' },
+      { slug: 'tokens', title: 'Tokens', category: 'Tokens' },
+      { slug: 'embeddings', title: 'Embeddings', category: 'Embeddings' },
+      { slug: 'context-windows', title: 'Context Windows', category: 'Context Windows' },
+    ],
+  },
+  {
+    id: 'prompt-engineering',
+    title: 'Prompt Engineering',
+    topics: [
+      { slug: 'zero-shot', title: 'Zero Shot', category: 'Zero Shot' },
+      { slug: 'few-shot', title: 'Few Shot', category: 'Few Shot' },
+      { slug: 'chain-of-thought', title: 'Chain of Thought', category: 'Chain of Thought' },
+    ],
+  },
+  {
+    id: 'rag',
+    title: 'RAG',
+    topics: [
+      { slug: 'rag', title: 'Retrieval Augmented Generation', category: 'Retrieval Augmented Generation' },
+      { slug: 'vector-databases', title: 'Vector Databases', category: 'Vector Databases' },
+      { slug: 'chunking', title: 'Chunking', category: 'Chunking' },
+      { slug: 'embedding-pipelines', title: 'Embeddings Pipeline', category: 'Embeddings Pipeline' },
+    ],
+  },
+  {
+    id: 'vector-databases',
+    title: 'Vector Databases',
+    topics: [
+      { slug: 'pinecone', title: 'Pinecone', category: 'Pinecone' },
+      { slug: 'chroma', title: 'Chroma', category: 'Chroma' },
+      { slug: 'faiss', title: 'FAISS', category: 'FAISS' },
+    ],
+  },
+  {
+    id: 'ai-applications',
+    title: 'AI Applications',
+    topics: [
+      { slug: 'chatbots', title: 'Chatbots', category: 'Chatbots' },
+      { slug: 'agents', title: 'Agents', category: 'Agents' },
+      { slug: 'knowledge-systems', title: 'Knowledge Systems', category: 'Knowledge Systems' },
+    ],
+  },
+  {
+    id: 'ai-architecture',
+    title: 'AI Architecture',
+    topics: [
+      { slug: 'ai-system-design', title: 'AI System Design', category: 'AI System Design' },
+      { slug: 'multi-agent-systems', title: 'Multi-Agent Systems', category: 'Multi-Agent Systems' },
+      { slug: 'enterprise-ai', title: 'Enterprise AI', category: 'Enterprise AI' },
+    ],
+  },
+  {
+    id: 'production-ai',
+    title: 'Production AI',
+    topics: [
+      { slug: 'evaluation', title: 'Evaluation', category: 'Evaluation' },
+      { slug: 'monitoring', title: 'Monitoring', category: 'Monitoring' },
+      { slug: 'hallucinations', title: 'Hallucinations', category: 'Hallucinations' },
+      { slug: 'cost-optimization', title: 'Cost Optimization', category: 'Cost Optimization' },
+      { slug: 'security', title: 'Security', category: 'Security' },
+    ],
+  },
+  {
+    id: 'interview-prep',
+    title: 'Interview Prep',
+    topics: [
+      { slug: 'llm-scenarios', title: 'LLM Scenarios', category: 'LLM Scenarios' },
+      { slug: 'ai-architecture', title: 'AI Architecture', category: 'AI Architecture' },
+      { slug: 'production-issues', title: 'Production Issues', category: 'Production Issues' },
+      { slug: 'design-questions', title: 'Design Questions', category: 'Design Questions' },
+    ],
+  },
+];
+
 const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup[]> = {
   aem: aemInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
@@ -993,6 +1203,8 @@ const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup
   aws: awsInterviewPrepTopicGroups,
   docker: dockerInterviewPrepTopicGroups,
   kubernetes: kubernetesInterviewPrepTopicGroups,
+  azure: azureInterviewPrepTopicGroups,
+  'ai-llm': aiLlmInterviewPrepTopicGroups,
 };
 
 export function getInterviewPrepTopicGroups(technologyId: string): InterviewPrepNavGroup[] {

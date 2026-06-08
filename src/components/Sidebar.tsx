@@ -7,6 +7,7 @@ import {
 } from '../content/interview-prep/topicNavigation';
 import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
+import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -160,7 +161,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
     navigate(isInterviewPrep
       ? `/interview-prep/${targetTechId}?topic=${slug}`
-      : `/technology/${targetTechId}/topic/${slug}`
+      : getTechnologyTopicPath(targetTechId, slug)
     );
     onClose();
     window.scrollTo(0, 0);
@@ -209,7 +210,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </p>
               </div>
               <button
-                onClick={() => navigate(`/technology/${sidebarTechnology.learningTechnologyId ?? sidebarTechnology.id}`)}
+                onClick={() => navigate(getTechnologyPath(sidebarTechnology.learningTechnologyId ?? sidebarTechnology.id))}
                 style={{
                   marginLeft: 'auto',
                   background: 'none',

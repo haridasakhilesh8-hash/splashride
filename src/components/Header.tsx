@@ -4,6 +4,7 @@ import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
+import { getTechnologyPath } from '../lib/routes';
 import { getActiveInterviewPrepSections } from '../content/interview-prep';
 import { careerRoadmaps } from '../content/careerPaths';
 
@@ -25,9 +26,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const technologyGroups = [
     { label: 'Frontend', techIds: ['react', 'nextjs'] },
     { label: 'Backend', techIds: ['java', 'springboot'] },
-    { label: 'Cloud', techIds: ['aws', 'docker', 'kubernetes'] },
+    { label: 'Cloud', techIds: ['aws', 'azure', 'docker', 'kubernetes'] },
     { label: 'Enterprise', techIds: ['aem'] },
-    { label: 'AI', techIds: ['ai'] },
+    { label: 'AI', techIds: ['ai-llm'] },
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
   const futureInterviewPrep: string[] = [];
@@ -201,7 +202,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                     return (
                       <Link
                         key={tech.id}
-                        to={`/technology/${tech.id}`}
+                        to={getTechnologyPath(tech.id)}
                         onClick={() => {
                           setActiveTechId(tech.id);
                           window.scrollTo(0, 0);

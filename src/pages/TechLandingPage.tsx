@@ -3,6 +3,7 @@ import { getTechById } from '../lib/navigation';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import SEO from '../components/SEO';
 import { absoluteUrl } from '../lib/seo';
+import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 
 export default function TechLandingPage() {
   const { techId } = useParams<{ techId: string }>();
@@ -35,7 +36,7 @@ export default function TechLandingPage() {
       '@type': 'CollectionPage',
       name: techTitle,
       description: techDescription,
-      url: absoluteUrl(`/technology/${tech.id}`),
+      url: absoluteUrl(getTechnologyPath(tech.id)),
       about: tech.label,
       isPartOf: {
         '@type': 'WebSite',
@@ -57,7 +58,7 @@ export default function TechLandingPage() {
           '@type': 'ListItem',
           position: 2,
           name: tech.label,
-          item: absoluteUrl(`/technology/${tech.id}`),
+          item: absoluteUrl(getTechnologyPath(tech.id)),
         },
       ],
     },
@@ -68,7 +69,7 @@ export default function TechLandingPage() {
       itemListElement: liveTopics.slice(0, 50).map((topic, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: absoluteUrl(`/technology/${tech.id}/topic/${topic.slug}`),
+        url: absoluteUrl(getTechnologyTopicPath(tech.id, topic.slug)),
         name: topic.title,
       })),
     },
@@ -120,7 +121,7 @@ export default function TechLandingPage() {
             {cat.items.map(item => (
               <Link
                 key={item.slug}
-                to={`/technology/${tech.id}/topic/${item.slug}`}
+                to={getTechnologyTopicPath(tech.id, item.slug)}
                 onClick={(event) => {
                   if (item.badge) {
                     event.preventDefault();

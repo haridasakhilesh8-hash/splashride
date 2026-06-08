@@ -26,6 +26,7 @@ import { useTech } from '../lib/TechContext';
 import { technologies } from '../lib/navigation';
 import { absoluteUrl } from '../lib/seo';
 import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
+import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 
 type JourneyMilestone = {
   label: string;
@@ -345,6 +346,9 @@ export default function HomePage() {
   const comingSoonTechs = technologies.filter(t => !t.active);
   const interviewPrepSections = getActiveInterviewPrepSections();
   const interviewPrepStats = getInterviewPrepStats();
+  const interviewQuestionCountByTech = new Map(
+    interviewPrepSections.map((section) => [section.technologyId, section.questions.length]),
+  );
   const totalTopics = activeTechs.reduce(
     (sum, tech) => sum + tech.categories.flatMap(c => c.items).filter(i => !i.badge).length,
     0
@@ -357,8 +361,10 @@ export default function HomePage() {
     java: 'Most Complete',
     springboot: 'Most Complete',
     aws: 'Cloud',
+    azure: 'New',
     docker: 'Popular',
     kubernetes: 'Advanced',
+    'ai-llm': 'New',
   };
 
   const techDifficulty: Record<string, { label: string; level: number }> = {
@@ -368,8 +374,10 @@ export default function HomePage() {
     java: { label: 'Beginner', level: 1 },
     springboot: { label: 'Intermediate', level: 2 },
     aws: { label: 'Intermediate', level: 2 },
+    azure: { label: 'Intermediate', level: 2 },
     docker: { label: 'Beginner', level: 1 },
     kubernetes: { label: 'Advanced', level: 3 },
+    'ai-llm': { label: 'Advanced', level: 3 },
   };
 
   const platformPillars = [
@@ -452,8 +460,15 @@ export default function HomePage() {
       title: 'Cloud & DevOps',
       desc: 'Cloud platforms, containers, orchestration, CI/CD, observability, and operations.',
       icon: <Cloud size={20} />,
-      techIds: ['aws', 'docker', 'kubernetes'],
+      techIds: ['aws', 'azure', 'docker', 'kubernetes'],
       accent: '#7c3aed',
+    },
+    {
+      title: 'AI Engineering',
+      desc: 'LLM foundations, prompt design, RAG, vector databases, agents, evaluation, and production AI systems.',
+      icon: <Sparkles size={20} />,
+      techIds: ['ai-llm'],
+      accent: '#8b5cf6',
     },
     {
       title: 'Enterprise CMS',
@@ -478,7 +493,12 @@ export default function HomePage() {
     {
       title: 'Cloud Engineer',
       desc: 'Learn cloud foundations, containers, orchestration, deployment, and operational readiness.',
-      techIds: ['aws', 'docker', 'kubernetes'],
+      techIds: ['aws', 'azure', 'docker', 'kubernetes'],
+    },
+    {
+      title: 'Azure Engineer',
+      desc: 'Build Azure platform depth across compute, storage, networking, identity, containers, and architecture.',
+      techIds: ['azure', 'docker', 'kubernetes'],
     },
     {
       title: 'AEM Developer',
@@ -487,8 +507,8 @@ export default function HomePage() {
     },
     {
       title: 'AI Engineer',
-      desc: 'Start with AI concepts and connect them to practical full-stack implementation skills.',
-      techIds: ['ai', 'react', 'springboot'],
+      desc: 'Build practical LLM engineering skills across prompts, retrieval, evaluation, product integration, and production AI delivery.',
+      techIds: ['ai-llm', 'react', 'springboot'],
     },
   ];
 
@@ -520,7 +540,7 @@ export default function HomePage() {
       itemListElement: activeTechs.map((tech, index) => ({
         '@type': 'ListItem',
         position: index + 1,
-        url: absoluteUrl(`/technology/${tech.id}`),
+        url: absoluteUrl(getTechnologyPath(tech.id)),
         name: `${tech.label} tutorials`,
         description: tech.description,
       })),
@@ -654,7 +674,7 @@ export default function HomePage() {
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.45rem' }}>
             <Link
-              to="/technology/react"
+              to={getTechnologyPath('react')}
               onClick={() => {
                 setActiveTechId('react');
                 window.scrollTo(0, 0);
@@ -1041,7 +1061,7 @@ export default function HomePage() {
                   return (
                     <Link
                       key={`${goal.title}-${tech.id}`}
-                      to={`/technology/${tech.id}`}
+                      to={getTechnologyPath(tech.id)}
                       onClick={() => {
                         setActiveTechId(tech.id);
                         window.scrollTo(0, 0);
@@ -1130,7 +1150,7 @@ export default function HomePage() {
                 Interview Prep
               </h3>
               <p style={{ margin: 0, maxWidth: '700px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
-                Practice real AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker, and Kubernetes interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
+                Practice real AEM, React, Next.js, Core Java, Spring Boot, AWS, Azure, Docker, Kubernetes, and AI or LLM Engineering interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
               </p>
             </div>
             <ArrowRight size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
@@ -1209,7 +1229,7 @@ export default function HomePage() {
                   return (
                     <Link
                       key={`${domain.title}-${tech.id}`}
-                      to={`/technology/${tech.id}`}
+                      to={getTechnologyPath(tech.id)}
                       onClick={() => handleTechClick(tech.id, tech.active)}
                       style={{
                         display: 'inline-flex',
@@ -1246,7 +1266,7 @@ export default function HomePage() {
             return (
               <Link
                 key={tech.id}
-                to={`/technology/${tech.id}`}
+                to={getTechnologyPath(tech.id)}
                 onClick={() => handleTechClick(tech.id, true)}
                 style={{
                   display: 'flex',
@@ -1350,6 +1370,28 @@ export default function HomePage() {
                       ))}
                     </span>
                   </span>
+                  <span style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: 'var(--color-text-muted)',
+                  }}>
+                    {interviewQuestionCountByTech.get(tech.id) ?? 0} interview questions
+                  </span>
+                </div>
+
+                <div style={{
+                  marginTop: 'auto',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '10px',
+                  paddingTop: '4px',
+                  color: tech.color,
+                  fontSize: '0.78rem',
+                  fontWeight: 800,
+                }}>
+                  <span>Open Technology</span>
+                  <ArrowRight size={14} />
                 </div>
               </Link>
             );
@@ -1374,7 +1416,7 @@ export default function HomePage() {
           {recentlyAdded.map(item => (
             <Link
               key={`${item.techId}-${item.slug}`}
-              to={`/technology/${item.techId}/topic/${item.slug}`}
+              to={getTechnologyTopicPath(item.techId, item.slug)}
               onClick={() => openTopic(item.techId)}
               style={{
                 display: 'flex',

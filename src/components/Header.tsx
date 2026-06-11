@@ -33,6 +33,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const interviewPrepSections = getActiveInterviewPrepSections();
   const futureInterviewPrep: string[] = [];
   const isCareerPathsActive = location.pathname.startsWith('/career-paths') || location.pathname.startsWith('/roadmaps');
+  const showSearchBar = location.pathname === '/technologies' || location.pathname.startsWith('/technologies/');
 
   const scrollToHomeSection = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -489,9 +490,11 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
 
       {/* Right side */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        <div className="header-search">
-          <SearchBar />
-        </div>
+        {showSearchBar && (
+          <div className="header-search">
+            <SearchBar />
+          </div>
+        )}
         <ThemeToggle theme={theme} onToggle={onThemeToggle} />
       </div>
 

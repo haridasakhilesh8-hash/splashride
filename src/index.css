@@ -157,7 +157,8 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
 .sidebar-active {
   background: var(--color-accent-light);
   color: var(--color-accent) !important;
-  font-weight: 500;
+  border-left: 2px solid var(--color-accent);
+  font-weight: 700;
 }
 
 /* Sidebar overlay */

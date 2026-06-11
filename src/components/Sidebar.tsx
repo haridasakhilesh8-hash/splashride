@@ -33,6 +33,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       ?? interviewConfig?.topics[0]?.slug
       ?? getInterviewPrepDefaultTopicSlug(routeInterviewTechnologyId ?? ''))
     : currentSlug;
+  const activeTopicSlug = isInterviewPrep
+    ? interviewTopicSlug
+    : location.pathname.match(/^\/technologies\/[^/]+\/topic\/([^/]+)/)?.[1];
   const [interviewCompletedCount, setInterviewCompletedCount] = useState(0);
   const sidebarTechnology = isInterviewPrep && interviewConfig
     ? {
@@ -301,7 +304,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               {isExpanded && (
                 <div style={{ paddingBottom: '4px' }}>
                   {cat.items.map(item => {
-                    const isActive = item.slug === activeSidebarSlug;
+                    const isActive = item.slug === activeTopicSlug;
                     const topicQuestionCount = isInterviewPrep
                       ? (interviewQuestionCounts.get(item.slug) ?? 0)
                       : null;
@@ -311,6 +314,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                         key={item.slug}
                         onClick={() => !isDisabled && handleTopicClick(item.slug)}
                         disabled={isDisabled}
+                        className={isActive ? 'sidebar-active' : undefined}
                         style={{
                           width: '100%',
                           display: 'flex',

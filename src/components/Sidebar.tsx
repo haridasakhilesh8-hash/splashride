@@ -1,6 +1,31 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ChevronDown, ChevronRight, Layers } from 'lucide-react';
+import {
+  Activity,
+  AppWindow,
+  Blocks,
+  Bot,
+  Boxes,
+  Brain,
+  Cpu,
+  Cloud,
+  Code2,
+  Database,
+  ChevronDown,
+  ChevronRight,
+  FolderCog,
+  Gauge,
+  HardDrive,
+  HelpCircle,
+  Lock,
+  Layers,
+  Network,
+  Rocket,
+  Server,
+  Sparkles,
+  Waypoints,
+  Workflow,
+} from 'lucide-react';
 import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
 import {
   getInterviewPrepDefaultTopicSlug,
@@ -12,6 +37,68 @@ import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+const sidebarCategoryIcons = {
+  AI: Brain,
+  APP: AppWindow,
+  ARC: Waypoints,
+  AWS: Cloud,
+  CI: Workflow,
+  CPU: Cpu,
+  DB: Database,
+  Fn: Sparkles,
+  IaC: FolderCog,
+  ID: Lock,
+  PY: Code2,
+  ML: Network,
+  MON: Activity,
+  OPS: Gauge,
+  OBJ: Blocks,
+  PRD: Rocket,
+  PV: HardDrive,
+  'Q&A': HelpCircle,
+  S3: HardDrive,
+  SCL: Gauge,
+  SEC: Lock,
+  DL: Layers,
+  LLM: Bot,
+  PM: Sparkles,
+  RAG: Database,
+  VDB: Database,
+  AZ: Cloud,
+  VM: Server,
+  ST: Database,
+  NET: Network,
+  CFG: FolderCog,
+  K8s: Boxes,
+  AKS: Boxes,
+  WRK: Boxes,
+} as const;
+
+function renderSidebarCategoryIcon(iconToken: string) {
+  const Icon = sidebarCategoryIcons[iconToken as keyof typeof sidebarCategoryIcons];
+  if (Icon) {
+    return (
+      <span
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          fontSize: '0.9rem',
+          color: 'var(--color-accent)',
+        }}
+        aria-hidden="true"
+      >
+        <Icon size={14} strokeWidth={2} />
+      </span>
+    );
+  }
+
+  if (/^[A-Z0-9&/+.-]{2,4}$/i.test(iconToken)) {
+    return null;
+  }
+
+  return <span style={{ fontSize: '0.9rem' }}>{iconToken}</span>;
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -292,7 +379,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   textAlign: 'left',
                 }}
               >
-                {cat.icon && <span style={{ fontSize: '0.9rem' }}>{cat.icon}</span>}
+                {cat.icon && renderSidebarCategoryIcon(cat.icon)}
                 <span style={{ flex: 1 }}>{cat.title}</span>
                 {isExpanded
                   ? <ChevronDown size={12} style={{ opacity: 0.5 }} />

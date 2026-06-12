@@ -562,7 +562,7 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ padding: '2.5rem 2rem 5rem', maxWidth: '1120px', margin: '0 auto' }} className="fade-in">
+    <div style={{ padding: '2.5rem 2rem 5rem', maxWidth: '1120px', margin: '0 auto' }} className="fade-in homepage-root">
       <SEO
         title="SplashRide | Ride Your Tech Journey"
         description="SplashRide helps developers grow through learning paths, interview preparation, architecture knowledge, production experience, and career-focused technology learning."
@@ -623,7 +623,7 @@ export default function HomePage() {
           }}>
             <Zap size={13} style={{ color: '#bfdbfe' }} />
             <span style={{ fontSize: '0.68rem', fontWeight: 900, color: '#ffffff', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Multi-Technology Learning Platform
+              Developer Learning Platform
             </span>
           </div>
 
@@ -635,88 +635,74 @@ export default function HomePage() {
             lineHeight: 1.03,
             margin: '0 0 1.1rem',
           }}>
-            Ride Your
+            Learn Technologies
             <br />
-            Tech Journey
+            the Way Senior Engineers
             <br />
-            With{' '}
+            Explain{' '}
             <span style={{
               background: 'linear-gradient(135deg, #0ea5ff, #a855f7)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
             }}>
-              Confidence
+              Them
             </span>
           </h1>
 
           <p style={{
-            fontSize: '0.98rem',
+            fontSize: '1rem',
             color: 'rgba(255,255,255,0.84)',
-            lineHeight: 1.75,
+            lineHeight: 1.8,
             maxWidth: '560px',
             margin: 0,
           }}>
-            SplashRide helps developers master technologies through{' '}
-            <strong style={{ color: '#38bdf8' }}>real-world</strong> explanations,{' '}
-            <strong style={{ color: '#60a5fa' }}>interview preparation</strong>, production scenarios, architecture insights, and project-based learning.
+            Master React, AEM, Java, Spring Boot, Azure, Kubernetes, AI and more through real-world tutorials, interview preparation, architecture notes, and career-focused learning paths.
           </p>
 
-          <p style={{
-            fontSize: '0.92rem',
-            color: 'rgba(255,255,255,0.82)',
-            lineHeight: 1.65,
-            maxWidth: '560px',
-            margin: '1rem 0 0',
-          }}>
-            Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Docker, Kubernetes, and Azure through efficient learning paths, interview-ready answers, production examples, and architecture-first guidance.
-          </p>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.45rem' }}>
-            <Link
-              to={getTechnologyPath('react')}
-              onClick={() => {
-                setActiveTechId('react');
-                window.scrollTo(0, 0);
-              }}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.7rem', alignItems: 'center' }}>
+            <button
+              onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              className="homepage-button-primary"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                textDecoration: 'none',
                 background: 'linear-gradient(135deg, #0ea5ff, #7c3aed)',
                 color: '#fff',
                 border: '1px solid rgba(255,255,255,0.12)',
                 borderRadius: '8px',
-                padding: '11px 17px',
+                padding: '12px 18px',
                 cursor: 'pointer',
                 fontSize: '0.875rem',
                 fontWeight: 900,
                 boxShadow: '0 16px 30px rgba(37,99,235,0.26)',
               }}
             >
-              <Rocket size={15} />
-              Start Learning Now
-            </Link>
-            <button
-              onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              Explore Technologies
+              <ArrowRight size={15} />
+            </button>
+            <Link
+              to="/interview-prep"
+              className="homepage-button-secondary"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
+                textDecoration: 'none',
                 background: 'rgba(255,255,255,0.04)',
                 color: '#ffffff',
                 border: '1px solid rgba(255,255,255,0.28)',
                 borderRadius: '8px',
-                padding: '11px 17px',
+                padding: '12px 18px',
                 cursor: 'pointer',
                 fontSize: '0.875rem',
                 fontWeight: 900,
               }}
             >
-              Explore Technologies
-              <ArrowRight size={15} />
-            </button>
+              <Target size={15} />
+              Start Interview Prep
+            </Link>
           </div>
         </div>
 
@@ -741,7 +727,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Platform Statistics */}
-      <section style={{
+      <section className="homepage-section" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
         gap: '10px',
@@ -757,6 +743,7 @@ export default function HomePage() {
         ].map(stat => (
           <div
             key={stat.label}
+            className="homepage-card homepage-stat-card"
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -767,7 +754,7 @@ export default function HomePage() {
               padding: '14px 16px',
             }}
           >
-            <div style={{ color: '#6366f1', flexShrink: 0 }}>{stat.icon}</div>
+            <div style={{ color: 'var(--color-accent)', flexShrink: 0 }}>{stat.icon}</div>
             <div>
               <p style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{stat.value}</p>
               <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 800 }}>{stat.label}</p>
@@ -777,11 +764,11 @@ export default function HomePage() {
       </section>
 
       {/* What is SplashRide? */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section className="homepage-section" style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(260px, 0.85fr) 1.15fr', gap: '1.5rem', alignItems: 'start' }} className="split-section">
           <div>
             <p style={sectionEyebrowStyle}>What is SplashRide?</p>
-            <h2 style={{
+            <h2 className="homepage-section-title" style={{
               margin: '0 0 0.8rem',
               fontSize: 'clamp(1.6rem, 3vw, 2.25rem)',
               fontWeight: 900,
@@ -800,6 +787,7 @@ export default function HomePage() {
             {platformPillars.map(item => (
                 <div
                   key={item.title}
+                  className="homepage-card"
                   style={{
                     display: 'flex',
                     gap: '12px',
@@ -809,7 +797,7 @@ export default function HomePage() {
                     padding: '16px',
                   }}
                 >
-                  <div style={{
+                  <div className="homepage-icon-badge" style={{
                     width: '38px',
                     height: '38px',
                     borderRadius: '10px',
@@ -837,9 +825,9 @@ export default function HomePage() {
       </section>
 
       {/* Why SplashRide? */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section className="homepage-section" style={{ marginBottom: '3rem' }}>
         <p style={{ ...sectionEyebrowStyle, textAlign: 'center' }}>Why SplashRide?</p>
-        <h2 style={{
+        <h2 className="homepage-section-title" style={{
           margin: '0 auto 1.3rem',
           textAlign: 'center',
           maxWidth: '640px',
@@ -853,14 +841,14 @@ export default function HomePage() {
         </h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
           {whySplashRide.map(item => (
-            <div key={item.title} style={{
+            <div key={item.title} className="homepage-card" style={{
               background: 'var(--color-bg-secondary)',
               border: '1px solid var(--color-border)',
               borderRadius: '12px',
               padding: '16px',
               minHeight: '150px',
             }}>
-              <div style={{
+              <div className="homepage-icon-badge" style={{
                 width: '38px',
                 height: '38px',
                 borderRadius: '10px',
@@ -885,7 +873,7 @@ export default function HomePage() {
       </section>
 
       {/* Built by a Developer */}
-      <section style={{
+      <section className="homepage-section" style={{
         background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(14,165,233,0.06))',
         border: '1px solid rgba(99,102,241,0.2)',
         borderRadius: '16px',
@@ -945,7 +933,7 @@ export default function HomePage() {
                   padding: '6px 10px',
                   fontSize: '0.72rem',
                   fontWeight: 800,
-                }}>
+                }} className="homepage-tag">
                   <CheckCircle2 size={12} />
                   {label}
                 </span>
@@ -956,9 +944,9 @@ export default function HomePage() {
       </section>
 
       {/* Our Mission */}
-      <section style={{ marginBottom: '3rem', textAlign: 'center' }}>
+      <section className="homepage-section" style={{ marginBottom: '3rem', textAlign: 'center' }}>
         <p style={sectionEyebrowStyle}>Our Mission</p>
-        <h2 style={{ margin: '0 0 1.4rem', color: 'var(--color-text-primary)', fontSize: 'clamp(1.45rem, 3vw, 2rem)', fontWeight: 900, letterSpacing: '-0.03em' }}>
+        <h2 className="homepage-section-title" style={{ margin: '0 0 1.4rem', color: 'var(--color-text-primary)', fontSize: 'clamp(1.45rem, 3vw, 2rem)', fontWeight: 900, letterSpacing: '-0.03em' }}>
           Ride Your <span style={{ color: 'var(--color-accent)' }}>Tech Journey</span>
         </h2>
         <div style={{
@@ -977,9 +965,9 @@ export default function HomePage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#6366f1',
-                background: 'rgba(99,102,241,0.12)',
-                border: '1px solid rgba(99,102,241,0.2)',
+                color: 'var(--color-accent)',
+                background: 'var(--color-accent-light)',
+                border: '1px solid color-mix(in srgb, var(--color-accent) 22%, var(--color-border))',
               }}>
                 {step.icon}
               </div>
@@ -1008,7 +996,7 @@ export default function HomePage() {
       </section>
 
       {/* Choose Your Goal */}
-      <section id="choose-goal" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      <section id="choose-goal" className="homepage-section" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
         <h2 style={{
           fontSize: '0.75rem',
           fontWeight: 800,
@@ -1024,6 +1012,7 @@ export default function HomePage() {
           {careerGoals.map(goal => (
             <div
               key={goal.title}
+              className="homepage-card"
               style={{
                 background: 'var(--color-bg-secondary)',
                 border: '1px solid var(--color-border)',
@@ -1093,6 +1082,7 @@ export default function HomePage() {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
           <Link
             to="/career-paths"
+            className="homepage-button-muted"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -1114,7 +1104,7 @@ export default function HomePage() {
       </section>
 
       {/* Interview Prep */}
-      <section id="interview-prep" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      <section id="interview-prep" className="homepage-section" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
         <h2 style={{
           fontSize: '0.75rem',
           fontWeight: 800,
@@ -1128,6 +1118,7 @@ export default function HomePage() {
 
         <Link
           to="/interview-prep"
+          className="homepage-card"
           onClick={() => {
             window.scrollTo(0, 0);
           }}
@@ -1185,7 +1176,7 @@ export default function HomePage() {
                 padding: '5px 9px',
                 fontSize: '0.72rem',
                 fontWeight: 800,
-              }}>
+              }} className="homepage-tag">
                 {section.technologyLabel}
               </span>
             ))}
@@ -1194,9 +1185,9 @@ export default function HomePage() {
       </section>
 
       {/* Choose Your Ride */}
-      <section id="technology-cards" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
+      <section id="technology-cards" className="homepage-section" style={{ marginBottom: '3rem', scrollMarginTop: '80px' }}>
         <p style={{ ...sectionEyebrowStyle, textAlign: 'center' }}>Choose Your Ride</p>
-        <h2 style={{
+        <h2 className="homepage-section-title" style={{
           margin: '0 0 1.3rem',
           textAlign: 'center',
           color: 'var(--color-text-primary)',
@@ -1209,13 +1200,13 @@ export default function HomePage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
           {ecosystemDomains.map(domain => (
-            <div key={domain.title} style={{
+            <div key={domain.title} className="homepage-card" style={{
               background: 'var(--color-bg-secondary)',
               border: `1px solid ${domain.accent}30`,
               borderRadius: '12px',
               padding: '16px',
             }}>
-              <div style={{ color: domain.accent, marginBottom: '10px' }}>{domain.icon}</div>
+              <div className="homepage-icon-badge" style={{ color: domain.accent, marginBottom: '10px', width: '38px', height: '38px', borderRadius: '10px', background: `${domain.accent}14`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{domain.icon}</div>
               <h3 style={{ margin: '0 0 5px', color: 'var(--color-text-primary)', fontSize: '0.95rem', fontWeight: 900 }}>
                 {domain.title}
               </h3>
@@ -1268,6 +1259,7 @@ export default function HomePage() {
                 key={tech.id}
                 to={getTechnologyPath(tech.id)}
                 onClick={() => handleTechClick(tech.id, true)}
+                className="homepage-card"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -1400,7 +1392,7 @@ export default function HomePage() {
       </section>
 
       {/* Recently Added */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section className="homepage-section" style={{ marginBottom: '3rem' }}>
         <h2 style={{
           fontSize: '0.75rem',
           fontWeight: 800,
@@ -1418,6 +1410,7 @@ export default function HomePage() {
               key={`${item.techId}-${item.slug}`}
               to={getTechnologyTopicPath(item.techId, item.slug)}
               onClick={() => openTopic(item.techId)}
+              className="homepage-card"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -1442,7 +1435,7 @@ export default function HomePage() {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-                <Sparkles size={14} style={{ color: '#6366f1', flexShrink: 0 }} />
+                <Sparkles size={14} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
                 <div style={{ minWidth: 0 }}>
                   <p style={{ margin: 0, fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-text-primary)' }}>{item.title}</p>
                   <p style={{ margin: 0, fontSize: '0.68rem', color: 'var(--color-text-muted)' }}>{item.tech}</p>

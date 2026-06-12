@@ -49,8 +49,9 @@ html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-sans);
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -255,6 +256,69 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
   animation: flagWave 2.6s ease-in-out infinite;
 }
 
+.homepage-root {
+  padding: 2.75rem 2rem 5.5rem !important;
+}
+
+.homepage-section {
+  margin-bottom: 3.5rem !important;
+}
+
+.homepage-section-title {
+  line-height: 1.12 !important;
+}
+
+.homepage-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.homepage-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-hover);
+}
+
+.homepage-button-primary,
+.homepage-button-secondary {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+
+.homepage-button-primary:hover,
+.homepage-button-secondary:hover {
+  transform: translateY(-1px);
+}
+
+.homepage-button-primary:hover {
+  box-shadow: 0 18px 34px rgba(37,99,235,0.3);
+}
+
+.homepage-button-secondary:hover {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+}
+
+.homepage-button-muted:hover {
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
+  box-shadow: var(--shadow-card);
+}
+
+.homepage-icon-badge {
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+
+.homepage-tag {
+  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, var(--color-border));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45);
+}
+
+.homepage-stat-card {
+  min-height: 76px;
+}
+
 /* Responsive main content padding */
 @media (max-width: 768px) {
   .main-content-topic {
@@ -275,11 +339,29 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
   .mission-line {
     display: none !important;
   }
+
+  .homepage-root {
+    padding: 2rem 1rem 4rem !important;
+  }
+
+  .homepage-section {
+    margin-bottom: 2.75rem !important;
+  }
 }
 
 @media (max-width: 520px) {
   .hero-grid {
     gap: 1.25rem !important;
+  }
+
+  .homepage-button-primary,
+  .homepage-button-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .homepage-stat-card {
+    min-height: auto;
   }
 
   .tech-journey-shell {

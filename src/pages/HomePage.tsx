@@ -570,7 +570,7 @@ export default function HomePage() {
       />
 
       {/* Hero */}
-      <section style={{
+      <section className="homepage-hero-section" style={{
         width: '100vw',
         marginLeft: 'calc(50% - 50vw)',
         marginTop: '-2.5rem',
@@ -598,7 +598,7 @@ export default function HomePage() {
           opacity: 0.35,
           pointerEvents: 'none',
         }} />
-        <div style={{
+        <div className="homepage-hero-inner hero-grid" style={{
           maxWidth: '1120px',
           margin: '0 auto',
           padding: '3.2rem 2rem 4rem',
@@ -608,8 +608,8 @@ export default function HomePage() {
           alignItems: 'center',
           position: 'relative',
           zIndex: 1,
-        }} className="hero-grid">
-        <div>
+        }}>
+        <div className="homepage-hero-copy">
           <div style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -627,7 +627,7 @@ export default function HomePage() {
             </span>
           </div>
 
-          <h1 style={{
+          <h1 className="homepage-hero-title" style={{
             fontSize: 'clamp(2.6rem, 5.6vw, 4.15rem)',
             fontWeight: 900,
             color: '#ffffff',
@@ -660,7 +660,7 @@ export default function HomePage() {
             Master React, AEM, Java, Spring Boot, Azure, Kubernetes, AI and more through real-world tutorials, interview preparation, architecture notes, and career-focused learning paths.
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.7rem', alignItems: 'center' }}>
+          <div className="homepage-hero-actions" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '1.7rem', alignItems: 'center' }}>
             <button
               onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               className="homepage-button-primary"
@@ -706,7 +706,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div style={{
+        <div className="homepage-hero-visual" style={{
           minHeight: '360px',
           display: 'flex',
           alignItems: 'center',
@@ -727,7 +727,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* Platform Statistics */}
-      <section className="homepage-section" style={{
+      <section className="homepage-section homepage-stats-grid" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
         gap: '10px',
@@ -1008,7 +1008,7 @@ export default function HomePage() {
           Choose Your Goal
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
+        <div className="homepage-goal-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px' }}>
           {careerGoals.map(goal => (
             <div
               key={goal.title}
@@ -1198,7 +1198,7 @@ export default function HomePage() {
           Technology Ecosystem
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
+        <div className="homepage-domain-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '12px', marginBottom: '1.5rem' }}>
           {ecosystemDomains.map(domain => (
             <div key={domain.title} className="homepage-card" style={{
               background: 'var(--color-bg-secondary)',
@@ -1249,7 +1249,7 @@ export default function HomePage() {
           Available Now
         </h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
+        <div className="homepage-tech-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
           {activeTechs.map(tech => {
             const liveCount = tech.categories
               .flatMap(c => c.items)
@@ -1404,7 +1404,7 @@ export default function HomePage() {
           Recently Added Topics
         </h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
+        <div className="homepage-recent-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
           {recentlyAdded.map(item => (
             <Link
               key={`${item.techId}-${item.slug}`}

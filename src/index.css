@@ -345,17 +345,70 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
   }
 
   .homepage-section {
-    margin-bottom: 2.75rem !important;
+    margin-bottom: 2.4rem !important;
+  }
+
+  .homepage-hero-inner {
+    padding: 2.5rem 1rem 3rem !important;
+  }
+
+  .homepage-hero-title {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+    line-height: 1.06 !important;
+  }
+
+  .homepage-hero-visual {
+    min-height: 260px !important;
+  }
+
+  .homepage-goal-grid,
+  .homepage-domain-grid,
+  .homepage-recent-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .homepage-tech-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .homepage-tech-grid > a {
+    min-width: 0;
+    padding: 16px !important;
+  }
+
+  .homepage-tech-grid > a p {
+    word-break: break-word;
+  }
+
+  .homepage-button-primary,
+  .homepage-button-secondary,
+  .homepage-button-muted {
+    min-height: 48px;
   }
 }
 
 @media (max-width: 520px) {
+  .app-header {
+    overflow-x: clip;
+  }
+
   .hero-grid {
     gap: 1.25rem !important;
   }
 
+  .homepage-hero-copy {
+    min-width: 0;
+  }
+
+  .homepage-hero-actions {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
   .homepage-button-primary,
-  .homepage-button-secondary {
+  .homepage-button-secondary,
+  .homepage-button-muted {
     width: 100%;
     justify-content: center;
   }
@@ -364,8 +417,12 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
     min-height: auto;
   }
 
+  .homepage-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .tech-journey-shell {
-    max-width: 100% !important;
+    max-width: 270px !important;
     border-radius: 20px !important;
   }
 
@@ -373,5 +430,42 @@ body.dark .note-box.danger  { background: #1f0a0a; border-color: #ef4444; }
     min-width: 72px !important;
     font-size: 0.66rem !important;
     padding: 5px 8px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .homepage-root {
+    padding: 1.5rem 0.9rem 3.5rem !important;
+  }
+
+  .homepage-section {
+    margin-bottom: 2rem !important;
+  }
+
+  .homepage-hero-section {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .homepage-hero-inner {
+    padding: 2rem 0.9rem 2.4rem !important;
+  }
+
+  .homepage-hero-title {
+    font-size: clamp(1.8rem, 9vw, 2.4rem) !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .homepage-tech-grid > a {
+    padding: 14px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .homepage-hero-visual {
+    display: none !important;
+  }
+
+  .homepage-tech-grid {
+    grid-template-columns: 1fr !important;
   }
 }

@@ -1,3 +1,4 @@
+import { useEffect, useState, type CSSProperties } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
@@ -20,6 +21,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const navigate = useNavigate();
   const location = useLocation();
   const { setActiveTechId } = useTech();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const headerTextColor = 'rgba(255,255,255,0.92)';
   const headerActiveColor = '#38bdf8';
 
@@ -35,7 +37,12 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const isCareerPathsActive = location.pathname.startsWith('/career-paths') || location.pathname.startsWith('/roadmaps');
   const showSearchBar = location.pathname === '/technologies' || location.pathname.startsWith('/technologies/');
 
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [location.pathname]);
+
   const scrollToHomeSection = (sectionId: string) => {
+    setMobileNavOpen(false);
     if (location.pathname !== '/') {
       navigate('/');
       window.setTimeout(() => {
@@ -85,6 +92,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
       {/* Logo */}
       <button
         onClick={() => navigate('/')}
+        className="header-logo-button"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -100,6 +108,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           src="/splashride-reference-mark.png"
           alt=""
           aria-hidden="true"
+          className="header-logo-mark"
           style={{
             width: '38px',
             height: '30px',
@@ -108,7 +117,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             filter: 'drop-shadow(0 0 10px rgba(56,189,248,0.35))',
           }}
         />
-        <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1 }}>
+        <span className="header-logo-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1 }}>
           <span style={{
               fontSize: '1rem',
               fontWeight: 900,
@@ -117,7 +126,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             }}>
             Splash<span style={{ color: '#0ea5ff' }}>Ride</span>
           </span>
-          <span style={{
+          <span className="header-logo-tagline" style={{
             marginTop: '3px',
             fontSize: '0.42rem',
             fontWeight: 800,
@@ -489,14 +498,98 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
       </nav>
 
       {/* Right side */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+      <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
         {showSearchBar && (
           <div className="header-search">
             <SearchBar />
           </div>
         )}
         <ThemeToggle theme={theme} onToggle={onThemeToggle} />
+        {!showMenuButton && (
+          <button
+            type="button"
+            aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileNavOpen}
+            onClick={() => setMobileNavOpen(open => !open)}
+            className="header-mobile-nav-toggle"
+            style={{
+              display: 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '48px',
+              height: '48px',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.14)',
+              borderRadius: '10px',
+              color: '#ffffff',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        )}
       </div>
+
+      {!showMenuButton && mobileNavOpen && (
+        <div
+          className="header-mobile-drawer"
+          style={{
+            position: 'fixed',
+            top: '56px',
+            left: '0.75rem',
+            right: '0.75rem',
+            background: 'linear-gradient(180deg, rgba(2,10,42,0.98), rgba(7,10,53,0.98))',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '14px',
+            boxShadow: '0 18px 40px rgba(2,6,23,0.28)',
+            padding: '0.75rem',
+            display: 'none',
+            flexDirection: 'column',
+            gap: '0.5rem',
+            zIndex: 70,
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => scrollToHomeSection('technology-cards')}
+            className="header-mobile-link"
+            style={mobileLinkStyle}
+          >
+            Explore Technologies
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToHomeSection('choose-goal')}
+            className="header-mobile-link"
+            style={mobileLinkStyle}
+          >
+            Learning Paths
+          </button>
+          <Link
+            to="/interview-prep"
+            onClick={() => {
+              setMobileNavOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className="header-mobile-link"
+            style={mobileLinkStyle}
+          >
+            Interview Prep
+          </Link>
+          <Link
+            to="/career-paths"
+            onClick={() => {
+              setMobileNavOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className="header-mobile-link"
+            style={mobileLinkStyle}
+          >
+            Career Paths
+          </Link>
+        </div>
+      )}
 
       <style>{`
         .header-nav button:hover {
@@ -528,13 +621,80 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         .app-header .header-search input::placeholder {
           color: rgba(255,255,255,0.62) !important;
         }
-        @media (max-width: 1040px) {
+        @media (max-width: 1024px) {
           .header-nav { display: none !important; }
+          .header-mobile-nav-toggle { display: inline-flex !important; }
+          .header-mobile-drawer { display: flex !important; }
         }
         @media (max-width: 768px) {
           .header-search { display: none; }
+          .app-header {
+            height: 52px !important;
+            padding: 0 0.75rem !important;
+            gap: 0.5rem !important;
+          }
+          .header-logo-button,
+          .mobile-menu-btn,
+          .header-mobile-nav-toggle {
+            min-width: 48px;
+            min-height: 48px;
+          }
+          .header-logo-mark {
+            width: 34px !important;
+            height: 28px !important;
+          }
+          .header-logo-tagline {
+            display: none !important;
+          }
+          .header-right {
+            gap: 0.4rem !important;
+            margin-left: auto;
+          }
+          .header-mobile-drawer {
+            top: 52px !important;
+          }
+        }
+        @media (max-width: 430px) {
+          .header-logo-text > span:first-child {
+            font-size: 0.92rem !important;
+          }
+          .theme-toggle-btn {
+            min-width: 40px !important;
+            min-height: 40px !important;
+            padding: 6px 8px !important;
+            gap: 0 !important;
+          }
+          .theme-toggle-label {
+            display: none !important;
+          }
+          .header-mobile-drawer {
+            left: 0.5rem !important;
+            right: 0.5rem !important;
+          }
+        }
+        @media (max-width: 380px) {
+          .theme-toggle-btn {
+            display: none !important;
+          }
         }
       `}</style>
     </header>
   );
 }
+
+const mobileLinkStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  minHeight: '48px',
+  width: '100%',
+  padding: '0.75rem 0.9rem',
+  borderRadius: '10px',
+  border: '1px solid rgba(255,255,255,0.1)',
+  background: 'rgba(255,255,255,0.04)',
+  color: '#ffffff',
+  textDecoration: 'none',
+  fontSize: '0.92rem',
+  fontWeight: 700,
+  textAlign: 'left' as const,
+  cursor: 'pointer',
+} satisfies CSSProperties;

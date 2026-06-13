@@ -10,6 +10,7 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
     <button
       onClick={onToggle}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+      className="theme-toggle-btn"
       style={{
         background: 'var(--color-bg-secondary)',
         border: '1px solid var(--color-border)',
@@ -35,7 +36,7 @@ export default function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
       }}
     >
       {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
-      <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+      <span className="theme-toggle-label">{theme === 'dark' ? 'Light' : 'Dark'}</span>
     </button>
   );
 }

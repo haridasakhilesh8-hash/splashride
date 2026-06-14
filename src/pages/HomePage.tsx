@@ -1569,13 +1569,13 @@ export default function HomePage() {
               <Link to="/about" style={footerLinkStyle}>
                 About
               </Link>
-              <Link to="/about" style={footerLinkStyle}>
+              <Link to="/contact" style={footerLinkStyle}>
                 Contact
               </Link>
-              <Link to="/about" style={footerLinkStyle}>
+              <Link to="/privacy-policy" style={footerLinkStyle}>
                 Privacy Policy
               </Link>
-              <Link to="/about" style={footerLinkStyle}>
+              <Link to="/terms" style={footerLinkStyle}>
                 Terms
               </Link>
             </div>

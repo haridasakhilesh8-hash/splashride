@@ -4,6 +4,9 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
+import ContactPage from './pages/ContactPage';
 import InterviewPrepPage from './pages/InterviewPrepPage';
 import CareerPathsPage from './pages/CareerPathsPage';
 import RoadmapPage from './pages/RoadmapPage';
@@ -62,6 +65,9 @@ function AppShell() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/contact" element={<ContactPage />} />
             <Route path="/career-paths" element={<CareerPathsPage />} />
             <Route path="/career-paths/:careerSlug" element={<RoadmapPage />} />
             <Route path="/roadmaps/:roadmapSlug" element={<LegacyRoadmapRedirect />} />

@@ -32,7 +32,11 @@ import {
 } from '../content/interview-prep/topicNavigation';
 import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
-import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
+import {
+  getLegacyTechnologyTopicPath,
+  getTechnologyPath,
+  getTechnologyTopicPath,
+} from '../lib/routes';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -101,6 +105,10 @@ function renderSidebarCategoryIcon(iconToken: string) {
   return <span style={{ fontSize: '0.9rem' }}>{iconToken}</span>;
 }
 
+function normalizePathname(pathname: string) {
+  return pathname.replace(/\/+$/, '') || '/';
+}
+
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -120,9 +128,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       ?? interviewConfig?.topics[0]?.slug
       ?? getInterviewPrepDefaultTopicSlug(routeInterviewTechnologyId ?? ''))
     : currentSlug;
-  const activeTopicSlug = isInterviewPrep
-    ? interviewTopicSlug
-    : location.pathname.match(/^\/technologies\/[^/]+\/topic\/([^/]+)/)?.[1];
   const [interviewCompletedCount, setInterviewCompletedCount] = useState(0);
   const sidebarTechnology = isInterviewPrep && interviewConfig
     ? {
@@ -166,6 +171,51 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const liveTopicCount = categories
     .flatMap(c => c.items)
     .filter(i => !i.badge).length;
+  const normalizedPathname = normalizePathname(location.pathname);
+  const activeTechnologyId = sidebarTechnology?.learningTechnologyId
+    ?? sidebarTechnology?.id
+    ?? techId
+    ?? activeTech?.id
+    ?? null;
+
+  const activeTopicSlug = useMemo(() => {
+    if (isInterviewPrep) return interviewTopicSlug ?? activeSidebarSlug ?? null;
+    if (!activeTechnologyId) return activeSidebarSlug ?? null;
+
+    for (const category of categories) {
+      for (const item of category.items) {
+        const canonicalPath = normalizePathname(
+          getTechnologyTopicPath(activeTechnologyId, item.slug),
+        );
+        const legacyPath = normalizePathname(
+          getLegacyTechnologyTopicPath(activeTechnologyId, item.slug),
+        );
+
+        if (normalizedPathname === canonicalPath || normalizedPathname === legacyPath) {
+          return item.slug;
+        }
+      }
+    }
+
+    return activeSidebarSlug ?? null;
+  }, [
+    activeSidebarSlug,
+    activeTechnologyId,
+    categories,
+    interviewTopicSlug,
+    isInterviewPrep,
+    normalizedPathname,
+  ]);
+
+  const activeCategoryId = useMemo(() => {
+    if (!activeTopicSlug) return null;
+
+    const activeCategory = categories.find(cat =>
+      cat.items.some(item => item.slug === activeTopicSlug)
+    );
+
+    return activeCategory?.id ?? null;
+  }, [activeTopicSlug, categories]);
 
   useEffect(() => {
     if (!isInterviewPrep || !interviewConfig) return;
@@ -191,56 +241,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     };
   }, [interviewConfig, isInterviewPrep]);
 
-  // Auto-expand the category that contains the current topic
-  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    for (const cat of categories) {
-      if (cat.items.some(item => item.slug === activeSidebarSlug)) {
-        initial.add(cat.id);
-      }
-    }
-    if (initial.size === 0 && categories.length > 0) initial.add(categories[0].id);
-    return initial;
-  });
+  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(
+    () => activeCategoryId ?? categories[0]?.id ?? null,
+  );
 
-  // Re-expand when route changes
   useEffect(() => {
-    if (!activeSidebarSlug) return;
-    const activeCategory = categories.find(cat => cat.items.some(item => item.slug === activeSidebarSlug));
-    if (!activeCategory) return;
-
-    const timeout = window.setTimeout(() => {
-      setExpandedCategories(prev => {
-        if (prev.has(activeCategory.id)) return prev;
-        return new Set([...prev, activeCategory.id]);
-      });
-    }, 0);
-
-    return () => window.clearTimeout(timeout);
-  }, [activeSidebarSlug, categories]);
-
-  // Expand first category when tech changes and nothing is active
-  useEffect(() => {
-    if (categories.length > 0) {
-      const timeout = window.setTimeout(() => setExpandedCategories(prev => {
-        const hasActive = categories.some(cat =>
-          cat.items.some(item => item.slug === activeSidebarSlug)
-        );
-        if (!hasActive) return new Set([categories[0].id]);
-        return prev;
-      }), 0);
-
-      return () => window.clearTimeout(timeout);
-    }
-  }, [activeSidebarSlug, sidebarTechnology?.id, categories]);
+    setExpandedCategoryId(activeCategoryId ?? categories[0]?.id ?? null);
+  }, [activeCategoryId, categories, normalizedPathname, sidebarTechnology?.id]);
 
   const toggleCategory = (id: string) => {
-    setExpandedCategories(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+    setExpandedCategoryId(prev => (prev === id ? null : id));
   };
 
   const handleTopicClick = (slug: string) => {
@@ -355,7 +365,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         {/* Categories — scoped to active technology only */}
         {categories.map(cat => {
-          const isExpanded = expandedCategories.has(cat.id);
+          const isExpanded = expandedCategoryId === cat.id;
           return (
             <div key={cat.id} style={{ marginBottom: '2px' }}>
               {/* Category header */}

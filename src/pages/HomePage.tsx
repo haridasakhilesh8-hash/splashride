@@ -904,41 +904,38 @@ export default function HomePage() {
             </h3>
             <p style={{ margin: 0, color: 'var(--color-text-secondary)', fontSize: '0.78rem', lineHeight: 1.5 }}>
               Founder & Creator
-              <br />
-              Technical Lead | Architect | Developer
             </p>
           </div>
 
           <div>
             <p style={sectionEyebrowStyle}>Built by a Developer, For Developers</p>
             <h2 style={{ margin: '0 0 0.75rem', color: 'var(--color-text-primary)', fontSize: 'clamp(1.45rem, 3vw, 2rem)', lineHeight: 1.15, fontWeight: 900, letterSpacing: '-0.03em' }}>
-              Hi, I am Akki.
+              Built by a working developer, for developers.
             </h2>
-            <p style={{ margin: '0 0 0.8rem', color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.72 }}>
-              I work as a technical lead with experience across AEM, CMS platforms, enterprise applications, content systems, and large-scale digital experiences.
-            </p>
             <p style={{ margin: '0 0 1rem', color: 'var(--color-text-secondary)', fontSize: '0.9rem', lineHeight: 1.72 }}>
-              I created SplashRide to make technical learning more practical, interview-focused, and production-ready. Every topic is designed to explain not just what a technology is, but how it is actually used in real projects.
+              SplashRide was created from real project, interview, and career confusion experience to help developers learn technologies with clarity, confidence, and direction.
             </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {['Enterprise projects', 'Interview clarity', 'Architecture thinking', 'Production support'].map(label => (
-                <span key={label} style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  color: 'var(--color-accent)',
-                  background: 'var(--color-accent-light)',
-                  border: '1px solid rgba(99,102,241,0.22)',
-                  borderRadius: '999px',
-                  padding: '6px 10px',
-                  fontSize: '0.72rem',
-                  fontWeight: 800,
-                }} className="homepage-tag">
-                  <CheckCircle2 size={12} />
-                  {label}
-                </span>
-              ))}
-            </div>
+            <Link
+              to="/about"
+              className="homepage-button-muted"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                textDecoration: 'none',
+                color: 'var(--color-accent)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '9px',
+                background: 'var(--color-bg-secondary)',
+                padding: '10px 16px',
+                fontSize: '0.82rem',
+                fontWeight: 900,
+                marginBottom: '1rem',
+              }}
+            >
+              Read About SplashRide
+              <ArrowRight size={15} />
+            </Link>
           </div>
         </div>
       </section>
@@ -1491,18 +1488,115 @@ export default function HomePage() {
         </section>
       )}
 
-      <section id="projects" style={{
-        background: 'linear-gradient(135deg, #2563eb, #6d28d9)',
-        color: '#fff',
-        borderRadius: '14px',
-        padding: '18px 20px',
-        textAlign: 'center',
-        scrollMarginTop: '80px',
+      <section style={{
+        width: '100vw',
+        marginLeft: 'calc(50% - 50vw)',
+        marginTop: '2rem',
+        background: 'linear-gradient(180deg, #071133 0%, #0b153d 100%)',
+        color: '#ffffff',
+        borderTop: '1px solid rgba(255,255,255,0.08)',
       }}>
-        <p style={{ margin: 0, fontSize: '0.92rem', fontWeight: 800 }}>
-          Made with focus for developers who want to grow, build, troubleshoot, and explain technology with confidence.
-        </p>
+        <div style={{
+          maxWidth: '1120px',
+          margin: '0 auto',
+          padding: '2rem',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(260px, 1.1fr) repeat(2, minmax(180px, 0.9fr))',
+          gap: '1.5rem',
+          alignItems: 'start',
+        }} className="founder-grid">
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '0.8rem' }}>
+              <img
+                src="/splashride-reference-mark.png"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  width: '40px',
+                  height: '32px',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 10px rgba(56,189,248,0.35))',
+                }}
+              />
+              <div>
+                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 900, letterSpacing: '-0.02em' }}>
+                  Splash<span style={{ color: '#38bdf8' }}>Ride</span>
+                </p>
+                <p style={{ margin: '2px 0 0', fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                  Ride Your Tech Journey
+                </p>
+              </div>
+            </div>
+            <p style={{ margin: '0 0 0.65rem', fontSize: '0.9rem', fontWeight: 800, color: '#ffffff' }}>
+              Ride Your Tech Journey
+            </p>
+            <p style={{ margin: 0, color: 'rgba(255,255,255,0.76)', fontSize: '0.84rem', lineHeight: 1.7, maxWidth: '360px' }}>
+              Developer learning paths, tutorials, interview prep, and career guidance.
+            </p>
+          </div>
+
+          <div>
+            <p style={{ margin: '0 0 0.8rem', fontSize: '0.78rem', fontWeight: 800, color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Explore
+            </p>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              <button
+                onClick={() => document.getElementById('technology-cards')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                style={footerLinkStyle}
+              >
+                Technologies
+              </button>
+              <Link to="/interview-prep" style={footerLinkStyle}>
+                Interview Prep
+              </Link>
+              <Link to="/career-paths" style={footerLinkStyle}>
+                Career Paths
+              </Link>
+              <button
+                onClick={() => document.getElementById('choose-goal')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                style={footerLinkStyle}
+              >
+                Learning Paths
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <p style={{ margin: '0 0 0.8rem', fontSize: '0.78rem', fontWeight: 800, color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Company
+            </p>
+            <div style={{ display: 'grid', gap: '8px' }}>
+              <Link to="/about" style={footerLinkStyle}>
+                About
+              </Link>
+              <Link to="/about" style={footerLinkStyle}>
+                Contact
+              </Link>
+              <Link to="/about" style={footerLinkStyle}>
+                Privacy Policy
+              </Link>
+              <Link to="/about" style={footerLinkStyle}>
+                Terms
+              </Link>
+            </div>
+          </div>
+        </div>
       </section>
     </div>
   );
 }
+
+const footerLinkStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  minHeight: '44px',
+  background: 'none',
+  border: 'none',
+  color: 'rgba(255,255,255,0.82)',
+  textDecoration: 'none',
+  padding: '0',
+  fontSize: '0.88rem',
+  fontWeight: 600,
+  cursor: 'pointer',
+  textAlign: 'left' as const,
+} as const;

@@ -35,6 +35,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const interviewPrepSections = getActiveInterviewPrepSections();
   const futureInterviewPrep: string[] = [];
   const isCareerPathsActive = location.pathname.startsWith('/career-paths') || location.pathname.startsWith('/roadmaps');
+  const isAboutActive = location.pathname.startsWith('/about');
   const showSearchBar = location.pathname === '/technologies' || location.pathname.startsWith('/technologies/');
 
   useEffect(() => {
@@ -495,6 +496,28 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             {item.label}
           </button>
         ))}
+        <Link
+          to="/about"
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            textDecoration: 'none',
+            background: 'none',
+            border: 'none',
+            color: isAboutActive ? headerActiveColor : headerTextColor,
+            cursor: 'pointer',
+            borderRadius: '8px',
+            padding: '7px 9px',
+            fontSize: '0.8rem',
+            fontWeight: 600,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          About
+        </Link>
       </nav>
 
       {/* Right side */}
@@ -587,6 +610,17 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             style={mobileLinkStyle}
           >
             Career Paths
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => {
+              setMobileNavOpen(false);
+              window.scrollTo(0, 0);
+            }}
+            className="header-mobile-link"
+            style={mobileLinkStyle}
+          >
+            About
           </Link>
         </div>
       )}

@@ -887,7 +887,7 @@ export const careerRoadmaps: CareerRoadmap[] = [
     title: 'Contentful Developer Career Path',
     shortTitle: 'Contentful Developer',
     role: 'Contentful / CMS Developer',
-    icon: 'CF',
+    icon: '🧱',
     description: 'Become a Contentful-focused CMS developer who can model content well, integrate it with frontend applications, support editorial workflows, and grow toward senior CMS architecture.',
     summary: 'A practical route through Contentful modeling, delivery APIs, preview, localization, frontend integration, production support, and interview preparation.',
     technologies: [

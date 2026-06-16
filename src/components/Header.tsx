@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronDown, Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
@@ -22,8 +22,11 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const location = useLocation();
   const { setActiveTechId } = useTech();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<'technologies' | 'interview-prep' | 'career-paths' | null>(null);
+  const headerNavRef = useRef<HTMLElement | null>(null);
   const headerTextColor = 'rgba(255,255,255,0.92)';
   const headerActiveColor = '#38bdf8';
+  const pathname = location.pathname;
 
   const technologyGroups = [
     { label: 'Frontend', techIds: ['react', 'nextjs'] },
@@ -34,16 +37,54 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
   const futureInterviewPrep: string[] = [];
-  const isCareerPathsActive = location.pathname.startsWith('/career-paths') || location.pathname.startsWith('/roadmaps');
-  const isAboutActive = location.pathname.startsWith('/about');
-  const showSearchBar = location.pathname === '/technologies' || location.pathname.startsWith('/technologies/');
+  const isTechnologiesActive = pathname.startsWith('/technologies') || pathname.startsWith('/technology');
+  const isInterviewPrepActive = pathname.startsWith('/interview-prep');
+  const isCareerPathsActive =
+    pathname.startsWith('/career-paths')
+    || pathname.startsWith('/career-path')
+    || pathname.startsWith('/roadmaps');
+  const isLearningPathsActive = pathname.startsWith('/learning-paths') || pathname.startsWith('/learning-path');
+  const isAboutActive = pathname === '/about' || pathname.startsWith('/about/');
+  const showSearchBar = pathname === '/technologies' || pathname.startsWith('/technologies/');
 
   useEffect(() => {
     setMobileNavOpen(false);
+    setOpenDropdown(null);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!headerNavRef.current) return;
+      if (headerNavRef.current.contains(event.target as Node)) return;
+      setOpenDropdown(null);
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
+
+  const toggleDropdown = (dropdown: 'technologies' | 'interview-prep' | 'career-paths') => {
+    setOpenDropdown((current) => current === dropdown ? null : dropdown);
+  };
+
+  const closeDropdowns = () => {
+    setOpenDropdown(null);
+  };
 
   const scrollToHomeSection = (sectionId: string) => {
     setMobileNavOpen(false);
+    setOpenDropdown(null);
     if (location.pathname !== '/') {
       navigate('/');
       window.setTimeout(() => {
@@ -142,6 +183,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
 
       {/* Primary navigation */}
       <nav
+        ref={headerNavRef}
         className="header-nav"
         aria-label="Primary navigation"
         style={{
@@ -155,13 +197,16 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         <div className="nav-dropdown" style={{ position: 'relative' }}>
           <button
             type="button"
+            aria-expanded={openDropdown === 'technologies'}
+            aria-haspopup="menu"
+            onClick={() => toggleDropdown('technologies')}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '5px',
               background: 'none',
               border: 'none',
-              color: headerTextColor,
+              color: isTechnologiesActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
               borderRadius: '8px',
               padding: '7px 9px',
@@ -186,13 +231,34 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               borderRadius: '10px',
               boxShadow: 'var(--shadow-popup)',
               padding: '10px',
-              opacity: 0,
-              pointerEvents: 'none',
-              transform: 'translateY(-4px)',
+              opacity: openDropdown === 'technologies' ? 1 : 0,
+              pointerEvents: openDropdown === 'technologies' ? 'auto' : 'none',
+              transform: openDropdown === 'technologies' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
               zIndex: 100,
             }}
           >
+            <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
+              <button
+                type="button"
+                onClick={() => scrollToHomeSection('technology-cards')}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                  background: 'var(--color-bg-secondary)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-primary)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  padding: '7px 9px',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                }}
+              >
+                View All Technologies
+              </button>
+            </div>
             {technologyGroups.map(group => (
               <div key={group.label} style={{ padding: '6px 0', borderBottom: group.label === 'AI' ? 'none' : '1px solid var(--color-border)' }}>
                 <p style={{
@@ -215,6 +281,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                         key={tech.id}
                         to={getTechnologyPath(tech.id)}
                         onClick={() => {
+                          closeDropdowns();
                           setActiveTechId(tech.id);
                           window.scrollTo(0, 0);
                         }}
@@ -247,13 +314,16 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         <div className="nav-dropdown" style={{ position: 'relative' }}>
           <button
             type="button"
+            aria-expanded={openDropdown === 'interview-prep'}
+            aria-haspopup="menu"
+            onClick={() => toggleDropdown('interview-prep')}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '5px',
               background: 'none',
               border: 'none',
-              color: location.pathname.startsWith('/interview-prep') ? headerActiveColor : headerTextColor,
+              color: isInterviewPrepActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
               borderRadius: '8px',
               padding: '7px 9px',
@@ -278,9 +348,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               borderRadius: '10px',
               boxShadow: 'var(--shadow-popup)',
               padding: '10px',
-              opacity: 0,
-              pointerEvents: 'none',
-              transform: 'translateY(-4px)',
+              opacity: openDropdown === 'interview-prep' ? 1 : 0,
+              pointerEvents: openDropdown === 'interview-prep' ? 'auto' : 'none',
+              transform: openDropdown === 'interview-prep' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
               zIndex: 100,
             }}
@@ -296,12 +366,36 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               }}>
                 Available Now
               </p>
+              <Link
+                to="/interview-prep"
+                onClick={() => {
+                  closeDropdowns();
+                  window.scrollTo(0, 0);
+                }}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  textDecoration: 'none',
+                  background: 'var(--color-bg-secondary)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-primary)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  padding: '7px 9px',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  marginBottom: '6px',
+                }}
+              >
+                View All Interview Prep
+              </Link>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {interviewPrepSections.map(section => (
                   <Link
                     key={section.technologyId}
                     to={`/interview-prep/${section.technologyId}`}
                     onClick={() => {
+                      closeDropdowns();
                       setActiveTechId(section.technologyId);
                       window.scrollTo(0, 0);
                     }}
@@ -363,6 +457,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         <div className="nav-dropdown" style={{ position: 'relative' }}>
           <button
             type="button"
+            aria-expanded={openDropdown === 'career-paths'}
+            aria-haspopup="menu"
+            onClick={() => toggleDropdown('career-paths')}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -394,9 +491,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               borderRadius: '10px',
               boxShadow: 'var(--shadow-popup)',
               padding: '10px',
-              opacity: 0,
-              pointerEvents: 'none',
-              transform: 'translateY(-4px)',
+              opacity: openDropdown === 'career-paths' ? 1 : 0,
+              pointerEvents: openDropdown === 'career-paths' ? 'auto' : 'none',
+              transform: openDropdown === 'career-paths' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
               zIndex: 100,
             }}
@@ -415,6 +512,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               <Link
                 to="/career-paths"
                 onClick={() => {
+                  closeDropdowns();
                   window.scrollTo(0, 0);
                 }}
                 style={{
@@ -452,6 +550,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                     key={roadmap.slug}
                     to={`/career-paths/${roadmap.slug}`}
                     onClick={() => {
+                      closeDropdowns();
                       window.scrollTo(0, 0);
                     }}
                     style={{
@@ -484,7 +583,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             style={{
               background: 'none',
               border: 'none',
-              color: headerTextColor,
+              color: isLearningPathsActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
               borderRadius: '8px',
               padding: '7px 9px',
@@ -499,6 +598,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         <Link
           to="/about"
           onClick={() => {
+            closeDropdowns();
             window.scrollTo(0, 0);
           }}
           style={{
@@ -634,13 +734,11 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           background: rgba(255,255,255,0.08) !important;
           color: #ffffff !important;
         }
-        .nav-dropdown:hover .nav-dropdown-menu,
-        .nav-dropdown:focus-within .nav-dropdown-menu {
-          opacity: 1 !important;
-          pointer-events: auto !important;
-          transform: translateY(0) !important;
-        }
         .nav-dropdown-menu a:hover {
+          border-color: var(--color-accent) !important;
+          color: var(--color-accent) !important;
+        }
+        .nav-dropdown-menu button:hover {
           border-color: var(--color-accent) !important;
           color: var(--color-accent) !important;
         }

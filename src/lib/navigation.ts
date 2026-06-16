@@ -1062,7 +1062,7 @@ export const technologies: TechSection[] = [
   {
     id: 'contentful',
     label: 'Contentful',
-    icon: 'CF',
+    icon: '🧱',
     color: '#2478cc',
     description: 'Learn Contentful the way senior developers explain it — content modeling, delivery APIs, rich text, assets, environments, webhooks, localization, integrations, and production-ready CMS patterns.',
     topicCount: 29,

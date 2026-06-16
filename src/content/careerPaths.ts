@@ -291,6 +291,74 @@ const aemPhases: CareerPathPhase[] = [
   },
 ];
 
+const contentfulPhases: CareerPathPhase[] = [
+  {
+    id: 'contentful-foundation',
+    title: 'Foundation',
+    subtitle: 'Understand headless CMS thinking before going deep into implementation.',
+    duration: '2-3 Weeks',
+    color: '#2563eb',
+    topics: [
+      { title: 'Headless CMS basics', description: 'Learn how Contentful separates content modeling from frontend presentation and why that changes delivery workflows.' },
+      { title: 'Structured content thinking', description: 'Understand entries, assets, references, field types, and how editors work with reusable content.' },
+      { title: 'Frontend awareness', description: 'Build enough React and Next.js awareness to understand how Contentful content is actually consumed in applications.', links: [{ label: 'React Learning Path', to: '/technologies/react' }, { label: 'Next.js Learning Path', to: '/technologies/nextjs' }] },
+      { title: 'Environment discipline', description: 'Learn why preview, draft, and production boundaries matter in CMS-driven products.' },
+    ],
+  },
+  {
+    id: 'contentful-modeling',
+    title: 'Content Modeling',
+    subtitle: 'Turn CMS familiarity into strong schema and editorial design skill.',
+    duration: '3-4 Weeks',
+    color: '#7c3aed',
+    topics: [
+      { title: 'Content types and fields', description: 'Model reusable business entities instead of page-specific one-off structures.', links: [{ label: 'Contentful Learning Path', to: '/technologies/contentful' }] },
+      { title: 'References and relationships', description: 'Design reusable links between entries and assets without creating frontend confusion.' },
+      { title: 'Validations and governance', description: 'Protect content quality through field validations, naming discipline, and editor-safe constraints.' },
+      { title: 'Rich text and modular content', description: 'Balance editorial flexibility with stable frontend rendering rules.' },
+    ],
+  },
+  {
+    id: 'contentful-api-integration',
+    title: 'API Integration and Delivery',
+    subtitle: 'Learn how Contentful content flows into real frontend and backend systems.',
+    duration: '4-5 Weeks',
+    color: '#0891b2',
+    topics: [
+      { title: 'Delivery and Preview APIs', description: 'Use published versus draft content correctly and understand why those paths must stay separate.' },
+      { title: 'React and Next.js integration', description: 'Fetch content cleanly, map it to components, and keep rendering contracts stable.', links: [{ label: 'Contentful with React Topic', to: '/technologies/contentful/topic/contentful-react' }, { label: 'Contentful with Next.js Topic', to: '/technologies/contentful/topic/contentful-nextjs' }] },
+      { title: 'Asset and media handling', description: 'Use asset metadata, responsive delivery, and frontend fallbacks to keep media reliable and fast.' },
+      { title: 'Preview and publishing workflow', description: 'Build editor trust through realistic previews, safe publishing, and release-aware delivery flows.' },
+    ],
+  },
+  {
+    id: 'contentful-production',
+    title: 'Production and Platform Operations',
+    subtitle: 'Prepare for the issues senior CMS developers solve after launch.',
+    duration: '4-5 Weeks',
+    color: '#f97316',
+    topics: [
+      { title: 'Webhooks and automation', description: 'Trigger targeted cache refreshes, revalidation flows, and downstream updates safely.' },
+      { title: 'Localization and global delivery', description: 'Handle locale strategy, slug behavior, fallback rules, and multilingual content operations.' },
+      { title: 'Caching and content freshness', description: 'Explain why published content can go stale and how to design predictable revalidation.', links: [{ label: 'Caching Strategy Topic', to: '/technologies/contentful/topic/contentful-caching-strategy' }] },
+      { title: 'Migration strategy and schema evolution', description: 'Treat content-model changes like production releases with tested migration discipline.' },
+    ],
+  },
+  {
+    id: 'contentful-career-growth',
+    title: 'Career Growth and Interview Prep',
+    subtitle: 'Move from CMS implementation into senior platform and architecture thinking.',
+    duration: '2-3 Weeks',
+    color: '#16a34a',
+    topics: [
+      { title: 'Projects to build', description: 'Create a multi-section marketing site, a blog with preview, a localized article platform, and a webhook-driven revalidation flow.' },
+      { title: 'Interview preparation', description: 'Practice Contentful fundamentals, content modeling, API integration, localization, publishing, and architecture conversations.', links: [{ label: 'Contentful Interview Prep', to: '/interview-prep/contentful' }] },
+      { title: 'Senior CMS developer path', description: 'Strengthen production support, schema governance, frontend collaboration, and release-discipline communication.' },
+      { title: 'CMS architect path', description: 'Learn to govern shared content platforms across multiple teams, locales, channels, and frontend applications.' },
+    ],
+  },
+];
+
 const cloudPhases: CareerPathPhase[] = [
   {
     id: 'cloud-foundation',
@@ -813,6 +881,80 @@ export const careerRoadmaps: CareerRoadmap[] = [
       },
     ]),
     phases: aemPhases,
+  },
+  {
+    slug: 'contentful-developer',
+    title: 'Contentful Developer Career Path',
+    shortTitle: 'Contentful Developer',
+    role: 'Contentful / CMS Developer',
+    icon: 'CF',
+    description: 'Become a Contentful-focused CMS developer who can model content well, integrate it with frontend applications, support editorial workflows, and grow toward senior CMS architecture.',
+    summary: 'A practical route through Contentful modeling, delivery APIs, preview, localization, frontend integration, production support, and interview preparation.',
+    technologies: [
+      tech('Contentful', '/technologies/contentful', 'Content modeling, delivery APIs, preview, localization, webhooks, migrations, and production CMS patterns.'),
+      tech('React', '/technologies/react', 'Frontend integration, component rendering, and UI mapping for structured content.'),
+      tech('Next.js', '/technologies/nextjs', 'Preview routes, rendering strategy, revalidation, and production delivery around CMS content.'),
+    ],
+    hours: '110+',
+    duration: '4-5 Months',
+    difficulty: 'Beginner to Advanced',
+    demand: 'Growing',
+    salaryRange: 'INR 7L - 24L+',
+    topicCount: 48,
+    interviewQuestionCount: 44,
+    productionScenarioCount: 4,
+    seoTitle: 'Contentful Developer Career Path | SplashRide',
+    seoDescription: 'Follow the Contentful developer career path with content modeling, delivery APIs, preview, localization, frontend integration, production best practices, and interview preparation.',
+    profile: {
+      whatYouWillLearn: ['How to design clean Contentful content models that scale across teams and channels', 'How to integrate Contentful with React and Next.js safely', 'How preview, publishing, localization, webhooks, and caching work in production', 'How to grow toward senior CMS developer and CMS architect responsibilities'],
+      skillsYouWillGain: ['Content modeling', 'API integration', 'Rich text and asset rendering', 'Publishing workflow design', 'Production CMS troubleshooting'],
+      whoThisPathIsFor: ['Developers moving into headless CMS work', 'Frontend engineers adding structured content-platform depth', 'CMS developers preparing for senior, lead, or architect-style interviews'],
+      expectedOutcomes: ['Build real CMS-driven applications', 'Understand architecture decisions', 'Handle production issues', 'Crack technical interviews', 'Become job ready'],
+    },
+    interviewPrep: {
+      primaryTrackLabel: 'Start Contentful Interview Preparation',
+      primaryTrackTo: '/interview-prep/contentful',
+      topicsCovered: ['Content modeling', 'Delivery and Preview APIs', 'Publishing workflows', 'Localization and assets', 'Production and architecture questions'],
+      questionCount: 44,
+      scenarioCount: 4,
+      architectureQuestionCount: 11,
+      systemDesignQuestionCount: 8,
+      linkedTracks: [
+        { label: 'Contentful Interview Prep', to: '/interview-prep/contentful' },
+        { label: 'React Interview Prep', to: '/interview-prep/react' },
+        { label: 'Next.js Interview Prep', to: '/interview-prep/nextjs' },
+      ],
+    },
+    careerInsights: {
+      demand: 'Contentful and headless CMS skills are increasingly valuable in product teams that need reusable content across websites, apps, regions, and marketing platforms.',
+      careerGrowth: 'Contentful developers often grow into senior CMS engineers, frontend-platform specialists, solution architects, or content-platform leads responsible for schema governance and multi-channel delivery.',
+      skillsNeeded: ['Strong content modeling judgment', 'Frontend integration awareness', 'Preview and publishing discipline', 'Localization and asset handling', 'Ability to explain trade-offs across editors and engineers'],
+      experienceExpectations: ['Junior: support content entries, rendering, and safe model updates', 'Mid-level: own feature-level schema design and frontend integration', 'Senior: lead migrations, governance, troubleshooting, and platform standards'],
+      typicalRoles: [
+        { title: 'Contentful Developer', salaryRange: 'INR 7L - 16L', expectation: 'Implement content models, API integrations, previews, and CMS-driven features.' },
+        { title: 'Senior CMS Developer', salaryRange: 'INR 14L - 26L', expectation: 'Lead model quality, production support, localization, and multi-team content delivery.' },
+        { title: 'CMS Architect', salaryRange: 'INR 24L - 40L', expectation: 'Define platform governance, schema evolution, and multi-channel CMS strategy.' },
+      ],
+    },
+    resources: resources([
+      {
+        title: 'Recommended Learning Order',
+        items: [
+          { label: 'Model before code', description: 'Strong schemas make every later frontend and publishing decision easier.' },
+          { label: 'Preview before publish', description: 'Editorial trust grows when draft, publish, and cache behavior are understood early.' },
+          { label: 'Production support throughout', description: 'Content platforms become senior-level work when you can troubleshoot them calmly after launch.' },
+        ],
+      },
+      {
+        title: 'Reference Materials',
+        items: [
+          { label: 'Contentful learning path', description: 'Use for modeling, APIs, preview, localization, migrations, and production best practices.', to: '/technologies/contentful' },
+          { label: 'Contentful interview prep', description: 'Practice realistic CMS, delivery, and architecture questions.', to: '/interview-prep/contentful' },
+          { label: 'React and Next.js learning paths', description: 'Strengthen the frontend integration side of headless CMS delivery.', to: '/technologies/react' },
+        ],
+      },
+    ]),
+    phases: contentfulPhases,
   },
   {
     slug: 'cloud-engineer',

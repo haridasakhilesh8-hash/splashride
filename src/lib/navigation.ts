@@ -87,6 +87,87 @@ const aemCategories: NavCategory[] = [
   },
 ];
 
+const contentfulCategories: NavCategory[] = [
+  {
+    id: 'contentful-fundamentals',
+    title: 'Fundamentals',
+    icon: 'CTF',
+    items: [
+      { slug: 'what-is-contentful', title: 'What is Contentful' },
+      { slug: 'contentful-spaces-environments', title: 'Spaces and Environments' },
+      { slug: 'contentful-content-types', title: 'Content Types' },
+      { slug: 'contentful-entries-assets', title: 'Entries and Assets' },
+    ],
+  },
+  {
+    id: 'contentful-modeling',
+    title: 'Content Modeling',
+    icon: 'MOD',
+    items: [
+      { slug: 'contentful-content-model-design', title: 'Content Model Design' },
+      { slug: 'contentful-references-relationships', title: 'References and Relationships' },
+      { slug: 'contentful-rich-text-fields', title: 'Rich Text Fields' },
+      { slug: 'contentful-field-validations', title: 'Field Validations' },
+    ],
+  },
+  {
+    id: 'contentful-delivery-apis',
+    title: 'Delivery APIs',
+    icon: 'API',
+    items: [
+      { slug: 'contentful-content-delivery-api', title: 'Content Delivery API' },
+      { slug: 'contentful-content-preview-api', title: 'Content Preview API' },
+      { slug: 'contentful-graphql-api', title: 'GraphQL API' },
+      { slug: 'contentful-sync-api', title: 'Sync API' },
+    ],
+  },
+  {
+    id: 'contentful-management',
+    title: 'Content Management',
+    icon: 'CMS',
+    items: [
+      { slug: 'contentful-content-management-api', title: 'Content Management API' },
+      { slug: 'contentful-roles-permissions', title: 'Roles and Permissions' },
+      { slug: 'contentful-webhooks', title: 'Webhooks' },
+      { slug: 'contentful-content-publishing-flow', title: 'Content Publishing Flow' },
+    ],
+  },
+  {
+    id: 'contentful-integration',
+    title: 'Integration',
+    icon: 'INT',
+    items: [
+      { slug: 'contentful-react', title: 'Contentful with React' },
+      { slug: 'contentful-nextjs', title: 'Contentful with Next.js' },
+      { slug: 'contentful-rendering-rich-text', title: 'Rendering Rich Text' },
+      { slug: 'contentful-asset-optimization', title: 'Images and Asset Optimization' },
+    ],
+  },
+  {
+    id: 'contentful-production',
+    title: 'Production',
+    icon: 'PRD',
+    items: [
+      { slug: 'contentful-preview-setup', title: 'Preview Setup' },
+      { slug: 'contentful-localization', title: 'Localization' },
+      { slug: 'contentful-caching-strategy', title: 'Caching Strategy' },
+      { slug: 'contentful-migration-strategy', title: 'Migration Strategy' },
+      { slug: 'contentful-best-practices', title: 'Best Practices' },
+    ],
+  },
+  {
+    id: 'contentful-interview-prep',
+    title: 'Interview Prep',
+    icon: 'Q&A',
+    items: [
+      { slug: 'contentful-interview-questions', title: 'Contentful Interview Questions' },
+      { slug: 'contentful-scenario-questions', title: 'Scenario Questions' },
+      { slug: 'contentful-production-issues', title: 'Production Issues' },
+      { slug: 'contentful-architect-level-questions', title: 'Architect-Level Questions' },
+    ],
+  },
+];
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Future technologies — placeholder categories only, no content yet
 // ─────────────────────────────────────────────────────────────────────────────
@@ -977,6 +1058,16 @@ export const technologies: TechSection[] = [
     topicCount: 18,
     active: true,
     categories: aemCategories,
+  },
+  {
+    id: 'contentful',
+    label: 'Contentful',
+    icon: 'CF',
+    color: '#2478cc',
+    description: 'Learn Contentful the way senior developers explain it — content modeling, delivery APIs, rich text, assets, environments, webhooks, localization, integrations, and production-ready CMS patterns.',
+    topicCount: 29,
+    active: true,
+    categories: contentfulCategories,
   },
   {
     id: 'react',

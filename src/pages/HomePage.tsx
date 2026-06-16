@@ -356,6 +356,7 @@ export default function HomePage() {
 
   const techBadges: Record<string, string> = {
     aem: 'Advanced',
+    contentful: 'New',
     react: 'Popular',
     nextjs: 'Trending',
     java: 'Most Complete',
@@ -369,6 +370,7 @@ export default function HomePage() {
 
   const techDifficulty: Record<string, { label: string; level: number }> = {
     aem: { label: 'Advanced', level: 3 },
+    contentful: { label: 'Intermediate', level: 2 },
     react: { label: 'Beginner', level: 1 },
     nextjs: { label: 'Intermediate', level: 2 },
     java: { label: 'Beginner', level: 1 },
@@ -472,9 +474,9 @@ export default function HomePage() {
     },
     {
       title: 'Enterprise CMS',
-      desc: 'Enterprise content management, AEM architecture, components, workflows, and delivery.',
+      desc: 'Enterprise and headless CMS learning across AEM, Contentful, architecture, workflows, modeling, and delivery.',
       icon: <Building2 size={20} />,
-      techIds: ['aem'],
+      techIds: ['aem', 'contentful'],
       accent: '#f97316',
     },
   ];

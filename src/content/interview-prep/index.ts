@@ -1,6 +1,7 @@
 import { aemInterviewPrep } from './aem';
 import { aiLlmInterviewPrep } from './ai-llm';
 import { awsInterviewPrep } from './aws';
+import { contentfulInterviewPrep } from './contentful';
 import { coreJavaInterviewPrep } from './core-java';
 import { dockerInterviewPrep } from './docker';
 import { kubernetesInterviewPrep } from './kubernetes';
@@ -12,6 +13,7 @@ import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
 
 export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
+  contentfulInterviewPrep,
   reactInterviewPrep,
   nextjsInterviewPrep,
   coreJavaInterviewPrep,

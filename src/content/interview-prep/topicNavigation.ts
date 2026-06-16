@@ -60,6 +60,80 @@ export const aemInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   },
 ];
 
+export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'fundamentals',
+    title: 'Fundamentals',
+    topics: [
+      { slug: 'contentful-fundamentals', title: 'Fundamentals', category: 'Fundamentals' },
+    ],
+  },
+  {
+    id: 'content-modeling',
+    title: 'Content Modeling',
+    topics: [
+      { slug: 'contentful-content-modeling', title: 'Content Modeling', category: 'Content Modeling' },
+    ],
+  },
+  {
+    id: 'delivery-apis',
+    title: 'Delivery APIs',
+    topics: [
+      { slug: 'contentful-delivery-api', title: 'Content Delivery API', category: 'Content Delivery API' },
+      { slug: 'contentful-preview-api', title: 'Content Preview API', category: 'Content Preview API' },
+    ],
+  },
+  {
+    id: 'content-management',
+    title: 'Content Management',
+    topics: [
+      { slug: 'contentful-management-api', title: 'Content Management API', category: 'Content Management API' },
+    ],
+  },
+  {
+    id: 'rich-text-assets',
+    title: 'Rich Text and Assets',
+    topics: [
+      { slug: 'contentful-rich-text-assets', title: 'Rich Text and Assets', category: 'Rich Text and Assets' },
+    ],
+  },
+  {
+    id: 'webhooks',
+    title: 'Webhooks',
+    topics: [
+      { slug: 'contentful-webhooks', title: 'Webhooks', category: 'Webhooks' },
+    ],
+  },
+  {
+    id: 'environments-publishing',
+    title: 'Environments and Publishing',
+    topics: [
+      { slug: 'contentful-environments-publishing', title: 'Environments and Publishing', category: 'Environments and Publishing' },
+    ],
+  },
+  {
+    id: 'localization',
+    title: 'Localization',
+    topics: [
+      { slug: 'contentful-localization', title: 'Localization', category: 'Localization' },
+    ],
+  },
+  {
+    id: 'production-support',
+    title: 'Production Support',
+    topics: [
+      { slug: 'contentful-production-scenarios', title: 'Production Scenarios', category: 'Production Scenarios' },
+    ],
+  },
+  {
+    id: 'architecture',
+    title: 'Architecture',
+    topics: [
+      { slug: 'contentful-architecture-questions', title: 'Architecture Questions', category: 'Architecture Questions' },
+    ],
+  },
+];
+
 export const reactInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   {
     id: 'fundamentals',
@@ -1196,6 +1270,7 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
 
 const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup[]> = {
   aem: aemInterviewPrepTopicGroups,
+  contentful: contentfulInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
   nextjs: nextjsInterviewPrepTopicGroups,
   'core-java': coreJavaInterviewPrepTopicGroups,

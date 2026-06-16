@@ -7,12 +7,14 @@
   <url><loc>https://www.splashride.in/career-paths/backend-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/full-stack-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/aem-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/career-paths/contentful-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/cloud-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/devops-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/ai-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/aws-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/azure-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/aem</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/interview-prep/contentful</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/nextjs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/core-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -41,6 +43,36 @@
   <url><loc>https://www.splashride.in/technologies/aem/topic/workflows</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/aem/topic/graphql</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/aem/topic/aem-cloud-service</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/what-is-contentful</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-spaces-environments</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-types</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-entries-assets</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-model-design</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-references-relationships</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-rich-text-fields</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-field-validations</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-delivery-api</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-preview-api</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-graphql-api</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-sync-api</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-management-api</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-roles-permissions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-webhooks</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-content-publishing-flow</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-nextjs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-rendering-rich-text</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-asset-optimization</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-preview-setup</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-localization</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-caching-strategy</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-migration-strategy</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-best-practices</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-interview-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-scenario-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-production-issues</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-architect-level-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-components</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-jsx</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>

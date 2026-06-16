@@ -168,6 +168,111 @@ const contentfulCategories: NavCategory[] = [
   },
 ];
 
+const sitecoreCategories: NavCategory[] = [
+  {
+    id: 'sitecore-fundamentals',
+    title: 'Fundamentals',
+    icon: 'CMS',
+    items: [
+      { slug: 'what-is-sitecore', title: 'What is Sitecore' },
+      { slug: 'sitecore-cms-vs-dxp', title: 'Sitecore CMS vs DXP' },
+      { slug: 'sitecore-xm-vs-xp-vs-xm-cloud', title: 'XM vs XP vs XM Cloud' },
+      { slug: 'sitecore-content-tree', title: 'Content Tree' },
+      { slug: 'sitecore-items-fields', title: 'Items and Fields' },
+      { slug: 'sitecore-templates-standard-values', title: 'Templates and Standard Values' },
+    ],
+  },
+  {
+    id: 'sitecore-content-architecture',
+    title: 'Content Architecture',
+    icon: 'MOD',
+    items: [
+      { slug: 'sitecore-template-design', title: 'Template Design' },
+      { slug: 'sitecore-datasources', title: 'Datasources' },
+      { slug: 'sitecore-renderings', title: 'Renderings' },
+      { slug: 'sitecore-layouts', title: 'Layouts' },
+      { slug: 'sitecore-placeholders', title: 'Placeholders' },
+      { slug: 'sitecore-components', title: 'Components' },
+    ],
+  },
+  {
+    id: 'sitecore-development',
+    title: 'Sitecore Development',
+    icon: 'APP',
+    items: [
+      { slug: 'sitecore-mvc-basics', title: 'Sitecore MVC Basics' },
+      { slug: 'sitecore-helix-principles', title: 'Helix Principles' },
+      { slug: 'sitecore-jss', title: 'Sitecore JSS' },
+      { slug: 'sitecore-headless-services', title: 'Headless Services' },
+      { slug: 'sitecore-layout-service', title: 'Layout Service' },
+      { slug: 'sitecore-nextjs-rendering-host', title: 'Next.js Rendering Host' },
+    ],
+  },
+  {
+    id: 'sitecore-authoring',
+    title: 'Authoring Experience',
+    icon: 'WRK',
+    items: [
+      { slug: 'sitecore-experience-editor', title: 'Experience Editor' },
+      { slug: 'sitecore-pages', title: 'Pages' },
+      { slug: 'sitecore-workflows', title: 'Workflows' },
+      { slug: 'sitecore-versioning', title: 'Versioning' },
+      { slug: 'sitecore-publishing', title: 'Publishing' },
+      { slug: 'sitecore-media-library', title: 'Media Library' },
+    ],
+  },
+  {
+    id: 'sitecore-personalization',
+    title: 'Personalization and Marketing',
+    icon: 'PM',
+    items: [
+      { slug: 'sitecore-personalization-basics', title: 'Personalization Basics' },
+      { slug: 'sitecore-rules-engine', title: 'Rules Engine' },
+      { slug: 'sitecore-profiles-goals', title: 'Profiles and Goals' },
+      { slug: 'sitecore-campaigns', title: 'Campaigns' },
+      { slug: 'sitecore-analytics-concepts', title: 'Analytics Concepts' },
+    ],
+  },
+  {
+    id: 'sitecore-apis',
+    title: 'APIs and Integration',
+    icon: 'API',
+    items: [
+      { slug: 'sitecore-graphql', title: 'GraphQL' },
+      { slug: 'sitecore-experience-edge', title: 'Experience Edge' },
+      { slug: 'sitecore-content-delivery', title: 'Content Delivery' },
+      { slug: 'sitecore-search-integration', title: 'Search Integration' },
+      { slug: 'sitecore-external-system-integration', title: 'External System Integration' },
+    ],
+  },
+  {
+    id: 'sitecore-production',
+    title: 'DevOps and Production',
+    icon: 'OPS',
+    items: [
+      { slug: 'sitecore-cli', title: 'Sitecore CLI' },
+      { slug: 'sitecore-content-serialization', title: 'Content Serialization' },
+      { slug: 'sitecore-environment-strategy', title: 'Environment Strategy' },
+      { slug: 'sitecore-deployment-flow', title: 'Deployment Flow' },
+      { slug: 'sitecore-caching', title: 'Caching' },
+      { slug: 'sitecore-performance', title: 'Performance' },
+      { slug: 'sitecore-security-roles', title: 'Security and Roles' },
+      { slug: 'sitecore-troubleshooting', title: 'Troubleshooting' },
+    ],
+  },
+  {
+    id: 'sitecore-interview-prep',
+    title: 'Interview Prep',
+    icon: 'Q&A',
+    items: [
+      { slug: 'sitecore-interview-questions', title: 'Sitecore Interview Questions' },
+      { slug: 'sitecore-scenario-questions', title: 'Scenario Questions' },
+      { slug: 'sitecore-production-issues', title: 'Production Issues' },
+      { slug: 'sitecore-architect-level-questions', title: 'Architect-Level Questions' },
+    ],
+  },
+];
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Future technologies — placeholder categories only, no content yet
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1068,6 +1173,16 @@ export const technologies: TechSection[] = [
     topicCount: 29,
     active: true,
     categories: contentfulCategories,
+  },
+  {
+    id: 'sitecore',
+    label: 'Sitecore',
+    icon: '🧩',
+    color: '#ea580c',
+    description: 'Learn Sitecore the way senior developers explain it - enterprise CMS, DXP concepts, XM Cloud, content architecture, templates, items, renderings, headless development, publishing, workflows, personalization, integrations, and production-ready Sitecore patterns.',
+    topicCount: 46,
+    active: true,
+    categories: sitecoreCategories,
   },
   {
     id: 'react',

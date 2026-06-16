@@ -357,6 +357,7 @@ export default function HomePage() {
   const techBadges: Record<string, string> = {
     aem: 'Advanced',
     contentful: 'New',
+    sitecore: 'Enterprise',
     react: 'Popular',
     nextjs: 'Trending',
     java: 'Most Complete',
@@ -371,6 +372,7 @@ export default function HomePage() {
   const techDifficulty: Record<string, { label: string; level: number }> = {
     aem: { label: 'Advanced', level: 3 },
     contentful: { label: 'Intermediate', level: 2 },
+    sitecore: { label: 'Advanced', level: 3 },
     react: { label: 'Beginner', level: 1 },
     nextjs: { label: 'Intermediate', level: 2 },
     java: { label: 'Beginner', level: 1 },
@@ -474,9 +476,9 @@ export default function HomePage() {
     },
     {
       title: 'Enterprise CMS',
-      desc: 'Enterprise and headless CMS learning across AEM, Contentful, architecture, workflows, modeling, and delivery.',
+      desc: 'Enterprise and headless CMS learning across AEM, Contentful, Sitecore, architecture, workflows, modeling, and delivery.',
       icon: <Building2 size={20} />,
-      techIds: ['aem', 'contentful'],
+      techIds: ['aem', 'contentful', 'sitecore'],
       accent: '#f97316',
     },
   ];
@@ -506,6 +508,11 @@ export default function HomePage() {
       title: 'AEM Developer',
       desc: 'Focus on enterprise CMS development with components, templates, Sling Models, HTL, and Dispatcher.',
       techIds: ['aem'],
+    },
+    {
+      title: 'Sitecore Developer',
+      desc: 'Build enterprise CMS depth with templates, items, renderings, workflows, headless delivery, and XM Cloud direction.',
+      techIds: ['sitecore', 'react', 'nextjs'],
     },
     {
       title: 'AI Engineer',
@@ -1140,7 +1147,7 @@ export default function HomePage() {
                 Interview Prep
               </h3>
               <p style={{ margin: 0, maxWidth: '700px', color: 'var(--color-text-secondary)', lineHeight: 1.6, fontSize: '0.88rem' }}>
-                Practice real AEM, React, Next.js, Core Java, Spring Boot, AWS, Azure, Docker, Kubernetes, and AI or LLM Engineering interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
+                Practice real AEM, Contentful, Sitecore, React, Next.js, Core Java, Spring Boot, AWS, Azure, Docker, Kubernetes, and AI or LLM Engineering interview answers across developer, senior, lead, and architect rounds with production scenarios, common mistakes, and interviewer expectations.
               </p>
             </div>
             <ArrowRight size={18} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />

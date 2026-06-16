@@ -7,6 +7,7 @@ import { dockerInterviewPrep } from './docker';
 import { kubernetesInterviewPrep } from './kubernetes';
 import { nextjsInterviewPrep } from './nextjs';
 import { reactInterviewPrep } from './react';
+import { sitecoreInterviewPrep } from './sitecore';
 import { springBootInterviewPrep } from './spring-boot';
 import { azureInterviewPrep } from './azure';
 import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
@@ -14,6 +15,7 @@ import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
 export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
   contentfulInterviewPrep,
+  sitecoreInterviewPrep,
   reactInterviewPrep,
   nextjsInterviewPrep,
   coreJavaInterviewPrep,

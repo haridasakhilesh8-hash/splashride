@@ -27,6 +27,7 @@ export interface InterviewPrepTechnologyConfig {
 
 const technologyPresentation: Record<string, { icon: string; learningTechnologyId?: string }> = {
   aem: { icon: 'AEM', learningTechnologyId: 'aem' },
+  sitecore: { icon: '🧩', learningTechnologyId: 'sitecore' },
   contentful: { icon: '🧱', learningTechnologyId: 'contentful' },
   react: { icon: 'R', learningTechnologyId: 'react' },
   nextjs: { icon: 'N', learningTechnologyId: 'nextjs' },

@@ -1,7 +1,7 @@
 import type { InterviewPrepQuestion, InterviewPrepSection, InterviewPrepTopicGroup } from './types';
 import { contentfulInterviewPrepTopicGroups } from './topicNavigation';
 
-type Intent = 'concept' | 'implementation' | 'troubleshooting' | 'architecture';
+type Intent = 'concept' | 'implementation' | 'comparison' | 'scenario' | 'senior' | 'troubleshooting' | 'architecture';
 
 interface TopicProfile {
   mechanism: string;
@@ -27,6 +27,9 @@ interface TopicSpec extends TopicSeed {
 const intentTypes: Record<Intent, string> = {
   concept: 'Conceptual',
   implementation: 'Practical Implementation',
+  comparison: 'Comparison',
+  scenario: 'Scenario-Based',
+  senior: 'Senior Discussion',
   troubleshooting: 'Troubleshooting',
   architecture: 'Architecture',
 };
@@ -34,6 +37,9 @@ const intentTypes: Record<Intent, string> = {
 const difficultyByIntent: Record<Intent, 'Beginner' | 'Intermediate' | 'Advanced' | 'Architect'> = {
   concept: 'Beginner',
   implementation: 'Intermediate',
+  comparison: 'Intermediate',
+  scenario: 'Advanced',
+  senior: 'Advanced',
   troubleshooting: 'Advanced',
   architecture: 'Architect',
 };
@@ -41,6 +47,9 @@ const difficultyByIntent: Record<Intent, 'Beginner' | 'Intermediate' | 'Advanced
 const experienceByIntent: Record<Intent, 'beginner' | 'mid' | 'senior' | 'architect'> = {
   concept: 'beginner',
   implementation: 'mid',
+  comparison: 'mid',
+  scenario: 'senior',
+  senior: 'senior',
   troubleshooting: 'senior',
   architecture: 'architect',
 };
@@ -88,6 +97,115 @@ const sharedConcernsByGroup: Record<string, string[]> = {
     'standardization decisions that keep schemas and integrations reusable',
     'how platform choices affect future migrations, scaling, and risk',
   ],
+};
+
+const topicSpecificConcernExpansions: Record<string, string[]> = {
+  'What is Contentful': [
+    'why teams choose Contentful for multi-channel publishing',
+    'where Contentful stops and the frontend or BFF starts',
+    'how to explain Contentful to non-CMS stakeholders in project discussions',
+  ],
+  'Spaces and Environments': [
+    'separating development, QA, and production content safely',
+    'environment branching for migration rehearsal',
+    'environment cleanup and long-lived sandbox risks',
+  ],
+  'Traditional CMS vs Contentful': [
+    'page-builder flexibility versus structured model discipline',
+    'migration complexity from coupled CMS platforms',
+    'editor expectations when moving from page editing to structured content editing',
+  ],
+  'Contentful vs AEM': [
+    'enterprise workflow depth versus lighter API-first delivery',
+    'when personalization or DXP needs make AEM a stronger fit',
+    'how operations and governance differ between the two platforms',
+  ],
+  'Contentful vs Sanity and Strapi': [
+    'hosted governance versus self-hosted flexibility',
+    'plugin and extension strategy trade-offs',
+    'platform maintenance ownership after launch',
+  ],
+  'Reusable Content Models': [
+    'shared component modeling across web, app, and campaign surfaces',
+    'splitting large models into reusable domain entities',
+    'governing reuse without making editors navigate too many tiny content types',
+  ],
+  'References and Relationships': [
+    'circular reference risk and query complexity',
+    'deciding when denormalization is safer than deep nesting',
+    'reference validation and editor guardrails',
+  ],
+  'Localization Modeling': [
+    'field-level localization versus content-type duplication',
+    'locale fallback impact on SEO and user trust',
+    'editor workload for partial locale launches',
+  ],
+  'Content Delivery API': [
+    'include depth and payload size trade-offs',
+    'published-content caching at edge and app layers',
+    'when a BFF should reshape Contentful responses',
+  ],
+  'Content Preview API': [
+    'secure preview token exchange and route protection',
+    'preview parity gaps between staging and production',
+    'handling draft references and unpublished dependencies',
+  ],
+  'Content Management API': [
+    'safe bulk updates and idempotent automation',
+    'migration scripts versus manual editorial fixes',
+    'rate-limit-aware administrative tooling',
+  ],
+  'GraphQL API': [
+    'query complexity versus frontend convenience',
+    'schema stability for multiple consumer applications',
+    'debugging nested references and null fields in GraphQL responses',
+  ],
+  'Rendering Rich Text': [
+    'component mapping for embedded entries and assets',
+    'sanitization and safe rendering boundaries',
+    'maintaining design consistency with editorial flexibility',
+  ],
+  Webhooks: [
+    'deduplication and idempotency in downstream consumers',
+    'choosing rebuild versus targeted revalidation',
+    'security verification for webhook signatures and endpoints',
+  ],
+  'Caching Strategy': [
+    'choosing TTL versus event-driven revalidation',
+    'coordinating app cache, CDN cache, and CMS freshness',
+    'measuring acceptable staleness for editorial teams',
+  ],
+  'Multi-language Sites': [
+    'region-specific SEO and hreflang governance',
+    'translation workflow dependency on content model design',
+    'locale rollout sequencing when some content is incomplete',
+  ],
+  'Migration Strategy': [
+    'backward-compatible rollout planning across consumers',
+    'dry-run validation for large content migrations',
+    'ownership and communication for platform-wide schema changes',
+  ],
+  'Multi-app Content Platform': [
+    'shared schema governance for multiple brands or apps',
+    'consumer-specific field needs without model fragmentation',
+    'platform ownership when different teams release independently',
+  ],
+  'Integration Strategy': [
+    'search, personalization, and downstream indexing design',
+    'BFF versus direct frontend CMS access',
+    'event-driven versus request-time integration trade-offs',
+  ],
+};
+
+const intentsByTopicGroup: Record<string, Intent[]> = {
+  Fundamentals: ['concept', 'comparison', 'implementation', 'troubleshooting', 'architecture'],
+  'Content Modeling': ['concept', 'implementation', 'senior', 'troubleshooting', 'architecture'],
+  APIs: ['concept', 'implementation', 'scenario', 'senior', 'troubleshooting', 'architecture'],
+  'Rich Text and Assets': ['concept', 'implementation', 'scenario', 'senior', 'troubleshooting'],
+  'Publishing and Workflows': ['concept', 'implementation', 'scenario', 'senior', 'troubleshooting', 'architecture'],
+  'Production and Architecture': ['concept', 'implementation', 'scenario', 'senior', 'troubleshooting', 'architecture'],
+  'Scenario Questions': ['scenario', 'implementation', 'senior', 'troubleshooting', 'architecture'],
+  'Architecture Questions': ['concept', 'comparison', 'implementation', 'senior', 'troubleshooting', 'architecture'],
 };
 
 function slugify(value: string) {
@@ -662,6 +780,7 @@ function getExpandedConcerns(seed: TopicSeed) {
     ...seed.concerns,
     seed.concern,
     ...(sharedConcernsByGroup[seed.topicGroup] ?? []),
+    ...(topicSpecificConcernExpansions[seed.category] ?? []),
   ]));
 }
 
@@ -671,19 +790,8 @@ const topicSpecs: TopicSpec[] = topicSeeds.map((seed) => ({
   profile: buildProfile(seed),
 }));
 
-const intents: Intent[] = ['concept', 'implementation', 'troubleshooting', 'architecture'];
-
-function questionText(intent: Intent, spec: TopicSpec) {
-  if (intent === 'concept') {
-    return `Explain ${spec.category} in Contentful. Why does ${spec.concern} matter in real CMS and frontend delivery work?`;
-  }
-  if (intent === 'implementation') {
-    return `How would you implement ${spec.category} in Contentful so ${spec.concern} is handled safely in production?`;
-  }
-  if (intent === 'troubleshooting') {
-    return `How would you troubleshoot a Contentful production issue involving ${spec.category} when ${spec.profile.incident}?`;
-  }
-  return `How would you make an architecture decision about ${spec.category} in Contentful when ${spec.concern} becomes critical across teams and channels?`;
+function getIntentsForSpec(spec: TopicSpec) {
+  return intentsByTopicGroup[spec.topicGroup] ?? ['concept', 'implementation', 'troubleshooting', 'architecture'];
 }
 
 function buildQuestion(spec: TopicSpec, intent: Intent, index: number): InterviewPrepQuestion {
@@ -693,6 +801,12 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
     ? `${spec.profile.mechanism} For ${spec.category}, the production-relevant concern is ${concern}.`
     : intent === 'implementation'
       ? `In Contentful, implement ${spec.category} so ${concern} is controlled through model rules, API discipline, frontend contracts, and safe publishing workflows.`
+      : intent === 'comparison'
+        ? `Compare ${spec.category} in Contentful through delivery model, governance depth, editor workflow, and long-term integration cost, especially around ${concern}.`
+        : intent === 'scenario'
+          ? `Treat ${spec.category} as a live delivery scenario where ${concern} must be handled with clear triage order, evidence, and low-risk mitigation.`
+          : intent === 'senior'
+            ? `A senior Contentful answer for ${spec.category} should connect ${concern} to ownership, consumer contracts, release discipline, and operational evidence.`
       : intent === 'troubleshooting'
         ? `Treat ${spec.category} as a boundary across content state, API behavior, cache, and rendering, then test the safest hypotheses before broad changes.`
         : `For Contentful ${spec.category}, the design decision is ${spec.profile.decision}. The answer must balance ${concern}, editor experience, frontend safety, platform governance, and release speed.`;
@@ -707,6 +821,12 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
       ? `Explain ${spec.category} in Contentful with focus on ${concern}. Why does it matter in real CMS and frontend delivery work?`
       : intent === 'implementation'
         ? `How would you implement ${spec.category} in Contentful so ${concern} is handled safely in production?`
+        : intent === 'comparison'
+          ? `How would you compare Contentful decisions around ${spec.category} when ${concern} is the main evaluation point?`
+          : intent === 'scenario'
+            ? `What would you do in a real Contentful scenario where ${spec.category} is involved and ${concern} starts creating delivery risk?`
+            : intent === 'senior'
+              ? `As a senior developer, how would you discuss ${spec.category} in Contentful when ${concern} affects multiple teams or consumers?`
         : intent === 'troubleshooting'
           ? `How would you troubleshoot a Contentful production issue involving ${spec.category} when ${concern} becomes the likely failure area?`
           : `How would you make an architecture decision about ${spec.category} in Contentful when ${concern} becomes critical across teams and channels?`,
@@ -734,7 +854,14 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
       `What is the safest rollback or mitigation if ${spec.profile.incident}?`,
       `At what scale or organizational complexity would you revisit the ${spec.category} decision?`,
     ],
-    frequencyScore: Math.max(68, (intent === 'concept' ? 92 : intent === 'implementation' ? 88 : intent === 'troubleshooting' ? 85 : 81) - (index % 8)),
+    frequencyScore: Math.max(68, (
+      intent === 'concept' ? 92
+        : intent === 'implementation' ? 89
+          : intent === 'comparison' ? 84
+            : intent === 'scenario' ? 87
+              : intent === 'senior' ? 86
+                : intent === 'troubleshooting' ? 85 : 81
+    ) - (index % 8)),
     commonWrongAnswer: `A weak answer names Contentful features but does not explain ${concern}, model design, publishing flow, rendering safety, evidence, or operational ownership for ${spec.category}.`,
     architectPerspective: `Architects govern Contentful ${spec.category} through this explicit decision: ${spec.profile.decision}. They evaluate editor workflow, consumer impact, schema evolution, cache behavior, and the user-facing signal "${spec.profile.incident}".`,
     keyTakeaway: `Explain Contentful ${spec.category} through ${concern}, content-platform boundaries, operating evidence, and decision trade-offs rather than only through CMS terminology.`,
@@ -753,9 +880,12 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
   };
 }
 
-const questions = topicSpecs.flatMap((spec, specIndex) => intents.map((intent, intentIndex) => (
-  spec.concerns.map((_, concernIndex) => buildQuestion(spec, intent, (((specIndex * spec.concerns.length) + concernIndex) * intents.length) + intentIndex))
-))).flat();
+const questions = topicSpecs.flatMap((spec, specIndex) => {
+  const specIntents = getIntentsForSpec(spec);
+  return spec.concerns.flatMap((_, concernIndex) => specIntents.map((intent, intentIndex) => (
+    buildQuestion(spec, intent, (((specIndex * spec.concerns.length) + concernIndex) * specIntents.length) + intentIndex)
+  )));
+});
 
 const topicGroups: InterviewPrepTopicGroup[] = contentfulInterviewPrepTopicGroups.map((group) => ({
   id: group.id,

@@ -8,6 +8,7 @@
   <url><loc>https://www.splashride.in/career-paths/full-stack-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/aem-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/contentful-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/career-paths/sitecore-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/cloud-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/devops-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/ai-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -15,6 +16,7 @@
   <url><loc>https://www.splashride.in/career-paths/azure-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/aem</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/contentful</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/interview-prep/sitecore</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/nextjs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/core-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -73,6 +75,53 @@
   <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-scenario-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-production-issues</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/contentful/topic/contentful-architect-level-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/what-is-sitecore</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-cms-vs-dxp</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-xm-vs-xp-vs-xm-cloud</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-content-tree</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-items-fields</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-templates-standard-values</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-template-design</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-datasources</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-renderings</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-layouts</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-placeholders</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-components</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-mvc-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-helix-principles</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-jss</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-headless-services</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-layout-service</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-nextjs-rendering-host</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-experience-editor</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-pages</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-workflows</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-versioning</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-publishing</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-media-library</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-personalization-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-rules-engine</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-profiles-goals</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-campaigns</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-analytics-concepts</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-graphql</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-experience-edge</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-content-delivery</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-search-integration</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-external-system-integration</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-cli</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-content-serialization</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-environment-strategy</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-deployment-flow</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-caching</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-performance</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-security-roles</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-troubleshooting</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-interview-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-scenario-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-production-issues</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/sitecore/topic/sitecore-architect-level-questions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-components</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-jsx</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>

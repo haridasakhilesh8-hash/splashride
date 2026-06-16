@@ -12,6 +12,7 @@ import type { TopicContent } from './types';
 // ── Active technologies ───────────────────────────────────────────────────────
 import { aemContentMap }    from './aem/index';
 import { contentfulContentMap } from './contentful/index';
+import { sitecoreContentMap } from './sitecore/index';
 
 // ── Active technologies ───────────────────────────────────────────────────────
 import { reactContentMap }   from './react/index';
@@ -27,6 +28,7 @@ import { aiContentMap }     from './ai/index';
 const contentMap: Record<string, TopicContent> = {
   ...aemContentMap,
   ...contentfulContentMap,
+  ...sitecoreContentMap,
   ...reactContentMap,
   ...nextjsContentMap,
   ...javaContentMap,

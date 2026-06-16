@@ -32,7 +32,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     { label: 'Frontend', techIds: ['react', 'nextjs'] },
     { label: 'Backend', techIds: ['java', 'springboot'] },
     { label: 'Cloud', techIds: ['aws', 'azure', 'docker', 'kubernetes'] },
-    { label: 'Enterprise', techIds: ['aem', 'contentful'] },
+    { label: 'Enterprise', techIds: ['aem', 'contentful', 'sitecore'] },
     { label: 'AI', techIds: ['ai-llm'] },
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();

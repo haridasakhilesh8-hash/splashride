@@ -359,6 +359,74 @@ const contentfulPhases: CareerPathPhase[] = [
   },
 ];
 
+const sitecorePhases: CareerPathPhase[] = [
+  {
+    id: 'sitecore-foundation',
+    title: 'Foundation',
+    subtitle: 'Understand enterprise CMS and Sitecore platform thinking before implementation depth.',
+    duration: '2-3 Weeks',
+    color: '#2563eb',
+    topics: [
+      { title: 'Sitecore platform basics', description: 'Learn how Sitecore works as an enterprise CMS and where DXP thinking changes the conversation.' },
+      { title: 'Content tree, items, and fields', description: 'Understand how Sitecore stores structured content and why item architecture matters in real programs.' },
+      { title: 'Templates and standard values', description: 'Build clean schema thinking that supports authoring consistency and rendering stability.' },
+      { title: 'Frontend awareness', description: 'Develop enough React and Next.js understanding to reason about headless Sitecore delivery.', links: [{ label: 'React Learning Path', to: '/technologies/react' }, { label: 'Next.js Learning Path', to: '/technologies/nextjs' }] },
+    ],
+  },
+  {
+    id: 'sitecore-architecture',
+    title: 'Content Architecture',
+    subtitle: 'Turn platform familiarity into strong content and component architecture judgment.',
+    duration: '3-4 Weeks',
+    color: '#7c3aed',
+    topics: [
+      { title: 'Template and item design', description: 'Model reusable business structures instead of page-specific one-off solutions.', links: [{ label: 'Sitecore Learning Path', to: '/technologies/sitecore' }] },
+      { title: 'Datasources and renderings', description: 'Use modular content contracts that keep authors productive and renderings predictable.' },
+      { title: 'Layouts, placeholders, and components', description: 'Control composition safely so authors can build pages without breaking the experience contract.' },
+      { title: 'Helix principles', description: 'Keep the codebase modular and maintainable as more sites and features depend on the platform.' },
+    ],
+  },
+  {
+    id: 'sitecore-headless',
+    title: 'Headless and XM Cloud',
+    subtitle: 'Learn how Sitecore connects to modern rendering hosts and composable delivery.',
+    duration: '4-5 Weeks',
+    color: '#0891b2',
+    topics: [
+      { title: 'Sitecore JSS and headless services', description: 'Understand how Sitecore content and layout data flow into JavaScript rendering hosts.' },
+      { title: 'Layout Service and Next.js rendering host', description: 'Map Sitecore components to frontend components and keep preview and production contracts stable.', links: [{ label: 'Sitecore Next.js Topic', to: '/technologies/sitecore/topic/sitecore-nextjs-rendering-host' }] },
+      { title: 'XM Cloud and Experience Edge', description: 'Learn modern Sitecore platform direction, publish-to-live flow, and delivery expectations.' },
+      { title: 'Search and external integrations', description: 'Connect Sitecore cleanly with search, CRM, commerce, and enterprise systems.' },
+    ],
+  },
+  {
+    id: 'sitecore-authoring-ops',
+    title: 'Authoring and Operations',
+    subtitle: 'Build the release and support habits strong Sitecore teams rely on after launch.',
+    duration: '4-5 Weeks',
+    color: '#f97316',
+    topics: [
+      { title: 'Experience Editor, Pages, and workflows', description: 'Support author trust through clean authoring behavior, approvals, and safe publishing.' },
+      { title: 'Versioning and publishing', description: 'Explain why content exists in authoring but not always in delivery and how to troubleshoot that calmly.' },
+      { title: 'Serialization, CLI, and deployment flow', description: 'Treat Sitecore artifacts like release dependencies with clear environment sequencing.' },
+      { title: 'Caching, performance, and security', description: 'Diagnose real production issues across cache layers, permissions, rendering hosts, and integrations.' },
+    ],
+  },
+  {
+    id: 'sitecore-career-growth',
+    title: 'Career Growth and Interview Prep',
+    subtitle: 'Move from implementation depth into senior enterprise CMS and architecture thinking.',
+    duration: '2-3 Weeks',
+    color: '#16a34a',
+    topics: [
+      { title: 'Projects to build', description: 'Create a headless marketing site, a multisite content platform, a workflow-driven campaign launch flow, and a personalized experience prototype.' },
+      { title: 'Interview preparation', description: 'Practice Sitecore fundamentals, templates, renderings, Helix, XM Cloud, publishing, and production support conversations.', links: [{ label: 'Sitecore Interview Prep', to: '/interview-prep/sitecore' }] },
+      { title: 'Senior Sitecore developer path', description: 'Strengthen release discipline, modular architecture, troubleshooting ownership, and cross-team communication.' },
+      { title: 'Sitecore architect path', description: 'Learn to govern enterprise CMS platforms across authors, brands, integrations, and delivery channels.' },
+    ],
+  },
+];
+
 const cloudPhases: CareerPathPhase[] = [
   {
     id: 'cloud-foundation',
@@ -955,6 +1023,80 @@ export const careerRoadmaps: CareerRoadmap[] = [
       },
     ]),
     phases: contentfulPhases,
+  },
+  {
+    slug: 'sitecore-developer',
+    title: 'Sitecore Developer Career Path',
+    shortTitle: 'Sitecore Developer',
+    role: 'Sitecore / Enterprise CMS Developer',
+    icon: '🧩',
+    description: 'Become a Sitecore-focused enterprise CMS developer who can design content architecture, support authoring, ship headless experiences, and grow toward senior Sitecore architecture.',
+    summary: 'A practical route through Sitecore fundamentals, content architecture, headless delivery, XM Cloud basics, production support, and interview preparation.',
+    technologies: [
+      tech('Sitecore', '/technologies/sitecore', 'Enterprise CMS, templates, items, renderings, headless services, XM Cloud, publishing, personalization, and production support patterns.'),
+      tech('React', '/technologies/react', 'Frontend component thinking and rendering-host awareness for headless Sitecore implementations.'),
+      tech('Next.js', '/technologies/nextjs', 'Rendering hosts, route delivery, preview behavior, and modern headless frontend deployment patterns.'),
+    ],
+    hours: '130+',
+    duration: '5-6 Months',
+    difficulty: 'Beginner to Advanced',
+    demand: 'High',
+    salaryRange: 'INR 8L - 26L+',
+    topicCount: 46,
+    interviewQuestionCount: 416,
+    productionScenarioCount: 4,
+    seoTitle: 'Sitecore Developer Career Path | SplashRide',
+    seoDescription: 'Follow the Sitecore developer career path with templates, items, renderings, headless delivery, XM Cloud, publishing, personalization, production troubleshooting, and interview preparation.',
+    profile: {
+      whatYouWillLearn: ['How Sitecore content architecture, authoring, and delivery work together in enterprise programs', 'How to build and govern templates, renderings, datasources, workflows, and publishing safely', 'How headless Sitecore, JSS, Next.js, Experience Edge, and XM Cloud change implementation and operations', 'How to grow toward senior Sitecore developer and Sitecore architect responsibilities'],
+      skillsYouWillGain: ['Sitecore content architecture', 'Rendering and component design', 'Headless delivery integration', 'Publishing and release discipline', 'Enterprise CMS troubleshooting'],
+      whoThisPathIsFor: ['Developers moving into enterprise CMS and Sitecore work', 'Frontend or platform engineers adding Sitecore and XM Cloud delivery depth', 'Sitecore developers preparing for senior, lead, or architect-style interviews'],
+      expectedOutcomes: ['Build real Sitecore-driven applications', 'Understand architecture decisions', 'Handle production issues', 'Crack technical interviews', 'Become job ready'],
+    },
+    interviewPrep: {
+      primaryTrackLabel: 'Start Sitecore Interview Preparation',
+      primaryTrackTo: '/interview-prep/sitecore',
+      topicsCovered: ['Fundamentals and product direction', 'Templates, items, renderings, and Helix', 'Headless delivery, XM Cloud, and Experience Edge', 'Publishing, workflows, and production support', 'Architect-level enterprise CMS decisions'],
+      questionCount: 416,
+      scenarioCount: 4,
+      architectureQuestionCount: 104,
+      systemDesignQuestionCount: 52,
+      linkedTracks: [
+        { label: 'Sitecore Interview Prep', to: '/interview-prep/sitecore' },
+        { label: 'React Interview Prep', to: '/interview-prep/react' },
+        { label: 'Next.js Interview Prep', to: '/interview-prep/nextjs' },
+      ],
+    },
+    careerInsights: {
+      demand: 'Sitecore roles remain valuable in enterprises that need strong content governance, authoring trust, personalization, multisite delivery, and modern headless platform direction.',
+      careerGrowth: 'Sitecore developers often grow into senior CMS engineers, platform leads, XM Cloud specialists, or solution architects responsible for content architecture, release safety, and multi-team governance.',
+      skillsNeeded: ['Strong content architecture judgment', 'Rendering and authoring workflow awareness', 'Headless and rendering-host integration depth', 'Publishing and environment discipline', 'Calm production troubleshooting across CMS and frontend boundaries'],
+      experienceExpectations: ['Junior: support templates, items, components, and authoring workflows safely', 'Mid-level: own feature-level Sitecore implementation and headless integration quality', 'Senior: lead modular architecture, production support, and release coordination', 'Architect: govern product direction, integrations, environments, and long-term platform maintainability'],
+      typicalRoles: [
+        { title: 'Sitecore Developer', salaryRange: 'INR 8L - 18L', expectation: 'Implement templates, renderings, headless integrations, and authoring-safe Sitecore features.' },
+        { title: 'Senior Sitecore Developer', salaryRange: 'INR 16L - 30L', expectation: 'Lead architecture quality, troubleshooting, modularity, publishing discipline, and team mentoring.' },
+        { title: 'Sitecore Architect', salaryRange: 'INR 28L - 48L', expectation: 'Own platform direction, XM Cloud or headless strategy, governance, and enterprise CMS design decisions.' },
+      ],
+    },
+    resources: resources([
+      {
+        title: 'Recommended Learning Order',
+        items: [
+          { label: 'Content architecture before components', description: 'Sitecore implementation becomes much easier once templates, items, and datasources are clear.' },
+          { label: 'Publishing before production support', description: 'Many Sitecore incidents only make sense when publish-to-live behavior is already understood.' },
+          { label: 'Headless after authoring fundamentals', description: 'Modern rendering hosts are easier to reason about once the core Sitecore content model is stable in your head.' },
+        ],
+      },
+      {
+        title: 'Reference Materials',
+        items: [
+          { label: 'Sitecore learning path', description: 'Use for templates, renderings, JSS, XM Cloud, publishing, integrations, and production best practices.', to: '/technologies/sitecore' },
+          { label: 'Sitecore interview prep', description: 'Practice enterprise CMS, headless delivery, and architect-level Sitecore questions.', to: '/interview-prep/sitecore' },
+          { label: 'React and Next.js learning paths', description: 'Strengthen the rendering-host side of modern Sitecore delivery.', to: '/technologies/react' },
+        ],
+      },
+    ]),
+    phases: sitecorePhases,
   },
   {
     slug: 'cloud-engineer',

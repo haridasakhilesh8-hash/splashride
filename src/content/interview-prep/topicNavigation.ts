@@ -176,6 +176,70 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   },
 ];
 
+export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'fundamentals',
+    title: 'Fundamentals',
+    topics: [
+      { slug: 'sitecore-fundamentals', title: 'Fundamentals', category: 'Fundamentals' },
+    ],
+  },
+  {
+    id: 'content-architecture',
+    title: 'Content Architecture',
+    topics: [
+      { slug: 'sitecore-content-architecture', title: 'Content Architecture', category: 'Content Architecture' },
+      { slug: 'sitecore-templates-and-items', title: 'Templates and Items', category: 'Templates and Items' },
+      { slug: 'sitecore-renderings-and-layouts', title: 'Renderings and Layouts', category: 'Renderings and Layouts' },
+    ],
+  },
+  {
+    id: 'development',
+    title: 'Development',
+    topics: [
+      { slug: 'sitecore-helix', title: 'Helix', category: 'Helix' },
+      { slug: 'sitecore-jss', title: 'Sitecore JSS', category: 'Sitecore JSS' },
+      { slug: 'sitecore-xm-cloud', title: 'XM Cloud', category: 'XM Cloud' },
+    ],
+  },
+  {
+    id: 'authoring',
+    title: 'Publishing and Workflows',
+    topics: [
+      { slug: 'sitecore-publishing-and-workflows', title: 'Publishing and Workflows', category: 'Publishing and Workflows' },
+    ],
+  },
+  {
+    id: 'experience',
+    title: 'Personalization',
+    topics: [
+      { slug: 'sitecore-personalization', title: 'Personalization', category: 'Personalization' },
+    ],
+  },
+  {
+    id: 'apis-and-integration',
+    title: 'Experience Edge',
+    topics: [
+      { slug: 'sitecore-experience-edge', title: 'Experience Edge', category: 'Experience Edge' },
+    ],
+  },
+  {
+    id: 'production-support',
+    title: 'Production Support',
+    topics: [
+      { slug: 'sitecore-production-issues', title: 'Production Issues', category: 'Production Issues' },
+      { slug: 'sitecore-scenario-questions', title: 'Scenario Questions', category: 'Scenario Questions' },
+    ],
+  },
+  {
+    id: 'architecture',
+    title: 'Architecture',
+    topics: [
+      { slug: 'sitecore-architect-level-questions', title: 'Architect-Level Questions', category: 'Architect-Level Questions' },
+    ],
+  },
+];
+
 export const reactInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   {
     id: 'fundamentals',
@@ -1313,6 +1377,7 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
 const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup[]> = {
   aem: aemInterviewPrepTopicGroups,
   contentful: contentfulInterviewPrepTopicGroups,
+  sitecore: sitecoreInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
   nextjs: nextjsInterviewPrepTopicGroups,
   'core-java': coreJavaInterviewPrepTopicGroups,

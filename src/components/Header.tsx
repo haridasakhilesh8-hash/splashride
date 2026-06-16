@@ -36,7 +36,21 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     { label: 'AI', techIds: ['ai-llm'] },
   ];
   const interviewPrepSections = getActiveInterviewPrepSections();
-  const futureInterviewPrep: string[] = [];
+  const interviewPrepGroups = [
+    { label: 'Enterprise CMS', techIds: ['aem', 'contentful', 'sitecore'] },
+    { label: 'Frontend', techIds: ['react', 'nextjs'] },
+    { label: 'Backend', techIds: ['core-java', 'spring-boot'] },
+    { label: 'Cloud & DevOps', techIds: ['aws', 'azure', 'docker', 'kubernetes'] },
+    { label: 'AI', techIds: ['ai-llm'] },
+  ];
+  const careerPathGroups = [
+    { label: 'Developer Roles', slugs: ['frontend-engineer', 'backend-engineer', 'full-stack-java'] },
+    { label: 'Enterprise CMS Roles', slugs: ['aem-developer', 'contentful-developer', 'sitecore-developer'] },
+    { label: 'Cloud & DevOps Roles', slugs: ['cloud-engineer', 'aws-engineer', 'azure-engineer', 'devops-engineer'] },
+    { label: 'AI Roles', slugs: ['ai-engineer'] },
+  ];
+  const interviewPrepSectionMap = new Map(interviewPrepSections.map((section) => [section.technologyId, section] as const));
+  const careerRoadmapMap = new Map(careerRoadmaps.map((roadmap) => [roadmap.slug, roadmap] as const));
   const isTechnologiesActive = pathname.startsWith('/technologies') || pathname.startsWith('/technology');
   const isInterviewPrepActive = pathname.startsWith('/interview-prep');
   const isCareerPathsActive =
@@ -342,7 +356,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               position: 'absolute',
               top: 'calc(100% + 8px)',
               left: 0,
-              width: '260px',
+              width: '300px',
               background: 'var(--color-bg-primary)',
               border: '1px solid var(--color-border)',
               borderRadius: '10px',
@@ -356,16 +370,6 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             }}
           >
             <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
-              <p style={{
-                margin: '0 0 6px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                color: 'var(--color-text-muted)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                Available Now
-              </p>
               <Link
                 to="/interview-prep"
                 onClick={() => {
@@ -389,38 +393,15 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               >
                 View All Interview Prep
               </Link>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {interviewPrepSections.map(section => (
-                  <Link
-                    key={section.technologyId}
-                    to={`/interview-prep/${section.technologyId}`}
-                    onClick={() => {
-                      closeDropdowns();
-                      setActiveTechId(section.technologyId);
-                      window.scrollTo(0, 0);
-                    }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      textDecoration: 'none',
-                      background: 'var(--color-bg-secondary)',
-                      border: '1px solid var(--color-border)',
-                      color: 'var(--color-text-primary)',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      padding: '7px 9px',
-                      fontSize: '0.78rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {section.technologyLabel}
-                  </Link>
-                ))}
-              </div>
             </div>
-            {futureInterviewPrep.length > 0 && (
-              <div style={{ padding: '8px 0 0' }}>
+            {interviewPrepGroups.map((group, index) => (
+              <div
+                key={group.label}
+                style={{
+                  padding: '6px 0',
+                  borderBottom: index === interviewPrepGroups.length - 1 ? 'none' : '1px solid var(--color-border)',
+                }}
+              >
                 <p style={{
                   margin: '0 0 6px',
                   fontSize: '0.65rem',
@@ -429,28 +410,44 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                 }}>
-                  Future Ready
+                  {group.label}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {futureInterviewPrep.map(label => (
-                    <span key={label} style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      background: 'var(--color-bg-secondary)',
-                      border: '1px solid var(--color-border)',
-                      color: 'var(--color-text-muted)',
-                      borderRadius: '8px',
-                      padding: '7px 9px',
-                      fontSize: '0.78rem',
-                      fontWeight: 600,
-                      opacity: 0.72,
-                    }}>
-                      {label}
-                    </span>
-                  ))}
+                  {group.techIds.map((techId) => {
+                    const section = interviewPrepSectionMap.get(techId);
+                    if (!section) return null;
+
+                    return (
+                      <Link
+                        key={section.technologyId}
+                        to={`/interview-prep/${section.technologyId}`}
+                        onClick={() => {
+                          closeDropdowns();
+                          setActiveTechId(section.technologyId);
+                          window.scrollTo(0, 0);
+                        }}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          textDecoration: 'none',
+                          background: 'var(--color-bg-secondary)',
+                          border: '1px solid var(--color-border)',
+                          color: 'var(--color-text-primary)',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          padding: '7px 9px',
+                          fontSize: '0.78rem',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {section.technologyLabel}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
-            )}
+            ))}
           </div>
         </div>
 
@@ -485,7 +482,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               position: 'absolute',
               top: 'calc(100% + 8px)',
               left: 0,
-              width: '320px',
+              width: '300px',
               background: 'var(--color-bg-primary)',
               border: '1px solid var(--color-border)',
               borderRadius: '10px',
@@ -499,16 +496,6 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             }}
           >
             <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
-              <p style={{
-                margin: '0 0 6px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                color: 'var(--color-text-muted)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                Explore Career Paths
-              </p>
               <Link
                 to="/career-paths"
                 onClick={() => {
@@ -532,46 +519,58 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                 View All Career Paths
               </Link>
             </div>
+            {careerPathGroups.map((group, index) => (
+              <div
+                key={group.label}
+                style={{
+                  padding: '6px 0',
+                  borderBottom: index === careerPathGroups.length - 1 ? 'none' : '1px solid var(--color-border)',
+                }}
+              >
+                <p style={{
+                  margin: '0 0 6px',
+                  fontSize: '0.65rem',
+                  fontWeight: 700,
+                  color: 'var(--color-text-muted)',
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}>
+                  {group.label}
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {group.slugs.map((slug) => {
+                    const roadmap = careerRoadmapMap.get(slug);
+                    if (!roadmap) return null;
 
-            <div style={{ padding: '8px 0 0' }}>
-              <p style={{
-                margin: '0 0 6px',
-                fontSize: '0.65rem',
-                fontWeight: 700,
-                color: 'var(--color-text-muted)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                Available Roles
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {careerRoadmaps.map((roadmap) => (
-                  <Link
-                    key={roadmap.slug}
-                    to={`/career-paths/${roadmap.slug}`}
-                    onClick={() => {
-                      closeDropdowns();
-                      window.scrollTo(0, 0);
-                    }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      textDecoration: 'none',
-                      background: 'var(--color-bg-secondary)',
-                      border: '1px solid var(--color-border)',
-                      color: 'var(--color-text-primary)',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      padding: '7px 9px',
-                      fontSize: '0.78rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {roadmap.shortTitle}
-                  </Link>
-                ))}
+                    return (
+                      <Link
+                        key={roadmap.slug}
+                        to={`/career-paths/${roadmap.slug}`}
+                        onClick={() => {
+                          closeDropdowns();
+                          window.scrollTo(0, 0);
+                        }}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          textDecoration: 'none',
+                          background: 'var(--color-bg-secondary)',
+                          border: '1px solid var(--color-border)',
+                          color: 'var(--color-text-primary)',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          padding: '7px 9px',
+                          fontSize: '0.78rem',
+                          fontWeight: 600,
+                        }}
+                      >
+                        {roadmap.shortTitle}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 

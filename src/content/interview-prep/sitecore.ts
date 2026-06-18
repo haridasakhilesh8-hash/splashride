@@ -96,6 +96,10 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
     'what differentiates Sitecore from simpler headless CMS products',
     'how to explain Sitecore product direction to hiring panels',
   ],
+  'Headless vs MVC': [
+    'how delivery-model choice changes preview, deployment, and authoring expectations',
+    'when a legacy MVC implementation is still the safer business choice',
+  ],
   'Content Architecture': [
     'multi-site content architecture patterns',
     'reusable component and datasource governance',
@@ -107,6 +111,14 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
   'Renderings and Layouts': [
     'placeholder settings and allowed-controls governance',
     'datasource location and authoring guidance choices',
+  ],
+  'Multisite Architecture': [
+    'shared versus site-specific ownership boundaries',
+    'regional governance without content-tree sprawl',
+  ],
+  'Sitecore SXA': [
+    'accelerator speed versus long-term customization discipline',
+    'SXA upgrade and extension boundaries in enterprise programs',
   ],
   Helix: [
     'feature ownership boundaries between teams',
@@ -124,6 +136,14 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
     'publishing restrictions during campaign launches',
     'workflow design for multiple languages and markets',
   ],
+  'Experience Editor vs Pages': [
+    'authoring-mode differences in preview and component composition',
+    'migration trade-offs between classic and modern authoring surfaces',
+  ],
+  'Sitecore Forms': [
+    'secure form submission and downstream integration reliability',
+    'author-friendly form changes without breaking lead-capture contracts',
+  ],
   Personalization: [
     'testing personalized variants before high-traffic launches',
     'observability for rules, goals, and audience outcomes',
@@ -131,6 +151,10 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
   'Experience Edge': [
     'publish latency and cache expectations across regions',
     'headless frontend revalidation contracts',
+  ],
+  'Search and Solr': [
+    'index freshness, relevance, and support ownership',
+    'content-model quality impact on search results and filters',
   ],
   'Production Issues': [
     'sequence for checking workflow, publish, layout, and cache evidence',
@@ -140,9 +164,21 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
     'how to lead incident communication across authoring and frontend teams',
     'how to prioritize live mitigation versus root-cause analysis',
   ],
+  'Language Fallback': [
+    'wrong-locale risk during staggered regional launches',
+    'fallback behavior versus SEO and author expectations',
+  ],
+  'Serialization Strategy': [
+    'what belongs in source control versus editorial workflows',
+    'release drift when serialization scope is too broad or too weak',
+  ],
   'Architect-Level Questions': [
     'when to choose XM Cloud versus hybrid or traditional models',
     'governance model for multiple business units sharing one platform',
+  ],
+  'XM Cloud Deployment Model': [
+    'SaaS authoring boundaries versus rendering-host ownership',
+    'route verification and preview expectations in XM Cloud releases',
   ],
 };
 
@@ -194,6 +230,22 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Content Architecture', 'XM Cloud'],
   },
   {
+    category: 'Headless vs MVC',
+    topicGroup: 'Fundamentals',
+    concern: 'when Sitecore MVC is still appropriate and when headless delivery creates a stronger long-term fit',
+    concerns: [
+      'classic MVC versus headless rendering ownership',
+      'preview and authoring expectations in each delivery model',
+      'deployment and rollback differences between the two approaches',
+      'frontend team skill requirements and operating model fit',
+      'migration pressure from legacy implementations toward XM Cloud patterns',
+      'personalization, integrations, and performance implications of the delivery choice',
+      'support and troubleshooting differences across MVC and headless stacks',
+      'how to choose the safer model for the actual organization instead of the trendiest one',
+    ],
+    relatedTopics: ['Fundamentals', 'Sitecore JSS'],
+  },
+  {
     category: 'Content Architecture',
     topicGroup: 'Content Architecture',
     concern: 'how Sitecore content architecture decisions affect authoring, rendering, and long-term maintainability',
@@ -240,6 +292,38 @@ const topicSeeds: TopicSeed[] = [
       'authoring safety for page composition',
     ],
     relatedTopics: ['Content Architecture', 'Sitecore JSS'],
+  },
+  {
+    category: 'Multisite Architecture',
+    topicGroup: 'Content Architecture',
+    concern: 'how one Sitecore platform should support multiple brands, markets, and site teams without losing governance',
+    concerns: [
+      'site boundaries in the content tree',
+      'shared versus site-specific template and component contracts',
+      'locale and regional structure for global delivery',
+      'governance for shared media, settings, and datasource ownership',
+      'cross-site reuse without authoring confusion',
+      'release coordination when multiple sites share one platform',
+      'permission boundaries for different business units',
+      'keeping multisite architecture maintainable as the platform grows',
+    ],
+    relatedTopics: ['Content Architecture', 'Templates and Items'],
+  },
+  {
+    category: 'Sitecore SXA',
+    topicGroup: 'Content Architecture',
+    concern: 'how SXA should accelerate delivery without turning into unmanaged customization debt',
+    concerns: [
+      'when SXA is a good fit versus when custom architecture is safer',
+      'tenant and site setup strategy',
+      'SXA component reuse and extension points',
+      'authoring acceleration versus frontend customization limits',
+      'multisite delivery with shared accelerator patterns',
+      'upgrade and maintenance discipline around SXA customizations',
+      'performance and rendering complexity in heavily customized SXA programs',
+      'governance so teams do not bypass accelerator conventions casually',
+    ],
+    relatedTopics: ['Content Architecture', 'Helix'],
   },
   {
     category: 'Helix',
@@ -306,6 +390,38 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Production Issues', 'Scenario Questions'],
   },
   {
+    category: 'Experience Editor vs Pages',
+    topicGroup: 'Authoring',
+    concern: 'how classic and modern Sitecore authoring modes create different preview, composition, and support expectations',
+    concerns: [
+      'differences between Experience Editor and Pages authoring behavior',
+      'preview stability in classic and headless delivery paths',
+      'component editability requirements for each authoring mode',
+      'author training and support implications during migration',
+      'how rendering-host contracts affect modern authoring trust',
+      'when hybrid authoring support creates extra operational burden',
+      'how to explain authoring-surface limitations clearly to stakeholders',
+      'which authoring mode should be the primary long-term investment',
+    ],
+    relatedTopics: ['Publishing and Workflows', 'Sitecore JSS'],
+  },
+  {
+    category: 'Sitecore Forms',
+    topicGroup: 'Authoring',
+    concern: 'how forms stay secure, author-friendly, and operationally reliable after launch',
+    concerns: [
+      'field configuration and validation safety',
+      'spam protection and submission security',
+      'CRM or marketing-automation integration reliability',
+      'analytics and conversion tracking expectations',
+      'authoring flexibility without breaking downstream consumers',
+      'environment-specific endpoint and secret handling',
+      'error handling for failed submissions and partial outages',
+      'release verification for business-critical lead-capture forms',
+    ],
+    relatedTopics: ['Publishing and Workflows', 'Production Issues'],
+  },
+  {
     category: 'Personalization',
     topicGroup: 'Experience',
     concern: 'how Sitecore personalization changes delivery contracts and troubleshooting expectations',
@@ -336,6 +452,22 @@ const topicSeeds: TopicSeed[] = [
       'scaling edge-friendly content delivery',
     ],
     relatedTopics: ['XM Cloud', 'Production Issues'],
+  },
+  {
+    category: 'Search and Solr',
+    topicGroup: 'APIs and Integration',
+    concern: 'how Sitecore search and index strategy affect content freshness, relevance, and support load',
+    concerns: [
+      'index refresh timing after publish',
+      'content-model quality and search result relevance',
+      'query and filter contract stability for frontend consumers',
+      'search ownership between Sitecore, search platform, and frontend teams',
+      'how stale or partial indexes create business-visible defects',
+      'facet and taxonomy modeling for enterprise discovery use cases',
+      'recovery steps when search output diverges from Sitecore content state',
+      'how to monitor search health before users report broken discovery',
+    ],
+    relatedTopics: ['Experience Edge', 'Production Issues'],
   },
   {
     category: 'Production Issues',
@@ -370,6 +502,38 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Production Issues', 'Publishing and Workflows'],
   },
   {
+    category: 'Language Fallback',
+    topicGroup: 'Production Support',
+    concern: 'how multilingual Sitecore launches stay safe when localized content is incomplete or fallback behavior is misunderstood',
+    concerns: [
+      'language version versus fallback behavior',
+      'wrong-locale output during regional launches',
+      'author expectations for untranslated content',
+      'SEO and route implications of fallback logic',
+      'multisite localization with shared components and settings',
+      'publishing and QA checks for locale completeness',
+      'cache behavior when localized content changes at different times',
+      'safe mitigation when production serves the wrong language or version',
+    ],
+    relatedTopics: ['Production Issues', 'Content Architecture'],
+  },
+  {
+    category: 'Serialization Strategy',
+    topicGroup: 'Production Support',
+    concern: 'how serialization scope and governance affect release safety across Sitecore environments',
+    concerns: [
+      'what should and should not be serialized',
+      'module boundaries for serialized artifacts',
+      'how source-controlled artifacts relate to editorial content changes',
+      'release drift when serialized dependencies are incomplete',
+      'review discipline for serialized item changes',
+      'environment-specific settings and secrets boundaries',
+      'rollback strategy for bad serialized deployments',
+      'how serialization policy supports long-term maintainability',
+    ],
+    relatedTopics: ['Production Issues', 'Helix'],
+  },
+  {
     category: 'Architect-Level Questions',
     topicGroup: 'Architecture',
     concern: 'how to make Sitecore platform decisions that stay safe across multiple teams, brands, environments, and delivery channels',
@@ -385,11 +549,25 @@ const topicSeeds: TopicSeed[] = [
     ],
     relatedTopics: ['Helix', 'XM Cloud'],
   },
+  {
+    category: 'XM Cloud Deployment Model',
+    topicGroup: 'Architecture',
+    concern: 'how XM Cloud changes environment ownership, rendering-host release discipline, and enterprise Sitecore operating models',
+    concerns: [
+      'SaaS authoring boundaries versus customer-owned frontend responsibilities',
+      'preview and route verification in XM Cloud release workflows',
+      'rendering-host deployment coordination with publish-to-live behavior',
+      'migration strategy from XP or XM into XM Cloud delivery',
+      'environment design for QA, staging, and production confidence',
+      'how support ownership shifts across Sitecore SaaS and customer teams',
+      'what architects must standardize for multi-team XM Cloud programs',
+      'how to keep frontend, authoring, and governance models aligned over time',
+    ],
+    relatedTopics: ['Architect-Level Questions', 'XM Cloud'],
+  },
 ];
 
 function buildProfile(seed: TopicSeed): TopicProfile {
-  const commonEvidence: [string, string, string] = ['Sitecore item and template state', 'rendering or API response evidence', 'publishing, cache, or environment logs'];
-
   if (seed.topicGroup === 'Fundamentals') {
     return {
       mechanism: `${seed.category} explains how Sitecore combines enterprise content structure, authoring workflows, and experience delivery responsibilities.`,

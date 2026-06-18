@@ -80,6 +80,7 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'entries-vs-assets', title: 'Entries vs Assets', category: 'Entries vs Assets' },
       { slug: 'traditional-cms-vs-contentful', title: 'Traditional CMS vs Contentful', category: 'Traditional CMS vs Contentful' },
       { slug: 'contentful-vs-aem', title: 'Contentful vs AEM', category: 'Contentful vs AEM' },
+      { slug: 'contentful-vs-sitecore', title: 'Contentful vs Sitecore', category: 'Contentful vs Sitecore' },
       { slug: 'contentful-vs-sanity-and-strapi', title: 'Contentful vs Sanity and Strapi', category: 'Contentful vs Sanity and Strapi' },
     ],
   },
@@ -92,6 +93,8 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'one-to-one-vs-one-to-many-references', title: 'One-to-One vs One-to-Many References', category: 'One-to-One vs One-to-Many References' },
       { slug: 'rich-text-modeling', title: 'Rich Text Modeling', category: 'Rich Text Modeling' },
       { slug: 'field-validations', title: 'Field Validations', category: 'Field Validations' },
+      { slug: 'contentful-entries-assets', title: 'Entries and Assets', category: 'Entries and Assets' },
+      { slug: 'contentful-rendering-rich-text', title: 'Rich Text', category: 'Rich Text' },
       { slug: 'localization-modeling', title: 'Localization Modeling', category: 'Localization Modeling' },
       { slug: 'seo-fields', title: 'SEO Fields', category: 'SEO Fields' },
       { slug: 'avoiding-over-modeling', title: 'Avoiding Over-Modeling', category: 'Avoiding Over-Modeling' },
@@ -124,6 +127,8 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'image-transformations', title: 'Image Transformations', category: 'Image Transformations' },
       { slug: 'missing-assets-handling', title: 'Missing Assets Handling', category: 'Missing Assets Handling' },
       { slug: 'rich-text-rendering-mistakes', title: 'Rich Text Rendering Mistakes', category: 'Rich Text Rendering Mistakes' },
+      { slug: 'contentful-react', title: 'Frontend Integration', category: 'Frontend Integration' },
+      { slug: 'contentful-nextjs', title: 'Next.js Integration', category: 'Next.js Integration' },
     ],
   },
   {
@@ -133,6 +138,8 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'draft-vs-published', title: 'Draft vs Published', category: 'Draft vs Published' },
       { slug: 'preview-workflow', title: 'Preview Workflow', category: 'Preview Workflow' },
       { slug: 'webhooks', title: 'Webhooks', category: 'Webhooks' },
+      { slug: 'contentful-localization', title: 'Localization', category: 'Localization' },
+      { slug: 'contentful-roles-permissions', title: 'Roles and Permissions', category: 'Roles and Permissions' },
       { slug: 'scheduled-publishing', title: 'Scheduled Publishing', category: 'Scheduled Publishing' },
       { slug: 'environment-aliases', title: 'Environment Aliases', category: 'Environment Aliases' },
       { slug: 'content-release-process', title: 'Content Release Process', category: 'Content Release Process' },
@@ -170,6 +177,7 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'api-limit-issue', title: 'API Limit Issue', category: 'API Limit Issue' },
       { slug: 'content-model-change-breaking-frontend', title: 'Content Model Change Breaking Frontend', category: 'Content Model Change Breaking Frontend' },
       { slug: 'deployment-with-content-migration', title: 'Deployment with Content Migration', category: 'Deployment with Content Migration' },
+      { slug: 'contentful-production-troubleshooting', title: 'Production Scenarios', category: 'Production Scenarios' },
     ],
   },
   {
@@ -180,6 +188,7 @@ export const contentfulInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'governance-and-ownership', title: 'Governance and Ownership', category: 'Governance and Ownership' },
       { slug: 'platform-standardization', title: 'Platform Standardization', category: 'Platform Standardization' },
       { slug: 'integration-strategy', title: 'Integration Strategy', category: 'Integration Strategy' },
+      { slug: 'contentful-architect-level-questions', title: 'Architect-Level Questions', category: 'Architect-Level Questions' },
     ],
   },
 ];
@@ -190,6 +199,7 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Fundamentals',
     topics: [
       { slug: 'sitecore-fundamentals', title: 'Fundamentals', category: 'Fundamentals' },
+      { slug: 'sitecore-headless-vs-mvc', title: 'Headless vs MVC', category: 'Headless vs MVC' },
     ],
   },
   {
@@ -199,6 +209,8 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'sitecore-content-architecture', title: 'Content Architecture', category: 'Content Architecture' },
       { slug: 'sitecore-templates-and-items', title: 'Templates and Items', category: 'Templates and Items' },
       { slug: 'sitecore-renderings-and-layouts', title: 'Renderings and Layouts', category: 'Renderings and Layouts' },
+      { slug: 'sitecore-multisite-architecture', title: 'Multisite Architecture', category: 'Multisite Architecture' },
+      { slug: 'sitecore-sxa', title: 'Sitecore SXA', category: 'Sitecore SXA' },
     ],
   },
   {
@@ -215,6 +227,8 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Publishing and Workflows',
     topics: [
       { slug: 'sitecore-publishing-and-workflows', title: 'Publishing and Workflows', category: 'Publishing and Workflows' },
+      { slug: 'sitecore-experience-editor-vs-pages', title: 'Experience Editor vs Pages', category: 'Experience Editor vs Pages' },
+      { slug: 'sitecore-forms', title: 'Sitecore Forms', category: 'Sitecore Forms' },
     ],
   },
   {
@@ -229,6 +243,7 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Experience Edge',
     topics: [
       { slug: 'sitecore-experience-edge', title: 'Experience Edge', category: 'Experience Edge' },
+      { slug: 'sitecore-search-solr', title: 'Search and Solr', category: 'Search and Solr' },
     ],
   },
   {
@@ -237,6 +252,8 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'sitecore-production-issues', title: 'Production Issues', category: 'Production Issues' },
       { slug: 'sitecore-scenario-questions', title: 'Scenario Questions', category: 'Scenario Questions' },
+      { slug: 'sitecore-language-fallback', title: 'Language Fallback', category: 'Language Fallback' },
+      { slug: 'sitecore-serialization-strategy', title: 'Serialization Strategy', category: 'Serialization Strategy' },
     ],
   },
   {
@@ -244,6 +261,7 @@ export const sitecoreInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Architecture',
     topics: [
       { slug: 'sitecore-architect-level-questions', title: 'Architect-Level Questions', category: 'Architect-Level Questions' },
+      { slug: 'sitecore-xm-cloud-deployment-model', title: 'XM Cloud Deployment Model', category: 'XM Cloud Deployment Model' },
     ],
   },
 ];

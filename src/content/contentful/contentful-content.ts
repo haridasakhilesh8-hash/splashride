@@ -886,6 +886,338 @@ Editorial documentation`,
     relatedTopics: ['contentful-content-model-design', 'contentful-migration-strategy', 'contentful-roles-permissions'],
   },
   {
+    slug: 'contentful-platform-overview',
+    title: 'Contentful Platform Overview',
+    description: 'Understand the main building blocks of the Contentful platform and how spaces, environments, entries, assets, APIs, and workflows fit together.',
+    concept: `Contentful is more than a content editor. It is a platform made up of spaces, environments, content types, entries, assets, locales, delivery APIs, preview APIs, management APIs, webhooks, and role controls.
+
+The platform view matters because most production issues come from how these parts connect, not from one screen in the Contentful UI.`,
+    why: `Teams need a platform-level understanding so they can explain ownership clearly: where schema lives, how content moves from draft to published, how environments support release safety, and how applications consume the platform without coupling themselves to editor behavior.`,
+    usage: `In a real program, editors work with content types, entries, assets, locales, and approvals while engineers connect CDA, CPA, GraphQL, webhooks, caching, preview routes, and revalidation to the consuming applications.`,
+    workflow: `A team defines the content model, creates entries and assets, localizes where needed, previews draft content through the Preview API, publishes approved content, and then distributes updates through delivery APIs, caches, webhooks, and downstream integrations.`,
+    exampleTitle: 'Platform responsibility map',
+    exampleCode: `Content model
+  -> content types + fields + validations
+Editorial workflow
+  -> entries + assets + preview + publish
+Delivery layer
+  -> CDA / CPA / GraphQL
+Operations
+  -> environments + webhooks + cache + release workflow`,
+    productionIssues: [
+      'Teams know the UI but cannot explain how environments, preview, APIs, and caches interact when content looks wrong in production.',
+      'Platform ownership is unclear, so editorial, frontend, and platform teams blame each other during incidents.',
+      'A change seems small in the web app but has downstream impact on previews, caches, search, and rendering contracts.',
+    ],
+    bestPractices: [
+      'Teach Contentful as a platform, not only as a CMS interface.',
+      'Document the ownership of model changes, preview, publishing, and API consumption clearly.',
+      'Keep architecture diagrams and delivery contracts close to the content model documentation.',
+    ],
+    relatedTopics: ['what-is-contentful', 'contentful-spaces-environments', 'contentful-content-publishing-flow'],
+  },
+  {
+    slug: 'contentful-vs-aem',
+    title: 'Contentful vs AEM',
+    description: 'Compare Contentful and AEM honestly across content modeling, authoring, enterprise workflow depth, and frontend delivery patterns.',
+    concept: `Contentful and AEM can both support enterprise content delivery, but they solve different problems well. Contentful is usually chosen for API-first, reusable structured content and lighter SaaS-based operations. AEM is often chosen when teams need deep page authoring, DAM-heavy workflows, complex approval structures, or broader Adobe ecosystem alignment.`,
+    why: `This comparison matters because teams often choose a CMS based on brand familiarity instead of workflow fit. The wrong decision creates friction later around personalization, authoring expectations, preview, DAM operations, or frontend ownership.`,
+    usage: `A product-led company with React and Next.js teams may prefer Contentful for clean API-first delivery. A large enterprise with complex marketing authoring, DAM governance, and Adobe platform investment may prefer AEM.`,
+    workflow: `The evaluation usually compares content-model flexibility, authoring needs, delivery APIs, environment and release governance, DAM and workflow depth, frontend integration patterns, and the long-term support model for editors and developers.`,
+    exampleTitle: 'Decision lens',
+    exampleCode: `Choose Contentful when:
+- structured multi-channel content is central
+- frontend teams want API-first delivery
+- platform operations should stay SaaS-light
+
+Choose AEM when:
+- authoring workflow depth is critical
+- DAM and enterprise governance are central
+- Adobe ecosystem integration matters heavily`,
+    productionIssues: [
+      'Teams migrate from AEM to Contentful without rethinking workflow depth, then discover editorial expectations were never redesigned.',
+      'Teams choose AEM for a simpler API-first use case and carry unnecessary delivery and governance complexity.',
+      'The comparison is framed only around features, not around operating model, team maturity, and support burden.',
+    ],
+    bestPractices: [
+      'Compare the platforms through workflow fit, not only feature lists.',
+      'Discuss editor needs, frontend ownership, localization, preview, and governance together.',
+      'Be explicit about where SaaS simplicity helps and where enterprise workflow depth matters more.',
+    ],
+    relatedTopics: ['what-is-contentful', 'contentful-composable-architecture', 'contentful-vs-sitecore'],
+  },
+  {
+    slug: 'contentful-vs-sitecore',
+    title: 'Contentful vs Sitecore',
+    description: 'Understand how Contentful and Sitecore differ across headless delivery, authoring expectations, platform governance, and enterprise fit.',
+    concept: `Contentful is a headless CMS platform built around structured content and API delivery. Sitecore traditionally comes from a page-centric enterprise CMS and DXP background, with stronger built-in personalization and enterprise-authoring history. In modern teams, the comparison often becomes SaaS headless composability versus heavier enterprise experience-platform depth.`,
+    why: `This matters when organizations are choosing between lighter content-platform governance and deeper integrated marketing-platform capabilities. The editorial model, personalization needs, hosting expectations, and frontend architecture all change the answer.`,
+    usage: `A multi-app product platform may prefer Contentful for clean reusable schemas and fast frontend integration. A digital-marketing organization with strong Sitecore investment and deep personalization expectations may prefer Sitecore or XM Cloud-style delivery.`,
+    workflow: `The comparison usually evaluates schema discipline, authoring workflow expectations, headless maturity, environment and release operations, personalization tooling, hosting or SaaS model, and how much platform complexity the team wants to own.`,
+    exampleTitle: 'Comparison frame',
+    exampleCode: `Contentful strengths
+- structured reusable content
+- SaaS headless simplicity
+- fast API-first frontend integration
+
+Sitecore strengths
+- enterprise experience-platform history
+- stronger built-in marketing and personalization expectations
+- richer traditional enterprise authoring patterns`,
+    productionIssues: [
+      'Teams assume all headless CMS programs need the same workflow depth and choose the wrong operating model.',
+      'Platform selection ignores personalization or enterprise authoring expectations until too late in delivery.',
+      'Migration plans compare UI features but skip frontend architecture and support-model consequences.',
+    ],
+    bestPractices: [
+      'Compare Contentful and Sitecore through use-case fit, not vendor familiarity.',
+      'Include content operations, delivery architecture, and long-term support cost in the decision.',
+      'Be honest about personalization, governance, and platform maturity requirements.',
+    ],
+    relatedTopics: ['contentful-vs-aem', 'what-is-contentful', 'contentful-composable-architecture'],
+  },
+  {
+    slug: 'contentful-rest-vs-graphql',
+    title: 'REST vs GraphQL in Contentful',
+    description: 'Learn when to use Contentful REST APIs versus GraphQL, and how the choice affects payload shape, caching, and frontend complexity.',
+    concept: `Contentful offers both REST-style APIs such as CDA and CPA and a GraphQL Content API. REST is often straightforward for broad delivery patterns and well-known operational tooling. GraphQL is useful when frontend teams want explicit field selection, typed querying, and component-oriented data fetching.`,
+    why: `Teams need to choose the right access pattern because the API choice affects cache behavior, response shape, frontend complexity, rate limits, debugging, and how easily multiple consumers stay aligned.`,
+    usage: `Some teams use CDA for broad published-content delivery and GraphQL for component-driven React or Next.js experiences where payload selectivity matters. Others centralize one path through a BFF for consistency.`,
+    workflow: `Engineers evaluate consumer needs, payload size, reference depth, debugging habits, cache strategy, type safety, and query governance. The goal is not to pick the more fashionable API, but the one that keeps delivery predictable and maintainable.`,
+    exampleTitle: 'API choice heuristic',
+    exampleCode: `Use REST when:
+- delivery patterns are simple
+- cache and tooling familiarity matter
+- broad entry payloads are acceptable
+
+Use GraphQL when:
+- consumers need exact fields
+- typed contracts help the frontend
+- nested references should be queried intentionally`,
+    productionIssues: [
+      'Teams switch to GraphQL for elegance but never govern query complexity or consumer contracts.',
+      'REST responses are over-fetched and frontend apps do too much client-side shaping.',
+      'Different apps use different API styles without shared governance, making support and caching inconsistent.',
+    ],
+    bestPractices: [
+      'Choose API style based on consumer needs, not trend pressure.',
+      'Document the cache, typing, and debugging implications of the selected path.',
+      'If multiple consumers exist, standardize how REST and GraphQL are used across them.',
+    ],
+    relatedTopics: ['contentful-content-delivery-api', 'contentful-graphql-api', 'contentful-api-tokens-rate-limits'],
+  },
+  {
+    slug: 'contentful-api-tokens-rate-limits',
+    title: 'API Tokens and Rate Limits',
+    description: 'Understand how Contentful API tokens, authentication boundaries, and rate limits affect secure and reliable delivery.',
+    concept: `Contentful uses different tokens for delivery, preview, and management APIs. Those tokens define what a caller can access, and rate limits define how much the caller can do in a given period.
+
+Security and reliability both depend on understanding those boundaries.`,
+    why: `Teams need token and rate-limit discipline because leaked tokens, weak environment-variable handling, or bursty request patterns can break preview, content syncing, publishing tools, or frontend delivery under traffic spikes.`,
+    usage: `A production app usually uses a read-only delivery token, a preview app uses a separate preview token, and automation scripts use carefully scoped management credentials. Rate-aware fetch layers and caching keep the app from hammering Contentful unnecessarily.`,
+    workflow: `The team stores tokens securely, separates environments and API purposes, monitors request volume, adds caching and batching where possible, and designs fallbacks for throttling or temporary API rejection.`,
+    exampleTitle: 'Safe token split',
+    exampleCode: `Delivery app
+  -> CDA token only
+Preview app
+  -> CPA token only
+Migration tool
+  -> CMA token with controlled scope
+
+Shared rule
+  -> never reuse one powerful token everywhere`,
+    productionIssues: [
+      'Preview tokens are accidentally exposed in client-side code or reused in the wrong deployment path.',
+      'Burst traffic or bad polling patterns hit rate limits and cause content fetch failures.',
+      'Management scripts work locally but fail in CI because token scope, environment, or retry logic is weak.',
+    ],
+    bestPractices: [
+      'Separate delivery, preview, and management credentials clearly.',
+      'Use environment variables and secret-management systems rather than hardcoded tokens.',
+      'Design caching, batching, and fallback behavior so rate limits do not become user-facing outages.',
+    ],
+    relatedTopics: ['contentful-content-delivery-api', 'contentful-content-preview-api', 'contentful-content-management-api'],
+  },
+  {
+    slug: 'contentful-environment-aliases',
+    title: 'Environment Aliases',
+    description: 'Learn how Contentful environment aliases support safer promotion, cutovers, and release coordination across consuming applications.',
+    concept: `Environment aliases let teams point a stable environment name at a different underlying environment. This helps decouple consumer configuration from the exact environment branch being tested or promoted.`,
+    why: `Aliases matter because they reduce risky manual reconfiguration during releases. Instead of repointing multiple frontend apps one by one, teams can promote an alias once and make the release transition clearer.`,
+    usage: `A team may validate a new model in a staged environment, then switch an alias to that environment when the release is approved. Consumers continue using the alias path while the underlying target changes safely.`,
+    workflow: `Teams prepare the target environment, validate content and consuming apps, coordinate release readiness, switch the alias, verify delivery and preview behavior, and keep rollback awareness in case the new environment must be reverted quickly.`,
+    exampleTitle: 'Alias-based promotion',
+    exampleCode: `master alias -> env-prod-current
+release candidate -> env-prod-next
+
+Validate env-prod-next
+  -> switch master alias
+  -> verify consumers
+  -> keep rollback plan ready`,
+    productionIssues: [
+      'Teams forget which frontend app uses the alias versus the raw environment and debug the wrong target.',
+      'Alias switching happens without validating cached content or preview behavior, causing confusing release drift.',
+      'Rollback paths are unclear because content, alias state, and frontend deployments were not coordinated.',
+    ],
+    bestPractices: [
+      'Use aliases as part of a documented release workflow, not as an emergency shortcut only seniors understand.',
+      'Track which consumers rely on aliases and which use direct environment configuration.',
+      'Pair alias changes with verification of preview, delivery, caching, and localization behavior.',
+    ],
+    relatedTopics: ['contentful-spaces-environments', 'contentful-release-workflow', 'contentful-preview-setup'],
+  },
+  {
+    slug: 'contentful-release-workflow',
+    title: 'Release Workflow and Environment Promotion',
+    description: 'Understand how Contentful releases should move across environments, preview, QA, UAT, and production safely.',
+    concept: `A Contentful release workflow is the operational process that connects schema changes, content changes, preview validation, environment promotion, cache or rebuild behavior, and consumer application readiness.
+
+In production, publishing is part of release management, not an isolated editorial action.`,
+    why: `This matters because content, model, and frontend releases often depend on each other. Weak release workflow leads to preview mismatches, stale production content, broken references, or content models that outpace the frontend.`,
+    usage: `A mature team rehearses model changes in lower environments, validates draft and published content paths in QA or UAT, coordinates frontend readiness, promotes safely, and keeps rollback and revalidation steps clear.`,
+    workflow: `Model changes and content updates are tested in non-production environments, previewed in the target consumer app, validated for localization and references, then promoted or published with cache and deployment checks before production confidence is declared.`,
+    exampleTitle: 'CMS release path',
+    exampleCode: `Model change
+  -> dev environment
+  -> QA / UAT validation
+  -> preview verification
+  -> frontend readiness check
+  -> publish / promote
+  -> revalidation and smoke test`,
+    productionIssues: [
+      'Teams treat content publishing as independent from frontend readiness and break rendering after launch.',
+      'UAT and production are using different environment assumptions, so release signoff is misleading.',
+      'Rollback is discussed only for code, not for content-model or publishing mistakes.',
+    ],
+    bestPractices: [
+      'Treat Contentful release workflow as part of product release management.',
+      'Validate preview, publish, locale, and cache behavior before calling a release ready.',
+      'Keep rollback, revalidation, and environment-promotion steps written down and practiced.',
+    ],
+    relatedTopics: ['contentful-spaces-environments', 'contentful-environment-aliases', 'contentful-content-publishing-flow'],
+  },
+  {
+    slug: 'contentful-locales-fallbacks',
+    title: 'Locales and Fallbacks',
+    description: 'Learn how locale strategy, fallback behavior, and localized-field design affect multilingual Contentful delivery.',
+    concept: `Locales in Contentful determine which language or regional variant of a field should be served. Fallback rules decide what happens when a locale-specific value is missing, which can protect delivery or create hidden content mistakes depending on how the model and frontend are designed.`,
+    why: `Teams need locale and fallback clarity because multilingual content can fail quietly. A page may render the wrong language, use the wrong slug, or show a mixture of translated and fallback content that looks acceptable until users complain.`,
+    usage: `A global site may localize title, slug, body, and SEO fields while keeping some campaign identifiers or taxonomy references shared. The frontend must know whether missing translations should block publish, fall back visibly, or be routed differently.`,
+    workflow: `Teams configure locales, define which fields localize, decide fallback rules, validate locale completeness before release, and ensure frontend routing and SEO logic match the locale strategy rather than guessing at runtime.`,
+    exampleTitle: 'Localized delivery decision',
+    exampleCode: `Localized fields
+- title
+- slug
+- body
+- seoDescription
+
+Global fields
+- campaignId
+- analyticsKey
+
+Rule
+  -> do not let fallback hide unfinished market launches`,
+    productionIssues: [
+      'A route renders with the wrong locale because slug and fallback rules were never aligned.',
+      'Fallback hides incomplete translation work until production QA or users spot the mismatch.',
+      'SEO metadata is localized inconsistently, creating duplicate-content or hreflang issues.',
+    ],
+    bestPractices: [
+      'Decide field localization and fallback rules together with routing and SEO behavior.',
+      'Validate locale completeness before launches instead of trusting fallback alone.',
+      'Make editors and developers share one explicit multilingual content model.',
+    ],
+    relatedTopics: ['contentful-localization', 'contentful-release-workflow', 'contentful-content-model-design'],
+  },
+  {
+    slug: 'contentful-production-troubleshooting',
+    title: 'Production Troubleshooting',
+    description: 'Understand how to troubleshoot stale content, broken references, preview drift, missing assets, locale mismatches, and delivery failures in Contentful programs.',
+    concept: `Contentful production issues usually happen at the contract boundary between content state, environments, APIs, caches, and frontend rendering. The fastest teams troubleshoot by isolating the failing layer instead of guessing which tool is "down."`,
+    why: `Teams need a structured troubleshooting model because most Contentful incidents are not single-point outages. They are mismatches between draft and published content, locale assumptions, broken references, webhook behavior, or frontend expectations.`,
+    usage: `Common incidents include preview not matching production, published content staying stale because revalidation failed, assets missing because references are incomplete, broken linked entries, wrong locale output, or a content-model change causing frontend regressions.`,
+    workflow: `Strong troubleshooting starts by checking content state, environment, locale, API path, cache or rebuild flow, linked references, and the frontend mapping layer. The goal is to prove which contract failed before attempting mitigation.`,
+    exampleTitle: 'Incident triage path',
+    exampleCode: `Symptom
+  -> content state
+  -> environment
+  -> locale
+  -> reference graph
+  -> cache / rebuild / webhook path
+  -> frontend renderer and fallback`,
+    productionIssues: [
+      'Broken references cause rendering failures because the frontend assumed nested content would always resolve fully.',
+      'Preview works while production stays stale because publish and revalidation are out of sync.',
+      'A locale launch appears complete in the CMS but route, SEO, or fallback behavior still serves the wrong language.',
+    ],
+    bestPractices: [
+      'Troubleshoot Contentful incidents from content state to delivery path to rendering path.',
+      'Keep preview, publish, cache, and locale behavior observable in logs and support runbooks.',
+      'Add defensive frontend handling for missing references and assets instead of trusting ideal content state.',
+    ],
+    relatedTopics: ['contentful-caching-strategy', 'contentful-preview-setup', 'contentful-locales-fallbacks'],
+  },
+  {
+    slug: 'contentful-composable-architecture',
+    title: 'Composable and Multi-site Architecture',
+    description: 'Learn how Contentful fits composable CMS architecture across multiple apps, brands, design systems, search, personalization, and ecommerce integrations.',
+    concept: `Contentful is often used as one capability inside a broader composable architecture. It provides structured content while frontends, search engines, personalization tools, design systems, commerce platforms, and integration layers each own a different part of the experience.`,
+    why: `This matters because Contentful success depends on clear boundaries. If teams expect the CMS to own search relevance, commerce pricing, personalization logic, and frontend composition by itself, the architecture becomes confused fast.`,
+    usage: `A company may run multiple websites and apps from one Contentful space or platform, while Next.js handles rendering, Algolia handles search, a personalization tool handles audience logic, and commerce services handle product data and checkout behavior.`,
+    workflow: `Architects define the system of record for each data domain, keep reusable content models stable, align the CMS with the design system, decide when a BFF reshapes content, and ensure multi-brand or multi-site consumers do not fragment the platform unnecessarily.`,
+    exampleTitle: 'Composable boundary model',
+    exampleCode: `Contentful
+  -> structured editorial content
+Next.js
+  -> rendering and routing
+Search
+  -> indexing and relevance
+Personalization
+  -> audience decisioning
+Commerce
+  -> pricing and availability`,
+    productionIssues: [
+      'Multiple applications depend on the same platform, but ownership of schema evolution and consumer compatibility is unclear.',
+      'Teams overload Contentful with non-editorial responsibilities that belong in search, commerce, or personalization systems.',
+      'Design-system drift appears because content models and rendering components evolve without shared governance.',
+    ],
+    bestPractices: [
+      'Treat Contentful as one capability in a composable system with explicit boundaries.',
+      'Design for multi-site and multi-brand reuse without forcing every consumer into one rigid model.',
+      'Align content modeling, design-system components, and consumer contracts through shared reviews.',
+    ],
+    relatedTopics: ['contentful-nextjs', 'contentful-rest-vs-graphql', 'contentful-platform-overview'],
+  },
+  {
+    slug: 'contentful-testing-best-practices',
+    title: 'Testing and Best Practices',
+    description: 'Understand how to test Contentful integrations, preview mode, Rich Text rendering, localization, and missing-reference behavior safely.',
+    concept: `Contentful testing is not only API mocking. It includes validating content-model assumptions, Rich Text rendering, missing-reference handling, preview mode behavior, localization, and safe release checks for schema and content changes.`,
+    why: `Teams need testing discipline because headless CMS regressions often appear only when content shape changes, references go missing, or preview and published paths diverge. Unit tests alone are not enough if the content contract is unverified.`,
+    usage: `A frontend team may mock Contentful responses in unit tests, validate Rich Text rendering with embedded entries, test preview and draft behavior in integration environments, and add release checks for locales, references, and cache refresh flows.`,
+    workflow: `Engineers define stable fixtures, mock both normal and broken content states, verify preview and published paths separately, test fallback behavior, and include schema and content checks in the release process before major model changes go live.`,
+    exampleTitle: 'Content-contract test stack',
+    exampleCode: `Unit tests
+  -> component rendering with fixture content
+Integration tests
+  -> preview, locale, missing-reference paths
+Release checks
+  -> schema change impact
+  -> cache / revalidation
+  -> high-risk content routes`,
+    productionIssues: [
+      'The happy path is tested, but missing references or incomplete localized fields crash rendering in production.',
+      'Preview mode works only for the original setup because token, environment, and route assumptions were never tested after changes.',
+      'Content-model reviews are informal, so risky field or reference changes reach production without contract validation.',
+    ],
+    bestPractices: [
+      'Test broken and incomplete content states, not only ideal payloads.',
+      'Keep preview, locale, and published-path behavior under explicit verification.',
+      'Treat content-model reviews and schema changes as production-quality concerns.',
+    ],
+    relatedTopics: ['contentful-rendering-rich-text', 'contentful-preview-setup', 'contentful-production-troubleshooting'],
+  },
+  {
     slug: 'contentful-interview-questions',
     title: 'Contentful Interview Questions',
     description: 'Prepare for common Contentful interview questions around headless CMS basics, modeling, APIs, and workflow decisions.',

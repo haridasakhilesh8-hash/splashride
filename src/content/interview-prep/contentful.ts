@@ -120,6 +120,11 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
     'when personalization or DXP needs make AEM a stronger fit',
     'how operations and governance differ between the two platforms',
   ],
+  'Contentful vs Sitecore': [
+    'headless SaaS simplicity versus heavier enterprise experience-platform depth',
+    'when personalization and enterprise marketing workflows make Sitecore a stronger fit',
+    'how authoring expectations and operating models differ between the two platforms',
+  ],
   'Contentful vs Sanity and Strapi': [
     'hosted governance versus self-hosted flexibility',
     'plugin and extension strategy trade-offs',
@@ -184,6 +189,46 @@ const topicSpecificConcernExpansions: Record<string, string[]> = {
     'backward-compatible rollout planning across consumers',
     'dry-run validation for large content migrations',
     'ownership and communication for platform-wide schema changes',
+  ],
+  'Entries and Assets': [
+    'draft and published state differences between structured entries and media assets',
+    'frontend assumptions about linked assets and entry completeness',
+    'asset governance and missing-reference risk in real projects',
+  ],
+  'Rich Text': [
+    'mapping rich text nodes into safe frontend rendering contracts',
+    'embedded entry and asset behavior in real delivery paths',
+    'editor flexibility versus rendering consistency',
+  ],
+  'Frontend Integration': [
+    'how frontend apps shape, cache, and fail safely around Contentful responses',
+    'when a BFF should reshape Contentful content for consumers',
+    'rendering linked entries, assets, and partial content safely',
+  ],
+  'Next.js Integration': [
+    'static generation, SSR, ISR, and preview trade-offs for Contentful-driven routes',
+    'environment-variable and revalidation discipline in Next.js deployments',
+    'how Contentful route generation, fallback behavior, and SEO interact in Next.js',
+  ],
+  Localization: [
+    'locale-specific entries, slug behavior, and fallback risk',
+    'translation workflow and release sequencing for multilingual launches',
+    'SEO implications of partial localization',
+  ],
+  'Roles and Permissions': [
+    'space-level and environment-level access control',
+    'editor safety versus platform flexibility in multi-team setups',
+    'token governance and operational risk when permissions are too broad',
+  ],
+  'Production Scenarios': [
+    'stale content, wrong locale, broken references, or preview drift under launch pressure',
+    'how to isolate CMS state, cache behavior, and frontend rendering boundaries',
+    'safe mitigation before model or publishing changes make incidents worse',
+  ],
+  'Architect-Level Questions': [
+    'multi-app governance for shared content platforms',
+    'platform boundaries between CMS, search, personalization, and commerce',
+    'how schema evolution stays safe across teams and channels',
   ],
   'Multi-app Content Platform': [
     'shared schema governance for multiple brands or apps',
@@ -278,6 +323,13 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Traditional CMS vs Contentful', 'Governance and Ownership'],
   },
   {
+    category: 'Contentful vs Sitecore',
+    topicGroup: 'Fundamentals',
+    concern: 'comparing headless SaaS composability with enterprise experience-platform depth',
+    concerns: ['headless content delivery versus fuller DXP expectations', 'authoring and marketing workflow differences', 'operating-model and governance trade-offs', 'when enterprise teams choose one over the other'],
+    relatedTopics: ['Contentful vs AEM', 'Platform Standardization'],
+  },
+  {
     category: 'Contentful vs Sanity and Strapi',
     topicGroup: 'Fundamentals',
     concern: 'evaluating hosted governance, customization flexibility, and editorial operating models',
@@ -348,6 +400,20 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Content Management API', 'Deployment with Content Migration'],
   },
   {
+    category: 'Entries and Assets',
+    topicGroup: 'Rich Text and Assets',
+    concern: 'handling structured entries and media assets with clear publishing, metadata, and rendering boundaries',
+    concerns: ['entry lifecycle versus asset lifecycle', 'linked asset and linked entry rendering assumptions', 'draft versus published mismatches', 'missing entry or asset handling in production'],
+    relatedTopics: ['Entries vs Assets', 'Asset Optimization'],
+  },
+  {
+    category: 'Rich Text',
+    topicGroup: 'Rich Text and Assets',
+    concern: 'rendering rich editorial content without losing structure, safety, or design consistency',
+    concerns: ['rich text node rendering', 'embedded entries and embedded assets', 'React and Next.js rendering boundaries', 'production failures caused by unexpected rich text shapes'],
+    relatedTopics: ['Rich Text Modeling', 'Rendering Rich Text'],
+  },
+  {
     category: 'Content Delivery API',
     topicGroup: 'APIs',
     concern: 'fetching published content with stable contracts, predictable caching, and efficient payloads',
@@ -374,6 +440,20 @@ const topicSeeds: TopicSeed[] = [
     concern: 'selecting precise fields and references while keeping queries maintainable across frontend apps',
     concerns: ['typed content queries', 'query shape and overfetching control', 'reference traversal in GraphQL', 'frontend maintainability of GraphQL contracts'],
     relatedTopics: ['Content Delivery API', 'Pagination'],
+  },
+  {
+    category: 'Frontend Integration',
+    topicGroup: 'Rich Text and Assets',
+    concern: 'integrating Contentful into frontend applications with safe rendering, caching, and fallback contracts',
+    concerns: ['frontend data-access layer design', 'rendering linked entries and assets safely', 'error handling and fallback UI', 'SEO and content freshness implications'],
+    relatedTopics: ['Content Delivery API', 'Caching Strategy'],
+  },
+  {
+    category: 'Next.js Integration',
+    topicGroup: 'Production and Architecture',
+    concern: 'using Contentful safely across SSG, SSR, ISR, preview mode, and route generation in Next.js',
+    concerns: ['preview mode and draft content delivery', 'ISR and revalidation timing', 'environment variables and deployment discipline', 'route fallback and SEO behavior'],
+    relatedTopics: ['Content Preview API', 'Multi-environment Deployment'],
   },
   {
     category: 'Sync API',
@@ -481,6 +561,20 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Sync API', 'Webhook Not Firing'],
   },
   {
+    category: 'Localization',
+    topicGroup: 'Publishing and Workflows',
+    concern: 'delivering the correct locale, fallback behavior, and translation workflow across multilingual launches',
+    concerns: ['localized fields and locale-specific entries', 'locale fallback and route behavior', 'translation workflow and release sequencing', 'SEO implications of partial localization'],
+    relatedTopics: ['Localization Modeling', 'Multi-language Sites'],
+  },
+  {
+    category: 'Roles and Permissions',
+    topicGroup: 'Publishing and Workflows',
+    concern: 'governing who can edit, publish, migrate, and administer content across spaces and environments',
+    concerns: ['editor roles and publish rights', 'environment-level access control', 'API token governance', 'approval workflows and production safety'],
+    relatedTopics: ['Approval Process', 'Content Management API'],
+  },
+  {
     category: 'Scheduled Publishing',
     topicGroup: 'Publishing and Workflows',
     concern: 'releasing content on time while coordinating caches, approvals, and release dependencies',
@@ -586,6 +680,13 @@ const topicSeeds: TopicSeed[] = [
     relatedTopics: ['Content Model Migrations', 'Multi-environment Deployment'],
   },
   {
+    category: 'Production Scenarios',
+    topicGroup: 'Scenario Questions',
+    concern: 'responding calmly when preview, publishing, locale, references, or cache behavior create user-facing incidents',
+    concerns: ['content not appearing after publish', 'preview not updating', 'wrong locale or stale content', 'broken references and asset failures'],
+    relatedTopics: ['Content Not Updating', 'Preview Not Working'],
+  },
+  {
     category: 'Content Not Updating',
     topicGroup: 'Scenario Questions',
     concern: 'diagnosing why editors published content but the live website still shows older data',
@@ -683,11 +784,16 @@ const topicSeeds: TopicSeed[] = [
     concerns: ['frontend integration boundaries', 'search and indexing pipelines', 'personalization and downstream data consumers', 'platform-wide API consumption patterns'],
     relatedTopics: ['GraphQL API', 'Webhooks'],
   },
+  {
+    category: 'Architect-Level Questions',
+    topicGroup: 'Architecture Questions',
+    concern: 'governing Contentful as a shared platform across teams, locales, channels, and release workflows',
+    concerns: ['platform standardization and ownership', 'schema evolution for multiple consumers', 'composable architecture boundaries', 'long-term maintainability of a shared CMS platform'],
+    relatedTopics: ['Multi-app Content Platform', 'Platform Standardization'],
+  },
 ];
 
 function buildProfile(seed: TopicSeed): TopicProfile {
-  const baseEvidence: [string, string, string] = ['entry payloads', 'frontend query mappings', 'publish and cache logs'];
-
   if (seed.topicGroup === 'Fundamentals') {
     return {
       mechanism: `${seed.category} explains how Contentful separates structured content management from frontend rendering and release behavior.`,

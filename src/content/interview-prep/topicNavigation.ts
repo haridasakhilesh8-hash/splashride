@@ -25,9 +25,11 @@ export const aemInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Development',
     topics: [
       { slug: 'components', title: 'Components', category: 'Components' },
+      { slug: 'core-components-and-dialogs', title: 'Dialogs and Clientlibs', category: 'Client Libraries' },
       { slug: 'htl', title: 'HTL', category: 'HTL' },
       { slug: 'sling', title: 'Sling', category: 'Sling' },
       { slug: 'sling-models', title: 'Sling Models', category: 'Sling Models' },
+      { slug: 'editable-templates', title: 'Editable Templates', category: 'Editable Templates' },
       { slug: 'osgi', title: 'OSGi', category: 'OSGi' },
     ],
   },
@@ -38,6 +40,8 @@ export const aemInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'templates', title: 'Templates', category: 'Templates' },
       { slug: 'content-fragments', title: 'Content Fragments', category: 'Content Fragments' },
       { slug: 'experience-fragments', title: 'Experience Fragments', category: 'Experience Fragments' },
+      { slug: 'assets-and-dam', title: 'Assets and DAM', category: 'Assets' },
+      { slug: 'launches-and-localization', title: 'MSM and Localization', category: 'Translation' },
     ],
   },
   {
@@ -45,17 +49,21 @@ export const aemInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     title: 'Advanced',
     topics: [
       { slug: 'dispatcher', title: 'Dispatcher', category: 'Dispatcher' },
-      { slug: 'security', title: 'Security', category: 'Security' },
-      { slug: 'performance', title: 'Performance', category: 'Performance Tuning' },
+      { slug: 'aem-security', title: 'Security', category: 'Security' },
+      { slug: 'aem-performance', title: 'Dispatcher and Performance', category: 'Performance Tuning' },
+      { slug: 'events-and-jobs', title: 'Workflows and Events', category: 'Workflows' },
+      { slug: 'production-troubleshooting', title: 'Production Scenarios', category: 'Production Support' },
     ],
   },
   {
     id: 'cloud-service',
     title: 'Cloud Service',
     topics: [
-      { slug: 'cloud-manager', title: 'Cloud Manager', category: 'Cloud Manager' },
+      { slug: 'cloud-manager-and-devops', title: 'Cloud Manager and DevOps', category: 'Cloud Manager' },
       { slug: 'aem-cloud-service', title: 'AEM Cloud Service', category: 'AEM Cloud Service' },
+      { slug: 'headless-aem', title: 'Headless and GraphQL', category: 'Headless AEM' },
       { slug: 'graphql', title: 'GraphQL', category: 'GraphQL' },
+      { slug: 'edge-delivery-services', title: 'Edge Delivery Services', category: 'Edge Delivery Services' },
     ],
   },
 ];

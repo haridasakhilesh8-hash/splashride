@@ -38,7 +38,9 @@ const aemCategories: NavCategory[] = [
     icon: '🏗️',
     items: [
       { slug: 'architecture', title: 'Architecture' },
+      { slug: 'aem-sites-assets-forms', title: 'Sites, Assets, and Forms' },
       { slug: 'jcr', title: 'JCR' },
+      { slug: 'oak-repository', title: 'Oak Repository' },
       { slug: 'crxde', title: 'CRXDE' },
     ],
   },
@@ -50,6 +52,8 @@ const aemCategories: NavCategory[] = [
       { slug: 'components', title: 'Components' },
       { slug: 'templates', title: 'Templates' },
       { slug: 'editable-templates', title: 'Editable Templates' },
+      { slug: 'core-components-and-dialogs', title: 'Core Components and Dialogs' },
+      { slug: 'page-authoring-and-universal-editor', title: 'Page Authoring and Universal Editor' },
       { slug: 'sling', title: 'Sling' },
       { slug: 'sling-models', title: 'Sling Models' },
       { slug: 'htl', title: 'HTL' },
@@ -64,6 +68,8 @@ const aemCategories: NavCategory[] = [
     items: [
       { slug: 'content-fragments', title: 'Content Fragments' },
       { slug: 'experience-fragments', title: 'Experience Fragments' },
+      { slug: 'assets-and-dam', title: 'Assets and DAM' },
+      { slug: 'launches-and-localization', title: 'Launches and Localization' },
     ],
   },
   {
@@ -74,7 +80,15 @@ const aemCategories: NavCategory[] = [
       { slug: 'dispatcher', title: 'Dispatcher' },
       { slug: 'msm', title: 'MSM' },
       { slug: 'workflows', title: 'Workflows' },
+      { slug: 'events-and-jobs', title: 'Events and Jobs' },
+      { slug: 'query-builder-and-indexing', title: 'Query Builder and Indexing' },
       { slug: 'graphql', title: 'GraphQL' },
+      { slug: 'headless-aem', title: 'Headless AEM' },
+      { slug: 'aem-performance', title: 'Performance' },
+      { slug: 'aem-security', title: 'Security' },
+      { slug: 'aem-integrations', title: 'Integrations' },
+      { slug: 'aem-testing', title: 'Testing and Best Practices' },
+      { slug: 'production-troubleshooting', title: 'Production Troubleshooting' },
     ],
   },
   {
@@ -83,6 +97,8 @@ const aemCategories: NavCategory[] = [
     icon: '☁️',
     items: [
       { slug: 'aem-cloud-service', title: 'AEM Cloud Service' },
+      { slug: 'cloud-manager-and-devops', title: 'Cloud Manager and DevOps' },
+      { slug: 'edge-delivery-services', title: 'Edge Delivery Services' },
     ],
   },
 ];
@@ -1160,7 +1176,7 @@ export const technologies: TechSection[] = [
     icon: '🏗️',
     color: '#e8520a',
     description: 'Adobe Experience Manager — components, Sling Models, HTL, Dispatcher, Cloud Service, and more.',
-    topicCount: 18,
+    topicCount: 34,
     active: true,
     categories: aemCategories,
   },

@@ -12,6 +12,24 @@ import { editableTemplates } from './editable-templates';
 import { aemCloudService } from './aem-cloud-service';
 import { templates } from './templates';
 import { architecture, jcr, crxde, sling, clientLibraries, msm, workflows, graphql } from './stubs';
+import {
+  aemSitesAssetsForms,
+  oakRepository,
+  queryBuilderAndIndexing,
+  coreComponentsAndDialogs,
+  pageAuthoringAndUniversalEditor,
+  launchesAndLocalization,
+  headlessAem,
+  cloudManagerAndDevops,
+  aemPerformance,
+  eventsAndJobs,
+  aemSecurity,
+  assetsAndDam,
+  aemIntegrations,
+  edgeDeliveryServices,
+  aemTesting,
+  productionTroubleshooting,
+} from './expansion-topics';
 
 export const aemContentMap: Record<string, TopicContent> = {
   'components': components,
@@ -32,4 +50,20 @@ export const aemContentMap: Record<string, TopicContent> = {
   'msm': msm,
   'workflows': workflows,
   'graphql': graphql,
+  'aem-sites-assets-forms': aemSitesAssetsForms,
+  'oak-repository': oakRepository,
+  'query-builder-and-indexing': queryBuilderAndIndexing,
+  'core-components-and-dialogs': coreComponentsAndDialogs,
+  'page-authoring-and-universal-editor': pageAuthoringAndUniversalEditor,
+  'launches-and-localization': launchesAndLocalization,
+  'headless-aem': headlessAem,
+  'cloud-manager-and-devops': cloudManagerAndDevops,
+  'aem-performance': aemPerformance,
+  'events-and-jobs': eventsAndJobs,
+  'aem-security': aemSecurity,
+  'assets-and-dam': assetsAndDam,
+  'aem-integrations': aemIntegrations,
+  'edge-delivery-services': edgeDeliveryServices,
+  'aem-testing': aemTesting,
+  'production-troubleshooting': productionTroubleshooting,
 };

@@ -7,6 +7,7 @@ import {
   Bot,
   Boxes,
   Brain,
+  CircleGauge,
   Cpu,
   Cloud,
   Code2,
@@ -19,7 +20,10 @@ import {
   HelpCircle,
   Lock,
   Layers,
+  LibraryBig,
+  MessageSquareText,
   Network,
+  PackageCheck,
   Rocket,
   Server,
   Sparkles,
@@ -47,23 +51,33 @@ const sidebarCategoryIcons = {
   AI: Brain,
   APP: AppWindow,
   ARC: Waypoints,
+  ARCH: Waypoints,
   AWS: Cloud,
   API: AppWindow,
+  CACHE: HardDrive,
   CI: Workflow,
   CMS: Database,
+  CORE: LibraryBig,
   CPU: Cpu,
   CTF: Sparkles,
   DB: Database,
+  DEPLOY: PackageCheck,
   Fn: Sparkles,
   IaC: FolderCog,
   ID: Lock,
   INT: Workflow,
+  JVM: Cpu,
+  LANG: Code2,
   PY: Code2,
   ML: Network,
+  MSG: MessageSquareText,
   MON: Activity,
   MOD: Blocks,
+  OBS: Activity,
   OPS: Gauge,
   OBJ: Blocks,
+  PAT: Workflow,
+  PERF: CircleGauge,
   PRD: Rocket,
   PV: HardDrive,
   'Q&A': HelpCircle,
@@ -85,7 +99,17 @@ const sidebarCategoryIcons = {
   WRK: Boxes,
 } as const;
 
-function renderSidebarCategoryIcon(iconToken: string) {
+function renderSidebarIconToken(
+  iconToken: string,
+  options?: {
+    allowTextBadge?: boolean;
+    size?: number;
+    badgeFontSize?: string;
+  },
+) {
+  const allowTextBadge = options?.allowTextBadge ?? false;
+  const size = options?.size ?? 14;
+  const badgeFontSize = options?.badgeFontSize ?? '0.62rem';
   const Icon = sidebarCategoryIcons[iconToken as keyof typeof sidebarCategoryIcons];
   if (Icon) {
     return (
@@ -93,21 +117,70 @@ function renderSidebarCategoryIcon(iconToken: string) {
         style={{
           display: 'flex',
           alignItems: 'center',
-          fontSize: '0.9rem',
+          justifyContent: 'center',
+          width: `${size}px`,
+          height: `${size}px`,
           color: 'var(--color-accent)',
+          flexShrink: 0,
         }}
         aria-hidden="true"
       >
-        <Icon size={14} strokeWidth={2} />
+        <Icon size={size} strokeWidth={2} />
       </span>
     );
   }
 
   if (/^[A-Z0-9&/+.-]{2,4}$/i.test(iconToken)) {
+    if (allowTextBadge) {
+      return (
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minWidth: `${size + 6}px`,
+            height: `${size + 4}px`,
+            padding: '0 4px',
+            borderRadius: '999px',
+            background: 'var(--color-bg-primary)',
+            border: '1px solid var(--color-border)',
+            color: 'var(--color-text-muted)',
+            fontSize: badgeFontSize,
+            fontWeight: 700,
+            letterSpacing: '0.02em',
+            lineHeight: 1,
+            flexShrink: 0,
+          }}
+          aria-hidden="true"
+        >
+          {iconToken}
+        </span>
+      );
+    }
+
     return null;
   }
 
-  return <span style={{ fontSize: '0.9rem' }}>{iconToken}</span>;
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: `${size}px`,
+        height: `${size}px`,
+        fontSize: `${Math.max(0.72, size / 16)}rem`,
+        flexShrink: 0,
+      }}
+      aria-hidden="true"
+    >
+      {iconToken}
+    </span>
+  );
+}
+
+function renderSidebarCategoryIcon(iconToken: string) {
+  return renderSidebarIconToken(iconToken);
 }
 
 function normalizePathname(pathname: string) {
@@ -246,16 +319,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     };
   }, [interviewConfig, isInterviewPrep]);
 
-  const [expandedCategoryId, setExpandedCategoryId] = useState<string | null>(
-    () => activeCategoryId ?? categories[0]?.id ?? null,
-  );
+  const [manualExpandedCategoryId, setManualExpandedCategoryId] = useState<string | null>(null);
 
-  useEffect(() => {
-    setExpandedCategoryId(activeCategoryId ?? categories[0]?.id ?? null);
-  }, [activeCategoryId, categories, normalizedPathname, sidebarTechnology?.id]);
+  const expandedCategoryId = useMemo(() => {
+    if (manualExpandedCategoryId && categories.some((category) => category.id === manualExpandedCategoryId)) {
+      return manualExpandedCategoryId;
+    }
+
+    return activeCategoryId ?? categories[0]?.id ?? null;
+  }, [activeCategoryId, categories, manualExpandedCategoryId]);
 
   const toggleCategory = (id: string) => {
-    setExpandedCategoryId(prev => (prev === id ? null : id));
+    setManualExpandedCategoryId((prev) => (prev === id ? null : id));
   };
 
   const handleTopicClick = (slug: string) => {
@@ -450,7 +525,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                           }
                         }}
                       >
-                        <span>{item.title}</span>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
+                          {cat.icon && renderSidebarIconToken(cat.icon, {
+                            allowTextBadge: false,
+                            size: isInterviewPrep ? 12 : 13,
+                            badgeFontSize: isInterviewPrep ? '0.56rem' : '0.58rem',
+                          })}
+                          <span>{item.title}</span>
+                        </span>
                         {isInterviewPrep && topicQuestionCount !== null && (
                           <span style={{
                             color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',

@@ -49,6 +49,7 @@ import { nextjsServerActions }     from './advanced/server-actions';
 import { nextjsEdgeRuntime }       from './advanced/edge-runtime';
 import { nextjsCachingStrategies } from './advanced/caching-strategies';
 import { nextjsEnterpriseArchitecture } from './advanced/enterprise-architecture';
+import { nextjsExpandedTopics }    from './expanded/expanded-topics';
 
 export const nextjsContentMap: Record<string, TopicContent> = {
   // Fundamentals
@@ -98,4 +99,7 @@ export const nextjsContentMap: Record<string, TopicContent> = {
   'nextjs-edge-runtime':           nextjsEdgeRuntime,
   'nextjs-caching-strategies':     nextjsCachingStrategies,
   'nextjs-enterprise-architecture': nextjsEnterpriseArchitecture,
+
+  // Expanded
+  ...nextjsExpandedTopics,
 };

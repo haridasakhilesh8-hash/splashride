@@ -433,6 +433,7 @@ const nextjsCategories: NavCategory[] = [
     items: [
       { slug: 'nextjs-introduction',      title: 'Introduction' },
       { slug: 'nextjs-project-structure', title: 'Project Structure' },
+      { slug: 'nextjs-pages-router',      title: 'Pages Router' },
       { slug: 'nextjs-app-router',        title: 'App Router' },
     ],
   },
@@ -446,6 +447,9 @@ const nextjsCategories: NavCategory[] = [
       { slug: 'nextjs-ssr',               title: 'SSR' },
       { slug: 'nextjs-ssg',               title: 'SSG' },
       { slug: 'nextjs-isr',               title: 'ISR' },
+      { slug: 'nextjs-csr',               title: 'CSR' },
+      { slug: 'nextjs-rendering-strategy', title: 'Rendering Strategy' },
+      { slug: 'nextjs-hydration',         title: 'Hydration' },
     ],
   },
   {
@@ -453,6 +457,9 @@ const nextjsCategories: NavCategory[] = [
     title: 'Data Fetching',
     icon: '📡',
     items: [
+      { slug: 'nextjs-get-server-side-props', title: 'getServerSideProps' },
+      { slug: 'nextjs-get-static-props',      title: 'getStaticProps' },
+      { slug: 'nextjs-get-static-paths',      title: 'getStaticPaths' },
       { slug: 'nextjs-fetch-api',            title: 'Fetch API & Caching' },
       { slug: 'nextjs-server-data-fetching', title: 'Server Data Fetching' },
       { slug: 'nextjs-client-data-fetching', title: 'Client Data Fetching' },
@@ -468,6 +475,12 @@ const nextjsCategories: NavCategory[] = [
       { slug: 'nextjs-dynamic-routes', title: 'Dynamic Routes' },
       { slug: 'nextjs-nested-routes',  title: 'Nested Routes & Layouts' },
       { slug: 'nextjs-route-groups',   title: 'Route Groups' },
+      { slug: 'nextjs-layouts',        title: 'Layouts' },
+      { slug: 'nextjs-templates',      title: 'Templates' },
+      { slug: 'nextjs-loading-ui',     title: 'Loading UI' },
+      { slug: 'nextjs-error-handling', title: 'Error Handling' },
+      { slug: 'nextjs-parallel-routes', title: 'Parallel Routes' },
+      { slug: 'nextjs-intercepting-routes', title: 'Intercepting Routes' },
     ],
   },
   {
@@ -475,10 +488,22 @@ const nextjsCategories: NavCategory[] = [
     title: 'API Layer',
     icon: '⚙️',
     items: [
+      { slug: 'nextjs-api-routes',      title: 'API Routes' },
       { slug: 'nextjs-route-handlers', title: 'Route Handlers' },
       { slug: 'nextjs-rest-apis',      title: 'REST APIs' },
       { slug: 'nextjs-middleware',     title: 'Middleware' },
       { slug: 'nextjs-authentication', title: 'Authentication' },
+    ],
+  },
+  {
+    id: 'nextjs-authentication',
+    title: 'Authentication',
+    icon: 'AUTH',
+    items: [
+      { slug: 'nextjs-nextauth',           title: 'NextAuth' },
+      { slug: 'nextjs-jwt',                title: 'JWT' },
+      { slug: 'nextjs-session-management', title: 'Session Management' },
+      { slug: 'nextjs-protected-routes',   title: 'Protected Routes' },
     ],
   },
   {
@@ -490,6 +515,8 @@ const nextjsCategories: NavCategory[] = [
       { slug: 'nextjs-lazy-loading',       title: 'Lazy Loading' },
       { slug: 'nextjs-streaming',          title: 'Streaming & Suspense' },
       { slug: 'nextjs-metadata-api',       title: 'Metadata API' },
+      { slug: 'nextjs-code-splitting',     title: 'Code Splitting' },
+      { slug: 'nextjs-bundle-optimization', title: 'Bundle Optimization' },
     ],
   },
   {
@@ -514,6 +541,28 @@ const nextjsCategories: NavCategory[] = [
       { slug: 'nextjs-enterprise-architecture', title: 'Enterprise Architecture' },
     ],
   },
+  {
+    id: 'nextjs-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'nextjs-debugging',               title: 'Debugging' },
+      { slug: 'nextjs-monitoring',              title: 'Monitoring' },
+      { slug: 'nextjs-incident-handling',       title: 'Incident Handling' },
+      { slug: 'nextjs-performance-bottlenecks', title: 'Performance Bottlenecks' },
+    ],
+  },
+  {
+    id: 'nextjs-architecture',
+    title: 'Architecture',
+    icon: 'ARC',
+    items: [
+      { slug: 'nextjs-enterprise-architecture',    title: 'Enterprise Architecture' },
+      { slug: 'nextjs-scalability',                title: 'Scalability' },
+      { slug: 'nextjs-folder-structure',           title: 'Folder Structure' },
+      { slug: 'nextjs-multi-tenant-applications',  title: 'Multi-Tenant Applications' },
+    ],
+  },
 ];
 
 const javaCategories: NavCategory[] = [
@@ -527,6 +576,7 @@ const javaCategories: NavCategory[] = [
       { slug: 'java-jdk-jre',      title: 'JDK vs JRE' },
       { slug: 'java-data-types',   title: 'Data Types' },
       { slug: 'java-operators',    title: 'Operators' },
+      { slug: 'java-control-statements', title: 'Control Statements' },
     ],
   },
   {
@@ -539,6 +589,22 @@ const javaCategories: NavCategory[] = [
       { slug: 'java-inheritance',     title: 'Inheritance' },
       { slug: 'java-polymorphism',    title: 'Polymorphism' },
       { slug: 'java-abstraction',     title: 'Abstraction' },
+      { slug: 'java-composition',     title: 'Composition' },
+    ],
+  },
+  {
+    id: 'java-language-features',
+    title: 'Language Features',
+    icon: 'LANG',
+    items: [
+      { slug: 'java-string',          title: 'String' },
+      { slug: 'java-stringbuilder',   title: 'StringBuilder' },
+      { slug: 'java-stringbuffer',    title: 'StringBuffer' },
+      { slug: 'java-wrapper-classes', title: 'Wrapper Classes' },
+      { slug: 'java-autoboxing',      title: 'Autoboxing' },
+      { slug: 'java-enums',           title: 'Enums' },
+      { slug: 'java-records',         title: 'Records' },
+      { slug: 'java-sealed-classes',  title: 'Sealed Classes' },
     ],
   },
   {
@@ -546,6 +612,7 @@ const javaCategories: NavCategory[] = [
     title: 'Collections',
     icon: '📦',
     items: [
+      { slug: 'java-collection-framework', title: 'Collection Framework' },
       { slug: 'java-collections-list', title: 'List' },
       { slug: 'java-collections-set',  title: 'Set' },
       { slug: 'java-collections-map',  title: 'Map' },
@@ -553,6 +620,7 @@ const javaCategories: NavCategory[] = [
       { slug: 'java-linkedlist',       title: 'LinkedList' },
       { slug: 'java-hashmap',          title: 'HashMap' },
       { slug: 'java-hashset',          title: 'HashSet' },
+      { slug: 'java-concurrent-collections', title: 'Concurrent Collections' },
     ],
   },
   {
@@ -560,9 +628,12 @@ const javaCategories: NavCategory[] = [
     title: 'Exception Handling',
     icon: '🚨',
     items: [
+      { slug: 'java-checked-exceptions', title: 'Checked Exceptions' },
+      { slug: 'java-unchecked-exceptions', title: 'Unchecked Exceptions' },
       { slug: 'java-exception-trycatch', title: 'Try Catch' },
       { slug: 'java-exception-throws',   title: 'Throws' },
       { slug: 'java-exception-custom',   title: 'Custom Exceptions' },
+      { slug: 'java-try-with-resources', title: 'Try-With-Resources' },
     ],
   },
   {
@@ -574,6 +645,7 @@ const javaCategories: NavCategory[] = [
       { slug: 'java-functional-interfaces', title: 'Functional Interfaces' },
       { slug: 'java-streams',               title: 'Streams API' },
       { slug: 'java-optional',              title: 'Optional' },
+      { slug: 'java-method-references',     title: 'Method References' },
     ],
   },
   {
@@ -583,9 +655,14 @@ const javaCategories: NavCategory[] = [
     items: [
       { slug: 'java-threads',            title: 'Threads' },
       { slug: 'java-runnable',           title: 'Runnable' },
+      { slug: 'java-callable',           title: 'Callable' },
       { slug: 'java-executor-framework', title: 'Executor Framework' },
       { slug: 'java-synchronization',    title: 'Synchronization' },
+      { slug: 'java-locks',              title: 'Locks' },
+      { slug: 'java-deadlocks',          title: 'Deadlocks' },
+      { slug: 'java-thread-safety',      title: 'Thread Safety' },
       { slug: 'java-completable-future', title: 'CompletableFuture' },
+      { slug: 'java-virtual-threads',    title: 'Virtual Threads' },
     ],
   },
   {
@@ -593,8 +670,13 @@ const javaCategories: NavCategory[] = [
     title: 'Memory Management',
     icon: '🧠',
     items: [
+      { slug: 'java-jvm-memory-model',   title: 'JVM Memory Model' },
+      { slug: 'java-heap',               title: 'Heap' },
+      { slug: 'java-stack',              title: 'Stack' },
       { slug: 'java-heap-stack',         title: 'Heap & Stack' },
+      { slug: 'java-metaspace',          title: 'Metaspace' },
       { slug: 'java-garbage-collection', title: 'Garbage Collection' },
+      { slug: 'java-memory-leaks',       title: 'Memory Leaks' },
     ],
   },
   {
@@ -617,6 +699,65 @@ const javaCategories: NavCategory[] = [
       { slug: 'java-reflection',            title: 'Reflection' },
     ],
   },
+  {
+    id: 'java-jvm-internals',
+    title: 'JVM Internals',
+    icon: 'JVM',
+    items: [
+      { slug: 'java-class-loading', title: 'Class Loading' },
+      { slug: 'java-class-loaders', title: 'Class Loaders' },
+      { slug: 'java-bytecode',      title: 'Bytecode' },
+      { slug: 'java-jit-compiler',  title: 'JIT Compiler' },
+    ],
+  },
+  {
+    id: 'java-performance',
+    title: 'Performance',
+    icon: 'PERF',
+    items: [
+      { slug: 'java-profiling',               title: 'Profiling' },
+      { slug: 'java-optimization',            title: 'Optimization' },
+      { slug: 'java-gc-tuning',               title: 'GC Tuning' },
+      { slug: 'java-high-throughput-systems', title: 'High Throughput Systems' },
+    ],
+  },
+  {
+    id: 'java-design-patterns',
+    title: 'Design Patterns',
+    icon: 'PAT',
+    items: [
+      { slug: 'java-singleton',            title: 'Singleton' },
+      { slug: 'java-factory',              title: 'Factory' },
+      { slug: 'java-builder',              title: 'Builder' },
+      { slug: 'java-strategy',             title: 'Strategy' },
+      { slug: 'java-observer',             title: 'Observer' },
+      { slug: 'java-dependency-injection', title: 'Dependency Injection' },
+    ],
+  },
+  {
+    id: 'java-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'java-memory-issues',               title: 'Memory Issues' },
+      { slug: 'java-high-cpu-usage',              title: 'High CPU Usage' },
+      { slug: 'java-thread-dumps',                title: 'Thread Dumps' },
+      { slug: 'java-heap-dumps',                  title: 'Heap Dumps' },
+      { slug: 'java-out-of-memory-error',         title: 'OutOfMemoryError' },
+      { slug: 'java-performance-troubleshooting', title: 'Performance Troubleshooting' },
+    ],
+  },
+  {
+    id: 'java-architecture',
+    title: 'Architecture',
+    icon: 'ARCH',
+    items: [
+      { slug: 'java-enterprise-architecture', title: 'Enterprise Java Design' },
+      { slug: 'java-scalability',             title: 'Scalability' },
+      { slug: 'java-concurrency-design',      title: 'Concurrency Design' },
+      { slug: 'java-high-availability',       title: 'High Availability' },
+    ],
+  },
 ];
 
 const springCategories: NavCategory[] = [
@@ -625,7 +766,9 @@ const springCategories: NavCategory[] = [
     title: 'Core',
     icon: '🌱',
     items: [
+      { slug: 'spring-framework-basics',  title: 'Spring Framework Basics' },
       { slug: 'spring-introduction',      title: 'Spring Boot Introduction' },
+      { slug: 'spring-boot-architecture', title: 'Spring Boot Architecture' },
       { slug: 'spring-auto-configuration', title: 'Auto Configuration' },
       { slug: 'spring-starters',          title: 'Starter Dependencies' },
       { slug: 'spring-properties',        title: 'Application Properties' },
@@ -640,6 +783,20 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-di',             title: 'Dependency Injection' },
       { slug: 'spring-bean-lifecycle', title: 'Bean Lifecycle' },
       { slug: 'spring-bean-scopes',    title: 'Bean Scopes' },
+      { slug: 'spring-component-scanning', title: 'Component Scanning' },
+    ],
+  },
+  {
+    id: 'spring-stereotypes',
+    title: 'Spring Core',
+    icon: 'CORE',
+    items: [
+      { slug: 'spring-component',             title: '@Component' },
+      { slug: 'spring-service',               title: '@Service' },
+      { slug: 'spring-repository-annotation', title: '@Repository' },
+      { slug: 'spring-controllers',           title: '@Controller' },
+      { slug: 'spring-configuration',         title: '@Configuration' },
+      { slug: 'spring-bean-annotation',       title: '@Bean' },
     ],
   },
   {
@@ -651,6 +808,8 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-request-mapping',    title: 'Request Mapping' },
       { slug: 'spring-request-params',     title: 'Request Params' },
       { slug: 'spring-path-variables',     title: 'Path Variables' },
+      { slug: 'spring-request-lifecycle',  title: 'Request Lifecycle' },
+      { slug: 'spring-validation',         title: 'Validation' },
       { slug: 'spring-exception-handling', title: 'Exception Handling' },
     ],
   },
@@ -660,8 +819,11 @@ const springCategories: NavCategory[] = [
     icon: '🗄️',
     items: [
       { slug: 'spring-data-jpa',       title: 'Spring Data JPA' },
+      { slug: 'spring-hibernate',      title: 'Hibernate' },
       { slug: 'spring-entity-mapping', title: 'Entity Mapping' },
       { slug: 'spring-repositories',   title: 'Repositories' },
+      { slug: 'spring-jpql',           title: 'JPQL' },
+      { slug: 'spring-native-queries', title: 'Native Queries' },
       { slug: 'spring-pagination',     title: 'Pagination' },
       { slug: 'spring-auditing',       title: 'Auditing' },
     ],
@@ -685,6 +847,8 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-authentication', title: 'Authentication' },
       { slug: 'spring-authorization',  title: 'Authorization' },
       { slug: 'spring-jwt',            title: 'JWT' },
+      { slug: 'spring-oauth2',         title: 'OAuth2' },
+      { slug: 'spring-role-based-access', title: 'Role Based Access' },
     ],
   },
   {
@@ -695,6 +859,7 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-unit-testing',        title: 'Unit Testing' },
       { slug: 'spring-integration-testing', title: 'Integration Testing' },
       { slug: 'spring-mockmvc',             title: 'MockMvc' },
+      { slug: 'spring-testcontainers',      title: 'Testcontainers' },
     ],
   },
   {
@@ -706,6 +871,29 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-api-gateway',           title: 'API Gateway' },
       { slug: 'spring-service-discovery',     title: 'Service Discovery' },
       { slug: 'spring-config-server',         title: 'Config Server' },
+      { slug: 'spring-circuit-breaker',       title: 'Circuit Breaker' },
+      { slug: 'spring-feign-client',          title: 'Feign Client' },
+      { slug: 'spring-distributed-systems',   title: 'Distributed Systems' },
+    ],
+  },
+  {
+    id: 'spring-caching',
+    title: 'Caching',
+    icon: 'CACHE',
+    items: [
+      { slug: 'spring-cache',            title: 'Spring Cache' },
+      { slug: 'spring-redis',            title: 'Redis' },
+      { slug: 'spring-cache-strategies', title: 'Cache Strategies' },
+    ],
+  },
+  {
+    id: 'spring-messaging',
+    title: 'Messaging',
+    icon: 'MSG',
+    items: [
+      { slug: 'spring-kafka',                     title: 'Kafka' },
+      { slug: 'spring-rabbitmq',                  title: 'RabbitMQ' },
+      { slug: 'spring-event-driven-architecture', title: 'Event Driven Architecture' },
     ],
   },
   {
@@ -718,6 +906,65 @@ const springCategories: NavCategory[] = [
       { slug: 'spring-actuator',           title: 'Actuator' },
       { slug: 'spring-monitoring',         title: 'Monitoring' },
       { slug: 'spring-performance-tuning', title: 'Performance Tuning' },
+    ],
+  },
+  {
+    id: 'spring-performance',
+    title: 'Performance',
+    icon: 'PERF',
+    items: [
+      { slug: 'spring-performance-optimization', title: 'Performance Optimization' },
+      { slug: 'spring-connection-pooling',       title: 'Connection Pooling' },
+      { slug: 'spring-lazy-loading',             title: 'Lazy Loading' },
+      { slug: 'spring-n-plus-one-problems',      title: 'N+1 Problems' },
+      { slug: 'spring-jvm-performance',          title: 'JVM Performance' },
+    ],
+  },
+  {
+    id: 'spring-observability',
+    title: 'Observability',
+    icon: 'OBS',
+    items: [
+      { slug: 'spring-actuator',            title: 'Spring Actuator' },
+      { slug: 'spring-logging',             title: 'Logging' },
+      { slug: 'spring-metrics',             title: 'Metrics' },
+      { slug: 'spring-monitoring',          title: 'Monitoring' },
+      { slug: 'spring-distributed-tracing', title: 'Distributed Tracing' },
+    ],
+  },
+  {
+    id: 'spring-deployment',
+    title: 'Deployment',
+    icon: 'DEPLOY',
+    items: [
+      { slug: 'spring-docker',                    title: 'Docker' },
+      { slug: 'spring-kubernetes',                title: 'Kubernetes' },
+      { slug: 'spring-ci-cd',                     title: 'CI/CD' },
+      { slug: 'spring-environment-configuration', title: 'Environment Configuration' },
+    ],
+  },
+  {
+    id: 'spring-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'spring-memory-issues',         title: 'Memory Issues' },
+      { slug: 'spring-high-cpu',              title: 'High CPU' },
+      { slug: 'spring-slow-apis',             title: 'Slow APIs' },
+      { slug: 'spring-database-bottlenecks',  title: 'Database Bottlenecks' },
+      { slug: 'spring-production-incidents',  title: 'Production Incidents' },
+    ],
+  },
+  {
+    id: 'spring-architecture',
+    title: 'Architecture',
+    icon: 'ARCH',
+    items: [
+      { slug: 'spring-enterprise-architecture', title: 'Enterprise Spring Boot' },
+      { slug: 'spring-scalability',             title: 'Scalability' },
+      { slug: 'spring-security-design',         title: 'Security Design' },
+      { slug: 'spring-high-availability',       title: 'High Availability' },
+      { slug: 'spring-resiliency-patterns',     title: 'Resiliency Patterns' },
     ],
   },
 ];
@@ -1263,7 +1510,7 @@ export const technologies: TechSection[] = [
     icon: '▲',
     color: '#ffffff',
     description: 'Full-stack React with the App Router — Server Components, SSR, SSG, ISR, Route Handlers, middleware, and enterprise architecture.',
-    topicCount: 31,
+    topicCount: 58,
     active: true,
     categories: nextjsCategories,
   },
@@ -1273,7 +1520,7 @@ export const technologies: TechSection[] = [
     icon: '☕',
     color: '#f89820',
     description: 'Java fundamentals, OOP, Collections, Streams, Concurrency, and JVM internals — taught like a senior backend engineer.',
-    topicCount: 35,
+    topicCount: 87,
     active: true,
     categories: javaCategories,
   },
@@ -1283,7 +1530,7 @@ export const technologies: TechSection[] = [
     icon: '🌱',
     color: '#6db33f',
     description: 'Spring Boot from dependency injection to REST APIs, JPA, Security, microservices, and production — taught like a senior backend architect.',
-    topicCount: 38,
+    topicCount: 83,
     active: true,
     categories: springCategories,
   },

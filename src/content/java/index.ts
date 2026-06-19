@@ -30,6 +30,7 @@ import { javaFileApi, javaNio } from './filehandling';
 
 // Advanced
 import { javaGenerics, javaComparableComparator, javaSerialization, javaReflection } from './advanced';
+import { javaExpandedTopics } from './expanded-topics';
 
 export const javaContentMap: Record<string, TopicContent> = {
   // Fundamentals
@@ -86,4 +87,7 @@ export const javaContentMap: Record<string, TopicContent> = {
   'java-comparable-comparator':  javaComparableComparator,
   'java-serialization':          javaSerialization,
   'java-reflection':             javaReflection,
+
+  // Expanded
+  ...javaExpandedTopics,
 };

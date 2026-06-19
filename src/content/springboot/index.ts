@@ -55,6 +55,7 @@ import { springProfiles }           from './production/profiles';
 import { springActuator }           from './production/actuator';
 import { springMonitoring }         from './production/monitoring';
 import { springPerformanceTuning }  from './production/performance-tuning';
+import { springExpandedTopics }     from './expanded-topics';
 
 export const springContentMap: Record<string, TopicContent> = {
   // Core
@@ -111,4 +112,7 @@ export const springContentMap: Record<string, TopicContent> = {
   'spring-actuator':            springActuator,
   'spring-monitoring':          springMonitoring,
   'spring-performance-tuning':  springPerformanceTuning,
+
+  // Expanded
+  ...springExpandedTopics,
 };

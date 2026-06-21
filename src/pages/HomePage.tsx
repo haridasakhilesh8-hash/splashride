@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import { useTech } from '../lib/TechContext';
+import { technologyCategoryGroups } from '../lib/catalogOrder';
 import { technologies } from '../lib/navigation';
 import { absoluteUrl } from '../lib/seo';
 import { getActiveInterviewPrepSections, getInterviewPrepStats } from '../content/interview-prep';
@@ -445,43 +446,41 @@ export default function HomePage() {
     { icon: <Rocket size={18} />, title: 'To career growth', desc: 'Senior-level thinking' },
   ];
 
-  const ecosystemDomains = [
-    {
-      title: 'Frontend',
-      desc: 'Modern UI engineering, rendering, routing, state, performance, and testing.',
-      icon: <Code size={20} />,
-      techIds: ['react', 'nextjs'],
-      accent: '#2563eb',
-    },
-    {
-      title: 'Backend',
-      desc: 'Core language depth, APIs, persistence, security, transactions, and production systems.',
-      icon: <Server size={20} />,
-      techIds: ['java', 'springboot'],
-      accent: '#16a34a',
-    },
-    {
-      title: 'Cloud & DevOps',
-      desc: 'Cloud platforms, containers, orchestration, CI/CD, observability, and operations.',
-      icon: <Cloud size={20} />,
-      techIds: ['aws', 'azure', 'docker', 'kubernetes'],
-      accent: '#7c3aed',
-    },
-    {
-      title: 'AI Engineering',
-      desc: 'LLM foundations, prompt design, RAG, vector databases, agents, evaluation, and production AI systems.',
-      icon: <Sparkles size={20} />,
-      techIds: ['ai-llm'],
-      accent: '#8b5cf6',
-    },
-    {
-      title: 'Enterprise CMS',
+  const ecosystemDomainDetails = {
+    'Enterprise CMS': {
       desc: 'Enterprise and headless CMS learning across AEM, Contentful, Sitecore, architecture, workflows, modeling, and delivery.',
       icon: <Building2 size={20} />,
-      techIds: ['aem', 'contentful', 'sitecore'],
       accent: '#f97316',
     },
-  ];
+    Frontend: {
+      desc: 'Modern UI engineering, rendering, routing, state, performance, and testing.',
+      icon: <Code size={20} />,
+      accent: '#2563eb',
+    },
+    Backend: {
+      desc: 'Core language depth, APIs, persistence, security, transactions, and production systems.',
+      icon: <Server size={20} />,
+      accent: '#16a34a',
+    },
+    'Cloud & DevOps': {
+      desc: 'Cloud platforms, containers, orchestration, CI/CD, observability, and operations.',
+      icon: <Cloud size={20} />,
+      accent: '#7c3aed',
+    },
+    AI: {
+      desc: 'LLM foundations, prompt design, RAG, vector databases, agents, evaluation, and production AI systems.',
+      icon: <Sparkles size={20} />,
+      accent: '#8b5cf6',
+    },
+  } as const;
+
+  const ecosystemDomains = technologyCategoryGroups.map((group) => ({
+    title: group.label,
+    desc: ecosystemDomainDetails[group.label].desc,
+    icon: ecosystemDomainDetails[group.label].icon,
+    techIds: group.technologyIds,
+    accent: ecosystemDomainDetails[group.label].accent,
+  }));
 
   const careerGoals = [
     {

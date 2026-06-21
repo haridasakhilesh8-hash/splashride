@@ -11,6 +11,7 @@ import { sitecoreInterviewPrep } from './sitecore';
 import { springBootInterviewPrep } from './spring-boot';
 import { azureInterviewPrep } from './azure';
 import type { InterviewPrepQuestion, InterviewPrepSection } from './types';
+import { sortByInterviewPrepTechnologyOrder } from '../../lib/catalogOrder';
 
 export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
@@ -32,7 +33,7 @@ export function getInterviewPrepSection(technologyId: string): InterviewPrepSect
 }
 
 export function getActiveInterviewPrepSections(): InterviewPrepSection[] {
-  return interviewPrepSections;
+  return sortByInterviewPrepTechnologyOrder(interviewPrepSections);
 }
 
 export function getAllInterviewQuestions(): InterviewPrepQuestion[] {

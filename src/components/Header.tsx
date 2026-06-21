@@ -4,7 +4,8 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import { useTech } from '../lib/TechContext';
-import { technologies } from '../lib/navigation';
+import { getTechById, technologies } from '../lib/navigation';
+import { technologyCategoryGroups } from '../lib/catalogOrder';
 import { getTechnologyPath } from '../lib/routes';
 import { getActiveInterviewPrepSections } from '../content/interview-prep';
 import { careerRoadmaps } from '../content/careerPaths';
@@ -28,26 +29,52 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const headerActiveColor = '#38bdf8';
   const pathname = location.pathname;
 
-  const technologyGroups = [
-    { label: 'Frontend', techIds: ['react', 'nextjs'] },
-    { label: 'Backend', techIds: ['java', 'springboot'] },
-    { label: 'Cloud', techIds: ['aws', 'azure', 'docker', 'kubernetes'] },
-    { label: 'Enterprise', techIds: ['aem', 'contentful', 'sitecore'] },
-    { label: 'AI', techIds: ['ai-llm'] },
-  ];
+  const technologyGroups = technologyCategoryGroups.map((group) => ({
+    label: group.label,
+    techIds: group.technologyIds,
+  }));
   const interviewPrepSections = getActiveInterviewPrepSections();
-  const interviewPrepGroups = [
-    { label: 'Enterprise CMS', techIds: ['aem', 'contentful', 'sitecore'] },
-    { label: 'Frontend', techIds: ['react', 'nextjs'] },
-    { label: 'Backend', techIds: ['core-java', 'spring-boot'] },
-    { label: 'Cloud & DevOps', techIds: ['aws', 'azure', 'docker', 'kubernetes'] },
-    { label: 'AI', techIds: ['ai-llm'] },
-  ];
+  const interviewPrepGroups = technologyCategoryGroups.map((group) => ({
+    label: group.label,
+    techIds: group.interviewPrepTechnologyIds,
+  }));
   const careerPathGroups = [
-    { label: 'Developer Roles', slugs: ['frontend-engineer', 'backend-engineer', 'full-stack-java'] },
-    { label: 'Enterprise CMS Roles', slugs: ['aem-developer', 'contentful-developer', 'sitecore-developer'] },
-    { label: 'Cloud & DevOps Roles', slugs: ['cloud-engineer', 'aws-engineer', 'azure-engineer', 'devops-engineer'] },
-    { label: 'AI Roles', slugs: ['ai-engineer'] },
+    {
+      label: 'Enterprise CMS',
+      items: [
+        { slug: 'aem-developer', technologyId: 'aem' },
+        { slug: 'contentful-developer', technologyId: 'contentful' },
+        { slug: 'sitecore-developer', technologyId: 'sitecore' },
+      ],
+    },
+    {
+      label: 'Frontend',
+      items: [
+        { slug: 'frontend-engineer', technologyId: 'react' },
+      ],
+    },
+    {
+      label: 'Backend',
+      items: [
+        { slug: 'backend-engineer', technologyId: 'java' },
+        { slug: 'full-stack-java', technologyId: 'springboot' },
+      ],
+    },
+    {
+      label: 'Cloud & DevOps',
+      items: [
+        { slug: 'cloud-engineer', technologyId: 'aws' },
+        { slug: 'aws-engineer', technologyId: 'aws' },
+        { slug: 'azure-engineer', technologyId: 'azure' },
+        { slug: 'devops-engineer', technologyId: 'docker' },
+      ],
+    },
+    {
+      label: 'AI',
+      items: [
+        { slug: 'ai-engineer', technologyId: 'ai-llm' },
+      ],
+    },
   ];
   const interviewPrepSectionMap = new Map(interviewPrepSections.map((section) => [section.technologyId, section] as const));
   const careerRoadmapMap = new Map(careerRoadmaps.map((roadmap) => [roadmap.slug, roadmap] as const));
@@ -90,6 +117,57 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
 
   const toggleDropdown = (dropdown: 'technologies' | 'interview-prep' | 'career-paths') => {
     setOpenDropdown((current) => current === dropdown ? null : dropdown);
+  };
+
+  const compactMenuContainerStyle: CSSProperties = {
+    position: 'absolute',
+    top: 'calc(100% + 8px)',
+    left: 0,
+    width: '320px',
+    background: 'var(--color-bg-primary)',
+    border: '1px solid var(--color-border)',
+    borderRadius: '10px',
+    boxShadow: 'var(--shadow-popup)',
+    padding: '10px',
+    zIndex: 100,
+  };
+
+  const compactMenuHeaderActionStyle: CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    textDecoration: 'none',
+    background: 'var(--color-bg-secondary)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-text-primary)',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    padding: '7px 9px',
+    fontSize: '0.78rem',
+    fontWeight: 600,
+  };
+
+  const compactGroupLabelStyle: CSSProperties = {
+    margin: '0 0 6px',
+    fontSize: '0.65rem',
+    fontWeight: 700,
+    color: 'var(--color-text-muted)',
+    letterSpacing: '0.08em',
+    textTransform: 'uppercase',
+  };
+
+  const compactPillLinkStyle: CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '6px',
+    textDecoration: 'none',
+    background: 'var(--color-bg-secondary)',
+    border: '1px solid var(--color-border)',
+    color: 'var(--color-text-primary)',
+    borderRadius: '8px',
+    cursor: 'pointer',
+    padding: '7px 9px',
+    fontSize: '0.78rem',
+    fontWeight: 600,
   };
 
   const closeDropdowns = () => {
@@ -236,53 +314,25 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           <div
             className="nav-dropdown-menu"
             style={{
-              position: 'absolute',
-              top: 'calc(100% + 8px)',
-              left: 0,
-              width: '300px',
-              background: 'var(--color-bg-primary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '10px',
-              boxShadow: 'var(--shadow-popup)',
-              padding: '10px',
+              ...compactMenuContainerStyle,
               opacity: openDropdown === 'technologies' ? 1 : 0,
               pointerEvents: openDropdown === 'technologies' ? 'auto' : 'none',
               transform: openDropdown === 'technologies' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
-              zIndex: 100,
             }}
           >
             <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
               <button
                 type="button"
                 onClick={() => scrollToHomeSection('technology-cards')}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  textDecoration: 'none',
-                  background: 'var(--color-bg-secondary)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-primary)',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  padding: '7px 9px',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                }}
+                style={compactMenuHeaderActionStyle}
               >
                 View All Technologies
               </button>
             </div>
             {technologyGroups.map(group => (
               <div key={group.label} style={{ padding: '6px 0', borderBottom: group.label === 'AI' ? 'none' : '1px solid var(--color-border)' }}>
-                <p style={{
-                  margin: '0 0 6px',
-                  fontSize: '0.65rem',
-                  fontWeight: 700,
-                  color: 'var(--color-text-muted)',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}>
+                <p style={compactGroupLabelStyle}>
                   {group.label}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
@@ -299,20 +349,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                           setActiveTechId(tech.id);
                           window.scrollTo(0, 0);
                         }}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          textDecoration: 'none',
-                          background: 'var(--color-bg-secondary)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-text-primary)',
-                          borderRadius: '8px',
-                          cursor: 'pointer',
-                          padding: '7px 9px',
-                          fontSize: '0.78rem',
-                          fontWeight: 600,
-                        }}
+                        style={compactPillLinkStyle}
                       >
                         <span>{tech.icon}</span>
                         {tech.label}
@@ -353,20 +390,11 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           <div
             className="nav-dropdown-menu"
             style={{
-              position: 'absolute',
-              top: 'calc(100% + 8px)',
-              left: 0,
-              width: '300px',
-              background: 'var(--color-bg-primary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '10px',
-              boxShadow: 'var(--shadow-popup)',
-              padding: '10px',
+              ...compactMenuContainerStyle,
               opacity: openDropdown === 'interview-prep' ? 1 : 0,
               pointerEvents: openDropdown === 'interview-prep' ? 'auto' : 'none',
               transform: openDropdown === 'interview-prep' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
-              zIndex: 100,
             }}
           >
             <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
@@ -377,17 +405,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                   window.scrollTo(0, 0);
                 }}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  textDecoration: 'none',
-                  background: 'var(--color-bg-secondary)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-primary)',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  padding: '7px 9px',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
+                  ...compactMenuHeaderActionStyle,
                   marginBottom: '6px',
                 }}
               >
@@ -402,20 +420,14 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                   borderBottom: index === interviewPrepGroups.length - 1 ? 'none' : '1px solid var(--color-border)',
                 }}
               >
-                <p style={{
-                  margin: '0 0 6px',
-                  fontSize: '0.65rem',
-                  fontWeight: 700,
-                  color: 'var(--color-text-muted)',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}>
+                <p style={compactGroupLabelStyle}>
                   {group.label}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {group.techIds.map((techId) => {
                     const section = interviewPrepSectionMap.get(techId);
                     if (!section) return null;
+                    const technology = getTechById(section.technologyId);
 
                     return (
                       <Link
@@ -426,21 +438,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                           setActiveTechId(section.technologyId);
                           window.scrollTo(0, 0);
                         }}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          textDecoration: 'none',
-                          background: 'var(--color-bg-secondary)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-text-primary)',
-                          borderRadius: '8px',
-                          cursor: 'pointer',
-                          padding: '7px 9px',
-                          fontSize: '0.78rem',
-                          fontWeight: 600,
-                        }}
+                        style={compactPillLinkStyle}
                       >
+                        <span>{technology?.icon ?? section.technologyLabel.slice(0, 2).toUpperCase()}</span>
                         {section.technologyLabel}
                       </Link>
                     );
@@ -479,20 +479,11 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           <div
             className="nav-dropdown-menu"
             style={{
-              position: 'absolute',
-              top: 'calc(100% + 8px)',
-              left: 0,
-              width: '300px',
-              background: 'var(--color-bg-primary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '10px',
-              boxShadow: 'var(--shadow-popup)',
-              padding: '10px',
+              ...compactMenuContainerStyle,
               opacity: openDropdown === 'career-paths' ? 1 : 0,
               pointerEvents: openDropdown === 'career-paths' ? 'auto' : 'none',
               transform: openDropdown === 'career-paths' ? 'translateY(0)' : 'translateY(-4px)',
               transition: 'opacity 0.15s, transform 0.15s',
-              zIndex: 100,
             }}
           >
             <div style={{ padding: '6px 0', borderBottom: '1px solid var(--color-border)' }}>
@@ -502,19 +493,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                   closeDropdowns();
                   window.scrollTo(0, 0);
                 }}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  textDecoration: 'none',
-                  background: 'var(--color-bg-secondary)',
-                  border: '1px solid var(--color-border)',
-                  color: 'var(--color-text-primary)',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  padding: '7px 9px',
-                  fontSize: '0.78rem',
-                  fontWeight: 600,
-                }}
+                style={compactMenuHeaderActionStyle}
               >
                 View All Career Paths
               </Link>
@@ -527,20 +506,14 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                   borderBottom: index === careerPathGroups.length - 1 ? 'none' : '1px solid var(--color-border)',
                 }}
               >
-                <p style={{
-                  margin: '0 0 6px',
-                  fontSize: '0.65rem',
-                  fontWeight: 700,
-                  color: 'var(--color-text-muted)',
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                }}>
+                <p style={compactGroupLabelStyle}>
                   {group.label}
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                  {group.slugs.map((slug) => {
-                    const roadmap = careerRoadmapMap.get(slug);
+                  {group.items.map((item) => {
+                    const roadmap = careerRoadmapMap.get(item.slug);
                     if (!roadmap) return null;
+                    const technology = getTechById(item.technologyId);
 
                     return (
                       <Link
@@ -550,20 +523,9 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
                           closeDropdowns();
                           window.scrollTo(0, 0);
                         }}
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          textDecoration: 'none',
-                          background: 'var(--color-bg-secondary)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-text-primary)',
-                          borderRadius: '8px',
-                          cursor: 'pointer',
-                          padding: '7px 9px',
-                          fontSize: '0.78rem',
-                          fontWeight: 600,
-                        }}
+                        style={compactPillLinkStyle}
                       >
+                        <span>{technology?.icon ?? roadmap.icon}</span>
                         {roadmap.shortTitle}
                       </Link>
                     );

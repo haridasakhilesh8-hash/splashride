@@ -597,6 +597,253 @@ const topicSpecs: TopicSpec[] = [
   },
 ];
 
+function defaultConcern(topicGroup: string, category: string) {
+  switch (topicGroup) {
+    case 'AI Fundamentals':
+      return `choosing where ${category} adds real product value`;
+    case 'Python Foundations':
+      return `making ${category} reliable enough for production AI workflows`;
+    case 'Machine Learning':
+      return `using ${category} with measurable quality and operational confidence`;
+    case 'Deep Learning':
+      return `understanding how ${category} changes model behavior, latency, and supportability`;
+    case 'LLM Foundations':
+      return `using ${category} with the right balance of quality, cost, and control`;
+    case 'Prompt Engineering':
+      return `making ${category} consistent, measurable, and safe in production`;
+    case 'RAG':
+      return `keeping ${category} grounded, relevant, and supportable for real users`;
+    case 'Vector Databases':
+      return `operating ${category} with relevance, filtering, and freshness under control`;
+    case 'AI Applications':
+      return `turning ${category} into a trustworthy user-facing capability`;
+    case 'Agents':
+      return `keeping ${category} observable, bounded, and useful under pressure`;
+    case 'AI Architecture':
+      return `using ${category} to shape a system that teams can actually operate`;
+    case 'Production AI':
+      return `using ${category} to maintain quality, trust, and operational discipline`;
+    case 'Interview Prep':
+      return `explaining ${category} with practical trade-offs instead of buzzwords`;
+    default:
+      return `using ${category} with clear trade-offs in production AI systems`;
+  }
+}
+
+function defaultRelatedTopics(topicGroup: string, category: string): string[] {
+  switch (topicGroup) {
+    case 'AI Fundamentals':
+      return ['AI System Design', 'Evaluation'];
+    case 'Python Foundations':
+      return ['Data Processing', 'Monitoring'];
+    case 'Machine Learning':
+      return ['Evaluation', 'AI System Design'];
+    case 'Deep Learning':
+      return ['Transformers', 'Context Windows'];
+    case 'LLM Foundations':
+      return ['Tokens', 'Evaluation'];
+    case 'Prompt Engineering':
+      return ['Evaluation', 'GPT Models'];
+    case 'RAG':
+      return ['Retrieval Augmented Generation', 'Vector Databases'];
+    case 'Vector Databases':
+      return ['Embeddings', 'Retrieval Augmented Generation'];
+    case 'AI Applications':
+      return ['AI System Design', 'Monitoring'];
+    case 'Agents':
+      return ['Agents', 'Monitoring'];
+    case 'AI Architecture':
+      return ['Enterprise AI', 'Evaluation'];
+    case 'Production AI':
+      return ['Monitoring', 'Evaluation'];
+    case 'Interview Prep':
+      return ['AI Architecture', 'Production Issues'];
+    default:
+      return ['Evaluation', 'AI System Design'];
+  }
+}
+
+function createFallbackTopicSpec(category: string, topicGroup: string): TopicSpec {
+  const concern = defaultConcern(topicGroup, category);
+
+  return {
+    category,
+    topicGroup,
+    concern,
+    relatedTopics: defaultRelatedTopics(topicGroup, category),
+    profile: {
+      mechanism: `${category} is part of the applied AI system, so teams need to understand how it affects product behavior, reliability, and supportability rather than treating it as isolated model vocabulary.`,
+      implementation: `Design ${category} with clear task boundaries, measurable quality targets, observable runtime behavior, and fallback paths for when the AI system becomes uncertain or expensive.`,
+      failure: `${category} is discussed as theory, but no one can prove how it behaves in production or how it should be supported when quality drops`,
+      decision: `how much complexity ${category} deserves compared with simpler, cheaper, or safer alternatives`,
+      incident: `a production feature relying on ${category} starts showing quality drift, latency spikes, or user-trust issues and the team must isolate what changed`,
+      evidence: ['evaluation results and regressions', 'runtime traces with latency and cost signals', 'user feedback, fallback, and escalation patterns'],
+    },
+  };
+}
+
+const topicSpecsByCategory = new Map(topicSpecs.map((spec) => [spec.category, spec] as const));
+
+const resolvedTopicSpecs: TopicSpec[] = aiLlmInterviewPrepTopicGroups.flatMap((group) => (
+  group.topics.map((topic) => topicSpecsByCategory.get(topic.category) ?? createFallbackTopicSpec(topic.category, group.title))
+));
+
+const concernOverrides: Partial<Record<string, string[]>> = {
+  'AI Basics': [
+    'turning model capability into a real user workflow',
+    'deciding when AI should not be used at all',
+    'explaining AI scope and limitations to product stakeholders',
+  ],
+  'ML vs DL vs LLM': [
+    'choosing the right model family for the job',
+    'balancing determinism against flexibility and cost',
+    'avoiding expensive LLM usage for simpler predictive tasks',
+  ],
+  'Generative AI': [
+    'handling useful generation without losing trust',
+    'grounding generated output before users act on it',
+    'designing safe fallback behavior for uncertain outputs',
+  ],
+  'Agents': [
+    'tool use and iterative task execution under control',
+    'preventing looping behavior and runaway cost',
+    'choosing when an agent is unnecessary complexity',
+  ],
+  'Retrieval Augmented Generation': [
+    'grounding model responses in current, permission-aware knowledge',
+    'measuring retrieval quality before blaming the model',
+    'handling stale, incomplete, or unauthorized context safely',
+  ],
+  'Vector Databases': [
+    'operating semantic search infrastructure as part of the product',
+    'keeping relevance, freshness, and filtering under control',
+    'proving retrieval quality with real user questions',
+  ],
+  'Evaluation': [
+    'proving quality changes before users discover regressions',
+    'choosing representative evaluation cases instead of vanity benchmarks',
+    'using release gates before prompts, models, or retrieval changes ship',
+  ],
+  'Monitoring': [
+    'seeing latency, cost, quality, and retrieval drift together',
+    'isolating whether failures come from retrieval, prompts, tools, or the model',
+    'capturing enough evidence to support incidents without leaking sensitive data',
+  ],
+  'Security': [
+    'protecting data, prompts, and tool boundaries',
+    'enforcing permission-aware retrieval and action controls',
+    'defending the AI path with the same rigor as the rest of the product',
+  ],
+  'Enterprise AI': [
+    'governance, adoption, and long-term operating model',
+    'standardizing ownership and release controls across many teams',
+    'balancing platform enablement with security and legal constraints',
+  ],
+  'AI Architecture': [
+    'communicating end-to-end design with trade-offs',
+    'choosing the simplest architecture that still meets quality goals',
+    'defending operational ownership, fallback, and evaluation loops',
+  ],
+  'Production Issues': [
+    'debugging the real boundary instead of blaming the model',
+    'isolating recent changes across prompts, retrieval, tools, and providers',
+    'restoring user trust while preserving incident evidence',
+  ],
+};
+
+function defaultConcernVariants(topicGroup: string, category: string): string[] {
+  switch (topicGroup) {
+    case 'AI Fundamentals':
+      return [
+        `choosing where ${category} adds real product value`,
+        `explaining ${category} through user outcomes instead of hype`,
+        `avoiding demo-first design when ${category} enters production`,
+      ];
+    case 'Python Foundations':
+      return [
+        `making ${category} reliable enough for production AI workflows`,
+        `turning ${category} into reproducible, testable engineering assets`,
+        `debugging data and runtime issues before they reach users`,
+      ];
+    case 'Machine Learning':
+      return [
+        `using ${category} with measurable quality and operational confidence`,
+        `proving offline gains actually help the production task`,
+        `choosing ${category} only when it improves the business workflow`,
+      ];
+    case 'Deep Learning':
+      return [
+        `understanding how ${category} changes model behavior, latency, and supportability`,
+        `explaining ${category} with trade-offs instead of buzzwords`,
+        `using ${category} where the extra complexity is justified`,
+      ];
+    case 'LLM Foundations':
+      return [
+        `using ${category} with the right balance of quality, cost, and control`,
+        `handling provider behavior, context, and output reliability`,
+        `governing ${category} so upgrades stop being guesswork`,
+      ];
+    case 'Prompt Engineering':
+      return [
+        `making ${category} consistent, measurable, and safe in production`,
+        `testing ${category} changes before they reach users`,
+        `combining ${category} with structure, validation, and fallback behavior`,
+      ];
+    case 'RAG':
+      return [
+        `keeping ${category} grounded, relevant, and supportable for real users`,
+        `measuring retrieval quality before changing prompts or models`,
+        `using ${category} with permission-aware and freshness-aware context`,
+      ];
+    case 'Vector Databases':
+      return [
+        `operating ${category} with relevance, filtering, and freshness under control`,
+        `choosing ${category} with the right operational model and scale assumptions`,
+        `treating ${category} as one retrieval layer rather than the whole solution`,
+      ];
+    case 'AI Applications':
+      return [
+        `turning ${category} into a trustworthy user-facing capability`,
+        `designing fallback and escalation paths around ${category}`,
+        `proving that ${category} helps a business workflow, not just a demo`,
+      ];
+    case 'Agents':
+      return [
+        `keeping ${category} observable, bounded, and useful under pressure`,
+        `controlling tool usage, memory, and stop conditions around ${category}`,
+        `deciding when ${category} is over-engineering for the task`,
+      ];
+    case 'AI Architecture':
+      return [
+        `using ${category} to shape a system that teams can actually operate`,
+        `connecting ${category} to ownership, evaluation, and release discipline`,
+        `balancing platform flexibility against supportability and governance`,
+      ];
+    case 'Production AI':
+      return [
+        `using ${category} to maintain quality, trust, and operational discipline`,
+        `reducing regressions and surprises after launch`,
+        `making ${category} measurable enough for incident response and improvement`,
+      ];
+    case 'Interview Prep':
+      return [
+        `explaining ${category} with practical trade-offs instead of buzzwords`,
+        `answering ${category} questions through real production scenarios`,
+        `connecting ${category} to architecture, support, and business risk`,
+      ];
+    default:
+      return [
+        `using ${category} with clear trade-offs in production AI systems`,
+        `making ${category} measurable and supportable`,
+        `explaining ${category} through real user and system impact`,
+      ];
+  }
+}
+
+function getConcernVariants(spec: TopicSpec) {
+  return concernOverrides[spec.category] ?? [spec.concern, ...defaultConcernVariants(spec.topicGroup, spec.category).slice(1)];
+}
+
 const intents: Intent[] = ['concept', 'implementation', 'troubleshooting', 'architecture'];
 
 function questionText(intent: Intent, spec: TopicSpec) {
@@ -623,7 +870,7 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
         : `The key architecture decision for ${spec.category} is ${spec.profile.decision}. The answer must balance quality, trust, latency, cost, and operational ownership.`;
 
   return {
-    id: `ai-llm-${slugify(spec.category)}-${intent}`,
+    id: `ai-llm-${slugify(spec.category)}-${slugify(spec.concern)}-${intent}`,
     technologyId: 'ai-llm',
     topicGroup: spec.topicGroup,
     category: spec.category,
@@ -671,9 +918,15 @@ function buildQuestion(spec: TopicSpec, intent: Intent, index: number): Intervie
   };
 }
 
-const questions = topicSpecs.flatMap((spec, specIndex) => intents.map((intent, intentIndex) => (
-  buildQuestion(spec, intent, (specIndex * intents.length) + intentIndex)
-)));
+const questions = resolvedTopicSpecs.flatMap((spec) => {
+  const variants = getConcernVariants(spec);
+  return variants.flatMap((concern, concernIndex) => {
+    const variantSpec: TopicSpec = { ...spec, concern };
+    return intents.map((intent, intentIndex) => (
+      buildQuestion(variantSpec, intent, (concernIndex * intents.length) + intentIndex)
+    ));
+  });
+});
 
 const topicGroups: InterviewPrepTopicGroup[] = aiLlmInterviewPrepTopicGroups.map((group) => ({
   id: group.id,
@@ -684,7 +937,7 @@ const topicGroups: InterviewPrepTopicGroup[] = aiLlmInterviewPrepTopicGroups.map
 
 const questionsPerPage = 10;
 
-const topicMetadata = topicSpecs.map((spec) => {
+const topicMetadata = resolvedTopicSpecs.map((spec) => {
   const topicQuestions = questions.filter((question) => question.category === spec.category);
   return {
     category: spec.category,
@@ -702,7 +955,7 @@ const topicMetadata = topicSpecs.map((spec) => {
   };
 });
 
-const topicPreparationSets = topicSpecs.map((spec) => {
+const topicPreparationSets = resolvedTopicSpecs.map((spec) => {
   const ranked = questions.filter((question) => question.category === spec.category);
   return {
     category: spec.category,
@@ -772,7 +1025,7 @@ export const aiLlmInterviewPrep: InterviewPrepSection = {
   title: 'AI / LLM Engineering Interview Prep',
   description: 'Interview preparation for AI engineers covering prompting, retrieval, embeddings, agents, evaluation, monitoring, enterprise AI architecture, and production support.',
   lastReviewed: 'June 2026',
-  categories: topicSpecs.map((spec) => spec.category),
+  categories: resolvedTopicSpecs.map((spec) => spec.category),
   questionTypes: Object.values(intentTypes),
   experienceLevels: [
     { id: 'beginner', label: 'AI / GenAI Associate', years: '0-2 Years', summary: 'Explain AI fundamentals, prompting, embeddings, and the building blocks of applied AI systems.' },
@@ -785,10 +1038,10 @@ export const aiLlmInterviewPrep: InterviewPrepSection = {
   pagination: { questionsPerPage, ordering: 'most-asked-first' },
   productionScenarios,
   mockInterviewProfiles: [
-    { id: 'beginner', label: 'AI Associate', description: 'Foundations, prompting, embeddings, and basic retrieval concepts.', questionCount: 8, recommendedMinutes: 25 },
-    { id: 'mid', label: 'AI Engineer', description: 'RAG, vector stores, evaluation, chatbots, and applied feature design.', questionCount: 10, recommendedMinutes: 35 },
-    { id: 'senior', label: 'Senior AI Engineer', description: 'Production support, latency, cost, hallucinations, and workflow architecture.', questionCount: 10, recommendedMinutes: 45 },
-    { id: 'architect', label: 'AI Architect', description: 'Enterprise AI, governance, multi-agent trade-offs, and end-to-end platform design.', questionCount: 8, recommendedMinutes: 50 },
+    { id: 'beginner', label: 'AI Associate', description: 'Foundations, prompting, embeddings, and basic retrieval concepts.', questionCount: 10, recommendedMinutes: 30 },
+    { id: 'mid', label: 'AI Engineer', description: 'RAG, vector stores, evaluation, chatbots, and applied feature design.', questionCount: 12, recommendedMinutes: 40 },
+    { id: 'senior', label: 'Senior AI Engineer', description: 'Production support, latency, cost, hallucinations, agents, and workflow architecture.', questionCount: 12, recommendedMinutes: 50 },
+    { id: 'architect', label: 'AI Architect', description: 'Enterprise AI, governance, multi-agent trade-offs, and end-to-end platform design.', questionCount: 10, recommendedMinutes: 60 },
   ],
   rapidRevisionPlans: [
     { id: '15-min', label: '15 Minute Revision', minutes: 15, description: 'Highest-signal RAG, prompting, embeddings, evaluation, and architecture questions.', questionIds: questions.filter((question) => question.isRapidRevision).slice(0, 12).map((question) => question.id) },

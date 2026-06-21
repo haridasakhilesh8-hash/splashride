@@ -14,6 +14,7 @@ import {
   Database,
   ChevronDown,
   ChevronRight,
+  FlaskConical,
   FolderCog,
   Gauge,
   HardDrive,
@@ -52,6 +53,7 @@ const sidebarCategoryIcons = {
   APP: AppWindow,
   ARC: Waypoints,
   ARCH: Waypoints,
+  AUTH: Lock,
   AWS: Cloud,
   API: AppWindow,
   CACHE: HardDrive,
@@ -96,6 +98,7 @@ const sidebarCategoryIcons = {
   CFG: FolderCog,
   K8s: Boxes,
   AKS: Boxes,
+  TST: FlaskConical,
   WRK: Boxes,
 } as const;
 

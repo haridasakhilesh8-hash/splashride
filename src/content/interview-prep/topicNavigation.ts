@@ -1197,8 +1197,19 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'azure-basics', title: 'Azure Basics', category: 'Azure Basics' },
       { slug: 'azure-architecture', title: 'Azure Architecture', category: 'Azure Architecture' },
+      { slug: 'azure-regions', title: 'Azure Regions', category: 'Azure Regions' },
+      { slug: 'availability-zones', title: 'Availability Zones', category: 'Availability Zones' },
+    ],
+  },
+  {
+    id: 'governance',
+    title: 'Governance',
+    topics: [
       { slug: 'resource-groups', title: 'Resource Groups', category: 'Resource Groups' },
       { slug: 'subscription-management', title: 'Subscription Management', category: 'Subscription Management' },
+      { slug: 'management-groups', title: 'Management Groups', category: 'Management Groups' },
+      { slug: 'azure-policy', title: 'Azure Policy', category: 'Azure Policy' },
+      { slug: 'landing-zones', title: 'Landing Zones', category: 'Landing Zones' },
     ],
   },
   {
@@ -1207,7 +1218,11 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'virtual-machines', title: 'Virtual Machines', category: 'Virtual Machines' },
       { slug: 'app-service', title: 'App Service', category: 'App Service' },
+      { slug: 'app-service-plans', title: 'App Service Plans', category: 'App Service Plans' },
+      { slug: 'deployment-slots', title: 'Deployment Slots', category: 'Deployment Slots' },
       { slug: 'functions', title: 'Functions', category: 'Functions' },
+      { slug: 'function-triggers-bindings', title: 'Function Triggers and Bindings', category: 'Function Triggers and Bindings' },
+      { slug: 'durable-functions', title: 'Durable Functions', category: 'Durable Functions' },
       { slug: 'container-apps', title: 'Container Apps', category: 'Container Apps' },
     ],
   },
@@ -1219,6 +1234,17 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'azure-files', title: 'Files', category: 'Azure Files' },
       { slug: 'queues', title: 'Queues', category: 'Queues' },
       { slug: 'tables', title: 'Tables', category: 'Tables' },
+      { slug: 'storage-accounts', title: 'Storage Accounts', category: 'Storage Accounts' },
+      { slug: 'storage-replication', title: 'Storage Replication', category: 'Storage Replication' },
+    ],
+  },
+  {
+    id: 'data',
+    title: 'Data',
+    topics: [
+      { slug: 'sql-database', title: 'Azure SQL Database', category: 'Azure SQL Database' },
+      { slug: 'cosmos-db', title: 'Azure Cosmos DB', category: 'Azure Cosmos DB' },
+      { slug: 'cache-for-redis', title: 'Azure Cache for Redis', category: 'Azure Cache for Redis' },
     ],
   },
   {
@@ -1229,6 +1255,11 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'nsg', title: 'NSG', category: 'NSG' },
       { slug: 'load-balancer', title: 'Load Balancer', category: 'Load Balancer' },
       { slug: 'application-gateway', title: 'Application Gateway', category: 'Application Gateway' },
+      { slug: 'vnet-peering', title: 'VNet Peering', category: 'VNet Peering' },
+      { slug: 'private-endpoints', title: 'Private Endpoints', category: 'Private Endpoints' },
+      { slug: 'private-dns', title: 'Private DNS', category: 'Private DNS' },
+      { slug: 'azure-firewall', title: 'Azure Firewall', category: 'Azure Firewall' },
+      { slug: 'front-door', title: 'Azure Front Door', category: 'Azure Front Door' },
     ],
   },
   {
@@ -1255,6 +1286,15 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'azure-devops', title: 'Azure DevOps', category: 'Azure DevOps' },
       { slug: 'ci-cd', title: 'CI/CD', category: 'CI/CD' },
       { slug: 'infrastructure-as-code', title: 'Infrastructure as Code', category: 'Infrastructure as Code' },
+      { slug: 'bicep', title: 'Bicep', category: 'Bicep' },
+    ],
+  },
+  {
+    id: 'messaging',
+    title: 'Messaging',
+    topics: [
+      { slug: 'service-bus', title: 'Service Bus', category: 'Azure Service Bus' },
+      { slug: 'event-grid', title: 'Event Grid', category: 'Azure Event Grid' },
     ],
   },
   {
@@ -1263,6 +1303,16 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'key-vault', title: 'Key Vault', category: 'Key Vault' },
       { slug: 'defender-for-cloud', title: 'Defender for Cloud', category: 'Defender for Cloud' },
+      { slug: 'security-operations', title: 'Security Operations', category: 'Security Operations' },
+    ],
+  },
+  {
+    id: 'observability',
+    title: 'Observability',
+    topics: [
+      { slug: 'azure-monitor', title: 'Azure Monitor', category: 'Azure Monitor' },
+      { slug: 'log-analytics', title: 'Log Analytics', category: 'Log Analytics' },
+      { slug: 'application-insights', title: 'Application Insights', category: 'Application Insights' },
     ],
   },
   {
@@ -1272,6 +1322,7 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'high-availability', title: 'High Availability', category: 'High Availability' },
       { slug: 'disaster-recovery', title: 'Disaster Recovery', category: 'Disaster Recovery' },
       { slug: 'cost-optimization', title: 'Cost Optimization', category: 'Cost Optimization' },
+      { slug: 'cost-governance', title: 'Cost Governance', category: 'Cost Governance' },
       { slug: 'enterprise-architecture', title: 'Enterprise Architecture', category: 'Enterprise Architecture' },
     ],
   },
@@ -1279,6 +1330,9 @@ export const azureInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     id: 'production-support',
     title: 'Production Support',
     topics: [
+      { slug: 'incident-response', title: 'Incident Response', category: 'Incident Response' },
+      { slug: 'performance-troubleshooting', title: 'Performance Troubleshooting', category: 'Performance Troubleshooting' },
+      { slug: 'operational-excellence', title: 'Operational Excellence', category: 'Operational Excellence' },
       { slug: 'scenario-questions', title: 'Scenario Questions', category: 'Scenario Questions' },
       { slug: 'production-issues', title: 'Production Issues', category: 'Production Issues' },
       { slug: 'architecture-questions', title: 'Architecture Questions', category: 'Architecture Questions' },
@@ -1295,6 +1349,8 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'ai-basics', title: 'AI Basics', category: 'AI Basics' },
       { slug: 'ml-vs-dl-vs-llm', title: 'ML vs DL vs LLM', category: 'ML vs DL vs LLM' },
       { slug: 'generative-ai', title: 'Generative AI', category: 'Generative AI' },
+      { slug: 'ai-use-cases', title: 'AI Use Cases', category: 'AI Use Cases' },
+      { slug: 'ml-lifecycle', title: 'ML Lifecycle', category: 'ML Lifecycle' },
     ],
   },
   {
@@ -1303,6 +1359,7 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'python-for-ai', title: 'Python for AI', category: 'Python for AI' },
       { slug: 'data-processing', title: 'Data Processing', category: 'Data Processing' },
+      { slug: 'data-cleaning', title: 'Data Cleaning', category: 'Data Cleaning' },
     ],
   },
   {
@@ -1311,6 +1368,9 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'supervised-learning', title: 'Supervised Learning', category: 'Supervised Learning' },
       { slug: 'unsupervised-learning', title: 'Unsupervised Learning', category: 'Unsupervised Learning' },
+      { slug: 'feature-engineering', title: 'Feature Engineering', category: 'Feature Engineering' },
+      { slug: 'model-training', title: 'Model Training', category: 'Model Training' },
+      { slug: 'model-evaluation', title: 'Model Evaluation', category: 'Model Evaluation' },
     ],
   },
   {
@@ -1319,6 +1379,7 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     topics: [
       { slug: 'neural-networks', title: 'Neural Networks', category: 'Neural Networks' },
       { slug: 'transformers', title: 'Transformers', category: 'Transformers' },
+      { slug: 'attention-mechanisms', title: 'Attention Mechanisms', category: 'Attention Mechanisms' },
     ],
   },
   {
@@ -1329,6 +1390,8 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'tokens', title: 'Tokens', category: 'Tokens' },
       { slug: 'embeddings', title: 'Embeddings', category: 'Embeddings' },
       { slug: 'context-windows', title: 'Context Windows', category: 'Context Windows' },
+      { slug: 'llm-inference', title: 'LLM Inference', category: 'LLM Inference' },
+      { slug: 'tool-calling', title: 'Tool Calling', category: 'Tool Calling' },
     ],
   },
   {
@@ -1338,6 +1401,9 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'zero-shot', title: 'Zero Shot', category: 'Zero Shot' },
       { slug: 'few-shot', title: 'Few Shot', category: 'Few Shot' },
       { slug: 'chain-of-thought', title: 'Chain of Thought', category: 'Chain of Thought' },
+      { slug: 'system-prompts', title: 'System Prompts', category: 'System Prompts' },
+      { slug: 'prompt-templates', title: 'Prompt Templates', category: 'Prompt Templates' },
+      { slug: 'structured-output', title: 'Structured Output', category: 'Structured Output' },
     ],
   },
   {
@@ -1348,6 +1414,9 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'vector-databases', title: 'Vector Databases', category: 'Vector Databases' },
       { slug: 'chunking', title: 'Chunking', category: 'Chunking' },
       { slug: 'embedding-pipelines', title: 'Embeddings Pipeline', category: 'Embeddings Pipeline' },
+      { slug: 'reranking', title: 'Reranking', category: 'Reranking' },
+      { slug: 'retrieval-evaluation', title: 'Retrieval Evaluation', category: 'Retrieval Evaluation' },
+      { slug: 'hybrid-search', title: 'Hybrid Search', category: 'Hybrid Search' },
     ],
   },
   {
@@ -1357,6 +1426,7 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'pinecone', title: 'Pinecone', category: 'Pinecone' },
       { slug: 'chroma', title: 'Chroma', category: 'Chroma' },
       { slug: 'faiss', title: 'FAISS', category: 'FAISS' },
+      { slug: 'metadata-filtering', title: 'Metadata Filtering', category: 'Metadata Filtering' },
     ],
   },
   {
@@ -1366,6 +1436,17 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'chatbots', title: 'Chatbots', category: 'Chatbots' },
       { slug: 'agents', title: 'Agents', category: 'Agents' },
       { slug: 'knowledge-systems', title: 'Knowledge Systems', category: 'Knowledge Systems' },
+      { slug: 'copilots', title: 'AI Copilots', category: 'AI Copilots' },
+      { slug: 'workflow-automation', title: 'Workflow Automation', category: 'Workflow Automation' },
+    ],
+  },
+  {
+    id: 'agents',
+    title: 'Agents',
+    topics: [
+      { slug: 'agent-memory', title: 'Agent Memory', category: 'Agent Memory' },
+      { slug: 'agent-planning', title: 'Agent Planning', category: 'Agent Planning' },
+      { slug: 'agent-evaluation', title: 'Agent Evaluation', category: 'Agent Evaluation' },
     ],
   },
   {
@@ -1386,6 +1467,11 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
       { slug: 'hallucinations', title: 'Hallucinations', category: 'Hallucinations' },
       { slug: 'cost-optimization', title: 'Cost Optimization', category: 'Cost Optimization' },
       { slug: 'security', title: 'Security', category: 'Security' },
+      { slug: 'llm-observability', title: 'LLM Observability', category: 'LLM Observability' },
+      { slug: 'guardrails', title: 'Guardrails', category: 'Guardrails' },
+      { slug: 'deployment-patterns', title: 'Deployment Patterns', category: 'Deployment Patterns' },
+      { slug: 'caching', title: 'AI Caching', category: 'AI Caching' },
+      { slug: 'rate-limits', title: 'Rate Limits', category: 'Rate Limits' },
     ],
   },
   {

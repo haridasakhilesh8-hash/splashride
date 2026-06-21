@@ -977,6 +977,9 @@ const awsCategories: NavCategory[] = [
     items: [
       { slug: 'aws-overview', title: 'AWS Overview' },
       { slug: 'aws-global-infrastructure', title: 'Global Infrastructure' },
+      { slug: 'aws-regions', title: 'Regions' },
+      { slug: 'aws-availability-zones', title: 'Availability Zones' },
+      { slug: 'aws-edge-locations', title: 'Edge Locations' },
       { slug: 'aws-regions-availability-zones', title: 'Regions & Availability Zones' },
       { slug: 'aws-shared-responsibility-model', title: 'Shared Responsibility Model' },
     ],
@@ -989,6 +992,7 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-ec2', title: 'EC2' },
       { slug: 'aws-auto-scaling', title: 'Auto Scaling' },
       { slug: 'aws-load-balancer', title: 'Load Balancer' },
+      { slug: 'aws-elastic-beanstalk', title: 'Elastic Beanstalk' },
     ],
   },
   {
@@ -999,6 +1003,7 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-s3', title: 'S3' },
       { slug: 'aws-ebs', title: 'EBS' },
       { slug: 'aws-efs', title: 'EFS' },
+      { slug: 'aws-storage-classes', title: 'Storage Classes' },
     ],
   },
   {
@@ -1010,6 +1015,10 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-roles', title: 'Roles' },
       { slug: 'aws-policies', title: 'Policies' },
       { slug: 'aws-mfa', title: 'MFA' },
+      { slug: 'aws-kms', title: 'KMS' },
+      { slug: 'aws-secrets-manager', title: 'Secrets Manager' },
+      { slug: 'aws-cognito', title: 'Cognito' },
+      { slug: 'aws-security-best-practices', title: 'Security Best Practices' },
     ],
   },
   {
@@ -1022,6 +1031,9 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-security-groups', title: 'Security Groups' },
       { slug: 'aws-route-tables', title: 'Route Tables' },
       { slug: 'aws-nat-gateway', title: 'NAT Gateway' },
+      { slug: 'aws-route-53', title: 'Route 53' },
+      { slug: 'aws-nacls', title: 'NACLs' },
+      { slug: 'aws-transit-gateway', title: 'Transit Gateway' },
     ],
   },
   {
@@ -1032,6 +1044,9 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-lambda', title: 'Lambda' },
       { slug: 'aws-api-gateway', title: 'API Gateway' },
       { slug: 'aws-eventbridge', title: 'EventBridge' },
+      { slug: 'aws-step-functions', title: 'Step Functions' },
+      { slug: 'aws-sqs', title: 'SQS' },
+      { slug: 'aws-sns', title: 'SNS' },
     ],
   },
   {
@@ -1040,7 +1055,20 @@ const awsCategories: NavCategory[] = [
     icon: 'DB',
     items: [
       { slug: 'aws-rds', title: 'RDS' },
+      { slug: 'aws-aurora', title: 'Aurora' },
       { slug: 'aws-dynamodb', title: 'DynamoDB' },
+      { slug: 'aws-elasticache', title: 'ElastiCache' },
+    ],
+  },
+  {
+    id: 'aws-containers',
+    title: 'Containers',
+    icon: 'WRK',
+    items: [
+      { slug: 'aws-ecs', title: 'ECS' },
+      { slug: 'aws-eks', title: 'EKS' },
+      { slug: 'aws-fargate', title: 'Fargate' },
+      { slug: 'aws-docker-on-aws', title: 'Docker on AWS' },
     ],
   },
   {
@@ -1050,6 +1078,8 @@ const awsCategories: NavCategory[] = [
     items: [
       { slug: 'aws-cloudwatch', title: 'CloudWatch' },
       { slug: 'aws-cloudtrail', title: 'CloudTrail' },
+      { slug: 'aws-x-ray', title: 'X-Ray' },
+      { slug: 'aws-config', title: 'Config' },
     ],
   },
   {
@@ -1061,6 +1091,7 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-codebuild', title: 'CodeBuild' },
       { slug: 'aws-codedeploy', title: 'CodeDeploy' },
       { slug: 'aws-cloudformation', title: 'CloudFormation' },
+      { slug: 'aws-cdk', title: 'CDK' },
     ],
   },
   {
@@ -1071,7 +1102,20 @@ const awsCategories: NavCategory[] = [
       { slug: 'aws-high-availability', title: 'High Availability' },
       { slug: 'aws-scalability', title: 'Scalability' },
       { slug: 'aws-disaster-recovery', title: 'Disaster Recovery' },
+      { slug: 'aws-multi-region-design', title: 'Multi-Region Design' },
       { slug: 'aws-cost-optimization', title: 'Cost Optimization' },
+    ],
+  },
+  {
+    id: 'aws-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'aws-incident-response', title: 'Incident Response' },
+      { slug: 'aws-performance-troubleshooting', title: 'Performance Troubleshooting' },
+      { slug: 'aws-security-incidents', title: 'Security Incidents' },
+      { slug: 'aws-cost-issues', title: 'AWS Cost Issues' },
+      { slug: 'aws-operational-excellence', title: 'Operational Excellence' },
     ],
   },
 ];
@@ -1080,42 +1124,125 @@ const dockerCategories: NavCategory[] = [
   {
     id: 'docker-fundamentals',
     title: 'Fundamentals',
-    icon: '🐳',
+    icon: 'CORE',
     items: [
       { slug: 'docker-overview', title: 'Docker Overview' },
       { slug: 'docker-containers-vs-virtual-machines', title: 'Containers vs Virtual Machines' },
       { slug: 'docker-architecture', title: 'Docker Architecture' },
+      { slug: 'docker-containerization', title: 'Containerization' },
+      { slug: 'docker-engine', title: 'Docker Engine' },
     ],
   },
   {
     id: 'docker-images-builds',
     title: 'Images & Builds',
-    icon: '📦',
+    icon: 'DEPLOY',
     items: [
       { slug: 'docker-images', title: 'Docker Images' },
       { slug: 'docker-hub', title: 'Docker Hub' },
+      { slug: 'docker-layers', title: 'Layers' },
+      { slug: 'docker-image-optimization', title: 'Image Optimization' },
       { slug: 'docker-dockerfile', title: 'Dockerfile' },
       { slug: 'docker-multi-stage-builds', title: 'Multi-Stage Builds' },
+      { slug: 'docker-image-security', title: 'Image Security' },
+    ],
+  },
+  {
+    id: 'docker-dockerfile',
+    title: 'Dockerfile',
+    icon: 'LANG',
+    items: [
+      { slug: 'docker-entrypoint', title: 'ENTRYPOINT' },
+      { slug: 'docker-cmd', title: 'CMD' },
+      { slug: 'docker-env', title: 'ENV' },
+      { slug: 'docker-arg', title: 'ARG' },
+      { slug: 'docker-copy', title: 'COPY' },
+      { slug: 'docker-add', title: 'ADD' },
     ],
   },
   {
     id: 'docker-runtime',
     title: 'Runtime',
-    icon: '⚙️',
+    icon: 'WRK',
     items: [
       { slug: 'docker-container-lifecycle', title: 'Container Lifecycle' },
-      { slug: 'docker-volumes', title: 'Volumes' },
+      { slug: 'docker-container-storage', title: 'Container Storage' },
+      { slug: 'docker-bind-mounts', title: 'Bind Mounts' },
+    ],
+  },
+  {
+    id: 'docker-networking',
+    title: 'Networking',
+    icon: 'NET',
+    items: [
       { slug: 'docker-networking', title: 'Networking' },
+      { slug: 'docker-bridge-network', title: 'Bridge Network' },
+      { slug: 'docker-host-network', title: 'Host Network' },
+      { slug: 'docker-overlay-network', title: 'Overlay Network' },
+      { slug: 'docker-dns-resolution', title: 'DNS Resolution' },
+    ],
+  },
+  {
+    id: 'docker-storage',
+    title: 'Storage',
+    icon: 'CACHE',
+    items: [
+      { slug: 'docker-volumes', title: 'Docker Volumes' },
+      { slug: 'docker-persistent-data', title: 'Persistent Data' },
+      { slug: 'docker-storage-drivers', title: 'Storage Drivers' },
+    ],
+  },
+  {
+    id: 'docker-compose',
+    title: 'Compose',
+    icon: 'MSG',
+    items: [
+      { slug: 'docker-compose', title: 'Docker Compose' },
+      { slug: 'docker-multi-container-applications', title: 'Multi-Container Applications' },
+      { slug: 'docker-service-dependencies', title: 'Service Dependencies' },
+    ],
+  },
+  {
+    id: 'docker-security',
+    title: 'Security',
+    icon: 'SEC',
+    items: [
+      { slug: 'docker-security', title: 'Security' },
+      { slug: 'docker-secrets-management', title: 'Secrets Management' },
+      { slug: 'docker-image-scanning', title: 'Image Scanning' },
+      { slug: 'docker-least-privilege', title: 'Least Privilege' },
     ],
   },
   {
     id: 'docker-delivery',
-    title: 'Delivery & Operations',
-    icon: '🚀',
+    title: 'CI/CD & Registry',
+    icon: 'CI',
     items: [
-      { slug: 'docker-compose', title: 'Docker Compose' },
-      { slug: 'docker-security', title: 'Security' },
       { slug: 'docker-cicd-integration', title: 'CI/CD Integration' },
+      { slug: 'docker-image-versioning', title: 'Image Versioning' },
+      { slug: 'docker-registry-management', title: 'Registry Management' },
+    ],
+  },
+  {
+    id: 'docker-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'docker-container-crashes', title: 'Container Crashes' },
+      { slug: 'docker-memory-issues', title: 'Memory Issues' },
+      { slug: 'docker-cpu-issues', title: 'CPU Issues' },
+      { slug: 'docker-debugging-containers', title: 'Debugging Containers' },
+      { slug: 'docker-log-analysis', title: 'Log Analysis' },
+    ],
+  },
+  {
+    id: 'docker-architecture',
+    title: 'Architecture',
+    icon: 'ARCH',
+    items: [
+      { slug: 'docker-container-platform-design', title: 'Container Platform Design' },
+      { slug: 'docker-scalability', title: 'Scalability' },
+      { slug: 'docker-high-availability', title: 'High Availability' },
       { slug: 'docker-enterprise-deployment-patterns', title: 'Enterprise Deployment Patterns' },
     ],
   },
@@ -1142,6 +1269,10 @@ const k8sCategories: NavCategory[] = [
       { slug: 'kubernetes-replicasets', title: 'ReplicaSets' },
       { slug: 'kubernetes-deployments', title: 'Deployments' },
       { slug: 'kubernetes-namespaces', title: 'Namespaces' },
+      { slug: 'kubernetes-statefulsets', title: 'StatefulSets' },
+      { slug: 'kubernetes-daemonsets', title: 'DaemonSets' },
+      { slug: 'kubernetes-jobs', title: 'Jobs' },
+      { slug: 'kubernetes-cronjobs', title: 'CronJobs' },
     ],
   },
   {
@@ -1153,6 +1284,7 @@ const k8sCategories: NavCategory[] = [
       { slug: 'kubernetes-ingress', title: 'Ingress' },
       { slug: 'kubernetes-dns', title: 'DNS' },
       { slug: 'kubernetes-network-policies', title: 'Network Policies' },
+      { slug: 'kubernetes-service-discovery', title: 'Service Discovery' },
     ],
   },
   {
@@ -1162,6 +1294,7 @@ const k8sCategories: NavCategory[] = [
     items: [
       { slug: 'kubernetes-configmaps', title: 'ConfigMaps' },
       { slug: 'kubernetes-secrets', title: 'Secrets' },
+      { slug: 'kubernetes-environment-variables', title: 'Environment Variables' },
     ],
   },
   {
@@ -1172,6 +1305,7 @@ const k8sCategories: NavCategory[] = [
       { slug: 'kubernetes-persistent-volumes', title: 'Persistent Volumes' },
       { slug: 'kubernetes-persistent-volume-claims', title: 'Persistent Volume Claims' },
       { slug: 'kubernetes-storage-classes', title: 'Storage Classes' },
+      { slug: 'kubernetes-csi-drivers', title: 'CSI Drivers' },
     ],
   },
   {
@@ -1181,6 +1315,7 @@ const k8sCategories: NavCategory[] = [
     items: [
       { slug: 'kubernetes-horizontal-pod-autoscaler', title: 'Horizontal Pod Autoscaler' },
       { slug: 'kubernetes-cluster-autoscaler', title: 'Cluster Autoscaler' },
+      { slug: 'kubernetes-vertical-pod-autoscaler', title: 'Vertical Pod Autoscaler' },
     ],
   },
   {
@@ -1188,10 +1323,9 @@ const k8sCategories: NavCategory[] = [
     title: 'Workloads',
     icon: 'WRK',
     items: [
-      { slug: 'kubernetes-jobs', title: 'Jobs' },
-      { slug: 'kubernetes-cronjobs', title: 'CronJobs' },
-      { slug: 'kubernetes-statefulsets', title: 'StatefulSets' },
-      { slug: 'kubernetes-daemonsets', title: 'DaemonSets' },
+      { slug: 'kubernetes-rolling-updates', title: 'Rolling Updates' },
+      { slug: 'kubernetes-rollbacks', title: 'Rollbacks' },
+      { slug: 'kubernetes-deployment-strategies', title: 'Deployment Strategies' },
     ],
   },
   {
@@ -1202,6 +1336,8 @@ const k8sCategories: NavCategory[] = [
       { slug: 'kubernetes-rbac', title: 'RBAC' },
       { slug: 'kubernetes-service-accounts', title: 'Service Accounts' },
       { slug: 'kubernetes-pod-security', title: 'Pod Security' },
+      { slug: 'kubernetes-network-security', title: 'Network Security' },
+      { slug: 'kubernetes-secrets-management', title: 'Secrets Management' },
     ],
   },
   {
@@ -1212,18 +1348,56 @@ const k8sCategories: NavCategory[] = [
       { slug: 'kubernetes-metrics-server', title: 'Metrics Server' },
       { slug: 'kubernetes-monitoring-prometheus', title: 'Prometheus' },
       { slug: 'kubernetes-grafana', title: 'Grafana' },
+      { slug: 'kubernetes-logging', title: 'Logging' },
+      { slug: 'kubernetes-monitoring', title: 'Monitoring Strategy' },
+    ],
+  },
+  {
+    id: 'k8s-helm',
+    title: 'Helm',
+    icon: 'DEPLOY',
+    items: [
+      { slug: 'kubernetes-helm-basics', title: 'Helm Basics' },
+      { slug: 'kubernetes-charts', title: 'Charts' },
+      { slug: 'kubernetes-releases', title: 'Releases' },
+    ],
+  },
+  {
+    id: 'k8s-gitops',
+    title: 'CI/CD & GitOps',
+    icon: 'CI',
+    items: [
+      { slug: 'kubernetes-gitops', title: 'GitOps' },
+      { slug: 'kubernetes-argocd', title: 'Argo CD' },
+      { slug: 'kubernetes-flux', title: 'Flux' },
+    ],
+  },
+  {
+    id: 'k8s-troubleshooting',
+    title: 'Troubleshooting',
+    icon: 'PERF',
+    items: [
+      { slug: 'kubernetes-crashloopbackoff', title: 'CrashLoopBackOff' },
+      { slug: 'kubernetes-pending-pods', title: 'Pending Pods' },
+      { slug: 'kubernetes-imagepullbackoff', title: 'ImagePullBackOff' },
+      { slug: 'kubernetes-node-failures', title: 'Node Failures' },
+      { slug: 'kubernetes-networking-issues', title: 'Networking Issues' },
     ],
   },
   {
     id: 'k8s-production',
     title: 'Production',
-    icon: 'PRD',
+    icon: 'OPS',
     items: [
-      { slug: 'kubernetes-rolling-updates', title: 'Rolling Updates' },
-      { slug: 'kubernetes-rollbacks', title: 'Rollbacks' },
+      { slug: 'kubernetes-incident-response', title: 'Incident Response' },
+      { slug: 'kubernetes-performance-analysis', title: 'Performance Analysis' },
+      { slug: 'kubernetes-resource-optimization', title: 'Resource Optimization' },
+      { slug: 'kubernetes-capacity-planning', title: 'Capacity Planning' },
       { slug: 'kubernetes-high-availability', title: 'High Availability' },
       { slug: 'kubernetes-disaster-recovery', title: 'Disaster Recovery' },
       { slug: 'kubernetes-best-practices', title: 'Kubernetes Best Practices' },
+      { slug: 'kubernetes-multi-cluster-design', title: 'Multi-Cluster Design' },
+      { slug: 'kubernetes-platform-engineering', title: 'Platform Engineering' },
     ],
   },
 ];
@@ -1236,8 +1410,20 @@ const azureCategories: NavCategory[] = [
     items: [
       { slug: 'azure-basics', title: 'Azure Basics' },
       { slug: 'azure-architecture', title: 'Azure Architecture' },
+      { slug: 'azure-regions', title: 'Azure Regions' },
+      { slug: 'azure-availability-zones', title: 'Availability Zones' },
+    ],
+  },
+  {
+    id: 'azure-governance',
+    title: 'Governance',
+    icon: 'ARCH',
+    items: [
       { slug: 'azure-resource-groups', title: 'Resource Groups' },
       { slug: 'azure-subscription-management', title: 'Subscription Management' },
+      { slug: 'azure-management-groups', title: 'Management Groups' },
+      { slug: 'azure-policy', title: 'Azure Policy' },
+      { slug: 'azure-landing-zones', title: 'Landing Zones' },
     ],
   },
   {
@@ -1247,7 +1433,11 @@ const azureCategories: NavCategory[] = [
     items: [
       { slug: 'azure-virtual-machines', title: 'Virtual Machines' },
       { slug: 'azure-app-service', title: 'App Service' },
+      { slug: 'azure-app-service-plans', title: 'App Service Plans' },
+      { slug: 'azure-deployment-slots', title: 'Deployment Slots' },
       { slug: 'azure-functions', title: 'Functions' },
+      { slug: 'azure-function-triggers-bindings', title: 'Triggers and Bindings' },
+      { slug: 'azure-durable-functions', title: 'Durable Functions' },
       { slug: 'azure-container-apps', title: 'Container Apps' },
     ],
   },
@@ -1260,6 +1450,18 @@ const azureCategories: NavCategory[] = [
       { slug: 'azure-files', title: 'Files' },
       { slug: 'azure-queues', title: 'Queues' },
       { slug: 'azure-tables', title: 'Tables' },
+      { slug: 'azure-storage-accounts', title: 'Storage Accounts' },
+      { slug: 'azure-storage-replication', title: 'Storage Replication' },
+    ],
+  },
+  {
+    id: 'azure-data',
+    title: 'Data',
+    icon: 'DB',
+    items: [
+      { slug: 'azure-sql-database', title: 'Azure SQL Database' },
+      { slug: 'azure-cosmos-db', title: 'Azure Cosmos DB' },
+      { slug: 'azure-cache-for-redis', title: 'Azure Cache for Redis' },
     ],
   },
   {
@@ -1271,6 +1473,11 @@ const azureCategories: NavCategory[] = [
       { slug: 'azure-network-security-groups', title: 'NSG' },
       { slug: 'azure-load-balancer', title: 'Load Balancer' },
       { slug: 'azure-application-gateway', title: 'Application Gateway' },
+      { slug: 'azure-vnet-peering', title: 'VNet Peering' },
+      { slug: 'azure-private-endpoints', title: 'Private Endpoints' },
+      { slug: 'azure-private-dns', title: 'Private DNS' },
+      { slug: 'azure-azure-firewall', title: 'Azure Firewall' },
+      { slug: 'azure-front-door', title: 'Azure Front Door' },
     ],
   },
   {
@@ -1300,6 +1507,16 @@ const azureCategories: NavCategory[] = [
       { slug: 'azure-devops', title: 'Azure DevOps' },
       { slug: 'azure-cicd', title: 'CI/CD' },
       { slug: 'azure-infrastructure-as-code', title: 'Infrastructure as Code' },
+      { slug: 'azure-bicep', title: 'Bicep' },
+    ],
+  },
+  {
+    id: 'azure-messaging',
+    title: 'Messaging',
+    icon: 'MSG',
+    items: [
+      { slug: 'azure-service-bus', title: 'Service Bus' },
+      { slug: 'azure-event-grid', title: 'Event Grid' },
     ],
   },
   {
@@ -1309,6 +1526,17 @@ const azureCategories: NavCategory[] = [
     items: [
       { slug: 'azure-key-vault', title: 'Key Vault' },
       { slug: 'azure-defender-for-cloud', title: 'Defender for Cloud' },
+      { slug: 'azure-security-operations', title: 'Security Operations' },
+    ],
+  },
+  {
+    id: 'azure-observability',
+    title: 'Observability',
+    icon: 'OBS',
+    items: [
+      { slug: 'azure-monitor', title: 'Azure Monitor' },
+      { slug: 'azure-log-analytics', title: 'Log Analytics' },
+      { slug: 'azure-application-insights', title: 'Application Insights' },
     ],
   },
   {
@@ -1319,7 +1547,18 @@ const azureCategories: NavCategory[] = [
       { slug: 'azure-high-availability', title: 'High Availability' },
       { slug: 'azure-disaster-recovery', title: 'Disaster Recovery' },
       { slug: 'azure-cost-optimization', title: 'Cost Optimization' },
+      { slug: 'azure-cost-governance', title: 'Cost Governance' },
       { slug: 'azure-enterprise-architecture', title: 'Enterprise Architecture' },
+    ],
+  },
+  {
+    id: 'azure-production-support',
+    title: 'Production Support',
+    icon: 'OPS',
+    items: [
+      { slug: 'azure-incident-response', title: 'Incident Response' },
+      { slug: 'azure-performance-troubleshooting', title: 'Performance Troubleshooting' },
+      { slug: 'azure-operational-excellence', title: 'Operational Excellence' },
     ],
   },
   {
@@ -1344,6 +1583,8 @@ const aiCategories: NavCategory[] = [
       { slug: 'ai-basics', title: 'AI Basics' },
       { slug: 'ml-vs-dl-vs-llm', title: 'ML vs DL vs LLM' },
       { slug: 'generative-ai', title: 'Generative AI' },
+      { slug: 'ai-use-cases', title: 'AI Use Cases' },
+      { slug: 'ml-lifecycle', title: 'ML Lifecycle' },
     ],
   },
   {
@@ -1353,6 +1594,7 @@ const aiCategories: NavCategory[] = [
     items: [
       { slug: 'python-for-ai', title: 'Python for AI' },
       { slug: 'data-processing-for-ai', title: 'Data Processing' },
+      { slug: 'data-cleaning-for-ai', title: 'Data Cleaning' },
     ],
   },
   {
@@ -1362,6 +1604,9 @@ const aiCategories: NavCategory[] = [
     items: [
       { slug: 'supervised-learning', title: 'Supervised Learning' },
       { slug: 'unsupervised-learning', title: 'Unsupervised Learning' },
+      { slug: 'feature-engineering', title: 'Feature Engineering' },
+      { slug: 'model-training', title: 'Model Training' },
+      { slug: 'model-evaluation', title: 'Model Evaluation' },
     ],
   },
   {
@@ -1371,6 +1616,7 @@ const aiCategories: NavCategory[] = [
     items: [
       { slug: 'neural-networks', title: 'Neural Networks' },
       { slug: 'transformers', title: 'Transformers' },
+      { slug: 'attention-mechanisms', title: 'Attention Mechanisms' },
     ],
   },
   {
@@ -1382,6 +1628,8 @@ const aiCategories: NavCategory[] = [
       { slug: 'tokens', title: 'Tokens' },
       { slug: 'embeddings', title: 'Embeddings' },
       { slug: 'context-windows', title: 'Context Windows' },
+      { slug: 'llm-inference', title: 'LLM Inference' },
+      { slug: 'tool-calling', title: 'Tool Calling' },
     ],
   },
   {
@@ -1392,6 +1640,9 @@ const aiCategories: NavCategory[] = [
       { slug: 'zero-shot-prompting', title: 'Zero Shot' },
       { slug: 'few-shot-prompting', title: 'Few Shot' },
       { slug: 'chain-of-thought-prompting', title: 'Chain of Thought' },
+      { slug: 'system-prompts', title: 'System Prompts' },
+      { slug: 'prompt-templates', title: 'Prompt Templates' },
+      { slug: 'structured-output', title: 'Structured Output' },
     ],
   },
   {
@@ -1403,6 +1654,9 @@ const aiCategories: NavCategory[] = [
       { slug: 'vector-databases-overview', title: 'Vector Databases' },
       { slug: 'chunking-strategies', title: 'Chunking' },
       { slug: 'embedding-pipelines', title: 'Embeddings Pipeline' },
+      { slug: 'reranking', title: 'Reranking' },
+      { slug: 'retrieval-evaluation', title: 'Retrieval Evaluation' },
+      { slug: 'hybrid-search', title: 'Hybrid Search' },
     ],
   },
   {
@@ -1413,6 +1667,7 @@ const aiCategories: NavCategory[] = [
       { slug: 'pinecone', title: 'Pinecone' },
       { slug: 'chroma', title: 'Chroma' },
       { slug: 'faiss', title: 'FAISS' },
+      { slug: 'metadata-filtering', title: 'Metadata Filtering' },
     ],
   },
   {
@@ -1423,6 +1678,18 @@ const aiCategories: NavCategory[] = [
       { slug: 'ai-chatbots', title: 'Chatbots' },
       { slug: 'ai-agents', title: 'Agents' },
       { slug: 'knowledge-systems', title: 'Knowledge Systems' },
+      { slug: 'ai-copilots', title: 'AI Copilots' },
+      { slug: 'workflow-automation', title: 'Workflow Automation' },
+    ],
+  },
+  {
+    id: 'ai-agents',
+    title: 'Agents',
+    icon: 'AGT',
+    items: [
+      { slug: 'agent-memory', title: 'Agent Memory' },
+      { slug: 'agent-planning', title: 'Agent Planning' },
+      { slug: 'agent-evaluation', title: 'Agent Evaluation' },
     ],
   },
   {
@@ -1445,6 +1712,11 @@ const aiCategories: NavCategory[] = [
       { slug: 'hallucination-management', title: 'Hallucinations' },
       { slug: 'ai-cost-optimization', title: 'Cost Optimization' },
       { slug: 'ai-security', title: 'Security' },
+      { slug: 'llm-observability', title: 'LLM Observability' },
+      { slug: 'ai-guardrails', title: 'Guardrails' },
+      { slug: 'ai-deployment-patterns', title: 'Deployment Patterns' },
+      { slug: 'ai-caching', title: 'AI Caching' },
+      { slug: 'ai-rate-limits', title: 'Rate Limits' },
     ],
   },
   {
@@ -1539,8 +1811,8 @@ export const technologies: TechSection[] = [
     label: 'AWS',
     icon: '☁️',
     color: '#ff9900',
-    description: 'Amazon Web Services — EC2, S3, Lambda, RDS, IAM, VPC, and cloud architecture patterns.',
-    topicCount: 34,
+    description: 'Learn AWS the way senior cloud engineers explain it - regions, networking, IAM, storage, serverless, containers, observability, production support, and architecture trade-offs.',
+    topicCount: 64,
     active: true,
     categories: awsCategories,
   },
@@ -1549,8 +1821,8 @@ export const technologies: TechSection[] = [
     label: 'Docker',
     icon: '🐳',
     color: '#2496ed',
-    description: 'Containerisation from Dockerfiles to multi-container apps with Docker Compose.',
-    topicCount: 14,
+    description: 'Learn Docker the way senior platform engineers explain it - images, Dockerfiles, networking, storage, security, CI/CD, production troubleshooting, and container platform design.',
+    topicCount: 48,
     active: true,
     categories: dockerCategories,
   },
@@ -1559,8 +1831,8 @@ export const technologies: TechSection[] = [
     label: 'Kubernetes',
     icon: '☸️',
     color: '#326ce5',
-    description: 'Container orchestration at scale — Pods, Services, Deployments, Ingress, and Helm.',
-    topicCount: 34,
+    description: 'Learn Kubernetes the way senior platform engineers explain it - workloads, networking, storage, security, GitOps, troubleshooting, production support, and platform engineering.',
+    topicCount: 60,
     active: true,
     categories: k8sCategories,
   },
@@ -1569,8 +1841,8 @@ export const technologies: TechSection[] = [
     label: 'Azure',
     icon: '🔷',
     color: '#0078d4',
-    description: 'Microsoft Azure — compute, storage, networking, identity, containers, DevOps, security, and architecture patterns.',
-    topicCount: 34,
+    description: 'Learn Azure the way senior cloud engineers explain it - governance, identity, networking, compute, observability, messaging, production support, and enterprise architecture patterns.',
+    topicCount: 64,
     active: true,
     categories: azureCategories,
   },
@@ -1579,8 +1851,8 @@ export const technologies: TechSection[] = [
     label: 'AI / LLM Engineering',
     icon: '🧠',
     color: '#a855f7',
-    description: 'Applied AI, prompt engineering, RAG, vector databases, agents, evaluation, and production LLM system design.',
-    topicCount: 38,
+    description: 'Learn AI / ML engineering the way senior applied AI teams explain it - machine learning, prompting, RAG, vector search, agents, evaluation, guardrails, observability, and production system design.',
+    topicCount: 64,
     active: true,
     categories: aiCategories,
   },

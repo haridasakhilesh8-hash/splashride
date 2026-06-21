@@ -15,8 +15,10 @@ import {
   enterpriseDeploymentPatterns,
   multiStageBuilds,
 } from './docker-content';
+import { dockerExpandedTopics } from './expanded-topics';
 
 export const dockerContentMap: Record<string, TopicContent> = {
+  ...dockerExpandedTopics,
   'docker-overview': dockerOverview,
   'docker-containers-vs-virtual-machines': containersVsVirtualMachines,
   'docker-architecture': dockerArchitecture,

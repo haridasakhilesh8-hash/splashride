@@ -401,7 +401,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               borderRadius: '7px',
               border: '1px solid var(--color-border)',
             }}>
-              <span style={{ fontSize: isInterviewPrep ? '1.05rem' : '1.25rem' }}>{sidebarTechnology.icon}</span>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: isInterviewPrep ? '20px' : '24px',
+                  minHeight: isInterviewPrep ? '20px' : '24px',
+                  fontSize: isInterviewPrep ? '1.05rem' : '1.25rem',
+                  lineHeight: 1,
+                  flexShrink: 0,
+                }}
+              >
+                {renderSidebarIconToken(sidebarTechnology.icon, {
+                  allowTextBadge: true,
+                  size: isInterviewPrep ? 18 : 20,
+                  badgeFontSize: isInterviewPrep ? '0.64rem' : '0.7rem',
+                }) ?? sidebarTechnology.icon}
+              </span>
               <div>
                 <p style={{ margin: 0, fontSize: isInterviewPrep ? '0.84rem' : '0.875rem', fontWeight: 700, color: 'var(--color-text-primary)' }}>
                   {sidebarTechnology.label}

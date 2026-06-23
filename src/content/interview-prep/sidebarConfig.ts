@@ -26,18 +26,18 @@ export interface InterviewPrepTechnologyConfig {
 }
 
 const technologyPresentation: Record<string, { icon: string; learningTechnologyId?: string }> = {
-  aem: { icon: 'AEM', learningTechnologyId: 'aem' },
+  aem: { icon: '🏗️', learningTechnologyId: 'aem' },
   sitecore: { icon: '🧩', learningTechnologyId: 'sitecore' },
   contentful: { icon: '🧱', learningTechnologyId: 'contentful' },
-  react: { icon: 'R', learningTechnologyId: 'react' },
-  nextjs: { icon: 'N', learningTechnologyId: 'nextjs' },
-  'core-java': { icon: 'J', learningTechnologyId: 'java' },
-  'spring-boot': { icon: 'SB', learningTechnologyId: 'springboot' },
-  aws: { icon: 'AWS', learningTechnologyId: 'aws' },
-  docker: { icon: 'D', learningTechnologyId: 'docker' },
-  kubernetes: { icon: 'K8s', learningTechnologyId: 'kubernetes' },
-  azure: { icon: 'AZ', learningTechnologyId: 'azure' },
-  'ai-llm': { icon: 'AI', learningTechnologyId: 'ai-llm' },
+  react: { icon: '⚛️', learningTechnologyId: 'react' },
+  nextjs: { icon: '▲', learningTechnologyId: 'nextjs' },
+  'core-java': { icon: '☕', learningTechnologyId: 'java' },
+  'spring-boot': { icon: '🌱', learningTechnologyId: 'springboot' },
+  aws: { icon: '☁️', learningTechnologyId: 'aws' },
+  docker: { icon: '🐳', learningTechnologyId: 'docker' },
+  kubernetes: { icon: '☸️', learningTechnologyId: 'kubernetes' },
+  azure: { icon: '🔷', learningTechnologyId: 'azure' },
+  'ai-llm': { icon: '🧠', learningTechnologyId: 'ai-llm' },
 };
 
 export function getInterviewPrepTechnologyConfig(technologyId: string): InterviewPrepTechnologyConfig | null {

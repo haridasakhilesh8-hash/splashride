@@ -2,7 +2,7 @@ export const SITE_URL = 'https://www.splashride.in';
 export const SITE_NAME = 'SplashRide';
 export const DEFAULT_TITLE = 'SplashRide | Developer Learning Paths, Tutorials and Interview Prep';
 export const DEFAULT_DESCRIPTION =
-  'Learn AEM, React, Next.js, Core Java, Spring Boot, AWS, Azure, Docker, Kubernetes, and AI or LLM Engineering with project-focused tutorials, examples, and interview-ready explanations.';
+  'SplashRide helps developers learn technologies, prepare for interviews, understand production issues, build projects, and grow through clear career paths.';
 export const DEFAULT_IMAGE = '/splashride-logo.png';
 export const metadataBase = new URL(SITE_URL);
 

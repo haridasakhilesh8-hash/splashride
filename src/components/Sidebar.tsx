@@ -32,12 +32,14 @@ import {
   Workflow,
 } from 'lucide-react';
 import { getInterviewPrepTechnologyConfig } from '../content/interview-prep/sidebarConfig';
+import { getActiveInterviewPrepSections } from '../content/interview-prep';
 import {
   getInterviewPrepDefaultTopicSlug,
 } from '../content/interview-prep/topicNavigation';
 import type { NavCategory } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
 import {
+  getInterviewPrepPath,
   getLegacyTechnologyTopicPath,
   getTechnologyPath,
   getTechnologyTopicPath,
@@ -225,6 +227,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           learningTechnologyId: activeTech.id,
         }
       : null;
+  const sidebarInterviewPrepTarget = useMemo(() => {
+    if (!sidebarTechnology) return '/interview-prep';
+
+    if (getInterviewPrepTechnologyConfig(sidebarTechnology.id)) {
+      return getInterviewPrepPath(sidebarTechnology.id);
+    }
+
+    const matchedSection = getActiveInterviewPrepSections().find((section) => {
+      const config = getInterviewPrepTechnologyConfig(section.technologyId);
+      return config?.learningTechnologyId === (sidebarTechnology.learningTechnologyId ?? sidebarTechnology.id);
+    });
+
+    return matchedSection
+      ? getInterviewPrepPath(matchedSection.technologyId)
+      : '/interview-prep';
+  }, [sidebarTechnology]);
 
   // Only show categories belonging to the active technology
   const interviewCategories = useMemo<NavCategory[]>(() => (
@@ -412,7 +430,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </div>
             <button
               onClick={() => {
-                navigate(`/interview-prep/${sidebarTechnology.id}`);
+                navigate(sidebarInterviewPrepTarget);
                 onClose();
                 window.scrollTo(0, 0);
               }}

@@ -25,8 +25,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<'technologies' | 'interview-prep' | 'career-paths' | null>(null);
   const headerNavRef = useRef<HTMLElement | null>(null);
-  const headerTextColor = 'rgba(255,255,255,0.92)';
-  const headerActiveColor = '#38bdf8';
+  const headerTextColor = 'rgba(255,244,235,0.92)';
+  const headerActiveColor = '#F59E0B';
   const pathname = location.pathname;
 
   const technologyGroups = technologyCategoryGroups.map((group) => ({
@@ -192,15 +192,16 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
     <header style={{
       position: 'fixed',
       top: 0, left: 0, right: 0,
-      height: '56px',
-      background: 'linear-gradient(90deg, #020a2a 0%, #070a35 48%, #14072f 100%)',
-      borderBottom: '1px solid rgba(255,255,255,0.12)',
+      height: '58px',
+      background: 'linear-gradient(90deg, rgba(5,9,20,0.96) 0%, rgba(10,16,32,0.94) 56%, rgba(20,17,27,0.94) 100%)',
+      borderBottom: '1px solid rgba(255,255,255,0.08)',
       display: 'flex',
       alignItems: 'center',
-      padding: '0 1rem',
-      gap: '0.75rem',
+      padding: '0 1.15rem',
+      gap: '0.9rem',
       zIndex: 50,
-      boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
+      boxShadow: '0 10px 28px rgba(0,0,0,0.18)',
+      backdropFilter: 'blur(18px)',
     }} className="app-header">
       {/* Mobile menu toggle */}
       {showMenuButton && (
@@ -230,12 +231,12 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '8px',
+          gap: '10px',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           flexShrink: 0,
-          padding: 0,
+          padding: '2px 0',
         }}
       >
         <img
@@ -244,28 +245,28 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           aria-hidden="true"
           className="header-logo-mark"
           style={{
-            width: '38px',
-            height: '30px',
+            width: '42px',
+            height: '34px',
             objectFit: 'contain',
             flexShrink: 0,
-            filter: 'drop-shadow(0 0 10px rgba(56,189,248,0.35))',
+            filter: 'hue-rotate(-38deg) saturate(0.86) brightness(1.06) contrast(1.04) drop-shadow(0 0 8px rgba(249,115,22,0.18))',
           }}
         />
         <span className="header-logo-text" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1 }}>
           <span style={{
-              fontSize: '1rem',
+              fontSize: '1.08rem',
               fontWeight: 900,
-              color: '#ffffff',
-              letterSpacing: '-0.02em',
+              color: '#FFF8F2',
+              letterSpacing: '-0.025em',
             }}>
-            Splash<span style={{ color: '#0ea5ff' }}>Ride</span>
+            Splash<span style={{ color: '#FF9A3D' }}>Ride</span>
           </span>
           <span className="header-logo-tagline" style={{
-            marginTop: '3px',
-            fontSize: '0.42rem',
+            marginTop: '4px',
+            fontSize: '0.43rem',
             fontWeight: 800,
-            color: 'rgba(255,255,255,0.68)',
-            letterSpacing: '0.18em',
+            color: 'rgba(226,232,240,0.56)',
+            letterSpacing: '0.16em',
             textTransform: 'uppercase',
           }}>
             Ride Your Tech Journey
@@ -300,8 +301,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               border: 'none',
               color: isTechnologiesActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
-              borderRadius: '8px',
-              padding: '7px 9px',
+              borderRadius: '10px',
+              padding: '8px 10px',
               fontSize: '0.8rem',
               fontWeight: 600,
               whiteSpace: 'nowrap',
@@ -376,8 +377,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               border: 'none',
               color: isInterviewPrepActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
-              borderRadius: '8px',
-              padding: '7px 9px',
+              borderRadius: '10px',
+              padding: '8px 10px',
               fontSize: '0.8rem',
               fontWeight: 600,
               whiteSpace: 'nowrap',
@@ -465,8 +466,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               border: 'none',
               color: isCareerPathsActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
-              borderRadius: '8px',
-              padding: '7px 9px',
+              borderRadius: '10px',
+              padding: '8px 10px',
               fontSize: '0.8rem',
               fontWeight: 600,
               whiteSpace: 'nowrap',
@@ -546,8 +547,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
               border: 'none',
               color: isLearningPathsActive ? headerActiveColor : headerTextColor,
               cursor: 'pointer',
-              borderRadius: '8px',
-              padding: '7px 9px',
+              borderRadius: '10px',
+              padding: '8px 10px',
               fontSize: '0.8rem',
               fontWeight: 600,
               whiteSpace: 'nowrap',
@@ -570,8 +571,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             border: 'none',
             color: isAboutActive ? headerActiveColor : headerTextColor,
             cursor: 'pointer',
-            borderRadius: '8px',
-            padding: '7px 9px',
+            borderRadius: '10px',
+            padding: '8px 10px',
             fontSize: '0.8rem',
             fontWeight: 600,
             whiteSpace: 'nowrap',
@@ -623,8 +624,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             top: '56px',
             left: '0.75rem',
             right: '0.75rem',
-            background: 'linear-gradient(180deg, rgba(2,10,42,0.98), rgba(7,10,53,0.98))',
-            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'linear-gradient(180deg, rgba(8,10,15,0.98), rgba(17,24,39,0.98))',
+            border: '1px solid rgba(255,255,255,0.1)',
             borderRadius: '14px',
             boxShadow: '0 18px 40px rgba(2,6,23,0.28)',
             padding: '0.75rem',
@@ -688,12 +689,12 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
 
       <style>{`
         .header-nav button:hover {
-          background: rgba(255,255,255,0.08) !important;
-          color: #ffffff !important;
+          background: rgba(255,255,255,0.06) !important;
+          color: #fff7ed !important;
         }
         .header-nav a:hover {
-          background: rgba(255,255,255,0.08) !important;
-          color: #ffffff !important;
+          background: rgba(255,255,255,0.06) !important;
+          color: #fff7ed !important;
         }
         .nav-dropdown-menu a:hover {
           border-color: var(--color-accent) !important;
@@ -704,15 +705,15 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
           color: var(--color-accent) !important;
         }
         .app-header .header-search > div > div {
-          background: rgba(255,255,255,0.06) !important;
-          border-color: rgba(255,255,255,0.18) !important;
+          background: rgba(255,255,255,0.05) !important;
+          border-color: rgba(255,255,255,0.14) !important;
           box-shadow: none !important;
         }
         .app-header .header-search input {
-          color: #ffffff !important;
+          color: #fff7ed !important;
         }
         .app-header .header-search input::placeholder {
-          color: rgba(255,255,255,0.62) !important;
+          color: rgba(255,237,213,0.58) !important;
         }
         @media (max-width: 1024px) {
           .header-nav { display: none !important; }
@@ -733,8 +734,8 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
             min-height: 48px;
           }
           .header-logo-mark {
-            width: 34px !important;
-            height: 28px !important;
+            width: 38px !important;
+            height: 30px !important;
           }
           .header-logo-tagline {
             display: none !important;

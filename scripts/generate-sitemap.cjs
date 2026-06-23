@@ -32,6 +32,10 @@ function absoluteUrl(route) {
 
 function routeExists(route) {
   if (route === '/') return true;
+  if (route === '/about') return true;
+  if (route === '/contact') return true;
+  if (route === '/privacy-policy') return true;
+  if (route === '/terms') return true;
   if (route === '/career-paths') return true;
   if (route === '/interview-prep') return true;
 
@@ -64,6 +68,10 @@ function routeExists(route) {
 
 const entries = [
   { route: '/', priority: '1.0' },
+  { route: '/about', priority: '0.6' },
+  { route: '/contact', priority: '0.6' },
+  { route: '/privacy-policy', priority: '0.4' },
+  { route: '/terms', priority: '0.4' },
   { route: '/career-paths', priority: '0.9' },
   { route: '/interview-prep', priority: '0.9' },
 ];

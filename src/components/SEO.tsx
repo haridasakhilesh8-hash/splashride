@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { absoluteUrl, DEFAULT_DESCRIPTION, DEFAULT_IMAGE, DEFAULT_TITLE, SITE_NAME } from '../lib/seo';
+import { mergeStructuredData, resolveRouteSeo } from '../lib/routeSeo';
 
 interface SEOProps {
   title?: string;
@@ -40,33 +41,38 @@ export default function SEO({
   const location = useLocation();
 
   useEffect(() => {
-    const canonical = absoluteUrl(location.pathname);
+    const routeSeo = resolveRouteSeo(location.pathname, location.search);
+    const resolvedTitle = routeSeo.title || title;
+    const resolvedDescription = routeSeo.description || description;
+    const resolvedType = routeSeo.type || type;
+    const canonical = absoluteUrl(routeSeo.canonicalPath);
     const imageUrl = absoluteUrl(image);
+    const mergedStructuredData = mergeStructuredData(structuredData, routeSeo.structuredData);
 
-    document.title = title;
-    setMeta('meta[name="description"]', 'name', 'description', description);
+    document.title = resolvedTitle;
+    setMeta('meta[name="description"]', 'name', 'description', resolvedDescription);
     setMeta('meta[name="robots"]', 'name', 'robots', 'index, follow');
     setMeta('meta[property="og:site_name"]', 'property', 'og:site_name', SITE_NAME);
-    setMeta('meta[property="og:title"]', 'property', 'og:title', title);
-    setMeta('meta[property="og:description"]', 'property', 'og:description', description);
-    setMeta('meta[property="og:type"]', 'property', 'og:type', type);
+    setMeta('meta[property="og:title"]', 'property', 'og:title', resolvedTitle);
+    setMeta('meta[property="og:description"]', 'property', 'og:description', resolvedDescription);
+    setMeta('meta[property="og:type"]', 'property', 'og:type', resolvedType);
     setMeta('meta[property="og:url"]', 'property', 'og:url', canonical);
     setMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl);
     setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
-    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
-    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', resolvedTitle);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', resolvedDescription);
     setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);
     setLink('canonical', canonical);
 
     document.querySelectorAll('script[data-splashride-seo="true"]').forEach((node) => node.remove());
-    if (structuredData) {
+    if (mergedStructuredData.length > 0) {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.dataset.splashrideSeo = 'true';
-      script.textContent = JSON.stringify(structuredData);
+      script.textContent = JSON.stringify(mergedStructuredData);
       document.head.appendChild(script);
     }
-  }, [description, image, location.pathname, structuredData, title, type]);
+  }, [description, image, location.pathname, location.search, structuredData, title, type]);
 
   return null;
 }

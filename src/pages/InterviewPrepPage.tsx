@@ -219,7 +219,9 @@ function QuestionListRow({
       }}>
         {index + 1}
       </span>
-      <span style={{
+      <span
+        className="interview-question-row__text"
+        style={{
         minWidth: 0,
         color: 'var(--color-text-primary)',
         fontSize: '14px',
@@ -250,6 +252,7 @@ export default function InterviewPrepPage() {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [openDetailSection, setOpenDetailSection] = useState<DetailAccordionId | null>(null);
   const questionListRef = useRef<HTMLDivElement>(null);
+  const detailPanelRef = useRef<HTMLElement>(null);
 
   const activeTechnologyId = selectedSection?.technologyId ?? techId ?? '';
   const topicSlug = new URLSearchParams(location.search).get('topic') ?? getInterviewPrepDefaultTopicSlug(activeTechnologyId);
@@ -351,6 +354,18 @@ export default function InterviewPrepPage() {
     });
   };
 
+  const scrollAnswerIntoViewOnMobile = () => {
+    if (typeof window === 'undefined' || window.innerWidth > 768) return;
+    window.setTimeout(() => {
+      detailPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 40);
+  };
+
+  const selectQuestion = (questionId: string) => {
+    setSelectedQuestionId(questionId);
+    scrollAnswerIntoViewOnMobile();
+  };
+
   const goToQuestion = (direction: 'previous' | 'next') => {
     if (selectedIndex < 0) return;
     const nextIndex = direction === 'next'
@@ -362,6 +377,7 @@ export default function InterviewPrepPage() {
       window.requestAnimationFrame(() => questionListRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
     }
     setSelectedQuestionId(visibleQuestions[nextIndex]?.id ?? null);
+    scrollAnswerIntoViewOnMobile();
   };
 
   const changePage = (page: number) => {
@@ -474,7 +490,7 @@ export default function InterviewPrepPage() {
 
       <div className="interview-workspace" style={workspaceStyle}>
         <section style={listPanelStyle}>
-          <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '6px', fontSize: '0.7rem' }}>
+          <nav className="interview-breadcrumbs" style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '6px', fontSize: '0.7rem' }}>
             <Link to="/" style={crumbStyle}>SplashRide</Link>
             <span style={{ color: 'var(--color-text-muted)' }}>/</span>
             <Link to="/interview-prep" style={crumbStyle}>Interview Prep</Link>
@@ -486,8 +502,8 @@ export default function InterviewPrepPage() {
             <span style={{ color: 'var(--color-text-primary)', fontWeight: 800 }}>{topicLabel}</span>
           </nav>
 
-          <header style={{ marginBottom: '6px' }}>
-            <h1 style={{ margin: 0, color: 'var(--color-text-primary)', fontSize: '1.38rem', lineHeight: 1.12 }}>
+          <header className="interview-topic-header" style={{ marginBottom: '6px' }}>
+            <h1 className="interview-topic-title" style={{ margin: 0, color: 'var(--color-text-primary)', fontSize: '1.38rem', lineHeight: 1.12 }}>
               {topicLabel}
             </h1>
           </header>
@@ -533,17 +549,17 @@ export default function InterviewPrepPage() {
                 index={pageStartIndex + index}
                 selected={selectedQuestion?.id === question.id}
                 completed={completedIds.has(question.id)}
-                onSelect={() => setSelectedQuestionId(question.id)}
+                onSelect={() => selectQuestion(question.id)}
               />
             ))}
           </div>
 
           {totalPages > 1 && (
-            <nav aria-label={`${topicLabel} question pages`} style={paginationContainerStyle}>
-              <span style={paginationSummaryStyle}>
+            <nav aria-label={`${topicLabel} question pages`} className="interview-pagination" style={paginationContainerStyle}>
+              <span className="interview-pagination__summary" style={paginationSummaryStyle}>
                 {pageStartIndex + 1}-{Math.min(pageStartIndex + pageSize, visibleQuestions.length)} of {visibleQuestions.length}
               </span>
-              <div style={paginationControlsStyle}>
+              <div className="interview-pagination__controls" style={paginationControlsStyle}>
                 <button
                   type="button"
                   onClick={() => changePage(currentPage - 1)}
@@ -576,11 +592,11 @@ export default function InterviewPrepPage() {
           )}
         </section>
 
-        <aside className="interview-detail" style={detailPanelStyle}>
+        <aside ref={detailPanelRef} className="interview-detail" style={detailPanelStyle}>
           {selectedQuestion ? (
             <>
-              <div style={detailHeaderStyle}>
-                <div style={detailMetadataStyle}>
+              <div className="interview-detail-header" style={detailHeaderStyle}>
+                <div className="interview-detail-metadata" style={detailMetadataStyle}>
                   <Badge tone={selectedQuestion.difficultyLevel === 'Advanced' || selectedQuestion.difficultyLevel === 'Architect' ? 'hard' : 'done'}>{selectedQuestion.difficultyLevel}</Badge>
                   <Badge>{selectedQuestion.category}</Badge>
                   <Badge tone={selectedQuestion.isMostAsked ? 'hot' : 'default'}>{selectedFrequency} Frequency</Badge>
@@ -661,13 +677,13 @@ export default function InterviewPrepPage() {
                 <SupportingText text={selectedQuestion.architectPerspective} />
               </AccordionDetailSection>
 
-              <div style={answerFeedbackStyle}>
+              <div className="interview-answer-feedback" style={answerFeedbackStyle}>
                 <span>Was this answer helpful?</span>
                 <button type="button" style={iconButtonStyle} aria-label="Helpful answer"><CheckCircle size={14} /></button>
                 <button type="button" style={iconButtonStyle} aria-label="Bookmark answer"><Bookmark size={14} /></button>
               </div>
 
-              <div style={detailFooterStyle}>
+              <div className="interview-detail-footer" style={detailFooterStyle}>
                 <button type="button" onClick={() => goToQuestion('previous')} disabled={selectedIndex <= 0} style={secondaryButtonStyle}>
                   <ChevronLeft size={14} />
                   Previous
@@ -739,6 +755,152 @@ export default function InterviewPrepPage() {
           }
           .interview-toolbar {
             grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 768px) {
+          .interview-workspace {
+            gap: 10px !important;
+            padding: 0 10px !important;
+          }
+          .interview-breadcrumbs {
+            gap: 4px !important;
+            margin-bottom: 4px !important;
+            font-size: 0.64rem !important;
+            line-height: 1.35 !important;
+          }
+          .interview-topic-header {
+            margin-bottom: 4px !important;
+          }
+          .interview-topic-title {
+            font-size: 1.18rem !important;
+            line-height: 1.14 !important;
+          }
+          .interview-topic-metrics {
+            gap: 6px !important;
+            margin-bottom: 8px !important;
+          }
+          .interview-topic-metrics > div {
+            min-height: 44px !important;
+            padding: 5px 6px !important;
+            border-radius: 7px !important;
+          }
+          .interview-toolbar {
+            grid-template-columns: minmax(0, 1fr) 118px !important;
+            gap: 6px !important;
+            margin-bottom: 8px !important;
+          }
+          .interview-question-row {
+            grid-template-columns: 22px minmax(0, 1fr) 14px !important;
+            gap: 6px !important;
+            min-height: 32px !important;
+            padding: 4px 7px !important;
+            border-radius: 8px !important;
+          }
+          .interview-question-row__text {
+            display: -webkit-box !important;
+            -webkit-box-orient: vertical !important;
+            -webkit-line-clamp: 2 !important;
+            overflow: hidden !important;
+            line-height: 1.28 !important;
+            font-size: 13px !important;
+          }
+          .interview-detail {
+            border-radius: 10px !important;
+          }
+          .interview-detail-header {
+            padding: 8px 12px !important;
+          }
+          .interview-detail-metadata {
+            gap: 4px !important;
+          }
+          .interview-answer-feedback {
+            padding: 8px 12px !important;
+            font-size: 12px !important;
+          }
+          .interview-detail-footer {
+            padding: 8px 12px !important;
+            gap: 8px !important;
+          }
+          .interview-detail-footer button {
+            font-size: 12px !important;
+          }
+          .interview-detail section h3 {
+            margin-bottom: 5px !important;
+            font-size: 14px !important;
+          }
+          .interview-detail section p,
+          .interview-detail section li {
+            font-size: 13px !important;
+            line-height: 1.58 !important;
+          }
+        }
+        @media (max-width: 430px) {
+          .interview-workspace {
+            padding: 0 8px 8px !important;
+          }
+          .interview-breadcrumbs {
+            font-size: 0.6rem !important;
+          }
+          .interview-topic-title {
+            font-size: 1.08rem !important;
+          }
+          .interview-topic-metrics {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+          .interview-topic-metrics > div {
+            min-height: 42px !important;
+            padding: 5px 6px !important;
+          }
+          .interview-toolbar {
+            grid-template-columns: 1fr !important;
+          }
+          .interview-question-row {
+            grid-template-columns: 20px minmax(0, 1fr) 14px !important;
+            gap: 5px !important;
+            min-height: 30px !important;
+            padding: 4px 6px !important;
+          }
+          .interview-question-row__text {
+            -webkit-line-clamp: 3 !important;
+            font-size: 12.5px !important;
+            line-height: 1.24 !important;
+          }
+          .interview-pagination {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin-top: 8px !important;
+            padding-top: 8px !important;
+          }
+          .interview-pagination__summary {
+            width: 100% !important;
+            font-size: 11px !important;
+          }
+          .interview-pagination__controls {
+            width: 100% !important;
+            justify-content: space-between !important;
+            gap: 4px !important;
+            flex-wrap: nowrap !important;
+          }
+          .interview-pagination__controls button {
+            min-width: 0 !important;
+            flex: 1 1 0 !important;
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+          }
+          .interview-detail-header {
+            padding: 8px 10px !important;
+          }
+          .interview-answer-feedback {
+            padding: 8px 10px !important;
+            flex-wrap: wrap !important;
+          }
+          .interview-detail-footer {
+            flex-wrap: wrap !important;
+            padding: 8px 10px !important;
+          }
+          .interview-detail-footer button {
+            flex: 1 1 calc(50% - 6px) !important;
+            justify-content: center !important;
           }
         }
       `}</style>

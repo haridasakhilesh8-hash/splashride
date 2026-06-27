@@ -12,8 +12,8 @@ export const technologyCategoryGroups: TechnologyCategoryGroup[] = [
   },
   {
     label: 'Frontend',
-    technologyIds: ['react', 'nextjs'],
-    interviewPrepTechnologyIds: ['react', 'nextjs'],
+    technologyIds: ['html-css', 'javascript', 'react', 'nextjs'],
+    interviewPrepTechnologyIds: ['html-css', 'javascript', 'react', 'nextjs'],
   },
   {
     label: 'Backend',

@@ -29,6 +29,8 @@ const technologyPresentation: Record<string, { icon: string; learningTechnologyI
   aem: { icon: '🏗️', learningTechnologyId: 'aem' },
   sitecore: { icon: '🧩', learningTechnologyId: 'sitecore' },
   contentful: { icon: '🧱', learningTechnologyId: 'contentful' },
+  'html-css': { icon: '🌐', learningTechnologyId: 'html-css' },
+  javascript: { icon: '🟨', learningTechnologyId: 'javascript' },
   react: { icon: '⚛️', learningTechnologyId: 'react' },
   nextjs: { icon: '▲', learningTechnologyId: 'nextjs' },
   'core-java': { icon: '☕', learningTechnologyId: 'java' },

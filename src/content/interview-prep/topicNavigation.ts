@@ -1486,10 +1486,102 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   },
 ];
 
+export const htmlCssInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'html',
+    title: 'HTML',
+    topics: [
+      { slug: 'semantic-html-deep-dive', title: 'HTML', category: 'HTML' },
+    ],
+  },
+  {
+    id: 'css',
+    title: 'CSS',
+    topics: [
+      { slug: 'css-specificity-deep-dive', title: 'CSS', category: 'CSS' },
+    ],
+  },
+  {
+    id: 'responsive-design',
+    title: 'Responsive Design',
+    topics: [
+      { slug: 'responsive-breakpoints', title: 'Responsive Design', category: 'Responsive Design' },
+    ],
+  },
+  {
+    id: 'accessibility',
+    title: 'Accessibility',
+    topics: [
+      { slug: 'accessibility-basics', title: 'Accessibility', category: 'Accessibility' },
+    ],
+  },
+  {
+    id: 'real-project-scenarios',
+    title: 'Real Project Scenarios',
+    topics: [
+      { slug: 'common-layout-bugs', title: 'Real Project Scenarios', category: 'Real Project Scenarios' },
+    ],
+  },
+];
+
+export const javascriptInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'javascript-basics',
+    title: 'JavaScript Basics',
+    topics: [
+      { slug: 'execution-context', title: 'JavaScript Basics', category: 'JavaScript Basics' },
+    ],
+  },
+  {
+    id: 'arrays-and-objects',
+    title: 'Arrays and Objects',
+    topics: [
+      { slug: 'javascript-arrays', title: 'Arrays and Objects', category: 'Arrays and Objects' },
+    ],
+  },
+  {
+    id: 'dom-and-events',
+    title: 'DOM and Events',
+    topics: [
+      { slug: 'dom-traversal', title: 'DOM and Events', category: 'DOM and Events' },
+    ],
+  },
+  {
+    id: 'async-javascript',
+    title: 'Async JavaScript',
+    topics: [
+      { slug: 'promises', title: 'Async JavaScript', category: 'Async JavaScript' },
+    ],
+  },
+  {
+    id: 'closures-hoisting-this',
+    title: 'Closures, Hoisting, and this',
+    topics: [
+      { slug: 'closures', title: 'Closures, Hoisting, and this', category: 'Closures, Hoisting, and this' },
+    ],
+  },
+  {
+    id: 'event-loop',
+    title: 'Event Loop',
+    topics: [
+      { slug: 'event-loop', title: 'Event Loop', category: 'Event Loop' },
+    ],
+  },
+  {
+    id: 'real-project-scenarios',
+    title: 'Real Project Scenarios',
+    topics: [
+      { slug: 'api-integration-mistakes', title: 'Real Project Scenarios', category: 'Real Project Scenarios' },
+    ],
+  },
+];
+
 const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup[]> = {
   aem: aemInterviewPrepTopicGroups,
   contentful: contentfulInterviewPrepTopicGroups,
   sitecore: sitecoreInterviewPrepTopicGroups,
+  'html-css': htmlCssInterviewPrepTopicGroups,
+  javascript: javascriptInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
   nextjs: nextjsInterviewPrepTopicGroups,
   'core-java': coreJavaInterviewPrepTopicGroups,

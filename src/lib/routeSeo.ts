@@ -20,10 +20,18 @@ export interface RouteSeoResolved {
   type: SeoType;
 }
 
-const TECHNOLOGY_SEO_COPY: Record<string, { titleFocus: string }> = {
+const TECHNOLOGY_SEO_COPY: Record<string, { titleFocus?: string; title?: string; description?: string }> = {
   aem: { titleFocus: 'Components, Sling, Dispatcher and Interview Prep' },
   contentful: { titleFocus: 'Headless CMS, APIs, Rich Text and Production Patterns' },
   sitecore: { titleFocus: 'XM Cloud, JSS, Content Architecture and Interview Prep' },
+  'html-css': {
+    title: 'HTML & CSS Tutorial | Layouts, Responsive Design and Interview Prep - SplashRide',
+    description: 'Learn HTML and CSS with semantic HTML, forms, accessibility, selectors, box model, flexbox, grid, responsive design, production issues, and interview questions.',
+  },
+  javascript: {
+    title: 'JavaScript Tutorial | DOM, Async, ES6 and Interview Prep - SplashRide',
+    description: 'Learn JavaScript with variables, functions, arrays, objects, DOM, events, promises, async/await, fetch API, ES6 concepts, production issues, and interview questions.',
+  },
   react: { titleFocus: 'Hooks, Components, Routing and Interview Prep' },
   nextjs: { titleFocus: 'App Router, Rendering, SSR and Interview Prep' },
   java: { titleFocus: 'OOP, Collections, JVM and Interview Prep' },
@@ -68,9 +76,9 @@ function getTechnologySeo(techId: string) {
 
   return {
     canonicalPath: getTechnologyPath(tech.id),
-    description: `Learn ${tech.label} with practical tutorials, real project usage, production issues, best practices, and interview-ready explanations.`,
+    description: seoCopy.description ?? `Learn ${tech.label} with practical tutorials, real project usage, production issues, best practices, and interview-ready explanations.`,
     tech,
-    title: `${tech.label} Tutorial | ${seoCopy.titleFocus}`,
+    title: seoCopy.title ?? `${tech.label} Tutorial | ${seoCopy.titleFocus}`,
   };
 }
 

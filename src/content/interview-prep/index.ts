@@ -4,6 +4,8 @@ import { awsInterviewPrep } from './aws';
 import { contentfulInterviewPrep } from './contentful';
 import { coreJavaInterviewPrep } from './core-java';
 import { dockerInterviewPrep } from './docker';
+import { htmlCssInterviewPrep } from './html-css';
+import { javascriptInterviewPrep } from './javascript';
 import { kubernetesInterviewPrep } from './kubernetes';
 import { nextjsInterviewPrep } from './nextjs';
 import { reactInterviewPrep } from './react';
@@ -17,6 +19,8 @@ export const interviewPrepSections: InterviewPrepSection[] = [
   aemInterviewPrep,
   contentfulInterviewPrep,
   sitecoreInterviewPrep,
+  htmlCssInterviewPrep,
+  javascriptInterviewPrep,
   reactInterviewPrep,
   nextjsInterviewPrep,
   coreJavaInterviewPrep,

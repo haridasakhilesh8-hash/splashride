@@ -8,6 +8,7 @@
 //   4. Mark the technology active: true in src/lib/navigation.ts
 // ─────────────────────────────────────────────────────────────────────────────
 import type { TopicContent } from './types';
+import { normalizeTopicContent } from './topicStandards';
 
 // ── Active technologies ───────────────────────────────────────────────────────
 import { aemContentMap }    from './aem/index';
@@ -27,7 +28,7 @@ import { k8sContentMap }    from './kubernetes/index';
 import { azureContentMap }  from './azure/index';
 import { aiContentMap }     from './ai/index';
 
-const contentMap: Record<string, TopicContent> = {
+const rawContentMap: Record<string, TopicContent> = {
   ...aemContentMap,
   ...contentfulContentMap,
   ...sitecoreContentMap,
@@ -43,6 +44,10 @@ const contentMap: Record<string, TopicContent> = {
   ...azureContentMap,
   ...aiContentMap,
 };
+
+const contentMap: Record<string, TopicContent> = Object.fromEntries(
+  Object.entries(rawContentMap).map(([slug, topic]) => [slug, normalizeTopicContent(topic)]),
+) as Record<string, TopicContent>;
 
 export function getTopicContent(slug: string): TopicContent | null {
   return contentMap[slug] ?? null;

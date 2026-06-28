@@ -87,32 +87,62 @@ function getTopicSeo(techId: string | undefined, slug: string) {
   const tech = (techId ? getTechById(techId) : null) ?? getTechForSlug(slug);
   if (!topic || !tech) return null;
 
-  const category = getCategoryForSlug(slug);
   const canonicalPath = getTechnologyTopicPath(tech.id, slug);
+  const description = `Learn ${topic.title} in ${tech.label} with quick understanding, real project usage, common mistakes, production issues, best practices, interview questions, FAQs, and related topics.`;
+  const structuredData: Record<string, unknown>[] = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Technologies', item: absoluteUrl('/technologies') },
+        { '@type': 'ListItem', position: 3, name: tech.label, item: absoluteUrl(getTechnologyPath(tech.id)) },
+        {
+          '@type': 'ListItem',
+          position: 4,
+          name: topic.title,
+          item: absoluteUrl(canonicalPath),
+        },
+      ],
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: `${topic.title} | ${tech.label} Tutorial - SplashRide`,
+      description,
+      mainEntityOfPage: absoluteUrl(canonicalPath),
+      about: [
+        { '@type': 'Thing', name: topic.title },
+        { '@type': 'Thing', name: tech.label },
+      ],
+      author: { '@type': 'Organization', name: SITE_NAME },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        logo: { '@type': 'ImageObject', url: absoluteUrl('/splashride-logo.png') },
+      },
+    },
+  ];
+
+  if (topic.faqs.length > 0) {
+    structuredData.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: topic.faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
+      })),
+    });
+  }
 
   return {
     canonicalPath,
-    description: `Learn ${topic.title} in ${tech.label} with quick understanding, real project usage, common mistakes, production issues, best practices, and interview questions.`,
-    structuredData: [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
-          { '@type': 'ListItem', position: 2, name: 'Technologies', item: absoluteUrl('/') },
-          { '@type': 'ListItem', position: 3, name: tech.label, item: absoluteUrl(getTechnologyPath(tech.id)) },
-          ...(category
-            ? [{ '@type': 'ListItem', position: 4, name: category.title, item: absoluteUrl(canonicalPath) }]
-            : []),
-          {
-            '@type': 'ListItem',
-            position: category ? 5 : 4,
-            name: topic.title,
-            item: absoluteUrl(canonicalPath),
-          },
-        ],
-      },
-    ],
+    description,
+    structuredData,
     title: `${topic.title} | ${tech.label} Tutorial - SplashRide`,
     type: 'article' as const,
   };

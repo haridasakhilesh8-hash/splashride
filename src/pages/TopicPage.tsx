@@ -182,7 +182,22 @@ function InfoBox({ type, children }: { type: 'info' | 'warning' | 'tip' | 'dange
       style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}
     >
       <span style={{ flexShrink: 0 }}>{c.icon}</span>
-      <div style={{ fontSize: '0.875rem', lineHeight: 1.65, color: 'var(--color-text-primary)' }}>
+      <div
+        style={{
+          fontSize: '0.875rem',
+          lineHeight: 1.65,
+          color: 'var(--color-text-primary)',
+          whiteSpace: 'normal',
+          overflow: 'visible',
+          textOverflow: 'unset',
+          display: 'block',
+          height: 'auto',
+          maxHeight: 'none',
+          minWidth: 0,
+          overflowWrap: 'anywhere',
+          wordBreak: 'normal',
+        }}
+      >
         {children}
       </div>
     </div>

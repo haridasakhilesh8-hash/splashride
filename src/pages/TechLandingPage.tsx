@@ -2,8 +2,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getTechById } from '../lib/navigation';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import SEO from '../components/SEO';
+import TechnologyMainFAQs from '../components/TechnologyMainFAQs';
 import { absoluteUrl } from '../lib/seo';
 import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
+import { getTechnologyMainFaqs } from '../content/technologyMainFaqs';
 
 export default function TechLandingPage() {
   const { techId } = useParams<{ techId: string }>();
@@ -27,6 +29,7 @@ export default function TechLandingPage() {
   const liveTopics = tech.categories
     .flatMap(c => c.items)
     .filter(i => !i.badge);
+  const faqs = getTechnologyMainFaqs(tech);
 
   const techTitle = `${tech.label} Tutorials | SplashRide`;
   const techDescription = `${tech.description} Learn ${tech.label} with practical tutorials, examples, production guidance and interview-ready explanations.`;
@@ -71,6 +74,18 @@ export default function TechLandingPage() {
         position: index + 1,
         url: absoluteUrl(getTechnologyTopicPath(tech.id, topic.slug)),
         name: topic.title,
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((faq) => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer,
+        },
       })),
     },
   ];
@@ -171,6 +186,8 @@ export default function TechLandingPage() {
           </div>
         </div>
       ))}
+
+      <TechnologyMainFAQs faqs={faqs} />
     </div>
   );
 }

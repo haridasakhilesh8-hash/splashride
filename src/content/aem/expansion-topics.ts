@@ -138,7 +138,7 @@ export const oakRepository = makeTopic({
   slug: 'oak-repository',
   title: 'Oak Repository Basics',
   description: 'Learn how Apache Jackrabbit Oak underpins AEM storage, indexing, queries, and operational trade-offs.',
-  quickUnderstanding: 'Oak is the storage and query engine behind AEM. JCR is the API model you use, while Oak is the implementation that makes repository behavior, indexing, and performance real.',
+  quickUnderstanding: 'Oak is the storage and query engine behind AEM. It matters because indexing, query performance, and repository behavior often decide how stable AEM stays in production.',
   whatIsIt: `Apache Jackrabbit Oak is AEM's JCR implementation. It is responsible for:
 
 - node and property persistence

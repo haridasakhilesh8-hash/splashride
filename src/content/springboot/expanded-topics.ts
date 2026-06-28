@@ -17,7 +17,7 @@ const reviewed = 'June 2026';
 const versions = ['Spring Boot 2.7', 'Spring Boot 3.x', 'Spring Framework 6'];
 
 function topic(spec: SpringExpandedTopicSpec): TopicContent {
-  return {
+  const baseTopic: TopicContent = {
     slug: spec.slug,
     title: spec.title,
     description: spec.description,
@@ -88,13 +88,195 @@ function topic(spec: SpringExpandedTopicSpec): TopicContent {
     ],
     relatedTopics: spec.relatedTopics,
   };
+
+  if (spec.slug === 'spring-framework-basics') {
+    return {
+      ...baseTopic,
+      quickUnderstanding:
+        'Spring Framework is the foundation behind Spring Boot. It manages beans, dependencies, configuration, transactions, and application behavior through the Spring container.',
+      whatIsIt: `Spring Framework is the core programming model behind most modern Java backend applications built with Spring Boot. It is not the same thing as Spring Boot. Spring Framework provides the container, bean model, dependency injection, AOP, transaction support, web stack, and integration features. Spring Boot sits on top of that foundation and removes much of the manual setup.
+
+The most important idea is the **Spring container**. The container, usually represented by \`ApplicationContext\`, creates and manages application objects called **beans**. Instead of every controller, service, and repository creating dependencies manually with \`new\`, Spring resolves the dependency graph and wires the objects together for you.
+
+**Quick Facts**
+- Spring Framework is the core foundation behind Spring Boot.
+- It provides IoC and Dependency Injection through the Spring container.
+- Spring Boot reduces configuration, but it still runs on Spring Framework internally.
+- Important modules include Core, Beans, Context, AOP, MVC, JDBC, ORM, and Transaction.
+- Many production issues around beans, startup, profiles, and wiring require Spring Framework knowledge.
+- This is one of the most frequently asked backend and Spring Boot interview topics.`,
+      whyWeNeedIt: `Without Spring, developers manually create and wire objects, pass dependencies around, choose lifecycle rules themselves, and keep configuration logic scattered across the codebase. That may feel manageable in a tiny project, but it becomes painful in real systems with controllers, services, repositories, validators, security filters, event handlers, schedulers, and multiple environments.
+
+Spring gives teams a consistent way to manage object creation, configuration, transactions, web flow, and infrastructure integration. Spring Boot makes the setup much faster, but knowing the underlying framework is still important when the application context fails, the wrong bean gets injected, a profile changes behavior, or a transaction does not behave as expected.
+
+**Why this matters in real work**
+- It helps you understand how controllers, services, repositories, and configuration classes are connected.
+- It helps you debug missing beans, circular dependencies, bean conflicts, and configuration mistakes.
+- It helps you explain Spring Boot behavior clearly in interviews, design discussions, and production troubleshooting.`,
+      realWorldUsage: `In real backend projects, teams usually experience Spring Framework through Spring Boot rather than through raw XML configuration. The framework still does the heavy lifting behind the scenes.
+
+You see it in:
+- **Backend APIs** where controllers receive requests and delegate to services
+- **Microservices** where configuration, health, dependency wiring, and startup order matter
+- **Enterprise applications** with many modules, reusable components, and shared libraries
+- **Transaction-heavy systems** where service methods coordinate database work safely
+- **Security-enabled applications** where filters, authentication, and authorization depend on bean configuration
+- **Data-driven applications** where repositories, entity managers, and transaction boundaries must align correctly
+
+A typical production flow looks like this: controllers handle HTTP requests, services hold business logic, repositories access the database, configuration classes define important beans, and the Spring container wires everything together so the application starts as one managed system.`,
+      howItWorks: `1. Developers write classes such as \`@Controller\`, \`@RestController\`, \`@Service\`, \`@Repository\`, or \`@Configuration\`.
+2. Spring scans those packages or registers classes explicitly and turns them into beans.
+3. The \`ApplicationContext\` creates those beans and manages their lifecycle.
+4. Dependencies are injected automatically, usually through constructor injection.
+5. Spring Boot adds auto-configuration, starter dependencies, and sensible defaults on top of the same container.
+6. The application starts with controllers, services, repositories, and infrastructure components already connected and ready to use.
+
+That is why a Spring Boot application feels simple on the surface: Boot reduces setup, but Spring Framework still owns the bean graph, dependency resolution, and runtime behavior.`,
+      example: {
+        title: 'Manual wiring versus Spring-managed wiring',
+        description: 'A beginner-friendly comparison that shows why dependency injection matters in real Spring Boot controllers and services.',
+        code: [
+          {
+            label: 'Without Spring',
+            language: 'java',
+            code: `public class UserService {
+    public String getUserName(Long id) {
+        return "User-" + id;
+    }
+}
+
+public class UserController {
+    private final UserService userService = new UserService();
+
+    public String getUser(Long id) {
+        return userService.getUserName(id);
+    }
+}`,
+          },
+          {
+            label: 'With Spring Constructor Injection',
+            language: 'java',
+            code: `@Service
+public class UserService {
+    public String getUserName(Long id) {
+        return "User-" + id;
+    }
+}
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable Long id) {
+        return userService.getUserName(id);
+    }
+}`,
+          },
+        ],
+      },
+      commonConfusions: [
+        {
+          question: 'Is Spring Framework the same as Spring Boot?',
+          answer:
+            'No. Spring Framework is the core framework that provides the container, dependency injection, AOP, MVC, transactions, and integration support. Spring Boot builds on top of it by adding starters, auto-configuration, and opinionated defaults.',
+        },
+        {
+          question: 'Do we still need Spring Framework knowledge if we already use Spring Boot?',
+          answer:
+            'Yes. Spring Boot makes startup easier, but production debugging still depends on Spring knowledge. Missing beans, proxy behavior, configuration conflicts, profiles, and transaction issues are usually Spring Framework questions underneath.',
+        },
+        {
+          question: 'Is dependency injection just about using @Autowired?',
+          answer:
+            'No. Dependency injection is the design idea of receiving dependencies from the container instead of creating them manually. @Autowired is only one way to express injection, and constructor injection is usually the preferred production style.',
+        },
+        {
+          question: 'What is the difference between BeanFactory and ApplicationContext?',
+          answer:
+            'BeanFactory is the more basic container abstraction. ApplicationContext is the richer, commonly used container that adds features such as event publishing, message resolution, and easier integration with the rest of Spring.',
+        },
+        {
+          question: 'Is Spring only for web applications?',
+          answer:
+            'No. Spring can power web APIs, batch jobs, messaging consumers, scheduled tasks, integration services, and non-web backend processes. The core container and dependency model are useful well beyond HTTP applications.',
+        },
+      ],
+      productionIssues: [
+        'The application fails to start because a required bean is missing. Knowing how component scanning, bean registration, and conditional configuration work helps you find why the dependency was never created.',
+        'Multiple beans of the same type create injection conflicts. Spring Framework knowledge helps you solve this with qualifiers, primary beans, or clearer architectural boundaries instead of random trial and error.',
+        'A circular dependency prevents bean creation. Understanding the dependency graph helps you redesign responsibilities rather than hiding the problem with fragile workarounds.',
+        'The wrong profile loads the wrong beans or properties in a target environment. Framework knowledge helps you trace how profile-based configuration changes startup behavior.',
+        'A @Transactional method does not work because it is called internally inside the same class. Knowing that Spring commonly uses proxies explains why self-invocation bypasses the transactional proxy.',
+        'Component scanning misses classes because package structure is incorrect. Understanding scan roots and configuration boundaries helps you fix the issue quickly, especially in multi-module services.',
+      ],
+      bestPractices: [
+        'Prefer constructor injection over field injection so dependencies are explicit, testable, and easier to reason about.',
+        'Keep controller, service, and repository responsibilities separate so the bean graph stays understandable.',
+        'Use a clear package structure so component scanning and configuration boundaries remain predictable.',
+        'Avoid circular dependencies because they usually signal confused ownership between classes.',
+        'Keep important configuration explicit when production behavior, security, or data consistency depends on it.',
+        'Understand what Spring Boot auto-configuration is doing instead of relying on it blindly.',
+        'Use profiles carefully and verify which beans and properties are active in each environment.',
+      ],
+      architectNote:
+        'A senior backend engineer should understand Spring Framework beyond annotations and starter dependencies. In production systems, the important skill is knowing how beans are created, how dependencies are wired, how configuration changes runtime behavior, how proxy-based features such as transactions actually work, and where Spring Boot auto-configuration is helping or hiding complexity. That understanding is what turns startup failures, bean conflicts, profile mistakes, and debugging sessions into solvable engineering problems instead of guesswork.',
+      faqs: [
+        {
+          question: 'What is Spring Framework?',
+          answer:
+            'Spring Framework is a Java framework for building backend applications in a modular and loosely coupled way. Its most important features include the IoC container, dependency injection, AOP, transaction management, MVC, and integration support. In most modern projects, Spring Boot uses these features underneath.',
+        },
+        {
+          question: 'How is Spring Framework different from Spring Boot?',
+          answer:
+            'Spring Framework is the foundation. Spring Boot is a layer on top that simplifies setup with starters, auto-configuration, and production-friendly defaults. A Spring Boot application is still a Spring Framework application underneath.',
+        },
+        {
+          question: 'Why is Dependency Injection important in Spring?',
+          answer:
+            'Dependency Injection removes the need for classes to create their own collaborators manually. That reduces tight coupling, makes unit testing easier, and keeps architecture cleaner as the application grows. In Spring, the container handles the object graph so developers can focus on business logic.',
+        },
+        {
+          question: 'What is ApplicationContext in Spring?',
+          answer:
+            'ApplicationContext is the main Spring container used in real applications. It creates beans, injects dependencies, manages lifecycle, and provides higher-level framework features such as events and resource loading. When people say "Spring manages the beans," they usually mean the ApplicationContext is doing that work.',
+        },
+        {
+          question: 'Do I need to learn Spring Framework before Spring Boot?',
+          answer:
+            'You can start building with Spring Boot first, but you should learn Spring Framework fundamentals early. Without that foundation, it becomes hard to explain bean wiring, auto-configuration, profiles, proxies, and transaction behavior. For interviews and production debugging, Spring Framework knowledge is a real advantage.',
+        },
+        {
+          question: 'What production issues happen when Spring configuration is wrong?',
+          answer:
+            'Common issues include missing beans, duplicate bean conflicts, wrong profile activation, failed startup, incorrect transaction behavior, and classes not being discovered by component scanning. These problems look confusing if you only know annotations, but they become much easier to diagnose when you understand how the Spring container builds the application context.',
+        },
+      ],
+      keyTakeaways: [
+        'Spring Framework is the foundation behind Spring Boot.',
+        'IoC and Dependency Injection are the most important Spring core concepts.',
+        'Spring Boot simplifies setup but does not replace Spring Framework knowledge.',
+        'Production issues often involve beans, configuration, profiles, transactions, or auto-configuration.',
+        'Interviewers expect developers to explain how Spring works internally, not only how to use annotations.',
+      ],
+      relatedTopics: ['spring-introduction', 'spring-boot-architecture', 'spring-auto-configuration', 'spring-ioc', 'spring-di'],
+    };
+  }
+
+  return baseTopic;
 }
 
 const specs: SpringExpandedTopicSpec[] = [
   {
     slug: 'spring-framework-basics',
     title: 'Spring Framework Basics',
-    description: 'Understand the Spring Framework foundation underneath Spring Boot and how the container, modules, and conventions fit together.',
+    description: 'Understand the Spring Framework foundation under Spring Boot, including the container, beans, dependency injection, and real production relevance.',
     concept: 'Spring Framework provides the core container, dependency injection, AOP, MVC, data integration points, and extension model that Spring Boot builds on top of.',
     why: 'Without Spring fundamentals, teams memorize Boot conveniences but struggle to explain what the framework is actually doing when startup, proxying, or bean resolution behaves unexpectedly.',
     usage: 'This matters in service initialization, configuration debugging, modular design, upgrade planning, and interviews where framework ownership depth is expected.',
@@ -108,7 +290,7 @@ Spring Boot
 -> auto-configuration
 -> embedded runtime
 -> production conventions`,
-    relatedTopics: ['spring-introduction', 'spring-auto-configuration', 'spring-ioc'],
+    relatedTopics: ['spring-introduction', 'spring-boot-architecture', 'spring-auto-configuration', 'spring-ioc', 'spring-di'],
   },
   {
     slug: 'spring-boot-architecture',

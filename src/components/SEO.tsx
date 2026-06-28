@@ -58,7 +58,12 @@ export default function SEO({
     setMeta('meta[property="og:type"]', 'property', 'og:type', resolvedType);
     setMeta('meta[property="og:url"]', 'property', 'og:url', canonical);
     setMeta('meta[property="og:image"]', 'property', 'og:image', imageUrl);
-    setMeta('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+    setMeta(
+      'meta[name="twitter:card"]',
+      'name',
+      'twitter:card',
+      resolvedType === 'article' ? 'summary' : 'summary_large_image',
+    );
     setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', resolvedTitle);
     setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', resolvedDescription);
     setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', imageUrl);

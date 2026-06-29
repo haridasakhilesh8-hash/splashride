@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
 import SEO from '../components/SEO';
-import { absoluteUrl } from '../lib/seo';
+import { buildWebPageSchema } from '../lib/structuredData';
 
 const sectionEyebrowStyle: CSSProperties = {
   fontSize: '0.72rem',
@@ -30,13 +30,11 @@ const sectionBodyStyle: CSSProperties = {
 };
 
 export default function PrivacyPolicyPage() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
+  const structuredData = buildWebPageSchema({
+    path: '/privacy-policy',
     name: 'Privacy Policy',
-    url: absoluteUrl('/privacy-policy'),
     description: 'Read the SplashRide privacy policy for how the developer learning platform handles site usage information and policy updates.',
-  };
+  });
 
   return (
     <div style={{ padding: '2.75rem 2rem 5rem', maxWidth: '980px', margin: '0 auto' }} className="fade-in homepage-root">

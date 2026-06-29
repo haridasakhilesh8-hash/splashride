@@ -32,6 +32,7 @@ function absoluteUrl(route) {
 
 function routeExists(route) {
   if (route === '/') return true;
+  if (route === '/technologies') return true;
   if (route === '/about') return true;
   if (route === '/contact') return true;
   if (route === '/privacy-policy') return true;
@@ -68,6 +69,7 @@ function routeExists(route) {
 
 const entries = [
   { route: '/', priority: '1.0' },
+  { route: '/technologies', priority: '0.9' },
   { route: '/about', priority: '0.6' },
   { route: '/contact', priority: '0.6' },
   { route: '/privacy-policy', priority: '0.4' },

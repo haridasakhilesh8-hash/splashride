@@ -64,6 +64,7 @@ function AppShell() {
         >
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/technologies" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
             <Route path="/terms" element={<TermsPage />} />

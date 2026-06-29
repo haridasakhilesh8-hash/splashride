@@ -1,9 +1,9 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowRight, BookOpen, BriefcaseBusiness, CircleCheckBig, Clock3, Compass, Layers3, Target, TrendingUp } from 'lucide-react';
+import { ArrowRight, BookOpen, CircleCheckBig, Clock3, Compass, Layers3, Target, TrendingUp } from 'lucide-react';
 import SEO from '../components/SEO';
-import { absoluteUrl } from '../lib/seo';
 import { getCareerRoadmap, type CareerPathLink } from '../content/careerPaths';
+import { getRelatedCareerPathLinks } from '../lib/topicClusters';
 
 function Badge({
   children,
@@ -142,36 +142,13 @@ export default function RoadmapPage() {
     return <Navigate to="/career-paths" replace />;
   }
 
-  const structuredData = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Course',
-      name: roadmap.title,
-      description: roadmap.seoDescription,
-      url: absoluteUrl(`/career-paths/${roadmap.slug}`),
-      provider: {
-        '@type': 'Organization',
-        name: 'SplashRide',
-        url: absoluteUrl('/'),
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'SplashRide', item: absoluteUrl('/') },
-        { '@type': 'ListItem', position: 2, name: 'Career Paths', item: absoluteUrl('/career-paths') },
-        { '@type': 'ListItem', position: 3, name: roadmap.shortTitle, item: absoluteUrl(`/career-paths/${roadmap.slug}`) },
-      ],
-    },
-  ];
-
   const firstTechnology = roadmap.technologies.find((technology) => technology.availableNow !== false) ?? roadmap.technologies[0];
   const topRoles = roadmap.careerInsights.typicalRoles.slice(0, 3);
+  const relatedCareerPaths = getRelatedCareerPathLinks(roadmap.slug, 4);
 
   return (
     <div style={{ padding: '2rem 0 4.5rem', maxWidth: '1100px', margin: '0 auto' }} className="fade-in">
-      <SEO title={roadmap.seoTitle} description={roadmap.seoDescription} structuredData={structuredData} />
+      <SEO title={roadmap.seoTitle} description={roadmap.seoDescription} />
 
       <nav aria-label="Breadcrumb" style={breadcrumbStyle}>
         <Link to="/" style={crumbStyle}>
@@ -483,6 +460,25 @@ export default function RoadmapPage() {
           ))}
         </div>
       </section>
+
+      {relatedCareerPaths.length > 0 && (
+        <section style={{ marginBottom: '2.8rem' }}>
+          <SectionHeader
+            eyebrow="Related Paths"
+            title="Compare nearby career directions"
+            description="These related paths share enough stack overlap that they make strong next steps or comparison points while you decide where to go deeper."
+          />
+
+          <div style={linkPillRowStyle}>
+            {relatedCareerPaths.map((link) => (
+              <LinkPill
+                key={link.path}
+                link={{ label: link.label, to: link.path }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section style={bottomBannerStyle}>
         <div className="split-section" style={bottomBannerGridStyle}>

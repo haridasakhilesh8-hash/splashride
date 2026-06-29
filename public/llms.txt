@@ -1,0 +1,109 @@
+# SplashRide
+
+> SplashRide is a developer learning platform that helps developers learn technologies, prepare for interviews, understand production issues, and follow career-focused learning paths.
+
+## Core Pages
+
+* [Home](https://www.splashride.in/)
+* [Technologies](https://www.splashride.in/technologies)
+* [Interview Prep](https://www.splashride.in/interview-prep)
+* [Career Paths](https://www.splashride.in/career-paths)
+* [About](https://www.splashride.in/about)
+
+## Technology Hubs
+
+* [AEM](https://www.splashride.in/technologies/aem)
+* [Contentful](https://www.splashride.in/technologies/contentful)
+* [Sitecore](https://www.splashride.in/technologies/sitecore)
+* [HTML & CSS](https://www.splashride.in/technologies/html-css)
+* [JavaScript](https://www.splashride.in/technologies/javascript)
+* [React](https://www.splashride.in/technologies/react)
+* [Next.js](https://www.splashride.in/technologies/nextjs)
+* [Core Java](https://www.splashride.in/technologies/java)
+* [Spring Boot](https://www.splashride.in/technologies/springboot)
+* [AWS](https://www.splashride.in/technologies/aws)
+* [Docker](https://www.splashride.in/technologies/docker)
+* [Kubernetes](https://www.splashride.in/technologies/kubernetes)
+* [Azure](https://www.splashride.in/technologies/azure)
+* [AI / LLM Engineering](https://www.splashride.in/technologies/ai-llm)
+
+## Interview Prep
+
+* [AEM Interview Questions](https://www.splashride.in/interview-prep/aem)
+* [Contentful Interview Questions](https://www.splashride.in/interview-prep/contentful)
+* [Sitecore Interview Questions](https://www.splashride.in/interview-prep/sitecore)
+* [HTML & CSS Interview Questions](https://www.splashride.in/interview-prep/html-css)
+* [JavaScript Interview Questions](https://www.splashride.in/interview-prep/javascript)
+* [React Interview Questions](https://www.splashride.in/interview-prep/react)
+* [Next.js Interview Questions](https://www.splashride.in/interview-prep/nextjs)
+* [Core Java Interview Questions](https://www.splashride.in/interview-prep/core-java)
+* [Spring Boot Interview Questions](https://www.splashride.in/interview-prep/spring-boot)
+* [AWS Interview Questions](https://www.splashride.in/interview-prep/aws)
+* [Azure Interview Questions](https://www.splashride.in/interview-prep/azure)
+* [Docker Interview Questions](https://www.splashride.in/interview-prep/docker)
+* [Kubernetes Interview Questions](https://www.splashride.in/interview-prep/kubernetes)
+* [AI / LLM Engineering Interview Questions](https://www.splashride.in/interview-prep/ai-llm)
+
+## Topic Clusters
+
+### Enterprise CMS
+* [AEM](https://www.splashride.in/technologies/aem)
+* [Contentful](https://www.splashride.in/technologies/contentful)
+* [Sitecore](https://www.splashride.in/technologies/sitecore)
+
+### Frontend
+* [HTML & CSS](https://www.splashride.in/technologies/html-css)
+* [JavaScript](https://www.splashride.in/technologies/javascript)
+* [React](https://www.splashride.in/technologies/react)
+* [Next.js](https://www.splashride.in/technologies/nextjs)
+
+### Backend
+* [Core Java](https://www.splashride.in/technologies/java)
+* [Spring Boot](https://www.splashride.in/technologies/springboot)
+
+### Cloud and DevOps
+* [AWS](https://www.splashride.in/technologies/aws)
+* [Azure](https://www.splashride.in/technologies/azure)
+* [Docker](https://www.splashride.in/technologies/docker)
+* [Kubernetes](https://www.splashride.in/technologies/kubernetes)
+
+### AI
+* [AI / LLM Engineering](https://www.splashride.in/technologies/ai-llm)
+
+## Best Pages for AI Answers
+
+* [AEM: AEM Components](https://www.splashride.in/technologies/aem/topic/components)
+* [AEM: AEM Dispatcher](https://www.splashride.in/technologies/aem/topic/dispatcher)
+* [AEM: Editable Templates](https://www.splashride.in/technologies/aem/topic/editable-templates)
+* [Contentful: Content Model Design](https://www.splashride.in/technologies/contentful/topic/contentful-content-model-design)
+* [Contentful: Rich Text Fields](https://www.splashride.in/technologies/contentful/topic/contentful-rich-text-fields)
+* [Sitecore: XM vs XP vs XM Cloud](https://www.splashride.in/technologies/sitecore/topic/sitecore-xm-vs-xp-vs-xm-cloud)
+* [React: Components](https://www.splashride.in/technologies/react/topic/react-components)
+* [React: useEffect](https://www.splashride.in/technologies/react/topic/react-hooks-useeffect)
+* [JavaScript: Closures](https://www.splashride.in/technologies/javascript/topic/closures)
+* [JavaScript: Promises](https://www.splashride.in/technologies/javascript/topic/promises)
+* [JavaScript: Event Loop](https://www.splashride.in/technologies/javascript/topic/event-loop)
+* [HTML & CSS: Semantic HTML Deep Dive](https://www.splashride.in/technologies/html-css/topic/semantic-html-deep-dive)
+* [HTML & CSS: Flexbox](https://www.splashride.in/technologies/html-css/topic/flexbox)
+* [HTML & CSS: CSS Grid](https://www.splashride.in/technologies/html-css/topic/css-grid)
+* [Spring Boot: Spring Framework Basics](https://www.splashride.in/technologies/springboot/topic/spring-framework-basics)
+* [Spring Boot: Auto Configuration](https://www.splashride.in/technologies/springboot/topic/spring-auto-configuration)
+
+## Content Notes
+
+SplashRide topic pages usually include:
+
+* Quick Understanding
+* What Is It?
+* Quick Facts
+* Why Do We Need It?
+* Real Projects
+* How It Works
+* Example
+* Common Confusions
+* Production Issues
+* Best Practices
+* Architect's Note
+* FAQs
+* Key Takeaways
+* Related Topics

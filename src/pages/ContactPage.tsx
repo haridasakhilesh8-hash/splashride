@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MessageSquare, PenTool } from 'lucide-react';
 import SEO from '../components/SEO';
-import { absoluteUrl } from '../lib/seo';
+import { buildWebPageSchema } from '../lib/structuredData';
 
 const sectionEyebrowStyle: CSSProperties = {
   fontSize: '0.72rem',
@@ -30,13 +30,12 @@ const sectionBodyStyle: CSSProperties = {
 };
 
 export default function ContactPage() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
+  const structuredData = buildWebPageSchema({
+    path: '/contact',
     name: 'Contact',
-    url: absoluteUrl('/contact'),
     description: 'Contact SplashRide for feedback, corrections, suggestions, or collaboration updates.',
-  };
+    type: 'ContactPage',
+  });
 
   return (
     <div style={{ padding: '2.75rem 2rem 5rem', maxWidth: '980px', margin: '0 auto' }} className="fade-in homepage-root">

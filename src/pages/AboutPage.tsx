@@ -11,7 +11,7 @@ import {
   UserRound,
 } from 'lucide-react';
 import SEO from '../components/SEO';
-import { absoluteUrl } from '../lib/seo';
+import { buildOrganizationSchema, buildWebPageSchema } from '../lib/structuredData';
 
 const sectionEyebrowStyle: CSSProperties = {
   fontSize: '0.72rem',
@@ -96,24 +96,13 @@ const trustSignals = [
 
 export default function AboutPage() {
   const aboutStructuredData = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'AboutPage',
+    buildWebPageSchema({
+      path: '/about',
       name: 'About SplashRide',
-      url: absoluteUrl('/about'),
       description: 'Learn why SplashRide was created, who it helps, what makes it different, and how it supports developer learning, interview preparation, and career growth.',
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Person',
-      name: 'Akki',
-      jobTitle: 'Technical Lead | Architect | Developer',
-      worksFor: {
-        '@type': 'Organization',
-        name: 'SplashRide',
-      },
-      description: 'Founder and creator of SplashRide.',
-    },
+      type: 'AboutPage',
+    }),
+    buildOrganizationSchema('SplashRide is a developer learning platform for technology tutorials, interview preparation, production knowledge, and career growth.'),
   ];
 
   return (

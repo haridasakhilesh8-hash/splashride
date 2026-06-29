@@ -30,8 +30,14 @@ import {
   getInterviewPrepTopicTitle,
 } from '../content/interview-prep/topicNavigation';
 import { getTechById } from '../lib/navigation';
+import { getTechnologyPath } from '../lib/routes';
 import { absoluteUrl } from '../lib/seo';
 import { useTech } from '../lib/TechContext';
+import {
+  getCareerPathLinksForTechnology,
+  getKeyTopicLinksForTechnology,
+  getRelatedInterviewPrepLinks,
+} from '../lib/topicClusters';
 
 type DetailAccordionId =
   | 'detailed-explanation'
@@ -303,6 +309,20 @@ export default function InterviewPrepPage() {
     ? 'Beginner to Architect'
     : 'Beginner to Advanced';
   const estimatedMinutes = Math.max(20, Math.round(topicQuestions.length * 4.5));
+  const preferredTopicSlugs = Array.from(new Set(topicQuestions.flatMap((item) => item.relatedTopics))).slice(0, 10);
+  const learningLinks = tech ? [
+    {
+      label: `${tech.label} Tutorial`,
+      path: getTechnologyPath(tech.id),
+      description: `Return to the ${tech.label} learning hub and roadmap.`,
+    },
+    ...getKeyTopicLinksForTechnology(tech.id, 3, preferredTopicSlugs).map((link) => ({
+      ...link,
+      description: `Review ${link.label} before or after this interview track.`,
+    })),
+    ...getCareerPathLinksForTechnology(tech.id, 2),
+    ...getRelatedInterviewPrepLinks(selectedSection?.technologyId ?? tech.id, 2),
+  ].slice(0, 8) : [];
 
   useEffect(() => {
     if (techId) setActiveTechId(techId);
@@ -465,10 +485,10 @@ export default function InterviewPrepPage() {
     {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: pageTitle,
+      name: `${topicLabel} ${selectedSection.technologyLabel} Interview Questions`,
       description: pageDescription,
-      url: absoluteUrl(`/interview-prep/${selectedSection.technologyId}?topic=${topicSlug}`),
-      about: `${selectedSection.technologyLabel} ${topicLabel}`,
+      url: absoluteUrl(`/interview-prep/${selectedSection.technologyId}`),
+      about: `${selectedSection.technologyLabel} interview prep for ${topicLabel}`,
     },
     {
       '@context': 'https://schema.org',
@@ -506,6 +526,9 @@ export default function InterviewPrepPage() {
             <h1 className="interview-topic-title" style={{ margin: 0, color: 'var(--color-text-primary)', fontSize: '1.38rem', lineHeight: 1.12 }}>
               {topicLabel}
             </h1>
+            <p style={{ margin: '6px 0 0', color: 'var(--color-text-secondary)', fontSize: '0.86rem', lineHeight: 1.6, maxWidth: '78ch' }}>
+              {selectedSection.description}
+            </p>
           </header>
 
           <div className="interview-topic-metrics" style={topicMetricGridStyle}>
@@ -590,6 +613,31 @@ export default function InterviewPrepPage() {
               </div>
             </nav>
           )}
+
+          {learningLinks.length > 0 && (
+            <section style={interviewLinkSectionStyle}>
+              <h2 style={interviewLinkHeadingStyle}>Related Learning</h2>
+              <div style={interviewLinkGridStyle}>
+                {learningLinks.map((link) => (
+                  <Link
+                    key={`${selectedSection.technologyId}-${link.path}-${link.label}`}
+                    to={link.path}
+                    onClick={() => window.scrollTo(0, 0)}
+                    style={interviewLinkCardStyle}
+                  >
+                    <div>
+                      <p style={interviewLinkLabelStyle}>{link.label}</p>
+                      {link.description ? (
+                        <p style={interviewLinkDescriptionStyle}>{link.description}</p>
+                      ) : null}
+                    </div>
+                    <ArrowRight size={14} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
         </section>
 
         <aside ref={detailPanelRef} className="interview-detail" style={detailPanelStyle}>
@@ -1348,4 +1396,49 @@ const landingPathStyle: CSSProperties = {
   border: '1px solid var(--color-border)',
   borderRadius: '8px',
   padding: '18px',
+};
+
+const interviewLinkSectionStyle: CSSProperties = {
+  marginTop: '14px',
+};
+
+const interviewLinkHeadingStyle: CSSProperties = {
+  margin: '0 0 8px',
+  color: 'var(--color-text-primary)',
+  fontSize: '1rem',
+  fontWeight: 800,
+};
+
+const interviewLinkGridStyle: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '10px',
+};
+
+const interviewLinkCardStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: '10px',
+  textDecoration: 'none',
+  color: 'inherit',
+  background: 'var(--color-bg-secondary)',
+  border: '1px solid var(--color-border)',
+  borderRadius: '10px',
+  padding: '11px 12px',
+};
+
+const interviewLinkLabelStyle: CSSProperties = {
+  margin: 0,
+  color: 'var(--color-text-primary)',
+  fontSize: '0.82rem',
+  fontWeight: 800,
+  lineHeight: 1.35,
+};
+
+const interviewLinkDescriptionStyle: CSSProperties = {
+  margin: '4px 0 0',
+  color: 'var(--color-text-secondary)',
+  fontSize: '0.75rem',
+  lineHeight: 1.5,
 };

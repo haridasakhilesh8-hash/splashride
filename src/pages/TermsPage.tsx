@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, FileText } from 'lucide-react';
 import SEO from '../components/SEO';
-import { absoluteUrl } from '../lib/seo';
+import { buildWebPageSchema } from '../lib/structuredData';
 
 const sectionEyebrowStyle: CSSProperties = {
   fontSize: '0.72rem',
@@ -37,13 +37,11 @@ const termsPoints = [
 ];
 
 export default function TermsPage() {
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
+  const structuredData = buildWebPageSchema({
+    path: '/terms',
     name: 'Terms & Conditions',
-    url: absoluteUrl('/terms'),
     description: 'Read the SplashRide terms and conditions for use of the developer learning platform and its informational content.',
-  };
+  });
 
   return (
     <div style={{ padding: '2.75rem 2rem 5rem', maxWidth: '980px', margin: '0 auto' }} className="fade-in homepage-root">

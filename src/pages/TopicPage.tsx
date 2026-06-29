@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getTopicContent } from '../content/index';
-import { getTopicTitle, getRelatedSlugs, getCategoryForSlug, getTechById } from '../lib/navigation';
+import { getRelatedSlugs, getCategoryForSlug, getTechById, getTechForSlug } from '../lib/navigation';
 import { useTech } from '../lib/TechContext';
 import FAQAccordion from '../components/FAQAccordion';
 import CodeBlock from '../components/CodeBlock';
@@ -11,6 +11,10 @@ import { AlertTriangle, CheckCircle, Lightbulb, BookOpen, ArrowRight, Clock, Tag
 import SEO from '../components/SEO';
 import { absoluteUrl } from '../lib/seo';
 import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
+import {
+  getCareerPathLinksForTechnology,
+  getInterviewPrepPrimaryLinkForTechnology,
+} from '../lib/topicClusters';
 
 function MarkdownText({ text }: { text: string }) {
   // Simple markdown-like rendering for **bold** and `code` and headings
@@ -236,8 +240,37 @@ export default function TopicPage() {
     );
   }
 
-  const relatedTopics = getRelatedSlugs(topic.slug);
   const pageTech = (techId ? getTechById(techId) : null) ?? activeTech;
+  const relatedTopics = Array.from(
+    new Set([
+      ...topic.relatedTopics,
+      ...getRelatedSlugs(topic.slug).map((item) => item.slug),
+    ]),
+  )
+    .map((relatedSlug) => {
+      const relatedTopic = getTopicContent(relatedSlug);
+      const relatedTopicTech = getTechForSlug(relatedSlug);
+      if (!relatedTopic || !relatedTopicTech) return null;
+
+      return {
+        slug: relatedSlug,
+        title: relatedTopic.title,
+        techId: relatedTopicTech.id,
+      };
+    })
+    .filter((item): item is { slug: string; title: string; techId: string } => !!item)
+    .slice(0, 6);
+  const interviewPrepLink = pageTech ? getInterviewPrepPrimaryLinkForTechnology(pageTech.id) : null;
+  const careerPathLinks = pageTech ? getCareerPathLinksForTechnology(pageTech.id, 2) : [];
+  const continueLearningLinks = [
+    ...(pageTech ? [{
+      label: `${pageTech.label} Roadmap`,
+      path: getTechnologyPath(pageTech.id),
+      description: `Return to the ${pageTech.label} learning hub.`,
+    }] : []),
+    ...(interviewPrepLink ? [interviewPrepLink] : []),
+    ...careerPathLinks,
+  ];
   const topicTitle = `${topic.title} | ${pageTech?.label ?? 'Developer'} Tutorial | SplashRide`;
   const topicDescription = topic.description.length > 155
     ? `${topic.description.slice(0, 152).trim()}...`
@@ -591,8 +624,8 @@ export default function TopicPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
               {relatedTopics.map((item) => (
                 <Link
-                  key={item.slug}
-                  to={getTechnologyTopicPath(pageTech?.id ?? techId ?? 'aem', item.slug)}
+                  key={`${item.techId}-${item.slug}`}
+                  to={getTechnologyTopicPath(item.techId, item.slug)}
                   onClick={() => {
                     window.scrollTo(0, 0);
                   }}
@@ -621,8 +654,36 @@ export default function TopicPage() {
                   }}
                 >
                   <BookOpen size={14} />
-                  {getTopicTitle(item.slug)}
+                  {item.title}
                   <ArrowRight size={13} />
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
+        {continueLearningLinks.length > 0 && (
+          <>
+            <SectionHeading id="continue-learning">
+              <span style={{ marginRight: '8px' }}>↗</span> Continue Learning
+            </SectionHeading>
+            <div style={continueLearningGridStyle}>
+              {continueLearningLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                  }}
+                  style={continueLearningCardStyle}
+                >
+                  <div>
+                    <p style={continueLearningLabelStyle}>{link.label}</p>
+                    {link.description ? (
+                      <p style={continueLearningDescriptionStyle}>{link.description}</p>
+                    ) : null}
+                  </div>
+                  <ArrowRight size={14} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
                 </Link>
               ))}
             </div>
@@ -654,3 +715,37 @@ export default function TopicPage() {
     </div>
   );
 }
+
+const continueLearningGridStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '10px',
+};
+
+const continueLearningCardStyle = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  gap: '10px',
+  textDecoration: 'none',
+  background: 'var(--color-bg-secondary)',
+  border: '1px solid var(--color-border)',
+  borderRadius: '10px',
+  padding: '12px 14px',
+  color: 'inherit',
+};
+
+const continueLearningLabelStyle = {
+  margin: 0,
+  color: 'var(--color-text-primary)',
+  fontSize: '0.84rem',
+  fontWeight: 800,
+  lineHeight: 1.35,
+};
+
+const continueLearningDescriptionStyle = {
+  margin: '4px 0 0',
+  color: 'var(--color-text-secondary)',
+  fontSize: '0.78rem',
+  lineHeight: 1.55,
+};

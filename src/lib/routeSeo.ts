@@ -1,14 +1,23 @@
 import { careerRoadmaps } from '../content/careerPaths';
 import { getTopicContent } from '../content';
 import { getActiveInterviewPrepSections } from '../content/interview-prep';
-import { getCategoryForSlug, getTechById, getTechForSlug, technologies } from './navigation';
+import { getTechById, getTechForSlug } from './navigation';
 import {
   getCareerPathPath,
   getInterviewPrepPath,
   getTechnologyPath,
   getTechnologyTopicPath,
 } from './routes';
-import { absoluteUrl, DEFAULT_DESCRIPTION, DEFAULT_TITLE, SITE_NAME } from './seo';
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE } from './seo';
+import {
+  buildArticleSchema,
+  buildBreadcrumbSchema,
+  buildCollectionPageSchema,
+  buildFAQSchema,
+  buildItemListSchema,
+  buildOrganizationSchema,
+  buildWebsiteSchema,
+} from './structuredData';
 
 type SeoType = 'website' | 'article';
 
@@ -58,14 +67,6 @@ function dedupeStructuredDataByType(nodes: Record<string, unknown>[]) {
   return deduped;
 }
 
-function humanizeSlug(value: string) {
-  return value
-    .split('-')
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
-
 function getTechnologySeo(techId: string) {
   const tech = getTechById(techId);
   if (!tech) return null;
@@ -73,10 +74,40 @@ function getTechnologySeo(techId: string) {
   const seoCopy = TECHNOLOGY_SEO_COPY[tech.id] ?? {
     titleFocus: `${tech.label} Concepts, Production Issues and Interview Prep`,
   };
+  const canonicalPath = getTechnologyPath(tech.id);
+  const description = seoCopy.description ?? `Learn ${tech.label} with practical tutorials, real project usage, production issues, best practices, and interview-ready explanations.`;
+  const liveTopics = tech.categories
+    .flatMap((category) => category.items)
+    .filter((item) => !item.badge)
+    .slice(0, 60);
+  const structuredData: Record<string, unknown>[] = [
+    buildCollectionPageSchema({
+      path: canonicalPath,
+      name: seoCopy.title ?? `${tech.label} Tutorial | ${seoCopy.titleFocus}`,
+      description,
+      about: tech.label,
+    }),
+    buildBreadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Technologies', path: '/technologies' },
+      { name: tech.label, path: canonicalPath },
+    ]),
+  ];
+
+  if (liveTopics.length > 0) {
+    structuredData.push(buildItemListSchema({
+      name: `${tech.label} topics`,
+      items: liveTopics.map((topic) => ({
+        name: topic.title,
+        path: getTechnologyTopicPath(tech.id, topic.slug),
+      })),
+    }));
+  }
 
   return {
-    canonicalPath: getTechnologyPath(tech.id),
-    description: seoCopy.description ?? `Learn ${tech.label} with practical tutorials, real project usage, production issues, best practices, and interview-ready explanations.`,
+    canonicalPath,
+    description,
+    structuredData,
     tech,
     title: seoCopy.title ?? `${tech.label} Tutorial | ${seoCopy.titleFocus}`,
   };
@@ -90,53 +121,27 @@ function getTopicSeo(techId: string | undefined, slug: string) {
   const canonicalPath = getTechnologyTopicPath(tech.id, slug);
   const description = `Learn ${topic.title} in ${tech.label} with quick understanding, real project usage, common mistakes, production issues, best practices, interview questions, FAQs, and related topics.`;
   const structuredData: Record<string, unknown>[] = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
-        { '@type': 'ListItem', position: 2, name: 'Technologies', item: absoluteUrl('/technologies') },
-        { '@type': 'ListItem', position: 3, name: tech.label, item: absoluteUrl(getTechnologyPath(tech.id)) },
-        {
-          '@type': 'ListItem',
-          position: 4,
-          name: topic.title,
-          item: absoluteUrl(canonicalPath),
-        },
-      ],
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'TechArticle',
+    buildBreadcrumbSchema([
+      { name: 'Home', path: '/' },
+      { name: 'Technologies', path: '/technologies' },
+      { name: tech.label, path: getTechnologyPath(tech.id) },
+      { name: topic.title, path: canonicalPath },
+    ]),
+    buildArticleSchema({
+      path: canonicalPath,
       headline: `${topic.title} | ${tech.label} Tutorial - SplashRide`,
       description,
-      mainEntityOfPage: absoluteUrl(canonicalPath),
+      type: 'TechArticle',
       about: [
         { '@type': 'Thing', name: topic.title },
         { '@type': 'Thing', name: tech.label },
       ],
-      author: { '@type': 'Organization', name: SITE_NAME },
-      publisher: {
-        '@type': 'Organization',
-        name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: absoluteUrl('/splashride-logo.png') },
-      },
-    },
+      dateModified: topic.lastReviewed,
+    }),
   ];
 
   if (topic.faqs.length > 0) {
-    structuredData.push({
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: topic.faqs.map((faq) => ({
-        '@type': 'Question',
-        name: faq.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: faq.answer,
-        },
-      })),
-    });
+    structuredData.push(buildFAQSchema(topic.faqs));
   }
 
   return {
@@ -152,19 +157,36 @@ function getInterviewPrepSeo(rawTechId: string) {
   const section = getActiveInterviewPrepSections().find((item) => item.technologyId === rawTechId);
   if (!section) return null;
 
+  const canonicalPath = getInterviewPrepPath(section.technologyId);
+  const description = `Practice ${section.technologyLabel} interview questions with short answers, detailed explanations, production scenarios, common mistakes, follow-up questions, and architect-level guidance.`;
+  const questionFaqs = section.questions.slice(0, 20).map((question) => ({
+    question: question.question,
+    answer: question.shortAnswer,
+  }));
+
   return {
-    canonicalPath: getInterviewPrepPath(section.technologyId),
-    description: `Practice ${section.technologyLabel} interview questions with short answers, detailed explanations, production scenarios, common mistakes, follow-up questions, and architect-level guidance.`,
+    canonicalPath,
+    description,
     structuredData: [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: absoluteUrl('/') },
-          { '@type': 'ListItem', position: 2, name: 'Interview Prep', item: absoluteUrl('/interview-prep') },
-          { '@type': 'ListItem', position: 3, name: section.technologyLabel, item: absoluteUrl(getInterviewPrepPath(section.technologyId)) },
-        ],
-      },
+      buildCollectionPageSchema({
+        path: canonicalPath,
+        name: `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
+        description,
+        about: `${section.technologyLabel} interview preparation`,
+      }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Interview Prep', path: '/interview-prep' },
+        { name: section.technologyLabel, path: canonicalPath },
+      ]),
+      buildItemListSchema({
+        name: `${section.technologyLabel} interview questions`,
+        items: section.questions.slice(0, 30).map((question) => ({
+          name: question.question,
+          path: canonicalPath,
+        })),
+      }),
+      buildFAQSchema(questionFaqs),
     ],
     title: `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
   };
@@ -173,24 +195,30 @@ function getInterviewPrepSeo(rawTechId: string) {
 function getCareerPathSeo(slug: string) {
   const roadmap = careerRoadmaps.find((item) => item.slug === slug);
   if (!roadmap) return null;
+  const canonicalPath = getCareerPathPath(roadmap.slug);
+  const description = `Follow the ${roadmap.shortTitle} career path with required skills, learning roadmap, projects, interview preparation, and growth direction.`;
 
   return {
-    canonicalPath: getCareerPathPath(roadmap.slug),
-    description: `Follow the ${roadmap.shortTitle} career path with required skills, learning roadmap, projects, interview preparation, and growth direction.`,
+    canonicalPath,
+    description,
     structuredData: [
-      {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
+      buildArticleSchema({
+        path: canonicalPath,
         headline: `${roadmap.shortTitle} Career Path`,
-        description: `Follow the ${roadmap.shortTitle} career path with required skills, learning roadmap, projects, interview preparation, and growth direction.`,
-        mainEntityOfPage: absoluteUrl(getCareerPathPath(roadmap.slug)),
-        author: { '@type': 'Organization', name: SITE_NAME },
-        publisher: {
-          '@type': 'Organization',
-          name: SITE_NAME,
-          logo: { '@type': 'ImageObject', url: absoluteUrl('/splashride-logo.png') },
-        },
-      },
+        description,
+      }),
+      buildBreadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Career Paths', path: '/career-paths' },
+        { name: roadmap.shortTitle, path: canonicalPath },
+      ]),
+      buildItemListSchema({
+        name: `${roadmap.shortTitle} roadmap phases`,
+        items: roadmap.phases.map((phase) => ({
+          name: phase.title,
+          path: canonicalPath,
+        })),
+      }),
     ],
     title: `${roadmap.shortTitle} Career Path | Skills, Roadmap, Projects and Interview Prep - SplashRide`,
   };
@@ -225,13 +253,8 @@ export function resolveRouteSeo(pathname: string, search = ''): RouteSeoResolved
       canonicalPath: '/',
       description: 'SplashRide helps developers learn technologies, prepare for interviews, understand production issues, build projects, and grow through clear career paths.',
       structuredData: [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: SITE_NAME,
-          url: absoluteUrl('/'),
-          logo: absoluteUrl('/splashride-logo.png'),
-        },
+        buildWebsiteSchema(DEFAULT_DESCRIPTION),
+        buildOrganizationSchema(DEFAULT_DESCRIPTION),
       ],
       title: DEFAULT_TITLE,
       type: 'website',

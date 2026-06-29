@@ -1,11 +1,16 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getTechById } from '../lib/navigation';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronRight, GraduationCap, Layers3 } from 'lucide-react';
 import SEO from '../components/SEO';
 import TechnologyMainFAQs from '../components/TechnologyMainFAQs';
 import { absoluteUrl } from '../lib/seo';
 import { getTechnologyPath, getTechnologyTopicPath } from '../lib/routes';
 import { getTechnologyMainFaqs } from '../content/technologyMainFaqs';
+import {
+  getCareerPathLinksForTechnology,
+  getInterviewPrepPrimaryLinkForTechnology,
+  getRelatedTechnologyLinks,
+} from '../lib/topicClusters';
 
 export default function TechLandingPage() {
   const { techId } = useParams<{ techId: string }>();
@@ -30,6 +35,14 @@ export default function TechLandingPage() {
     .flatMap(c => c.items)
     .filter(i => !i.badge);
   const faqs = getTechnologyMainFaqs(tech);
+  const interviewPrepLink = getInterviewPrepPrimaryLinkForTechnology(tech.id);
+  const careerPathLinks = getCareerPathLinksForTechnology(tech.id, 2);
+  const relatedTechnologyLinks = getRelatedTechnologyLinks(tech.id, 3);
+  const quickLinks = [
+    ...(interviewPrepLink ? [{ ...interviewPrepLink, typeLabel: 'Interview', icon: <GraduationCap size={14} /> }] : []),
+    ...careerPathLinks.map((link) => ({ ...link, typeLabel: 'Career Path', icon: <BriefcaseBusiness size={14} /> })),
+    ...relatedTechnologyLinks.map((link) => ({ ...link, typeLabel: 'Related Tech', icon: <Layers3 size={14} /> })),
+  ].slice(0, 6);
 
   const techTitle = `${tech.label} Tutorials | SplashRide`;
   const techDescription = `${tech.description} Learn ${tech.label} with practical tutorials, examples, production guidance and interview-ready explanations.`;
@@ -98,6 +111,14 @@ export default function TechLandingPage() {
         structuredData={techStructuredData}
       />
 
+      <nav aria-label="Breadcrumb" style={breadcrumbStyle}>
+        <Link to="/" style={crumbStyle}>Home</Link>
+        <ChevronRight size={12} style={{ color: 'var(--color-text-muted)' }} />
+        <span style={{ color: 'var(--color-text-muted)' }}>Technologies</span>
+        <ChevronRight size={12} style={{ color: 'var(--color-text-muted)' }} />
+        <span style={{ color: 'var(--color-text-primary)', fontWeight: 700 }}>{tech.label}</span>
+      </nav>
+
       {/* Hero */}
       <div style={{ marginBottom: '2.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1rem' }}>
@@ -114,6 +135,26 @@ export default function TechLandingPage() {
         <p style={{ fontSize: '1rem', color: 'var(--color-text-secondary)', lineHeight: 1.7, maxWidth: '620px' }}>
           {tech.description}
         </p>
+
+        {quickLinks.length > 0 && (
+          <section style={quickLinkSectionStyle}>
+            <h2 style={quickLinkHeadingStyle}>Continue Learning</h2>
+            <div style={quickLinkWrapStyle}>
+            {quickLinks.map((link) => (
+              <Link key={`${tech.id}-${link.path}`} to={link.path} style={quickLinkStyle}>
+                <span style={quickLinkMetaStyle}>
+                  <span style={quickLinkIconStyle}>{link.icon}</span>
+                  <span style={{ minWidth: 0 }}>
+                    <span style={quickLinkLabelStyle}>{link.label}</span>
+                    <span style={quickLinkTypeStyle}>{link.typeLabel}</span>
+                  </span>
+                </span>
+                <ArrowRight size={14} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+              </Link>
+            ))}
+            </div>
+          </section>
+        )}
       </div>
 
       {/* Categories */}
@@ -191,3 +232,86 @@ export default function TechLandingPage() {
     </div>
   );
 }
+
+const breadcrumbStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  marginBottom: '0.9rem',
+  fontSize: '0.74rem',
+  flexWrap: 'wrap' as const,
+};
+
+const crumbStyle = {
+  color: 'var(--color-text-muted)',
+  textDecoration: 'none',
+};
+
+const quickLinkSectionStyle = {
+  marginTop: '1rem',
+};
+
+const quickLinkHeadingStyle = {
+  margin: '0 0 0.7rem',
+  color: 'var(--color-text-primary)',
+  fontSize: '0.96rem',
+  fontWeight: 800,
+  textAlign: 'left' as const,
+};
+
+const quickLinkWrapStyle = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+  gap: '10px',
+};
+
+const quickLinkStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '10px',
+  textDecoration: 'none',
+  background: 'var(--color-bg-secondary)',
+  border: '1px solid var(--color-border)',
+  borderRadius: '10px',
+  padding: '10px 12px',
+  color: 'inherit',
+};
+
+const quickLinkMetaStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '9px',
+  minWidth: 0,
+};
+
+const quickLinkIconStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '28px',
+  height: '28px',
+  borderRadius: '8px',
+  color: 'var(--color-accent)',
+  background: 'var(--color-accent-light)',
+  flexShrink: 0,
+};
+
+const quickLinkLabelStyle = {
+  display: 'block',
+  color: 'var(--color-text-primary)',
+  fontSize: '0.82rem',
+  fontWeight: 800,
+  lineHeight: 1.35,
+};
+
+const quickLinkTypeStyle = {
+  display: 'block',
+  marginTop: '2px',
+  color: 'var(--color-text-muted)',
+  fontSize: '0.68rem',
+  fontWeight: 700,
+  lineHeight: 1.3,
+  textTransform: 'uppercase' as const,
+  letterSpacing: '0.05em',
+};

@@ -57,6 +57,15 @@ const faqProfiles: Record<string, TechFaqProfile> = {
     beginnerFriendly: 'JavaScript is beginner-friendly when learned with real browser examples instead of only theory.',
     nextLearning: 'After JavaScript, most learners continue into React, Next.js, Node.js, and deeper browser or async patterns.',
   },
+  python: {
+    whatIs: 'Python is a practical general-purpose programming language used for backend services, automation, APIs, testing, scripting, and data-handling workflows.',
+    whoShouldLearn: 'Python is a strong fit for beginners, backend learners, automation engineers, API developers, and teams building internal tools or operational scripts.',
+    prerequisites: 'Basic programming logic and general comfort with writing small programs are enough to begin.',
+    learningTime: 'A practical Python learning path usually takes around 6 to 10 weeks for strong fundamentals and common project workflows.',
+    careerGrowth: 'Python supports growth into backend development, automation engineering, platform scripting, data engineering basics, and applied AI product work.',
+    beginnerFriendly: 'Yes, Python is one of the most beginner-friendly languages because the syntax is readable and practical project feedback comes quickly.',
+    nextLearning: 'After Python, common next steps are Flask or FastAPI, database work, testing depth, Docker, AWS, and full-stack integration with React or Next.js.',
+  },
   react: {
     whatIs: 'React is a JavaScript library used to build reusable, state-driven user interfaces for modern web applications.',
     whoShouldLearn: 'React is ideal for frontend developers, product engineers, and full-stack developers building interactive UIs.',

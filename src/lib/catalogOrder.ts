@@ -17,8 +17,8 @@ export const technologyCategoryGroups: TechnologyCategoryGroup[] = [
   },
   {
     label: 'Backend',
-    technologyIds: ['java', 'springboot'],
-    interviewPrepTechnologyIds: ['core-java', 'spring-boot'],
+    technologyIds: ['java', 'python', 'springboot'],
+    interviewPrepTechnologyIds: ['core-java', 'python', 'spring-boot'],
   },
   {
     label: 'Cloud & DevOps',

@@ -17,6 +17,7 @@
 * [Sitecore](https://www.splashride.in/technologies/sitecore)
 * [HTML & CSS](https://www.splashride.in/technologies/html-css)
 * [JavaScript](https://www.splashride.in/technologies/javascript)
+* [Python](https://www.splashride.in/technologies/python)
 * [React](https://www.splashride.in/technologies/react)
 * [Next.js](https://www.splashride.in/technologies/nextjs)
 * [Core Java](https://www.splashride.in/technologies/java)
@@ -37,6 +38,7 @@
 * [React Interview Questions](https://www.splashride.in/interview-prep/react)
 * [Next.js Interview Questions](https://www.splashride.in/interview-prep/nextjs)
 * [Core Java Interview Questions](https://www.splashride.in/interview-prep/core-java)
+* [Python Interview Questions](https://www.splashride.in/interview-prep/python)
 * [Spring Boot Interview Questions](https://www.splashride.in/interview-prep/spring-boot)
 * [AWS Interview Questions](https://www.splashride.in/interview-prep/aws)
 * [Azure Interview Questions](https://www.splashride.in/interview-prep/azure)
@@ -59,6 +61,7 @@
 
 ### Backend
 * [Core Java](https://www.splashride.in/technologies/java)
+* [Python](https://www.splashride.in/technologies/python)
 * [Spring Boot](https://www.splashride.in/technologies/springboot)
 
 ### Cloud and DevOps

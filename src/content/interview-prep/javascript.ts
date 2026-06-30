@@ -20,13 +20,13 @@ const experienceLevels: ExperienceLevel[] = [
 ];
 
 const topicGroupDescriptions: Record<string, string> = {
-  'JavaScript Basics': 'Core language behavior used in everyday frontend work.',
-  'Arrays and Objects': 'Data manipulation, transformation, and state-shaping basics.',
-  'DOM and Events': 'Browser-side interaction, event behavior, and content updates.',
+  'JavaScript Fundamentals': 'Core language behavior used in everyday frontend work.',
+  'Arrays and Objects': 'Data manipulation, transformation, copying, and state-shaping basics.',
+  'DOM and Events': 'Browser-side interaction, event behavior, delegation, and content updates.',
   'Async JavaScript': 'Promises, async/await, fetch, and practical API error handling.',
-  'Closures, Hoisting, and this': 'Runtime behaviors that reveal whether you understand how JavaScript really executes code.',
-  'Event Loop': 'Task ordering, microtasks, timers, and responsiveness reasoning.',
-  'Real Project Scenarios': 'Debugging, module boundaries, and production-safe browser behavior.',
+  'Core Interview Concepts': 'Closures, hoisting, this, prototypes, execution context, strict mode, and event-loop reasoning.',
+  'Browser APIs and Production': 'Storage, timers, debugging, performance, memory, security, and practical browser behavior.',
+  'Tricky Output Questions': 'Runtime-order, coercion, reference, closure, and async output reasoning.',
 };
 
 function buildTopicGroups(): InterviewPrepTopicGroup[] {
@@ -75,9 +75,39 @@ interface QuestionSpec {
   mostAskedRank?: number;
 }
 
+interface CoverageSeed {
+  id: string;
+  label: string;
+  answer: string;
+  projectUse: string;
+  productionRisk: string;
+  relatedTopics: string[];
+  difficultyLevel?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Architect';
+  experienceLevel?: ExperienceLevelId;
+  questionType?: string;
+  frequencyScore?: number;
+}
+
+const javascriptCategoryMap: Record<string, string> = {
+  'JavaScript Basics': 'JavaScript Fundamentals',
+  'Arrays and Objects': 'Arrays and Objects',
+  'DOM and Events': 'DOM and Events',
+  'Async JavaScript': 'Async JavaScript',
+  'Closures, Hoisting, and this': 'Core Interview Concepts',
+  'Event Loop': 'Core Interview Concepts',
+  'Real Project Scenarios': 'Browser APIs and Production',
+};
+
+function normalizeCategory(category: string): string {
+  return javascriptCategoryMap[category] ?? category;
+}
+
 function question(spec: QuestionSpec): InterviewPrepQuestion {
+  const normalizedCategory = normalizeCategory(spec.category);
   return {
     ...spec,
+    category: normalizedCategory,
+    topicGroup: normalizedCategory,
     technologyId: 'javascript',
     roleAnswers: {
       junior: roleAnswer(spec.shortAnswer, 'beginner'),
@@ -87,6 +117,169 @@ function question(spec: QuestionSpec): InterviewPrepQuestion {
     },
   };
 }
+
+function buildCoverageQuestions(category: string, seeds: CoverageSeed[]): InterviewPrepQuestion[] {
+  return seeds.flatMap((seed, index) => {
+    const difficultyLevel = seed.difficultyLevel ?? 'Intermediate';
+    const experienceLevel = seed.experienceLevel ?? 'mid';
+    const questionType = seed.questionType ?? 'Practical';
+    const frequencyScore = seed.frequencyScore ?? Math.max(66, 91 - index);
+    const lowerLabel = seed.label.toLowerCase();
+
+    return [
+      question({
+        id: `${seed.id}-concept`,
+        category,
+        topicGroup: category,
+        questionType,
+        question: `What should you know about ${seed.label} in ${category}?`,
+        shortAnswer: seed.answer,
+        detailedAnswer: [
+          seed.answer,
+          `In real frontend work, ${seed.projectUse}.`,
+          `A strong answer should connect ${lowerLabel} to debugging and maintainability rather than only repeating a definition.`,
+        ],
+        realProjectExample: `A product team used ${lowerLabel} when ${seed.projectUse}.`,
+        productionScenario: `A production issue appears because ${seed.productionRisk}.`,
+        commonMistakes: [
+          `Treating ${lowerLabel} as trivia instead of explaining how it affects runtime behavior.`,
+          `Giving a code-only answer without describing the practical impact on UI or data flow.`,
+        ],
+        followUpQuestions: [
+          `When would ${seed.label} be the right tool?`,
+          `What is a common debugging step related to ${seed.label}?`,
+        ],
+        interviewerExpectation: `The interviewer wants to know whether you can explain ${lowerLabel} clearly and connect it to real JavaScript behavior.`,
+        frequencyScore,
+        commonWrongAnswer: `A weak answer treats ${lowerLabel} as syntax only and ignores how it behaves in production code.`,
+        architectPerspective: `At scale, teams should standardize how they use ${lowerLabel} so JavaScript stays predictable across large features.`,
+        keyTakeaway: `${seed.label} matters because it changes how data, events, or runtime behavior behave in real applications.`,
+        difficultyLevel,
+        experienceLevel,
+        relatedTopics: seed.relatedTopics,
+      }),
+      question({
+        id: `${seed.id}-scenario`,
+        category,
+        topicGroup: category,
+        questionType: 'Scenario',
+        question: `What production mistake is common with ${seed.label} in ${category}?`,
+        shortAnswer: `A common issue with ${lowerLabel} is that ${seed.productionRisk}.`,
+        detailedAnswer: [
+          `A common issue with ${lowerLabel} is that ${seed.productionRisk}.`,
+          `You should explain the root cause, what signals you would inspect, and which safer pattern you would use next.`,
+          `Interviewers usually care about your reasoning and debugging order, not only the final fix.`,
+        ],
+        realProjectExample: `A release needed follow-up debugging because ${seed.projectUse}.`,
+        productionScenario: `The app behaves incorrectly because ${seed.productionRisk}.`,
+        commonMistakes: [
+          `Patching the symptom without understanding the ${lowerLabel} behavior that caused it.`,
+          `Skipping reproduction steps and guessing from code appearance alone.`,
+        ],
+        followUpQuestions: [
+          `How would you verify the fix?`,
+          `What shared guardrail would help avoid this issue in future code?`,
+        ],
+        interviewerExpectation: `The interviewer wants to hear a practical debugging answer, not only a conceptual definition of ${lowerLabel}.`,
+        frequencyScore: Math.max(60, frequencyScore - 4),
+        commonWrongAnswer: `A weak answer says "just change the code" without explaining the runtime failure pattern.`,
+        architectPerspective: `Repeated ${lowerLabel} failures should become shared abstractions, utilities, or review standards instead of recurring one-off fixes.`,
+        keyTakeaway: `You should be able to explain both the rule behind ${seed.label} and the production bug pattern around it.`,
+        difficultyLevel,
+        experienceLevel,
+        relatedTopics: seed.relatedTopics,
+      }),
+    ];
+  });
+}
+
+function mergeQuestions(...groups: InterviewPrepQuestion[][]): InterviewPrepQuestion[] {
+  const seen = new Set<string>();
+  return groups.flat().filter((item) => {
+    if (seen.has(item.id)) {
+      return false;
+    }
+    seen.add(item.id);
+    return true;
+  });
+}
+
+const javascriptFundamentalsCoverage: CoverageSeed[] = [
+  { id: 'js-fundamentals-data-types', label: 'data types', answer: 'JavaScript has primitive and reference types, and the distinction affects copying, comparison, mutation, and function behavior.', projectUse: 'a form parser needed predictable handling for strings, numbers, booleans, arrays, and objects', productionRisk: 'weak type awareness leads to coercion bugs, bad comparisons, and hidden mutations', relatedTopics: ['data-types', 'primitive-vs-reference'] },
+  { id: 'js-fundamentals-primitive-reference', label: 'primitive vs reference values', answer: 'Primitive values are copied by value, while objects and arrays are reference-based and can share underlying state.', projectUse: 'state updates had to avoid accidental shared references between source and derived UI data', productionRisk: 'mutating a referenced object changes data in places the developer did not expect', relatedTopics: ['primitive-vs-reference', 'shallow-copy-vs-deep-copy'] },
+  { id: 'js-fundamentals-operators', label: 'operators', answer: 'Operators do more than arithmetic; they shape conditions, defaults, comparisons, and short-circuit behavior in application logic.', projectUse: 'feature flags and fallback values depended on careful use of logical and comparison operators', productionRisk: 'misunderstanding operator behavior creates conditional branches that look correct but run incorrectly', relatedTopics: ['truthy-falsy-question', 'equality-question'] },
+  { id: 'js-fundamentals-conditions', label: 'conditions', answer: 'Good conditional logic makes intent explicit and avoids relying on unclear truthy or falsy behavior when readability matters.', projectUse: 'a checkout flow used explicit condition checks for validation, auth state, and payment transitions', productionRisk: 'implicit conditions can treat empty strings, zero, or null in surprising ways', relatedTopics: ['truthy-falsy-question', 'null-vs-undefined'] },
+  { id: 'js-fundamentals-loops', label: 'loops', answer: 'Loops should match the job: use for, for...of, while, or array methods depending on whether you need control flow, transformation, or side effects.', projectUse: 'data cleanup code used for...of for readable branching and array methods for pure transforms', productionRisk: 'using the wrong loop pattern can create unreadable code or accidental async mistakes', relatedTopics: ['array-methods-real-examples', 'async-await'] },
+  { id: 'js-fundamentals-function-forms', label: 'function declarations vs expressions', answer: 'Function declarations and expressions both define callable logic, but they differ in hoisting behavior and how they fit into module design.', projectUse: 'utility modules mixed declarations for named helpers and expressions for localized callbacks', productionRisk: 'misunderstood hoisting can make code run in an order the developer did not expect', relatedTopics: ['hoisting', 'functions'] },
+  { id: 'js-fundamentals-arrow-functions', label: 'arrow functions', answer: 'Arrow functions are concise and inherit this from the surrounding scope, which makes them useful in many callbacks but not every method or constructor scenario.', projectUse: 'component event handlers and array transforms used arrow functions for concise lexical this behavior', productionRisk: 'using arrow functions blindly can break object-method expectations or confuse debugging', relatedTopics: ['this-keyword', 'functions'] },
+];
+
+const arraysAndObjectsCoverage: CoverageSeed[] = [
+  { id: 'js-arrays-foreach', label: 'forEach', answer: 'forEach is useful for side effects, but it does not return a transformed array and is not ideal when you need early exits or async sequencing.', projectUse: 'logging and DOM side effects used forEach while data transforms used other array helpers', productionRisk: 'developers misuse forEach for data transformation or async flow and then debug confusing behavior', relatedTopics: ['array-methods-real-examples', 'async-await'] },
+  { id: 'js-arrays-reduce', label: 'reduce', answer: 'reduce combines an array into one result such as a total, grouped object, or reshaped structure when used with a clear accumulator.', projectUse: 'analytics data was grouped into summary cards and lookup maps with reduce', productionRisk: 'unclear reduce logic becomes harder to review than a simpler loop or dedicated transform', relatedTopics: ['array-methods-real-examples', 'javascript-arrays'] },
+  { id: 'js-arrays-find-some-every', label: 'find, some, and every', answer: 'find returns the first match, some checks whether any item passes, and every checks whether all items pass.', projectUse: 'permission checks and search results used these methods to keep condition logic readable', productionRisk: 'using the wrong method makes intention unclear and can lead to incorrect boolean or item handling', relatedTopics: ['array-methods-real-examples', 'javascript-arrays'] },
+  { id: 'js-arrays-destructuring', label: 'destructuring', answer: 'Destructuring helps extract values from arrays and objects clearly when the data shape is known and naming stays readable.', projectUse: 'API responses were unpacked into named variables to make rendering logic easier to follow', productionRisk: 'deep or careless destructuring can become fragile when API shapes change', relatedTopics: ['javascript-objects', 'optional-chaining'] },
+  { id: 'js-arrays-spread-rest', label: 'spread and rest syntax', answer: 'Spread helps copy or combine values, while rest collects remaining values into a new array or object shape.', projectUse: 'state updates and helper functions used spread and rest to keep data handling concise', productionRisk: 'treating spread as a deep copy creates subtle nested-state bugs', relatedTopics: ['shallow-copy-vs-deep-copy', 'immutability-basics'] },
+  { id: 'js-arrays-json', label: 'JSON handling', answer: 'JSON is a text format for structured data exchange, and JavaScript often uses JSON.parse and JSON.stringify around APIs and storage.', projectUse: 'localStorage state and network payloads used JSON serialization with validation and fallback handling', productionRisk: 'invalid JSON or unsafe assumptions about shape can break parsing at runtime', relatedTopics: ['json-handling', 'browser-storage'] },
+  { id: 'js-arrays-optional-chaining', label: 'optional chaining', answer: 'Optional chaining helps read nested optional values safely without throwing when an intermediate value is null or undefined.', projectUse: 'page rendering read optional SEO and personalization data without crashing when fields were missing', productionRisk: 'deep property access can crash a UI when optional backend fields are absent', relatedTopics: ['optional-chaining', 'null-vs-undefined'] },
+  { id: 'js-arrays-object-iteration', label: 'object iteration', answer: 'Object.keys, Object.values, and Object.entries are useful when you need to inspect or transform object-based data structures safely.', projectUse: 'settings and API config objects were converted into rendered rows and validation checks', productionRisk: 'treating objects like arrays leads to awkward iteration and missed keys', relatedTopics: ['object-methods-real-examples', 'javascript-objects'] },
+  { id: 'js-arrays-immutability', label: 'immutability basics', answer: 'Immutability means creating a new value instead of mutating shared state directly, which makes UI changes and debugging more predictable.', projectUse: 'frontend state updates became easier to trace after the team avoided in-place array and object mutation', productionRisk: 'shared mutable state creates stale UI, hidden coupling, and review confusion', relatedTopics: ['immutability-basics', 'shallow-copy-vs-deep-copy'] },
+];
+
+const domAndEventsCoverage: CoverageSeed[] = [
+  { id: 'js-dom-create-elements', label: 'creating DOM elements', answer: 'createElement, textContent, append, and class management are safer than string-building HTML when you only need structured updates.', projectUse: 'notification rows were built with element APIs so text and attributes stayed safe and predictable', productionRisk: 'string-based DOM injection can create brittle markup or XSS risk', relatedTopics: ['dom-manipulation', 'xss-basics'] },
+  { id: 'js-dom-change-content', label: 'changing content safely', answer: 'Use textContent for text, attributes for metadata, and innerHTML only when you fully trust and sanitize the source.', projectUse: 'product badges and status messages updated safely without rebuilding full page sections', productionRisk: 'unsafe HTML insertion can create security bugs or unexpected layout changes', relatedTopics: ['dom-manipulation', 'xss-basics'] },
+  { id: 'js-dom-bubbling-capturing', label: 'event bubbling and capturing', answer: 'Events usually bubble from the target upward, while capture runs from outer ancestors down before the target phase.', projectUse: 'shared click handling needed predictable ordering between page-level and component-level handlers', productionRisk: 'misunderstood event order leads to handlers firing unexpectedly or twice', relatedTopics: ['event-bubbling-and-capturing', 'event-delegation'] },
+  { id: 'js-dom-prevent-default', label: 'preventDefault', answer: 'preventDefault stops the browser’s default action when you intentionally want custom logic to take over.', projectUse: 'AJAX forms and in-page controls prevented default navigation only when custom behavior was ready', productionRisk: 'calling preventDefault blindly can break expected browser behavior like navigation or form submit', relatedTopics: ['events', 'forms-handling'] },
+  { id: 'js-dom-stop-propagation', label: 'stopPropagation', answer: 'stopPropagation stops an event from bubbling further, but it should be used carefully because it can hide behavior from parent components.', projectUse: 'nested menu actions needed explicit event boundaries so parent click handlers did not close the menu too early', productionRisk: 'overusing stopPropagation creates invisible behavior conflicts in larger pages', relatedTopics: ['events', 'event-bubbling-and-capturing'] },
+  { id: 'js-dom-forms', label: 'form handling in the browser', answer: 'Browser form handling should coordinate field reading, validation, error messaging, and submit-state management cleanly.', projectUse: 'a signup form disabled double-submit, validated fields, and showed server errors clearly', productionRisk: 'weak form handling causes duplicate submissions, lost values, or confusing validation recovery', relatedTopics: ['forms-handling', 'form-validation'] },
+  { id: 'js-dom-dynamic-content', label: 'dynamic content', answer: 'Dynamic DOM updates should preserve semantics, event behavior, and state synchronization even when nodes are added after initial render.', projectUse: 'FAQ rows and search results updated after fetch calls without breaking listeners or accessibility', productionRisk: 'new content can appear visually but fail interaction or focus expectations', relatedTopics: ['dom-manipulation', 'event-delegation'] },
+  { id: 'js-dom-query-performance', label: 'DOM query performance', answer: 'Repeated heavy DOM queries should be avoided when a stable reference, parent delegation pattern, or simpler data flow would do the job.', projectUse: 'a legacy page stopped querying the same large container tree on every click event', productionRisk: 'unnecessary DOM work makes large pages feel sluggish and harder to debug', relatedTopics: ['dom-traversal', 'performance-basics'] },
+  { id: 'js-dom-common-mistakes', label: 'common DOM mistakes', answer: 'Common mistakes include null selector assumptions, unsafe innerHTML, unstable selectors, and mixing UI state with brittle DOM traversal.', projectUse: 'a support script became more reliable after selectors and null checks were standardized', productionRisk: 'small DOM mistakes often surface only after content, layout, or CMS markup changes', relatedTopics: ['dom-traversal', 'dom-manipulation'] },
+];
+
+const asyncJavascriptCoverage: CoverageSeed[] = [
+  { id: 'js-async-callbacks', label: 'callbacks', answer: 'Callbacks are a basic async pattern, but deeply nested callbacks can become hard to read, compose, and debug.', projectUse: 'older browser integrations still exposed callback-style APIs that needed careful error handling', productionRisk: 'callback chains can hide control flow and make error handling inconsistent', relatedTopics: ['callbacks', 'promises'] },
+  { id: 'js-async-callback-hell', label: 'callback hell', answer: 'Callback hell is the readability and maintenance problem caused by deeply nested callback chains with mixed error and success handling.', projectUse: 'a legacy script was refactored into promises and async helpers so data flow became easier to follow', productionRisk: 'nested callbacks make retries, branching, and cleanup logic hard to reason about', relatedTopics: ['callbacks', 'async-await'] },
+  { id: 'js-async-promise-states', label: 'promise states', answer: 'A promise starts pending and then settles as fulfilled or rejected, and that lifecycle shapes how you chain and recover from async work.', projectUse: 'loading, success, and error UI states were modeled around promise lifecycle awareness', productionRisk: 'assuming a promise resolves immediately creates race conditions and stale state bugs', relatedTopics: ['promises', 'promise-all'] },
+  { id: 'js-async-all-vs-race', label: 'Promise.all vs Promise.race', answer: 'Promise.all waits for all promises or fails fast on the first rejection, while Promise.race settles as soon as the first promise settles.', projectUse: 'a dashboard loaded parallel widgets with Promise.all and used timeout racing for slow requests', productionRisk: 'picking the wrong concurrency helper can create unnecessary failures or hidden slow paths', relatedTopics: ['promise-all', 'promise-race'] },
+  { id: 'js-async-allsettled', label: 'Promise.allSettled', answer: 'Promise.allSettled is useful when you need the result of every async task even if some fail.', projectUse: 'an admin page showed partial results for multiple services instead of failing the whole screen', productionRisk: 'failing the whole page for one optional request hurts resilience more than necessary', relatedTopics: ['promise-all', 'api-error-handling'] },
+  { id: 'js-async-fetch', label: 'the Fetch API', answer: 'Fetch is promise-based and needs explicit response checking, parsing, and error-state handling rather than assuming every response is okay.', projectUse: 'API clients wrapped fetch to normalize headers, JSON parsing, retries, and user-facing errors', productionRisk: 'treating every resolved fetch promise as success hides HTTP failures and bad payloads', relatedTopics: ['fetch-api', 'api-error-handling'] },
+  { id: 'js-async-loading-states', label: 'loading and error states', answer: 'Async UI work needs clear loading, success, empty, and error states so users understand what the app is doing.', projectUse: 'a search page handled skeleton, empty, retry, and stale-data states instead of only a spinner', productionRisk: 'missing state design makes apps feel broken during slow networks or partial failures', relatedTopics: ['fetch-api', 'api-error-handling'] },
+  { id: 'js-async-retries', label: 'API retry handling', answer: 'Retries should be intentional, bounded, and aware of idempotency, user feedback, and the difference between transient and permanent failures.', projectUse: 'network retries were added only for safe GET requests with user-visible retry messaging', productionRisk: 'blind retries can create duplicate writes or longer user pain when the root cause is not transient', relatedTopics: ['api-error-handling', 'fetch-api'] },
+];
+
+const coreConceptsCoverage: CoverageSeed[] = [
+  { id: 'js-core-bind-call-apply', label: 'bind, call, and apply', answer: 'bind creates a new function with a fixed this value, while call and apply invoke a function immediately with an explicit this.', projectUse: 'legacy object methods and event adapters needed explicit control over execution context', productionRisk: 'wrong this binding creates handlers that read undefined or stale object state', relatedTopics: ['this-keyword', 'functions'] },
+  { id: 'js-core-prototype', label: 'prototype and the prototype chain', answer: 'Objects in JavaScript can inherit behavior through the prototype chain, which is why shared methods do not need to live on every instance.', projectUse: 'understanding prototypes helped a team debug class-based library behavior and method lookup', productionRisk: 'weak prototype knowledge makes inheritance and debugging library objects much harder', relatedTopics: ['prototype-and-prototype-chain', 'classes'] },
+  { id: 'js-core-classes', label: 'classes', answer: 'JavaScript classes are syntax over prototype-based behavior and help organize constructors, instance methods, and inheritance more clearly.', projectUse: 'a stateful widget library used classes for lifecycle and instance-based behavior', productionRisk: 'treating classes like a different runtime model hides what JavaScript is actually doing underneath', relatedTopics: ['classes', 'prototype-and-prototype-chain'] },
+  { id: 'js-core-execution-context', label: 'execution context', answer: 'Execution context describes the environment in which JavaScript runs code, including scope, variables, and this binding.', projectUse: 'debugging a nested function bug became easier once the team traced which context owned each value', productionRisk: 'without context awareness, hoisting and this behavior feel random during debugging', relatedTopics: ['execution-context', 'call-stack'] },
+  { id: 'js-core-call-stack', label: 'the call stack', answer: 'The call stack tracks active function calls, which helps explain synchronous execution order and stack overflow issues.', projectUse: 'a recursion bug was identified quickly by understanding how repeated calls filled the stack', productionRisk: 'infinite recursion or deeply nested sync work can freeze the UI or throw runtime errors', relatedTopics: ['call-stack', 'event-loop'] },
+  { id: 'js-core-strict-mode', label: 'strict mode', answer: 'Strict mode makes JavaScript safer by disallowing some silent failures and making certain mistakes surface sooner.', projectUse: 'older modules became easier to trust once accidental globals and weak patterns were caught explicitly', productionRisk: 'sloppy-mode assumptions can hide bugs that strict mode would expose early', relatedTopics: ['strict-mode', 'modules'] },
+  { id: 'js-core-null-undefined', label: 'null vs undefined', answer: 'undefined usually means a value is missing or not yet assigned, while null is an intentional empty value set by the developer or API contract.', projectUse: 'form state and API normalization code used a clear policy for absent values versus intentional emptiness', productionRisk: 'mixing null and undefined carelessly creates weak conditions and inconsistent data contracts', relatedTopics: ['null-vs-undefined', 'optional-chaining'] },
+];
+
+const browserApisCoverage: CoverageSeed[] = [
+  { id: 'js-browser-storage', label: 'localStorage and sessionStorage', answer: 'localStorage persists across browser sessions while sessionStorage lasts for the current tab session, and both store only string data.', projectUse: 'filters, dismissible banners, and draft UI state used browser storage with explicit expiration or reset logic', productionRisk: 'blindly storing large or sensitive data in browser storage creates security and data-consistency problems', relatedTopics: ['browser-storage', 'cookies-basics'] },
+  { id: 'js-browser-cookies', label: 'cookies basics', answer: 'Cookies are small pieces of browser-managed data often used for session-related behavior, but they carry security and size trade-offs.', projectUse: 'auth and preference flows depended on cookie behavior alongside secure backend session handling', productionRisk: 'weak cookie settings can expose sessions or create cross-environment bugs', relatedTopics: ['cookies-basics', 'xss-basics'] },
+  { id: 'js-browser-timers', label: 'setTimeout and setInterval', answer: 'Timers schedule future work, but they must be cleaned up and coordinated with current state so they do not create leaks or stale behavior.', projectUse: 'polling, delayed tooltips, and temporary notifications relied on careful timer cleanup', productionRisk: 'uncleared timers cause duplicate actions, stale closures, and memory leaks', relatedTopics: ['timers', 'avoiding-memory-leaks'] },
+];
+
+const trickyOutputCoverage: CoverageSeed[] = [
+  { id: 'js-output-hoisting', label: 'hoisting output questions', answer: 'Hoisting questions test whether you understand declaration visibility, initialization timing, and the temporal dead zone.', projectUse: 'teams debugged startup bugs faster because they understood when declarations were available during execution', productionRisk: 'misreading hoisting causes code to behave differently from what its visual order suggests', relatedTopics: ['hoisting', 'execution-context'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-closures', label: 'closure output questions', answer: 'Closure output questions test whether you understand how functions retain access to variables from their defining scope.', projectUse: 'event handlers and async callbacks behaved correctly only when shared versus per-iteration values were understood', productionRisk: 'wrong closure assumptions create stale values and loop-related bugs', relatedTopics: ['closures', 'scope-chain'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-this', label: 'this keyword output questions', answer: 'this output questions reveal whether you know how call site, function type, and binding rules determine context.', projectUse: 'object methods, event handlers, and callback wrappers all depended on correct this behavior', productionRisk: 'this confusion leads to undefined values or updates landing on the wrong object', relatedTopics: ['this-keyword', 'bind-call-apply'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-promises', label: 'promise ordering output questions', answer: 'Promise output questions test whether you understand async ordering, chaining, and when microtasks run.', projectUse: 'teams debugged loading-state timing by tracing how promise callbacks executed after synchronous code', productionRisk: 'wrong async ordering assumptions create race conditions and confusing logs', relatedTopics: ['promises', 'microtasks-and-macrotasks'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-event-loop', label: 'event loop output questions', answer: 'Event loop output questions focus on how sync work, microtasks, and macrotasks are ordered by the runtime.', projectUse: 'UI teams explained rendering delays and callback order by tracing the event loop correctly', productionRisk: 'misunderstanding task order makes async bugs much harder to reproduce and explain', relatedTopics: ['event-loop', 'microtasks-and-macrotasks'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-array-methods', label: 'array method output questions', answer: 'Array method output questions test whether you understand mutation, return values, callback behavior, and chaining.', projectUse: 'data transforms became safer once developers knew which methods mutate and which return new arrays', productionRisk: 'using a mutating method accidentally can corrupt shared UI data', relatedTopics: ['array-methods-real-examples', 'immutability-basics'], difficultyLevel: 'Intermediate', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-object-references', label: 'object reference output questions', answer: 'Reference output questions test whether you know when two variables point to the same underlying object.', projectUse: 'state editors needed clear copy strategy so previews and source data did not change together accidentally', productionRisk: 'shared references create side effects that look like random UI bugs', relatedTopics: ['object-reference-question', 'shallow-copy-vs-deep-copy'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-type-coercion', label: 'type coercion output questions', answer: 'Type coercion output questions reveal whether you understand how JavaScript converts values during comparisons and operators.', projectUse: 'validation and filtering logic became more predictable once developers stopped relying on loose coercion', productionRisk: 'unexpected coercion creates conditions that pass or fail for the wrong reasons', relatedTopics: ['equality-question', 'truthy-falsy-question'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-async-await-order', label: 'async/await order questions', answer: 'async/await order questions test whether you understand that await pauses within the async function while the rest of the runtime keeps moving.', projectUse: 'teams debugged log order and loading transitions by tracing exactly where await yielded control', productionRisk: 'wrong await assumptions create stale UI state and confusing execution order', relatedTopics: ['async-await', 'event-loop'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-temporal-dead-zone', label: 'temporal dead zone output questions', answer: 'Temporal dead zone questions check whether you know why let and const cannot be accessed before initialization even though the binding exists.', projectUse: 'module initialization bugs were easier to explain once TDZ behavior was understood', productionRisk: 'developers can misread runtime errors as random when the real cause is TDZ access', relatedTopics: ['hoisting', 'var-let-const'], difficultyLevel: 'Advanced', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-default-params', label: 'default parameter output questions', answer: 'Default parameter questions test whether you understand evaluation timing and how undefined interacts with default values.', projectUse: 'utility functions used safe defaults instead of branch-heavy argument guards', productionRisk: 'confusion about missing versus explicit undefined can produce wrong fallback behavior', relatedTopics: ['functions', 'null-vs-undefined'], difficultyLevel: 'Intermediate', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-spread-rest', label: 'spread and rest output questions', answer: 'Spread and rest output questions reveal whether you understand copy behavior, parameter capture, and what actually gets expanded.', projectUse: 'function wrappers and state updates depended on correct spread behavior for arrays and objects', productionRisk: 'wrong spread assumptions create missing arguments or shallow-copy bugs', relatedTopics: ['shallow-copy-vs-deep-copy', 'functions'], difficultyLevel: 'Intermediate', experienceLevel: 'mid', questionType: 'Debugging' },
+  { id: 'js-output-short-circuit', label: 'short-circuit evaluation questions', answer: 'Short-circuit questions check whether you understand how &&, ||, and ?? return values and stop evaluation early.', projectUse: 'fallback rendering logic needed clear handling for zero, empty strings, and intentionally false values', productionRisk: 'using the wrong operator hides valid values or applies the wrong default', relatedTopics: ['truthy-falsy-question', 'null-vs-undefined'], difficultyLevel: 'Intermediate', experienceLevel: 'mid', questionType: 'Debugging' },
+];
 
 const questions: InterviewPrepQuestion[] = [
   question({
@@ -1734,6 +1927,17 @@ const questions: InterviewPrepQuestion[] = [
   }),
 ];
 
+const allQuestions = mergeQuestions(
+  questions,
+  buildCoverageQuestions('JavaScript Fundamentals', javascriptFundamentalsCoverage),
+  buildCoverageQuestions('Arrays and Objects', arraysAndObjectsCoverage),
+  buildCoverageQuestions('DOM and Events', domAndEventsCoverage),
+  buildCoverageQuestions('Async JavaScript', asyncJavascriptCoverage),
+  buildCoverageQuestions('Core Interview Concepts', coreConceptsCoverage),
+  buildCoverageQuestions('Browser APIs and Production', browserApisCoverage),
+  buildCoverageQuestions('Tricky Output Questions', trickyOutputCoverage),
+);
+
 const productionScenarios: ProductionScenario[] = [
   {
     id: 'javascript-stale-ui-state',
@@ -1811,9 +2015,9 @@ const mockInterviewProfiles: MockInterviewProfile[] = [
 ];
 
 const rapidRevisionPlans: RapidRevisionPlan[] = [
-  { id: '15-min', label: '15-minute recap', minutes: 15, description: 'Review the most asked JavaScript concepts quickly before an interview.', questionIds: questions.slice(0, 3).map((item) => item.id) },
-  { id: '30-min', label: '30-minute prep', minutes: 30, description: 'Cover core syntax, data transforms, DOM work, and promises.', questionIds: questions.slice(0, 6).map((item) => item.id) },
-  { id: '60-min', label: '60-minute deep refresh', minutes: 60, description: 'Walk through the full JavaScript prep set with practical examples.', questionIds: questions.map((item) => item.id) },
+  { id: '15-min', label: '15-minute recap', minutes: 15, description: 'Review the most asked JavaScript concepts quickly before an interview.', questionIds: allQuestions.slice(0, 3).map((item) => item.id) },
+  { id: '30-min', label: '30-minute prep', minutes: 30, description: 'Cover core syntax, data transforms, DOM work, and promises.', questionIds: allQuestions.slice(0, 6).map((item) => item.id) },
+  { id: '60-min', label: '60-minute deep refresh', minutes: 60, description: 'Walk through the full JavaScript prep set with practical examples.', questionIds: allQuestions.map((item) => item.id) },
 ];
 
 const topicGroups = buildTopicGroups();
@@ -1824,11 +2028,11 @@ export const javascriptInterviewPrep: InterviewPrepSection = {
   title: 'JavaScript Interview Questions',
   description: 'Practical beginner-to-intermediate JavaScript interview questions covering variables, scope, arrays, DOM, promises, fetch, closures, the event loop, and real frontend debugging scenarios.',
   lastReviewed: 'June 2026',
-  categories: Array.from(new Set(questions.map((item) => item.category))),
-  questionTypes: Array.from(new Set(questions.map((item) => item.questionType))),
+  categories: Array.from(new Set(allQuestions.map((item) => item.category))),
+  questionTypes: Array.from(new Set(allQuestions.map((item) => item.questionType))),
   experienceLevels,
   topicGroups,
-  topicMetadata: buildTopicMetadata(topicGroups, questions),
+  topicMetadata: buildTopicMetadata(topicGroups, allQuestions),
   pagination: {
     questionsPerPage: 6,
     ordering: 'most-asked-first',
@@ -1836,6 +2040,6 @@ export const javascriptInterviewPrep: InterviewPrepSection = {
   productionScenarios,
   mockInterviewProfiles,
   rapidRevisionPlans,
-  topicPreparationSets: buildTopicPreparationSets(questions),
-  questions,
+  topicPreparationSets: buildTopicPreparationSets(allQuestions),
+  questions: allQuestions,
 };

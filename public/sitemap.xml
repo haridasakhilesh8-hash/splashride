@@ -10,6 +10,7 @@
   <url><loc>https://www.splashride.in/interview-prep</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://www.splashride.in/career-paths/frontend-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/backend-engineer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/career-paths/python-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/full-stack-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/aem-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/career-paths/contentful-developer</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -27,6 +28,7 @@
   <url><loc>https://www.splashride.in/interview-prep/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/nextjs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/core-java</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/interview-prep/python</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/spring-boot</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/aws</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/interview-prep/azure</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -214,7 +216,7 @@
   <url><loc>https://www.splashride.in/technologies/html-css/topic/bem-naming</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/html-css/topic/accessibility-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/html-css/topic/seo-friendly-html</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.splashride.in/technologies/html-css/topic/performance-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/html-css/topic/python-performance-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/html-css/topic/common-layout-bugs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/html-css/topic/browser-compatibility-issues</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/html-css/topic/html-css-best-practices</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
@@ -269,6 +271,84 @@
   <url><loc>https://www.splashride.in/technologies/javascript/topic/api-integration-mistakes</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/javascript/topic/browser-compatibility</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/javascript/topic/clean-code-practices</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/what-is-python</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/python-installation-and-setup</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/python-syntax-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/variables-and-data-types</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/operators</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/conditional-statements</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/loops</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/input-and-output</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/comments-and-code-style</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/strings</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/lists</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/tuples</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/sets</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/dictionaries</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/list-comprehension</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/dictionary-comprehension</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/slicing</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/mutable-vs-immutable-types</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/functions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/function-arguments</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/default-arguments</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/args-and-kwargs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/lambda-functions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/scope</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/modules</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/packages</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/pip-and-virtual-environments</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/classes-and-objects</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/constructor</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/instance-variables-and-class-variables</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/inheritance</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/polymorphism</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/encapsulation</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/abstraction</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/dunder-methods</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/dataclasses</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/exceptions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/try-except-finally</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/custom-exceptions</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/file-handling</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/reading-and-writing-files</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/json-handling</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/csv-handling</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/logging</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/iterators</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/generators</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/decorators</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/context-managers</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/type-hints</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/python-memory-management</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/shallow-copy-vs-deep-copy</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/gil-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/multithreading-vs-multiprocessing</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/http-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/rest-apis-with-python</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/requests-library</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/flask-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/fastapi-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/database-connectivity</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/environment-variables</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/authentication-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/unit-testing</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/pytest-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/mocking</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/debugging</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/python-performance-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/common-runtime-errors</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/dependency-management</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/production-best-practices</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/python-automation</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/web-scraping-basics</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/working-with-apis</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/cli-scripts</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/data-processing-scripts</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/email-file-automation</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/scheduling-jobs</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.splashride.in/technologies/python/topic/practical-python-projects</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-components</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.splashride.in/technologies/react/topic/react-jsx</loc><lastmod>2026-06-03</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>

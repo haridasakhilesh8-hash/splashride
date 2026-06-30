@@ -57,6 +57,7 @@ export default function Header({ theme, onThemeToggle, sidebarOpen, onSidebarTog
       label: 'Backend',
       items: [
         { slug: 'backend-engineer', technologyId: 'java' },
+        { slug: 'python-developer', technologyId: 'python' },
         { slug: 'full-stack-java', technologyId: 'springboot' },
       ],
     },

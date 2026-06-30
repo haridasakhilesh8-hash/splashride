@@ -1488,24 +1488,17 @@ export const aiLlmInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
 
 export const htmlCssInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   {
-    id: 'html',
-    title: 'HTML',
+    id: 'html-fundamentals',
+    title: 'HTML Fundamentals',
     topics: [
-      { slug: 'semantic-html-deep-dive', title: 'HTML', category: 'HTML' },
+      { slug: 'semantic-html-deep-dive', title: 'HTML Fundamentals', category: 'HTML Fundamentals' },
     ],
   },
   {
-    id: 'css',
-    title: 'CSS',
+    id: 'html-forms',
+    title: 'HTML Forms',
     topics: [
-      { slug: 'css-specificity-deep-dive', title: 'CSS', category: 'CSS' },
-    ],
-  },
-  {
-    id: 'responsive-design',
-    title: 'Responsive Design',
-    topics: [
-      { slug: 'responsive-breakpoints', title: 'Responsive Design', category: 'Responsive Design' },
+      { slug: 'html-forms-validation', title: 'HTML Forms', category: 'HTML Forms' },
     ],
   },
   {
@@ -1516,20 +1509,34 @@ export const htmlCssInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     ],
   },
   {
-    id: 'real-project-scenarios',
-    title: 'Real Project Scenarios',
+    id: 'css-fundamentals',
+    title: 'CSS Fundamentals',
     topics: [
-      { slug: 'common-layout-bugs', title: 'Real Project Scenarios', category: 'Real Project Scenarios' },
+      { slug: 'css-specificity-deep-dive', title: 'CSS Fundamentals', category: 'CSS Fundamentals' },
+    ],
+  },
+  {
+    id: 'css-layouts',
+    title: 'CSS Layouts',
+    topics: [
+      { slug: 'flexbox-real-layouts', title: 'CSS Layouts', category: 'CSS Layouts' },
+    ],
+  },
+  {
+    id: 'css-advanced-production',
+    title: 'CSS Advanced / Production',
+    topics: [
+      { slug: 'css-architecture-basics', title: 'CSS Advanced / Production', category: 'CSS Advanced / Production' },
     ],
   },
 ];
 
 export const javascriptInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
   {
-    id: 'javascript-basics',
-    title: 'JavaScript Basics',
+    id: 'javascript-fundamentals',
+    title: 'JavaScript Fundamentals',
     topics: [
-      { slug: 'execution-context', title: 'JavaScript Basics', category: 'JavaScript Basics' },
+      { slug: 'execution-context', title: 'JavaScript Fundamentals', category: 'JavaScript Fundamentals' },
     ],
   },
   {
@@ -1554,24 +1561,83 @@ export const javascriptInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
     ],
   },
   {
-    id: 'closures-hoisting-this',
-    title: 'Closures, Hoisting, and this',
+    id: 'core-interview-concepts',
+    title: 'Core Interview Concepts',
     topics: [
-      { slug: 'closures', title: 'Closures, Hoisting, and this', category: 'Closures, Hoisting, and this' },
+      { slug: 'closures', title: 'Core Interview Concepts', category: 'Core Interview Concepts' },
     ],
   },
   {
-    id: 'event-loop',
-    title: 'Event Loop',
+    id: 'browser-apis-and-production',
+    title: 'Browser APIs and Production',
     topics: [
-      { slug: 'event-loop', title: 'Event Loop', category: 'Event Loop' },
+      { slug: 'browser-storage', title: 'Browser APIs and Production', category: 'Browser APIs and Production' },
     ],
   },
   {
-    id: 'real-project-scenarios',
-    title: 'Real Project Scenarios',
+    id: 'tricky-output-questions',
+    title: 'Tricky Output Questions',
     topics: [
-      { slug: 'api-integration-mistakes', title: 'Real Project Scenarios', category: 'Real Project Scenarios' },
+      { slug: 'event-loop', title: 'Tricky Output Questions', category: 'Tricky Output Questions' },
+    ],
+  },
+];
+
+export const pythonInterviewPrepTopicGroups: InterviewPrepNavGroup[] = [
+  {
+    id: 'python-fundamentals',
+    title: 'Python Fundamentals',
+    topics: [
+      { slug: 'what-is-python', title: 'Python Fundamentals', category: 'Python Fundamentals' },
+    ],
+  },
+  {
+    id: 'data-structures',
+    title: 'Data Structures',
+    topics: [
+      { slug: 'variables-and-data-types', title: 'Data Structures', category: 'Data Structures' },
+    ],
+  },
+  {
+    id: 'functions-and-modules',
+    title: 'Functions and Modules',
+    topics: [
+      { slug: 'functions', title: 'Functions and Modules', category: 'Functions and Modules' },
+    ],
+  },
+  {
+    id: 'oop-in-python',
+    title: 'OOP in Python',
+    topics: [
+      { slug: 'classes-and-objects', title: 'OOP in Python', category: 'OOP in Python' },
+    ],
+  },
+  {
+    id: 'error-handling-and-files',
+    title: 'Error Handling and Files',
+    topics: [
+      { slug: 'exceptions', title: 'Error Handling and Files', category: 'Error Handling and Files' },
+    ],
+  },
+  {
+    id: 'advanced-python',
+    title: 'Advanced Python',
+    topics: [
+      { slug: 'decorators', title: 'Advanced Python', category: 'Advanced Python' },
+    ],
+  },
+  {
+    id: 'apis-testing-and-production',
+    title: 'APIs, Testing, and Production',
+    topics: [
+      { slug: 'rest-apis-with-python', title: 'APIs, Testing, and Production', category: 'APIs, Testing, and Production' },
+    ],
+  },
+  {
+    id: 'scenario-based-python-questions',
+    title: 'Scenario-Based Python Questions',
+    topics: [
+      { slug: 'working-with-apis', title: 'Scenario-Based Python Questions', category: 'Scenario-Based Python Questions' },
     ],
   },
 ];
@@ -1582,6 +1648,7 @@ const interviewPrepTopicGroupsByTechnology: Record<string, InterviewPrepNavGroup
   sitecore: sitecoreInterviewPrepTopicGroups,
   'html-css': htmlCssInterviewPrepTopicGroups,
   javascript: javascriptInterviewPrepTopicGroups,
+  python: pythonInterviewPrepTopicGroups,
   react: reactInterviewPrepTopicGroups,
   nextjs: nextjsInterviewPrepTopicGroups,
   'core-java': coreJavaInterviewPrepTopicGroups,

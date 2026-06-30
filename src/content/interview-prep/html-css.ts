@@ -20,11 +20,12 @@ const experienceLevels: ExperienceLevel[] = [
 ];
 
 const topicGroupDescriptions: Record<string, string> = {
-  HTML: 'Core document structure, semantics, metadata, and practical browser-facing markup decisions.',
-  CSS: 'Cascade, specificity, selector behavior, and maintainable styling patterns.',
-  'Responsive Design': 'Layout decisions that survive small screens, dynamic content, and real breakpoints.',
+  'HTML Fundamentals': 'Core document structure, semantics, metadata, links, images, and practical browser-facing markup decisions.',
+  'HTML Forms': 'Form structure, validation, field types, submission behavior, and accessible input patterns.',
   Accessibility: 'Keyboard, labels, semantics, ARIA, and production-safe inclusive UI behavior.',
-  'Real Project Scenarios': 'Practical UI bug patterns, SEO trade-offs, and release-time frontend issues.',
+  'CSS Fundamentals': 'Cascade, specificity, selector behavior, and maintainable styling patterns.',
+  'CSS Layouts': 'Flexbox, Grid, positioning, overflow, and responsive layout decisions that survive real content.',
+  'CSS Advanced / Production': 'Animation, architecture, performance, browser quirks, and common release-time frontend issues.',
 };
 
 function buildTopicGroups(): InterviewPrepTopicGroup[] {
@@ -73,9 +74,41 @@ interface QuestionSpec {
   mostAskedRank?: number;
 }
 
+interface CoverageSeed {
+  id: string;
+  label: string;
+  answer: string;
+  projectUse: string;
+  productionRisk: string;
+  relatedTopics: string[];
+  difficultyLevel?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Architect';
+  experienceLevel?: ExperienceLevelId;
+  questionType?: string;
+  frequencyScore?: number;
+}
+
+const htmlCssCategoryMap: Record<string, string> = {
+  HTML: 'HTML Fundamentals',
+  CSS: 'CSS Fundamentals',
+  'Responsive Design': 'CSS Layouts',
+  'Real Project Scenarios': 'CSS Advanced / Production',
+  Accessibility: 'Accessibility',
+};
+
+const htmlCssQuestionCategoryOverrides: Record<string, string> = {
+  'html-css-forms-labels': 'HTML Forms',
+};
+
+function normalizeCategory(id: string, category: string): string {
+  return htmlCssQuestionCategoryOverrides[id] ?? htmlCssCategoryMap[category] ?? category;
+}
+
 function question(spec: QuestionSpec): InterviewPrepQuestion {
+  const normalizedCategory = normalizeCategory(spec.id, spec.category);
   return {
     ...spec,
+    category: normalizedCategory,
+    topicGroup: normalizedCategory,
     technologyId: 'html-css',
     roleAnswers: {
       junior: roleAnswer(spec.shortAnswer, 'beginner'),
@@ -85,6 +118,176 @@ function question(spec: QuestionSpec): InterviewPrepQuestion {
     },
   };
 }
+
+function buildCoverageQuestions(category: string, seeds: CoverageSeed[]): InterviewPrepQuestion[] {
+  return seeds.flatMap((seed, index) => {
+    const difficultyLevel = seed.difficultyLevel ?? 'Intermediate';
+    const experienceLevel = seed.experienceLevel ?? 'mid';
+    const questionType = seed.questionType ?? 'Practical';
+    const frequencyScore = seed.frequencyScore ?? Math.max(66, 90 - index);
+    const lowerLabel = seed.label.toLowerCase();
+
+    return [
+      question({
+        id: `${seed.id}-concept`,
+        category,
+        topicGroup: category,
+        questionType,
+        question: `What should you know about ${seed.label} in ${category}?`,
+        shortAnswer: seed.answer,
+        detailedAnswer: [
+          seed.answer,
+          `In real projects, ${seed.projectUse}.`,
+          `A strong interview answer should connect ${lowerLabel} to maintainability, accessibility, or debugging impact instead of stopping at a definition.`,
+        ],
+        realProjectExample: `A team relied on ${lowerLabel} when ${seed.projectUse}.`,
+        productionScenario: `A production issue appears because ${seed.productionRisk}.`,
+        commonMistakes: [
+          `Treating ${lowerLabel} as a memorization topic instead of explaining when and why it matters.`,
+          `Giving a visual-only answer without connecting ${lowerLabel} to user behavior or browser behavior.`,
+        ],
+        followUpQuestions: [
+          `When is ${seed.label} the better choice?`,
+          `What is a common debugging step related to ${seed.label}?`,
+        ],
+        interviewerExpectation: `The interviewer wants to know whether you can explain ${lowerLabel} clearly and connect it to practical frontend implementation choices.`,
+        frequencyScore,
+        commonWrongAnswer: `A weak answer treats ${lowerLabel} as just syntax and ignores its effect on real users or production stability.`,
+        architectPerspective: `At scale, teams should standardize how they use ${lowerLabel} so reusable UI patterns stay predictable and easier to review.`,
+        keyTakeaway: `${seed.label} matters because it affects real user experience, delivery quality, and long-term maintainability.`,
+        difficultyLevel,
+        experienceLevel,
+        relatedTopics: seed.relatedTopics,
+      }),
+      question({
+        id: `${seed.id}-scenario`,
+        category,
+        topicGroup: category,
+        questionType: 'Scenario',
+        question: `What production mistake is common with ${seed.label} in ${category}?`,
+        shortAnswer: `A common issue with ${lowerLabel} is that ${seed.productionRisk}.`,
+        detailedAnswer: [
+          `A common issue with ${lowerLabel} is that ${seed.productionRisk}.`,
+          `You should explain the root cause, how you would debug it, and which safer pattern you would use next.`,
+          `Interviewers usually care more about your decision process than a one-line fix.`,
+        ],
+        realProjectExample: `One release needed cleanup because ${seed.projectUse}.`,
+        productionScenario: `The page or form behaves poorly because ${seed.productionRisk}.`,
+        commonMistakes: [
+          `Patching the symptom without fixing the underlying ${lowerLabel} decision.`,
+          `Assuming the issue only affects styling and not usability, accessibility, or browser behavior.`,
+        ],
+        followUpQuestions: [
+          `How would you test this before release?`,
+          `What shared guardrail would help avoid this issue next time?`,
+        ],
+        interviewerExpectation: `The interviewer wants to hear a practical debugging answer, not only the rule behind ${lowerLabel}.`,
+        frequencyScore: Math.max(60, frequencyScore - 4),
+        commonWrongAnswer: `A weak answer says "just change the code" without explaining the failure pattern or validation steps.`,
+        architectPerspective: `Production-safe frontend teams turn repeated ${lowerLabel} mistakes into shared standards, lint rules, or reusable components.`,
+        keyTakeaway: `You should be able to explain both the concept behind ${seed.label} and the production failure pattern around it.`,
+        difficultyLevel,
+        experienceLevel,
+        relatedTopics: seed.relatedTopics,
+      }),
+    ];
+  });
+}
+
+function mergeQuestions(...groups: InterviewPrepQuestion[][]): InterviewPrepQuestion[] {
+  const seen = new Set<string>();
+  return groups.flat().filter((item) => {
+    if (seen.has(item.id)) {
+      return false;
+    }
+    seen.add(item.id);
+    return true;
+  });
+}
+
+const htmlFundamentalsCoverage: CoverageSeed[] = [
+  { id: 'html-fundamentals-doctype', label: 'DOCTYPE', answer: 'DOCTYPE tells the browser to use standards mode so the page renders with modern layout rules instead of quirks mode.', projectUse: 'the team needed consistent rendering across browsers and old content templates', productionRisk: 'missing or incorrect DOCTYPE pushes the page into quirks mode and creates layout bugs', relatedTopics: ['semantic-html-deep-dive', 'meta-tags-for-seo'] },
+  { id: 'html-fundamentals-document-structure', label: 'document structure', answer: 'A healthy HTML document has clear head and body sections, meaningful landmarks, and predictable heading flow.', projectUse: 'a CMS page needed cleaner structure for SEO and screen-reader navigation', productionRisk: 'weak structure makes pages harder to scan, test, and index correctly', relatedTopics: ['semantic-html-deep-dive', 'labels-and-accessibility'] },
+  { id: 'html-fundamentals-semantic-tags', label: 'semantic tags', answer: 'Semantic tags like main, section, article, and footer describe intent so browsers, assistive tech, and teammates understand the page structure faster.', projectUse: 'a landing page was rebuilt with clearer content regions and reusable section patterns', productionRisk: 'div-only structure hides page meaning and weakens accessibility and SEO', relatedTopics: ['semantic-html-deep-dive', 'aria-basics'] },
+  { id: 'html-fundamentals-div-vs-semantic', label: 'div vs semantic elements', answer: 'A div is a generic container, while semantic elements carry meaning and should be preferred when the content has a clear purpose.', projectUse: 'the team reduced extra wrapper classes by using purpose-driven layout and content tags', productionRisk: 'generic wrappers make maintenance and accessibility audits much harder than necessary', relatedTopics: ['semantic-html-deep-dive', 'accessibility-basics'] },
+  { id: 'html-fundamentals-block-inline', label: 'block vs inline elements', answer: 'Block elements usually start on a new line and take available width, while inline elements flow within text content.', projectUse: 'an editor needed predictable content spacing for paragraphs, links, badges, and inline icons', productionRisk: 'wrong display expectations create broken spacing and alignment when content grows', relatedTopics: ['display-property', 'box-model'] },
+  { id: 'html-fundamentals-attributes', label: 'HTML attributes', answer: 'Attributes provide extra meaning or behavior such as href, src, alt, id, class, and data-* hooks.', projectUse: 'frontend and analytics teams depended on stable data attributes for behavior and tracking hooks', productionRisk: 'overloading classes for behavior and styling makes refactors fragile', relatedTopics: ['semantic-html-deep-dive', 'dom-traversal'] },
+  { id: 'html-fundamentals-links', label: 'links and anchors', answer: 'Links should use meaningful text, valid href values, and the correct behavior for internal, external, and skip-navigation use cases.', projectUse: 'a knowledge site needed crawlable internal links and clearer CTA text for users', productionRisk: 'fake links or vague anchor text hurt navigation, accessibility, and SEO', relatedTopics: ['meta-tags-for-seo', 'accessibility-basics'] },
+  { id: 'html-fundamentals-images', label: 'images', answer: 'Images need correct src handling, useful alt text, dimensions where possible, and responsive behavior that matches the layout.', projectUse: 'an ecommerce team optimized card images so content loaded faster and layout shift stayed low', productionRisk: 'missing alt text or image sizing hurts accessibility and causes layout instability', relatedTopics: ['images-and-responsive-images', 'accessibility-basics'] },
+  { id: 'html-fundamentals-lists', label: 'lists', answer: 'Use ordered and unordered lists when content is actually a list so structure and assistive navigation stay correct.', projectUse: 'a feature checklist and breadcrumb area became more consistent after switching from styled paragraphs to real lists', productionRisk: 'list-like content built with divs becomes harder to maintain and less accessible', relatedTopics: ['semantic-html-deep-dive', 'labels-and-accessibility'] },
+  { id: 'html-fundamentals-tables', label: 'tables', answer: 'Tables are for tabular data with meaningful row and column relationships, not for page layout.', projectUse: 'an admin dashboard used real table semantics for finance data and export-friendly rendering', productionRisk: 'layout tables create responsive issues and confuse assistive technology', relatedTopics: ['tables-best-practices', 'accessibility-basics'] },
+  { id: 'html-fundamentals-meta-tags', label: 'meta tags', answer: 'Meta tags help define document metadata such as description, viewport behavior, charset, and indexing context.', projectUse: 'the marketing team fixed weak search snippets by reviewing titles, descriptions, and viewport metadata', productionRisk: 'missing or poor metadata hurts previews, indexing clarity, and mobile rendering', relatedTopics: ['meta-tags-for-seo', 'open-graph-tags'] },
+  { id: 'html-fundamentals-favicon', label: 'favicon and web manifest basics', answer: 'Favicons and manifest data help browsers represent the site clearly in tabs, bookmarks, and installable experiences.', projectUse: 'a product team aligned browser icons and install metadata across environments', productionRisk: 'wrong icon setup creates broken branding or stale cached icons after release', relatedTopics: ['favicon-and-manifest-basics', 'open-graph-tags'] },
+  { id: 'html-fundamentals-seo-html', label: 'SEO-friendly HTML', answer: 'SEO-friendly HTML uses meaningful structure, headings, links, metadata, and crawlable content instead of hiding key meaning behind scripts alone.', projectUse: 'content pages improved discoverability after the team cleaned heading order and link structure', productionRisk: 'important content becomes harder to index when HTML structure is weak or incomplete', relatedTopics: ['meta-tags-for-seo', 'semantic-html-deep-dive'] },
+];
+
+const htmlFormsCoverage: CoverageSeed[] = [
+  { id: 'html-forms-form-tag', label: 'the form tag', answer: 'The form element groups related fields and gives the browser a native submission boundary.', projectUse: 'a checkout team separated billing and shipping actions into clear submit flows', productionRisk: 'missing or misused form boundaries break submit behavior, Enter-key handling, and accessibility', relatedTopics: ['html-forms-validation', 'input-types'] },
+  { id: 'html-forms-action-method', label: 'action and method', answer: 'The action decides where a form submits and the method decides how the browser sends the form data.', projectUse: 'a support form posted to the right backend endpoint in each environment', productionRisk: 'wrong action or method routes data incorrectly or exposes values where they should not be visible', relatedTopics: ['html-forms-validation', 'input-types'] },
+  { id: 'html-forms-get-post', label: 'GET vs POST', answer: 'GET is suited for safe, shareable queries while POST is used for changes, sensitive payloads, and larger submissions.', projectUse: 'search filters used GET while account updates used POST for safer data handling', productionRisk: 'using GET for sensitive data can leak values into URLs, logs, and browser history', relatedTopics: ['html-forms-validation', 'meta-tags-for-seo'] },
+  { id: 'html-forms-input-types', label: 'input types', answer: 'Choosing the right input type gives users better keyboards, validation hints, and native browser behavior.', projectUse: 'mobile signup completion improved after the team used email, tel, date, and number inputs appropriately', productionRisk: 'generic text inputs create worse mobile UX and weaker built-in validation', relatedTopics: ['input-types', 'labels-and-accessibility'] },
+  { id: 'html-forms-labels', label: 'labels', answer: 'Labels make fields understandable, clickable, and accessible because they connect visible text to the correct control.', projectUse: 'a registration flow reduced errors after adding persistent labels above each field', productionRisk: 'placeholder-only fields confuse users and fail accessibility checks', relatedTopics: ['labels-and-accessibility', 'html-forms-validation'] },
+  { id: 'html-forms-name-id', label: 'name vs id', answer: 'The id helps connect labels and scripts, while the name controls which value is submitted with the form.', projectUse: 'backend form parsing started working only after the team fixed the field names expected by the API', productionRisk: 'forms can look correct visually but submit empty or wrong payload keys when names are missing or incorrect', relatedTopics: ['html-forms-validation', 'dom-manipulation'] },
+  { id: 'html-forms-placeholder-value', label: 'placeholder vs value', answer: 'A placeholder is a hint, while a value is actual field content that will be submitted unless changed.', projectUse: 'a migration removed fake defaults that users were accidentally submitting as real answers', productionRisk: 'placeholder text can disappear during entry and cannot replace a true label or initial value', relatedTopics: ['labels-and-accessibility', 'forms-handling'] },
+  { id: 'html-forms-native-validation', label: 'native validation', answer: 'Native validation can quickly catch missing or malformed input, but teams still need clear messaging and server-side checks.', projectUse: 'a profile form used required, minlength, and pattern rules for faster feedback before API submission', productionRisk: 'relying only on client validation leaves backend data quality and security gaps', relatedTopics: ['html-forms-validation', 'form-validation'] },
+  { id: 'html-forms-select-textarea', label: 'select and textarea', answer: 'Select and textarea are purpose-built controls and should be used when the interaction matches a choice list or longer free-text input.', projectUse: 'a support ticket form used select for issue type and textarea for the problem description', productionRisk: 'forcing everything into a text input weakens validation and user guidance', relatedTopics: ['input-types', 'labels-and-accessibility'] },
+  { id: 'html-forms-checkbox-radio', label: 'checkboxes and radio buttons', answer: 'Checkboxes are for independent yes-or-no selections, while radio buttons are for one choice within a group.', projectUse: 'plan selection and marketing consent were modeled with separate control types to avoid confusing users', productionRisk: 'using the wrong control type causes invalid assumptions about how many choices a user can make', relatedTopics: ['labels-and-accessibility', 'accessibility-basics'] },
+  { id: 'html-forms-file-upload', label: 'file uploads', answer: 'File inputs need clear type and size expectations plus backend handling for validation, virus scanning, and storage.', projectUse: 'an onboarding flow accepted resume uploads with size limits and server-side type checks', productionRisk: 'weak upload validation leads to bad files, failed submissions, or security issues', relatedTopics: ['input-types', 'form-validation'] },
+  { id: 'html-forms-disabled-readonly', label: 'disabled vs readonly fields', answer: 'Disabled fields are not editable and usually not submitted, while readonly fields can still submit their value.', projectUse: 'an account form showed immutable IDs as readonly so users could copy them without editing', productionRisk: 'using disabled incorrectly can silently drop values the backend still expects', relatedTopics: ['forms-handling', 'html-forms-validation'] },
+  { id: 'html-forms-autocomplete', label: 'autocomplete', answer: 'Autocomplete helps browsers fill common data faster and more accurately when fields use recognized intent values.', projectUse: 'checkout completion improved after the team mapped name, email, and address fields to proper autocomplete tokens', productionRisk: 'poor autocomplete configuration slows users down and increases manual entry mistakes', relatedTopics: ['input-types', 'labels-and-accessibility'] },
+];
+
+const accessibilityCoverage: CoverageSeed[] = [
+  { id: 'accessibility-alt-text', label: 'alt text', answer: 'Alt text should describe the meaning or function of an image when that information matters to someone who cannot see it.', projectUse: 'content authors added descriptive alt text to editorial images and functional icons', productionRisk: 'missing or noisy alt text makes image-heavy pages frustrating for screen-reader users', relatedTopics: ['images-and-responsive-images', 'accessibility-basics'] },
+  { id: 'accessibility-aria-label', label: 'aria-label', answer: 'aria-label is useful when an element needs an accessible name but has no visible text that already provides it.', projectUse: 'icon-only controls in a toolbar needed accessible names without adding extra visible text', productionRisk: 'overusing ARIA instead of semantic HTML creates harder-to-maintain accessibility fixes', relatedTopics: ['aria-basics', 'semantic-html-deep-dive'] },
+  { id: 'accessibility-headings', label: 'heading hierarchy', answer: 'A logical heading order helps users scan content and lets assistive technology understand page structure quickly.', projectUse: 'a long article page became easier to navigate after its heading order was corrected', productionRisk: 'skipped or misused heading levels make pages harder to navigate with assistive tools', relatedTopics: ['semantic-html-deep-dive', 'meta-tags-for-seo'] },
+  { id: 'accessibility-keyboard', label: 'keyboard navigation', answer: 'Every important interaction should be reachable, visible, and operable with the keyboard alone.', projectUse: 'a custom menu was updated so focus order, arrow keys, and Escape behavior worked reliably', productionRisk: 'mouse-only interactions block users who depend on keyboard navigation', relatedTopics: ['aria-basics', 'labels-and-accessibility'] },
+  { id: 'accessibility-focus', label: 'focus states', answer: 'Visible focus styling shows keyboard users where they are and is essential for usable interactive components.', projectUse: 'a design refresh preserved strong focus rings instead of removing them for visual minimalism', productionRisk: 'hidden focus states make interactive flows feel broken even when keyboard support exists', relatedTopics: ['accessibility-basics', 'css-transitions'] },
+  { id: 'accessibility-color-contrast', label: 'color contrast', answer: 'Color contrast must be strong enough that text and controls remain readable against their background.', projectUse: 'a UI kit updated muted text and error states after contrast checks failed review', productionRisk: 'low-contrast interfaces become unreadable for many users and fail accessibility audits', relatedTopics: ['accessibility-basics', 'browser-compatibility-issues'] },
+  { id: 'accessibility-screen-reader', label: 'screen-reader support', answer: 'Screen-reader support depends on semantic structure, clear names, correct roles, and predictable state announcements.', projectUse: 'an accordion component was rebuilt with proper button semantics and expanded-state communication', productionRisk: 'custom components can sound confusing or silent to assistive technology when roles and names are wrong', relatedTopics: ['aria-basics', 'semantic-html-deep-dive'] },
+  { id: 'accessibility-accessible-forms', label: 'accessible forms', answer: 'Accessible forms combine labels, helper text, clear validation feedback, and the right control semantics.', projectUse: 'a government form improved completion after field groups and error summaries were redesigned accessibly', productionRisk: 'users cannot recover from validation errors when fields and messages are not connected clearly', relatedTopics: ['html-forms-validation', 'labels-and-accessibility'] },
+  { id: 'accessibility-common-mistakes', label: 'common accessibility mistakes', answer: 'Common mistakes include fake buttons, placeholder-only inputs, missing alt text, hidden focus, and poor heading order.', projectUse: 'a QA checklist caught repeated component-level accessibility regressions before launch', productionRisk: 'small accessibility issues compound into serious usability problems across a large site', relatedTopics: ['accessibility-basics', 'semantic-html-deep-dive'] },
+];
+
+const cssFundamentalsCoverage: CoverageSeed[] = [
+  { id: 'css-fundamentals-selectors', label: 'selectors', answer: 'Selectors choose which elements a rule applies to, so good selector design improves clarity and keeps styling maintainable.', projectUse: 'a design-system team simplified selectors so components were easier to override safely', productionRisk: 'fragile selectors break when markup changes even slightly', relatedTopics: ['css-specificity-deep-dive', 'bem-naming'] },
+  { id: 'css-fundamentals-class-id', label: 'class vs id selectors', answer: 'Classes are usually better for reusable styling, while IDs are more specific and suited to unique hooks when necessary.', projectUse: 'reusable CTA components relied on classes instead of page-specific IDs', productionRisk: 'overusing IDs creates hard-to-override styles and brittle code', relatedTopics: ['css-specificity-deep-dive', 'css-architecture-basics'] },
+  { id: 'css-fundamentals-cascade', label: 'the cascade', answer: 'The cascade decides which rule applies after considering origin, importance, specificity, and source order.', projectUse: 'shared theme styles stopped fighting each other after the team understood cascade order better', productionRisk: 'unexpected overrides waste time because developers assume the last rule always wins', relatedTopics: ['inheritance-and-cascade', 'css-specificity-deep-dive'] },
+  { id: 'css-fundamentals-inheritance', label: 'inheritance', answer: 'Some CSS properties inherit naturally from parent elements, while others must be set directly.', projectUse: 'typography defaults became easier to manage after the team leaned on inherited text styles intentionally', productionRisk: 'assuming all properties inherit creates inconsistent styling and debugging confusion', relatedTopics: ['inheritance-and-cascade', 'typography'] },
+  { id: 'css-fundamentals-margin-padding', label: 'margin vs padding', answer: 'Margin creates space outside an element, while padding creates space inside the element around its content.', projectUse: 'form field spacing became more consistent after the team stopped mixing margin and padding randomly', productionRisk: 'layout spacing becomes unpredictable when teams use the wrong spacing mechanism repeatedly', relatedTopics: ['box-model', 'forms-styling'] },
+  { id: 'css-fundamentals-display', label: 'display values', answer: 'Display controls how an element participates in layout, such as block, inline, inline-block, flex, or grid.', projectUse: 'small UI wrappers were easier to align after the team chose display values intentionally instead of trial and error', productionRisk: 'wrong display assumptions create alignment bugs that keep resurfacing across breakpoints', relatedTopics: ['display-property', 'flexbox-real-layouts'] },
+  { id: 'css-fundamentals-visibility-display', label: 'visibility hidden vs display none', answer: 'visibility hidden keeps layout space while hiding the element, whereas display none removes the element from layout flow.', projectUse: 'an alert placeholder needed to preserve spacing in one case and collapse fully in another', productionRisk: 'using the wrong hiding strategy creates jumpy layouts or unexpected empty gaps', relatedTopics: ['display-property', 'css-transitions'] },
+  { id: 'css-fundamentals-units', label: 'CSS units', answer: 'Choosing between px, rem, em, %, vh, and other units depends on readability, responsiveness, and scaling behavior.', projectUse: 'a team moved typography and spacing toward rem units for better accessibility scaling', productionRisk: 'hard-coded units can make layouts or type fail at zoomed sizes and smaller devices', relatedTopics: ['responsive-breakpoints', 'mobile-first-css'] },
+  { id: 'css-fundamentals-colors-typography', label: 'colors and typography', answer: 'Color and typography choices should support hierarchy, readability, contrast, and a stable design language.', projectUse: 'a UI audit cleaned text hierarchy and muted-color usage to reduce visual confusion', productionRisk: 'weak typography or low-contrast text hurts both scanability and accessibility', relatedTopics: ['accessibility-basics', 'browser-compatibility-issues'] },
+];
+
+const cssLayoutsCoverage: CoverageSeed[] = [
+  { id: 'css-layouts-flexbox', label: 'Flexbox', answer: 'Flexbox is best for one-dimensional layout problems such as horizontal alignment, vertical stacks, and distributed space inside a container.', projectUse: 'toolbars and card rows used flex alignment to stay stable with variable content', productionRisk: 'flex items can overflow or shrink unexpectedly when min-width and wrapping rules are ignored', relatedTopics: ['flexbox-real-layouts', 'responsive-breakpoints'] },
+  { id: 'css-layouts-grid', label: 'CSS Grid', answer: 'Grid is strong when you need explicit control across both rows and columns in a layout.', projectUse: 'dashboard tiles and editorial landing pages used grid templates for structured placement', productionRisk: 'forcing complex two-dimensional layouts into flexbox leads to fragile spacing hacks', relatedTopics: ['grid-real-layouts', 'responsive-breakpoints'] },
+  { id: 'css-layouts-flex-vs-grid', label: 'Flexbox vs Grid', answer: 'Flexbox is usually better for one-axis alignment, while Grid is usually better when both rows and columns matter together.', projectUse: 'a component library documented whether common layouts should use flex or grid', productionRisk: 'choosing the wrong layout model makes responsive changes harder than they need to be', relatedTopics: ['flexbox-real-layouts', 'grid-real-layouts'] },
+  { id: 'css-layouts-position', label: 'position values', answer: 'static, relative, absolute, fixed, and sticky each change how an element participates in layout and how offsets behave.', projectUse: 'badges, dropdowns, sticky nav, and anchored overlays depended on correct positioning context', productionRisk: 'misunderstood positioning creates floating elements that attach to the wrong ancestor', relatedTopics: ['position-sticky', 'z-index-and-stacking-context'] },
+  { id: 'css-layouts-zindex', label: 'z-index and stacking context', answer: 'z-index only works within stacking contexts, so you need to understand which ancestor or property created the layer boundary.', projectUse: 'modals and sticky headers stopped overlapping incorrectly after the team fixed stacking contexts', productionRisk: 'high z-index values still fail when the wrong stacking context traps the element underneath', relatedTopics: ['z-index-and-stacking-context', 'position-sticky'] },
+  { id: 'css-layouts-overflow', label: 'overflow', answer: 'Overflow settings control clipping, scrolling, and how content behaves when it exceeds its container.', projectUse: 'tables and code samples needed controlled horizontal scrolling on smaller screens', productionRisk: 'hidden overflow can clip focus rings, dropdowns, or important content unexpectedly', relatedTopics: ['common-layout-bugs', 'responsive-breakpoints'] },
+  { id: 'css-layouts-media-queries', label: 'media queries', answer: 'Media queries adapt layout and behavior to screen conditions, but they work best when paired with resilient base layouts.', projectUse: 'breakpoint rules adjusted navigation, cards, and columns while keeping mobile layouts readable', productionRisk: 'too many breakpoint-specific hacks become impossible to maintain as content evolves', relatedTopics: ['responsive-breakpoints', 'mobile-first-css'] },
+  { id: 'css-layouts-mobile-first', label: 'mobile-first design', answer: 'Mobile-first styling starts from the smallest stable layout and progressively adds space or complexity for larger screens.', projectUse: 'a redesign became simpler because the team defined small-screen rules first and added enhancements upward', productionRisk: 'desktop-first CSS often needs many overrides later and still misses cramped mobile states', relatedTopics: ['mobile-first-css', 'responsive-breakpoints'] },
+  { id: 'css-layouts-layout-bugs', label: 'common layout bugs', answer: 'Common layout bugs include overflow, unequal heights, broken wrapping, collapsed spacing, and misplaced absolute elements.', projectUse: 'a release checklist focused on long text, empty states, and translated content to catch layout regressions early', productionRisk: 'layouts that only work with ideal demo content usually break first in production data', relatedTopics: ['common-layout-bugs', 'grid-real-layouts'] },
+];
+
+const cssAdvancedProductionCoverage: CoverageSeed[] = [
+  { id: 'css-advanced-pseudo-classes', label: 'pseudo-classes', answer: 'Pseudo-classes style an element based on state such as hover, focus, active, checked, or nth-child conditions.', projectUse: 'interactive buttons and form states used pseudo-classes instead of extra JavaScript for simple feedback', productionRisk: 'hover-only behavior ignores keyboard and touch interactions', relatedTopics: ['pseudo-classes', 'accessibility-basics'] },
+  { id: 'css-advanced-pseudo-elements', label: 'pseudo-elements', answer: 'Pseudo-elements like ::before and ::after add presentational content without extra markup when used carefully.', projectUse: 'list bullets, decorative accents, and separators were added without polluting the HTML structure', productionRisk: 'important content hidden inside pseudo-elements can be inaccessible or harder to maintain', relatedTopics: ['pseudo-elements', 'semantic-html-deep-dive'] },
+  { id: 'css-advanced-transitions', label: 'transitions', answer: 'Transitions help state changes feel smoother, but they should support clarity rather than slow down interactions.', projectUse: 'buttons and accordions used subtle transitions for feedback without hurting responsiveness', productionRisk: 'transitioning the wrong properties causes jank and makes debugging state changes harder', relatedTopics: ['css-transitions', 'css-transforms'] },
+  { id: 'css-advanced-transforms', label: 'transforms', answer: 'Transforms move, scale, or rotate elements without reflowing surrounding layout, which often makes animation cheaper.', projectUse: 'drawer and tooltip motion used transforms for smoother movement than top or left changes', productionRisk: 'transform-based motion can create stacking or clipping surprises when containers are not understood', relatedTopics: ['css-transforms', 'z-index-and-stacking-context'] },
+  { id: 'css-advanced-animations', label: 'animations', answer: 'Animations should communicate state change or hierarchy, not distract users or hide slow interfaces.', projectUse: 'loading skeletons and status badges used short purposeful animations instead of decorative loops', productionRisk: 'heavy or constant animation drains performance and can harm motion-sensitive users', relatedTopics: ['css-animations', 'browser-compatibility-issues'] },
+  { id: 'css-advanced-variables', label: 'CSS variables', answer: 'CSS variables help centralize design tokens and make themes, spacing, and component variants easier to manage.', projectUse: 'brand colors and spacing tokens moved into CSS variables to support multiple themes safely', productionRisk: 'hard-coded repeated values create inconsistent UI and painful design updates', relatedTopics: ['css-variables', 'css-architecture-basics'] },
+  { id: 'css-advanced-bem', label: 'BEM naming', answer: 'BEM naming keeps selectors predictable by making component blocks, elements, and modifiers explicit.', projectUse: 'a legacy stylesheet became easier to reason about once component classes followed a consistent naming strategy', productionRisk: 'unclear naming leads to accidental selector overlap and review confusion', relatedTopics: ['bem-naming', 'css-architecture-basics'] },
+  { id: 'css-advanced-browser-compatibility', label: 'browser compatibility', answer: 'Browser compatibility work means knowing which features need fallbacks, prefixes, testing, or a simpler alternative.', projectUse: 'a form layout used safe fallbacks where one browser handled a newer feature poorly', productionRisk: 'new CSS features can fail silently in target browsers if compatibility is never verified', relatedTopics: ['browser-compatibility-issues', 'grid-real-layouts'] },
+  { id: 'css-advanced-performance', label: 'CSS performance', answer: 'CSS performance improves when selectors stay reasonable, animations target cheaper properties, and unnecessary style work is reduced.', projectUse: 'a large admin UI became more responsive after simplifying selectors and avoiding layout-thrashing animation properties', productionRisk: 'heavy styling patterns can make scrolling, animation, or theme changes feel slow', relatedTopics: ['css-animations', 'css-transforms'] },
+  { id: 'css-advanced-responsive-images', label: 'responsive images', answer: 'Responsive image decisions balance layout fit, loading cost, art direction, and clarity across screen sizes.', projectUse: 'hero banners and card thumbnails used responsive image strategies to cut bandwidth on mobile', productionRisk: 'oversized images hurt performance while undersized images look blurry on larger or denser screens', relatedTopics: ['images-and-responsive-images', 'responsive-breakpoints'] },
+  { id: 'css-advanced-horizontal-scroll', label: 'horizontal scroll bugs', answer: 'Horizontal scrolling usually comes from width assumptions, unwrapped content, fixed elements, or layout children that refuse to shrink.', projectUse: 'mobile QA focused on finding the exact child that pushed the page wider than the viewport', productionRisk: 'users lose trust quickly when a page unexpectedly scrolls sideways on mobile', relatedTopics: ['common-layout-bugs', 'mobile-first-css'] },
+  { id: 'css-advanced-sticky-header', label: 'sticky headers', answer: 'Sticky headers work well when their height, stacking, and offset behavior are tested against real scrolling and nested containers.', projectUse: 'a docs site used sticky section navigation with careful spacing so content was not hidden on anchor jumps', productionRisk: 'sticky headers can hide content or fail completely when parent overflow rules are wrong', relatedTopics: ['position-sticky', 'z-index-and-stacking-context'] },
+  { id: 'css-advanced-broken-alignment', label: 'broken alignment issues', answer: 'Alignment bugs usually come from mixed layout models, implicit sizing assumptions, or content that grows differently than the design mockup.', projectUse: 'teams compared empty, short, long, and translated content states to harden component alignment', productionRisk: 'components that align only in perfect-content demos usually fail first after launch', relatedTopics: ['common-layout-bugs', 'flexbox-real-layouts'] },
+];
 
 const questions: InterviewPrepQuestion[] = [
   question({
@@ -1355,6 +1558,16 @@ const questions: InterviewPrepQuestion[] = [
   }),
 ];
 
+const allQuestions = mergeQuestions(
+  questions,
+  buildCoverageQuestions('HTML Fundamentals', htmlFundamentalsCoverage),
+  buildCoverageQuestions('HTML Forms', htmlFormsCoverage),
+  buildCoverageQuestions('Accessibility', accessibilityCoverage),
+  buildCoverageQuestions('CSS Fundamentals', cssFundamentalsCoverage),
+  buildCoverageQuestions('CSS Layouts', cssLayoutsCoverage),
+  buildCoverageQuestions('CSS Advanced / Production', cssAdvancedProductionCoverage),
+);
+
 const productionScenarios: ProductionScenario[] = [
   {
     id: 'html-css-mobile-overflow',
@@ -1432,9 +1645,9 @@ const mockInterviewProfiles: MockInterviewProfile[] = [
 ];
 
 const rapidRevisionPlans: RapidRevisionPlan[] = [
-  { id: '15-min', label: '15-minute recap', minutes: 15, description: 'Review the most asked HTML/CSS questions quickly before a call.', questionIds: questions.slice(0, 3).map((item) => item.id) },
-  { id: '30-min', label: '30-minute prep', minutes: 30, description: 'Cover semantics, forms, CSS basics, and responsive layout reasoning.', questionIds: questions.slice(0, 6).map((item) => item.id) },
-  { id: '60-min', label: '60-minute deep refresh', minutes: 60, description: 'Walk through the full HTML/CSS prep set with production context.', questionIds: questions.map((item) => item.id) },
+  { id: '15-min', label: '15-minute recap', minutes: 15, description: 'Review the most asked HTML/CSS questions quickly before a call.', questionIds: allQuestions.slice(0, 3).map((item) => item.id) },
+  { id: '30-min', label: '30-minute prep', minutes: 30, description: 'Cover semantics, forms, CSS basics, and responsive layout reasoning.', questionIds: allQuestions.slice(0, 6).map((item) => item.id) },
+  { id: '60-min', label: '60-minute deep refresh', minutes: 60, description: 'Walk through the full HTML/CSS prep set with production context.', questionIds: allQuestions.map((item) => item.id) },
 ];
 
 const topicGroups = buildTopicGroups();
@@ -1445,11 +1658,11 @@ export const htmlCssInterviewPrep: InterviewPrepSection = {
   title: 'HTML & CSS Interview Questions',
   description: 'Practical beginner-to-intermediate HTML and CSS interview questions covering semantics, forms, selectors, responsive layouts, accessibility, SEO, and production UI thinking.',
   lastReviewed: 'June 2026',
-  categories: Array.from(new Set(questions.map((item) => item.category))),
-  questionTypes: Array.from(new Set(questions.map((item) => item.questionType))),
+  categories: Array.from(new Set(allQuestions.map((item) => item.category))),
+  questionTypes: Array.from(new Set(allQuestions.map((item) => item.questionType))),
   experienceLevels,
   topicGroups,
-  topicMetadata: buildTopicMetadata(topicGroups, questions),
+  topicMetadata: buildTopicMetadata(topicGroups, allQuestions),
   pagination: {
     questionsPerPage: 6,
     ordering: 'most-asked-first',
@@ -1457,6 +1670,6 @@ export const htmlCssInterviewPrep: InterviewPrepSection = {
   productionScenarios,
   mockInterviewProfiles,
   rapidRevisionPlans,
-  topicPreparationSets: buildTopicPreparationSets(questions),
-  questions,
+  topicPreparationSets: buildTopicPreparationSets(allQuestions),
+  questions: allQuestions,
 };

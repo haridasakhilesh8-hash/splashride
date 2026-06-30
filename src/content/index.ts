@@ -27,6 +27,7 @@ import { dockerContentMap } from './docker/index';
 import { k8sContentMap }    from './kubernetes/index';
 import { azureContentMap }  from './azure/index';
 import { aiContentMap }     from './ai/index';
+import { pythonContentMap } from './python/index';
 
 const rawContentMap: Record<string, TopicContent> = {
   ...aemContentMap,
@@ -43,6 +44,7 @@ const rawContentMap: Record<string, TopicContent> = {
   ...k8sContentMap,
   ...azureContentMap,
   ...aiContentMap,
+  ...pythonContentMap,
 };
 
 const contentMap: Record<string, TopicContent> = Object.fromEntries(

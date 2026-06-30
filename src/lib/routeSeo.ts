@@ -41,6 +41,10 @@ const TECHNOLOGY_SEO_COPY: Record<string, { titleFocus?: string; title?: string;
     title: 'JavaScript Tutorial | DOM, Async, ES6 and Interview Prep - SplashRide',
     description: 'Learn JavaScript with variables, functions, arrays, objects, DOM, events, promises, async/await, fetch API, ES6 concepts, production issues, and interview questions.',
   },
+  python: {
+    title: 'Python Tutorial | Backend, Automation, APIs and Interview Prep - SplashRide',
+    description: 'Learn Python with practical tutorials covering fundamentals, data structures, OOP, APIs, automation, testing, production issues, interview preparation, and career path guidance.',
+  },
   react: { titleFocus: 'Hooks, Components, Routing and Interview Prep' },
   nextjs: { titleFocus: 'App Router, Rendering, SSR and Interview Prep' },
   java: { titleFocus: 'OOP, Collections, JVM and Interview Prep' },
@@ -50,6 +54,13 @@ const TECHNOLOGY_SEO_COPY: Record<string, { titleFocus?: string; title?: string;
   docker: { titleFocus: 'Containers, Images, Networking and Interview Prep' },
   kubernetes: { titleFocus: 'Pods, Services, Deployments and Interview Prep' },
   'ai-llm': { titleFocus: 'RAG, Prompting, Agents and Interview Prep' },
+};
+
+const INTERVIEW_PREP_SEO_COPY: Record<string, { title?: string; description?: string }> = {
+  python: {
+    title: 'Python Interview Questions | Real-World Scenarios and Answers - SplashRide',
+    description: 'Practice Python interview questions with short answers, detailed explanations, real project scenarios, production issues, common mistakes, and interview tips.',
+  },
 };
 
 function dedupeStructuredDataByType(nodes: Record<string, unknown>[]) {
@@ -158,7 +169,8 @@ function getInterviewPrepSeo(rawTechId: string) {
   if (!section) return null;
 
   const canonicalPath = getInterviewPrepPath(section.technologyId);
-  const description = `Practice ${section.technologyLabel} interview questions with short answers, detailed explanations, production scenarios, common mistakes, follow-up questions, and architect-level guidance.`;
+  const seoCopy = INTERVIEW_PREP_SEO_COPY[section.technologyId];
+  const description = seoCopy?.description ?? `Practice ${section.technologyLabel} interview questions with short answers, detailed explanations, production scenarios, common mistakes, follow-up questions, and architect-level guidance.`;
   const questionFaqs = section.questions.slice(0, 20).map((question) => ({
     question: question.question,
     answer: question.shortAnswer,
@@ -170,7 +182,7 @@ function getInterviewPrepSeo(rawTechId: string) {
     structuredData: [
       buildCollectionPageSchema({
         path: canonicalPath,
-        name: `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
+        name: seoCopy?.title ?? `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
         description,
         about: `${section.technologyLabel} interview preparation`,
       }),
@@ -188,7 +200,7 @@ function getInterviewPrepSeo(rawTechId: string) {
       }),
       buildFAQSchema(questionFaqs),
     ],
-    title: `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
+    title: seoCopy?.title ?? `${section.technologyLabel} Interview Questions | Real-World Scenarios and Answers - SplashRide`,
   };
 }
 
@@ -196,7 +208,7 @@ function getCareerPathSeo(slug: string) {
   const roadmap = careerRoadmaps.find((item) => item.slug === slug);
   if (!roadmap) return null;
   const canonicalPath = getCareerPathPath(roadmap.slug);
-  const description = `Follow the ${roadmap.shortTitle} career path with required skills, learning roadmap, projects, interview preparation, and growth direction.`;
+  const description = roadmap.seoDescription || `Follow the ${roadmap.shortTitle} career path with required skills, learning roadmap, projects, interview preparation, and growth direction.`;
 
   return {
     canonicalPath,
@@ -220,7 +232,7 @@ function getCareerPathSeo(slug: string) {
         })),
       }),
     ],
-    title: `${roadmap.shortTitle} Career Path | Skills, Roadmap, Projects and Interview Prep - SplashRide`,
+    title: roadmap.seoTitle || `${roadmap.shortTitle} Career Path | Skills, Roadmap, Projects and Interview Prep - SplashRide`,
   };
 }
 

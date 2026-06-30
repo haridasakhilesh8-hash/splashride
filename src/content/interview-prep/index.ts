@@ -8,6 +8,7 @@ import { htmlCssInterviewPrep } from './html-css';
 import { javascriptInterviewPrep } from './javascript';
 import { kubernetesInterviewPrep } from './kubernetes';
 import { nextjsInterviewPrep } from './nextjs';
+import { pythonInterviewPrep } from './python';
 import { reactInterviewPrep } from './react';
 import { sitecoreInterviewPrep } from './sitecore';
 import { springBootInterviewPrep } from './spring-boot';
@@ -21,6 +22,7 @@ export const interviewPrepSections: InterviewPrepSection[] = [
   sitecoreInterviewPrep,
   htmlCssInterviewPrep,
   javascriptInterviewPrep,
+  pythonInterviewPrep,
   reactInterviewPrep,
   nextjsInterviewPrep,
   coreJavaInterviewPrep,
